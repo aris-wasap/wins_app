@@ -91,6 +91,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.issueId = int.parse(_issueIdController.text);
     data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
     data.docNum = _docNumController.text;
