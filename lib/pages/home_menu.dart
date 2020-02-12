@@ -41,21 +41,21 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       title: "Receipt From Purchase Order",
       subtitle: "List Receipt, Scan Receipt",
       icon: "assets/images/receipt_po.png",
-      authDetail : "receiptOrder_Auth_Detail ",
+      authDetail : "receiptOrder_Auth_Detail",
   );
 
   Items item4 = new Items(
       title: "Inventory Transfer",
       subtitle: "List Inventory Transfer, Scan Item",
       icon: "assets/images/transfer.png",
-      authDetail : "inventoryTransfer_Auth_Detail ",
+      authDetail : "inventoryTransfer_Auth_Detail",
   );
 
   Items item5 = new Items(
       title: "Delivery Order",
       subtitle: "List Delivery, Scan Item",
       icon: "assets/images/delivery.png",
-      authDetail : "deliveryOrder_Auth_Detail ",
+      authDetail : "deliveryOrder_Auth_Detail",
   );
 
   Items item6 = new Items(
@@ -81,6 +81,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                   color: Color(color), borderRadius: BorderRadius.circular(10)),
               child: InkWell(
                 onTap: (){
+                  //1
                   if ( data.authDetail == "receiptProduction_Auth_Detail" && globalBloc.loginResponse.data
                                                 .receiptProduction_Auth_Detail ==
                                             'Y') {
@@ -88,6 +89,51 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                               builder: (BuildContext context) {
                                             return ReceiptProductionListPage();
                                           }));
+                                       }
+                  //2
+                  else if ( data.authDetail == "receiptIssue_Auth_Detail" && globalBloc.loginResponse.data
+                                                .receiptIssue_Auth_Detail ==
+                                            'Y') {
+                                          Navigator.push(context, MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                             return ReceiptIssueListPage();
+                                          }));
+                                       }
+                //3
+                 else if ( data.authDetail == "receiptOrder_Auth_Detail" && globalBloc.loginResponse.data
+                                                .receiptOrder_Auth_Detail ==
+                                            'Y') {
+                                          Navigator.push(context, MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                            return ReceiptOrderListPage();
+                                          }));
+                                       }
+                //4
+                else if ( data.authDetail == "inventoryTransfer_Auth_Detail" && globalBloc.loginResponse.data
+                                                .inventoryTransfer_Auth_Detail ==
+                                            'Y') {
+                                         // Navigator.push(context, MaterialPageRoute(
+                                          //     builder: (BuildContext context) {
+                                          //   return InventoryTransferListPage();
+                                          // }));
+                                       }
+                //5
+                else if ( data.authDetail == "deliveryOrder_Auth_Detail" && globalBloc.loginResponse.data
+                                                .deliveryOrder_Auth_Detail ==
+                                            'Y') {
+                                          Navigator.push(context, MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                            return DeliveryOrderListPage();
+                                          }));
+                                       }
+                //6
+                else if ( data.authDetail == "returnSales_Auth_Detail" && globalBloc.loginResponse.data
+                                                .returnSales_Auth_Detail ==
+                                            'Y') {
+                                          // Navigator.push(context, MaterialPageRoute(
+                                          //     builder: (BuildContext context) {
+                                          //   return ReturnSalesListPage();
+                                          // }));
                                        }
                 },
                 child: Column(
