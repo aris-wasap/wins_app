@@ -168,6 +168,7 @@ class _NewTrfReleaseState extends State<NewTrfRelease> {
             ),
             FloatingActionButton.extended(
               icon: Icon(Icons.camera_alt),
+              backgroundColor: Colors.orange[700],
               label: Text("Scan"),
               onPressed: () {
                 _scanQR();

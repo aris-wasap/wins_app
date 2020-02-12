@@ -389,6 +389,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               floatingActionButton: data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
+                      backgroundColor: Colors.orange[700],
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();

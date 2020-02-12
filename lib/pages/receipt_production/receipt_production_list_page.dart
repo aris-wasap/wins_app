@@ -77,12 +77,13 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
           decoration: InputDecoration(
             hintText: "Search Receipt Production",
             hintStyle: TextStyle(color: Colors.white)
+            
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.orange[700],
         bottom: PreferredSize(
           child: Container(
-            color: Colors.blueGrey,
+            color: Colors.orange[500],
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -102,10 +103,10 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
     } else {
       return AppBar(
         title: Text("List Receipt Production"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: Colors.blue[500],
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)

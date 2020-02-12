@@ -213,7 +213,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Receipt From Issue"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
             color: Colors.yellow[900],
@@ -392,6 +392,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               floatingActionButton: data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
+                      backgroundColor: Colors.orange[700],
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();
