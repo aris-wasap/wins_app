@@ -117,56 +117,87 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         // ),
                         
                         Container(
-                          padding: EdgeInsets.all(0),
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            alignment: Alignment.bottomCenter,
-                            //height: 500,
-                            child: _buildForm(bloc, state),
-                            
-                          ),
-                          
+                          padding: EdgeInsets.symmetric(vertical: 0),
+                          width: double.infinity,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
                             colors: [
-                              
-                                 Colors.white,
-                                 Colors.white,
+                            Colors.blue[800],
+                            Colors.blue[700],
+                            Colors.blue[600],
+                            Colors.blue[500],
+                            Colors.blue[400],
+                            Colors.blue[300],
+                            Colors.blue[200],
+                            Colors.blue[100],
+                            Colors.orange[100],
+                            Colors.orange[100],
                                 
                             ],
-                            begin: Alignment.center,
-                            end: Alignment.topCenter,
+                             begin: Alignment.topCenter,
+                             end: Alignment.bottomCenter,
+                             
                           )),
-                        ),
-                        _showCircularProgress(state),
-                        Container(
-                          padding: EdgeInsets.all(0),
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            alignment: Alignment.bottomCenter,
-                            //height: 500,
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height/65,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                    // Color(0xFFF4CB2FF),
-                                    // Color(0xFFF00F0FF),
-                                  
-                               Color(0xFF0033CC),
-                               Color(0xFF0099FF),
-                               
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                            SizedBox(height: 50,),
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                    Text("Hi,", style: TextStyle(color: Colors.white, fontSize: 40),),
+                                    SizedBox(height: 10,),
+                                    Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 20),),
+
                                 ],
                               ),
-                              borderRadius: BorderRadius.only(
-                             
-                              )
-              ),
-                            
+                              ),
+                              SizedBox(height: 20,),
+                              Expanded(child: 
+                                Container(
+                              height: MediaQuery.of(context).size.height,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)
+                              ),
+                              ),
+                              alignment: Alignment.bottomCenter,
+                              child: _buildForm(bloc, state),
+                              
+                            ),
+                              ),
+                            ],
                           ),
-                        )
+                         
+                        ),
+                        _showCircularProgress(state),
+              //           Container(
+              //             padding: EdgeInsets.all(0),
+              //             alignment: Alignment.bottomCenter,
+              //             child: Container(
+              //               alignment: Alignment.bottomCenter,
+              //               //height: 500,
+              //               width: MediaQuery.of(context).size.width,
+              //               height: MediaQuery.of(context).size.height/65,
+              //               decoration: BoxDecoration(
+              //                 gradient: LinearGradient(
+              //                   begin: Alignment.topCenter,
+              //                   end: Alignment.bottomCenter,
+              //                   colors: [
+              //                  Color(0xFF0033CC),
+              //                  Color(0xFF0099FF),
+                               
+              //                   ],
+              //                 ),
+              //                 borderRadius: BorderRadius.only(
+                             
+              //                 )
+              // ),
+                            
+              //             ),
+              //           )
                       ],
                     );
                   }
@@ -192,55 +223,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       key: _formKey,
       child: ListView(
         children: <Widget>[
-          //_showLogo(),
           
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/14,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                      // Color(0xFF0099FF),
-                      // Color(0xFFF00F0FF),
-                     Color(0xFF0099FF),
-                    Color(0xFF0033CC),
-                 
-                  ],
-                ),
-                borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(90)
-                )
-              ),
-              
-              child: Row(
-                
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[    
-                  //Spacer(),
-                     //_showWelconeText(bloc),
-                  Spacer(),
-                 // _showLogo(),
-                  _showIconSetting(bloc),
-                  //Spacer(),
-                  ],
-              ),
-              
-            ),
+         
           _showLogo(),
           _showEnterText(bloc),
           _showUserNameInput(bloc),
           _showPasswordInput(bloc),
-          Container(
-            height: 20,
-          ),
-          _showButton(bloc),
-          //_showLoginSetting(bloc),
-          Container(
-            height: 10,
-          ),
           _showErrorMessage(state),
+          SizedBox(height: 35,),
+          _showButton(bloc),
+          _showLoginSetting(bloc),
+          
            Container(
             height: 30,
           ),
@@ -313,10 +306,6 @@ Widget _showEnterText(AuthenticationBloc bloc) {
       padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
       child: Container(
         decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.all(
-                      //   Radius.circular(50),
-                      // ),
-                      shape: BoxShape.rectangle, 
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
                       boxShadow: [
@@ -341,7 +330,9 @@ Widget _showEnterText(AuthenticationBloc bloc) {
             icon: Icon(
               Icons.person,
               color: Colors.blueGrey,
-            )),
+            )
+            
+            ),
         validator: (value) => value.isEmpty ? 'Username can\'t be empty' : null,
       ),
       )
@@ -354,10 +345,7 @@ Widget _showEnterText(AuthenticationBloc bloc) {
       child: 
       Container(
         decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.all(
-                      //   Radius.circular(50),
-                      // ),
-                      shape: BoxShape.rectangle, 
+                      //shape: BoxShape.rectangle, 
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
                       boxShadow: [
@@ -391,22 +379,16 @@ Widget _showEnterText(AuthenticationBloc bloc) {
   }
 
   Widget _showButton(AuthenticationBloc bloc) {
-    return Padding(
-        //padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-        padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-        child: Container(
-          height: 40.0,
-          width: 40.0,
+    return
+       Container(
+          height: 50.0,
+          margin: EdgeInsets.symmetric(horizontal: 50),
           decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                        //  Color(0xFF0099FF),
-                        // Color(0xFFF00F0FF)
-                        //  Color(0xFF0033CC),
-                        // Color(0xFF0099FF),
-                        Colors.blueGrey,
-                        Colors.black45
-
+                        Colors.orange[700],
+                        Colors.orange[500],
+                        Colors.orange[700],
                         ],
                       ),
                       shape: BoxShape.rectangle, 
@@ -436,20 +418,21 @@ Widget _showEnterText(AuthenticationBloc bloc) {
           ),
                     
           
-        ));
+        );
+        
   }
 
   Widget _showLoginSetting(AuthenticationBloc bloc) {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-        child: SizedBox(
-          height: 40.0,
+    return 
+        SizedBox(
+          height: 70.0,
           child: FlatButton(
-            child: Text('Setting',
+            child: Text('Setting'.toUpperCase(),
                 style: TextStyle(
                   fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                   color: Colors.blueGrey,
-                  decoration: TextDecoration.underline,
+                  //decoration: TextDecoration.underline,
                 )),
             onPressed: () {
               Navigator.push(context,
@@ -458,21 +441,21 @@ Widget _showEnterText(AuthenticationBloc bloc) {
               }));
             },
           ),
-        ));
+        );
   }
 
   Widget _showErrorMessage(AuthenticationState state) {
     if (state.errorMessage != null) {
       if (state.errorMessage.length > 0) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 0.0),
           child: Text(
             state.errorMessage,
             style: TextStyle(
                 fontSize: 15.0,
                 color: Colors.red,
                 height: 1.0,
-                fontWeight: FontWeight.w300),
+                fontWeight: FontWeight.w500),
           ),
         );
       }

@@ -85,27 +85,27 @@ void _onItemTapped(int index) {
                     accountName: Text(globalBloc.userName),
                     accountEmail: Text(''),
                     currentAccountPicture: ClipOval(
-                      // child: Image.network(
-                      //   globalBloc.getUrl() +
-                      //       "api/UserApi/GetImage?id=${globalBloc.userId}&guid=${Uuid().v4().toString()}",
-                      // ),
+                      child: Image.network(
+                        globalBloc.getUrl() +
+                            "api/UserApi/GetImage?id=${globalBloc.userId}&guid=${Uuid().v4().toString()}",
+                      ),
                     ),
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                      // Color(0xFF0099FF),
-                      // Color(0xFFF00F0FF),
-                       Color(0xFF0033CC),
-                       Color(0xFF0099FF),
-                       Color(0xFF0033CC),
+                            Colors.blue[800],
+                            Colors.blue[700],
+                            Colors.blue[600],
+                            Colors.blue[500],
+                            //Colors.orange[100],
                  
                   ],
                 ),
                         border: Border(
                             bottom: BorderSide(
-                                color: Colors.blueGrey,
+                                color: Colors.blue[500],
                                 width: 5.0,
                                 style: BorderStyle.solid))),
                   ),
@@ -126,26 +126,26 @@ void _onItemTapped(int index) {
                 Divider(
                   height: 2.0,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.file_download,
-                    color: Colors.blue,
-                  ),
-                  title: Text('Download'),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return DownloadPage();
-                    }));
-                  },
-                ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.file_download,
+                //     color: Colors.blue,
+                //   ),
+                //   title: Text('Download'),
+                //   onTap: () {
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (BuildContext context) {
+                //       return DownloadPage();
+                //     }));
+                //   },
+                // ),
                 Divider(
                   height: 2.0,
                 ),
                 ListTile(
                   leading: Icon(
                     Icons.exit_to_app,
-                    color: Colors.blue,
+                    color: Colors.orange[500],
                   ),
                   title: Text('LOG-OUT'),
                   onTap: () {
@@ -156,34 +156,50 @@ void _onItemTapped(int index) {
             ),
           ),
           appBar: AppBar(
-            //title: Text("Hi, Welcome"),
+              //title: Text("Hi "+ globalBloc.userName + " , Welcome" ),
               flexibleSpace: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: <Color>[
-                        Color(0xFF0099FF),
-                        Color(0xFF0033CC),
+                        // Color(0xFF0099FF),
+                        // Color(0xFF0033CC),
+                        Colors.blue[400],
+                        Colors.blue[600],
+                        Colors.blue[700],
+                            //Colors.blue[600],
+                            //Colors.blue[500],
+                            // Colors.blue[400],
+                            // Colors.blue[300],
+                            // Colors.blue[200],
+                            // Colors.blue[100],
                   ],
                 ),
               ),
             ),
             actions: <Widget>[
-            FlatButton.icon(
-               label: Text('LOG-OUT'),
+            Container(
+              //height: 2,
+                        //margin: EdgeInsets.symmetric(horizontal: 50),
+                        decoration: BoxDecoration(
+                          //color: Colors.red[800],
+                          borderRadius: BorderRadius.circular(0)
+                        ),
+              child: FlatButton.icon(
+              label: Text('LOG-OUT'),
               icon: Icon( Icons.exit_to_app),
               onPressed: () async {
                 authenticationBloc.emitEvent(AuthenticationEventLogout());
               },
               textColor: Colors.white,
              
-            ),
+            ),)
           ],
             //backgroundColor: Colors.blue[900],
             bottom: PreferredSize(
               child: Container(
-                color: Colors.blue,
+                color: Colors.blue[500],
                 height: 5.0,
               ),
               preferredSize: Size.fromHeight(5.0)
@@ -192,12 +208,12 @@ void _onItemTapped(int index) {
           
           body: _widgetOptions.elementAt(_selectedIndex),
           
-         //backgroundColor: ,
+         backgroundColor: Colors.blue[200] ,
          bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[400],
+            selectedItemColor: Colors.blue[800],
             onTap: _onItemTapped,
-
+            //backgroundColor: Color.fromRGBO(196, 196, 196, 100),
            items: [
                   BottomNavigationBarItem(
                     icon: new Icon(Icons.home),

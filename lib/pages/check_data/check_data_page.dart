@@ -188,6 +188,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
               floatingActionButton: FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       //icon: SizedBox()
+                      backgroundColor: Colors.orange[500],
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();
