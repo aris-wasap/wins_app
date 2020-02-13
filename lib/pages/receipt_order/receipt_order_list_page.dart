@@ -78,7 +78,7 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
             hintText: "Search Receipt",
             hintStyle: TextStyle(color: Colors.white)
           ),
-        ),
+        ), 
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
           child: Container(

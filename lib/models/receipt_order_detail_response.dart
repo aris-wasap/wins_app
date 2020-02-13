@@ -120,8 +120,8 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName; 
 
-  @JsonKey(name: 'SoQty')
-  double soQty;
+  @JsonKey(name: 'PoQty')
+  double poQty;
 
   @JsonKey(name: 'Qty')
   double qty;
@@ -145,7 +145,7 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName, 
-    this.soQty: 0,
+    this.poQty: 0,
     this.qty: 0,
     this.uom,
     this.whsCode, 
