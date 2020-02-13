@@ -1,261 +1,261 @@
-// import 'dart:async';
+import 'dart:async';
 
-// import 'package:flutter/material.dart';
-// import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-// import 'package:ncf_app/blocs/global_bloc.dart';
-// import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_bloc.dart';
-// import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
-// import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
-// import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
-// import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_bloc.dart';
+import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
+import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
+//import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
+import 'package:intl/intl.dart';
 
-// class TransferProductionListPage extends StatefulWidget {
-//   @override
-//   _TransferProductionListPageState createState() =>
-//       _TransferProductionListPageState();
-// }
+class InventoryTransferListPage extends StatefulWidget {
+  @override
+  _InventoryTransferListPageState createState() =>
+      _InventoryTransferListPageState();
+}
 
-// class _TransferProductionListPageState
-//     extends State<TransferProductionListPage> {
-//   TransferProductionListBloc bloc = TransferProductionListBloc();
-//   ScrollController _scrollController;
-//   final _scaffoldKey = GlobalKey<ScaffoldState>();
+class _InventoryTransferListPageState
+    extends State<InventoryTransferListPage> {
+  InventoryTransferListBloc bloc = InventoryTransferListBloc();
+  ScrollController _scrollController;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-//   static const offsetVisibleThreshold = 50;
+  static const offsetVisibleThreshold = 50;
 
-//   final TextEditingController _searchQueryController = TextEditingController();
-//   Timer _debounce;
+  final TextEditingController _searchQueryController = TextEditingController();
+  Timer _debounce;
 
-//   _onSearchChanged() {
-//     if (_debounce?.isActive ?? false) _debounce.cancel();
-//     _debounce = Timer(const Duration(milliseconds: 2000), () {
-//       var state = bloc.lastState ?? bloc.initialState;
-//       bloc.emitEvent(TransferProductionListEvent(
-//         event: TransferProductionListEventType.firstPage,
-//         searchQuery: _searchQueryController.text,
-//       ));
-//     });
-//   }
+  _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(const Duration(milliseconds: 2000), () {
+      var state = bloc.lastState ?? bloc.initialState;
+      bloc.emitEvent(InventoryTransferListEvent(
+        event: InventoryTransferListEventType.firstPage,
+        searchQuery: _searchQueryController.text,
+      ));
+    });
+  }
 
-//   void _onScroll() {
-//     if (_scrollController.offset ==
-//         _scrollController.position.maxScrollExtent) {
-//       bloc.emitEvent(TransferProductionListEvent(
-//         event: TransferProductionListEventType.nextPage,
-//         searchQuery: _searchQueryController.text,
-//       ));
-//     }
-//   }
+  void _onScroll() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      bloc.emitEvent(InventoryTransferListEvent(
+        event: InventoryTransferListEventType.nextPage,
+        searchQuery: _searchQueryController.text,
+      ));
+    }
+  }
 
-//   @override
-//   void initState() {
-//     super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       bloc.emitEvent(TransferProductionListEvent(
-//         event: TransferProductionListEventType.firstPage,
-//       ));
-//     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bloc.emitEvent(InventoryTransferListEvent(
+        event: InventoryTransferListEventType.firstPage,
+      ));
+    });
 
-//     _scrollController = ScrollController()..addListener(_onScroll);
-//     _searchQueryController.addListener(_onSearchChanged);
-//   }
+    _scrollController = ScrollController()..addListener(_onScroll);
+    _searchQueryController.addListener(_onSearchChanged);
+  }
 
-//   @override
-//   void dispose() {
-//     _searchQueryController?.removeListener(_onSearchChanged);
-//     _searchQueryController?.dispose();
-//     _scrollController?.dispose();
-//     bloc?.dispose();
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    _searchQueryController?.removeListener(_onSearchChanged);
+    _searchQueryController?.dispose();
+    _scrollController?.dispose();
+    bloc?.dispose();
+    super.dispose();
+  }
 
-//   PreferredSizeWidget _appBar() {
-//     var state = bloc.lastState ?? bloc.initialState;
-//     if (state.isActiveSearch) {
-//       return AppBar(
-//         title: TextField(
-//           controller: _searchQueryController,
-//           decoration: InputDecoration(
-//             hintText: "Search Transfer Production",
-//             hintStyle: TextStyle(color: Colors.white)
-//           ),
-//         ),
-//         backgroundColor: Colors.blue[900],
-//         bottom: PreferredSize(
-//           child: Container(
-//             color: Colors.yellow[900],
-//             height: 5.0,
-//           ),
-//           preferredSize: Size.fromHeight(5.0)
-//         ),
-//         actions: <Widget>[
-//           IconButton(
-//               icon: Icon(Icons.close),
-//               onPressed: () {
-//                 _searchQueryController.text = "";
-//                 bloc.emitEvent(TransferProductionListEvent(
-//                   event: TransferProductionListEventType.deactivedSearch,
-//                   searchQuery: _searchQueryController.text,
-//                 ));
-//               }),
-//         ],
-//       );
-//     } else {
-//       return AppBar(
-//         title: Text("Transfer Production"),
-//         backgroundColor: Colors.blue[900],
-//         bottom: PreferredSize(
-//           child: Container(
-//             color: Colors.yellow[900],
-//             height: 5.0,
-//           ),
-//           preferredSize: Size.fromHeight(5.0)
-//         ),
-//         actions: <Widget>[
-//           IconButton(
-//             icon: Icon(Icons.search),
-//             onPressed: () {
-//               bloc.emitEvent(TransferProductionListEvent(
-//                 event: TransferProductionListEventType.activedSearch,
-//               ));
-//             },
-//           ),
-//           (globalBloc.loginResponse.data.transferProduction_Auth_Add == 'Y')
-//               ? IconButton(
-//                   icon: Icon(Icons.add),
-//                   onPressed: () {
-//                     Navigator.push(context,
-//                         MaterialPageRoute(builder: (BuildContext context) {
-//                       return TransferProductionDetailPage(0);
-//                     }));
-//                   },
-//                 )
-//               : Container(),
-//         ],
-//       );
-//     }
-//   }
+  PreferredSizeWidget _appBar() {
+    var state = bloc.lastState ?? bloc.initialState;
+    if (state.isActiveSearch) {
+      return AppBar(
+        title: TextField(
+          controller: _searchQueryController,
+          decoration: InputDecoration(
+            hintText: "Search Inventory Transfer",
+            hintStyle: TextStyle(color: Colors.white)
+          ),
+        ),
+        backgroundColor: Colors.blue[900],
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.yellow[900],
+            height: 5.0,
+          ),
+          preferredSize: Size.fromHeight(5.0)
+        ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                _searchQueryController.text = "";
+                bloc.emitEvent(InventoryTransferListEvent(
+                  event: InventoryTransferListEventType.deactivedSearch,
+                  searchQuery: _searchQueryController.text,
+                ));
+              }),
+        ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Inventory Transfer"),
+        backgroundColor: Colors.blue[900],
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.yellow[900],
+            height: 5.0,
+          ),
+          preferredSize: Size.fromHeight(5.0)
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              bloc.emitEvent(InventoryTransferListEvent(
+                event: InventoryTransferListEventType.activedSearch,
+              ));
+            },
+          ),
+          // (globalBloc.loginResponse.data.inventoryTransfer_Auth_Add == 'Y')
+          //     ? IconButton(
+          //         icon: Icon(Icons.add),
+          //         onPressed: () {
+          //           Navigator.push(context,
+          //               MaterialPageRoute(builder: (BuildContext context) {
+          //             return InventoryTransferDetailPage(0);
+          //           }));
+          //         },
+          //       )
+          //     : Container(),
+        ],
+      );
+    }
+  }
 
-//   //kalau langsung di inline gak mau karena functionnya harus future
-//   Future<void> _handleRefresh() async {
-//     bloc.emitEvent(TransferProductionListEvent(
-//       event: TransferProductionListEventType.refresh,
-//       searchQuery: _searchQueryController.text,
-//     ));
-//   }
+  //kalau langsung di inline gak mau karena functionnya harus future
+  Future<void> _handleRefresh() async {
+    bloc.emitEvent(InventoryTransferListEvent(
+      event: InventoryTransferListEventType.refresh,
+      searchQuery: _searchQueryController.text,
+    ));
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocEventStateBuilder<TransferProductionListState>(
-//         bloc: bloc,
-//         builder: (BuildContext context, TransferProductionListState state) {
-//           return SafeArea(
-//             child: Scaffold(
-//               key: _scaffoldKey,
-//               appBar: _appBar(),
-//               body: RefreshIndicator(
-//                 onRefresh: _handleRefresh,
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                     gradient: LinearGradient(
-//                       colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-//                       begin: Alignment.topCenter,
-//                       end: Alignment.bottomCenter,
-//                     )
-//                   ),
-//                   constraints: BoxConstraints.expand(),
-//                   child: _buildList(),
-//                 ),
-//               ),
-//             ),
-//           );
-//         });
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return BlocEventStateBuilder<InventoryTransferListState>(
+        bloc: bloc,
+        builder: (BuildContext context, InventoryTransferListState state) {
+          return SafeArea(
+            child: Scaffold(
+              key: _scaffoldKey,
+              appBar: _appBar(),
+              body: RefreshIndicator(
+                onRefresh: _handleRefresh,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
+                  ),
+                  constraints: BoxConstraints.expand(),
+                  child: _buildList(),
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
-//   Widget _buildList() {
-//     var state = bloc.lastState ?? bloc.initialState;
+  Widget _buildList() {
+    var state = bloc.lastState ?? bloc.initialState;
 
-//     final data = state.data;
-//     final isBusy = state.isBusy;
-//     final isFailure = state.isFailure;
+    final data = state.data;
+    final isBusy = state.isBusy;
+    final isFailure = state.isFailure;
 
-//     return ListView.separated(
-//       separatorBuilder: (BuildContext context, int index) => Divider(),
-//       controller: _scrollController,
-//       itemCount: data.length + 1,
-//       itemBuilder: (contex, index) {
-//         if (index < data.length) {
-//           return (Container(
-//             margin: const EdgeInsets.all(3),
-//             // decoration:
-//             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-//             child: Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: ListTile(
-//                 title: Text(
-//                     "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-//                 subtitle: Column(
-//                   //mainAxisAlignment: MainAxisAlignment.start,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: <Widget>[
-//                     Text(
-//                         "${data[index].whsCodeFrom} to ${data[index].whsCodeTo}"),
-//                     Text("${data[index].status} - ${data[index].createdUser}"),
-//                   ],
-//                 ),
-//                 leading: ClipOval(
-//                   child: Image.network(
-//                     globalBloc.getUrl() +
-//                         "api/UserApi/GetImage?id=${data[index].userId}",
-//                     width: 50.0,
-//                     height: 50.0,
-//                   ),
-//                 ),
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      controller: _scrollController,
+      itemCount: data.length + 1,
+      itemBuilder: (contex, index) {
+        if (index < data.length) {
+          return (Container(
+            margin: const EdgeInsets.all(3),
+            // decoration:
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        "${data[index].whsCodeFrom} to ${data[index].whsCodeTo}"),
+                    Text("${data[index].status} - ${data[index].createdUser}"),
+                  ],
+                ),
+                leading: ClipOval(
+                  child: Image.network(
+                    globalBloc.getUrl() +
+                        "api/UserApi/GetImage?id=${data[index].createdUser}",
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
 
-//                 trailing: Icon(Icons.keyboard_arrow_right),
-//                 //color: Colors.white, size: 30.0),
-//                 onTap: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (BuildContext context) =>
-//                           TransferProductionDetailPage(data[index].id),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//           ));
-//         }
+                trailing: Icon(Icons.keyboard_arrow_right),
+                //color: Colors.white, size: 30.0),
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (BuildContext context) =>
+                //           InventoryTransferDetailPage(data[index].id),
+                //     ),
+                //   );
+                // },
+              ),
+            ),
+          ));
+        }
 
-//         if (isFailure) {
-//           return ListTile(
-//             title: Text(
-//               'Error while loading data...',
-//               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-//             ),
-//             isThreeLine: false,
-//             leading: CircleAvatar(
-//               child: Text(':('),
-//               foregroundColor: Colors.white,
-//               backgroundColor: Colors.redAccent,
-//             ),
-//           );
-//         }
+        if (isFailure) {
+          return ListTile(
+            title: Text(
+              'Error while loading data...',
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+            ),
+            isThreeLine: false,
+            leading: CircleAvatar(
+              child: Text(':('),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
 
-//         return Padding(
-//           padding: const EdgeInsets.all(12.0),
-//           child: Center(
-//             child: Opacity(
-//               child: CircularProgressIndicator(
-//                 strokeWidth: 2.0,
-//               ),
-//               opacity: isBusy ? 1 : 0,
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Center(
+            child: Opacity(
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+              ),
+              opacity: isBusy ? 1 : 0,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
