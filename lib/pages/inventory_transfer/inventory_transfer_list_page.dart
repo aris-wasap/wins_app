@@ -200,7 +200,7 @@ class _InventoryTransferListPageState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "${data[index].whsCodeFrom} to ${data[index].whsCodeTo}"),
+                        "${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
                     Text("${data[index].status} - ${data[index].createdUser}"),
                   ],
                 ),
@@ -215,15 +215,15 @@ class _InventoryTransferListPageState
 
                 trailing: Icon(Icons.keyboard_arrow_right),
                 //color: Colors.white, size: 30.0),
-                // onTap: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (BuildContext context) =>
-                //           InventoryTransferDetailPage(data[index].id),
-                //     ),
-                //   );
-                // },
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //         InventoryTransferDetailPage(data[index].id),
+                  //   ),
+                  //);
+                },
               ),
             ),
           ));
