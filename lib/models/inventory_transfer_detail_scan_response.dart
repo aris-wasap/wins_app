@@ -1,7 +1,7 @@
 // To parse this JSON data, do
 //
 //     final item = itemFromJson(jsonString);
-//     final transferProductionDetailScanResponse = transferProductionDetailScanResponseFromJson(jsonString);
+//     final inventoryTransferDetailScanResponse = inventoryTransferDetailScanResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
@@ -10,7 +10,7 @@ import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'inventory_transfer_detail_scan_response.g.dart';
 
-InventoryTransferDetailScanResponse transferProductionDetailScanResponseFromJson(String str) {
+InventoryTransferDetailScanResponse inventoryTransferDetailScanResponseFromJson(String str) {
   final jsonData = json.decode(str);
   return InventoryTransferDetailScanResponse.fromJson(jsonData);
 }

@@ -8,6 +8,7 @@ import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_ev
 import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
 //import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
 
 class InventoryTransferListPage extends StatefulWidget {
   @override
@@ -121,17 +122,17 @@ class _InventoryTransferListPageState
               ));
             },
           ),
-          // (globalBloc.loginResponse.data.inventoryTransfer_Auth_Add == 'Y')
-          //     ? IconButton(
-          //         icon: Icon(Icons.add),
-          //         onPressed: () {
-          //           Navigator.push(context,
-          //               MaterialPageRoute(builder: (BuildContext context) {
-          //             return InventoryTransferDetailPage(0);
-          //           }));
-          //         },
-          //       )
-          //     : Container(),
+          (globalBloc.loginResponse.data.inventoryTransfer_Auth_Add == 'Y')
+              ? IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return InventoryTransferDetailPage(0);
+                    }));
+                  },
+                )
+              : Container(),
         ],
       );
     }
@@ -216,13 +217,13 @@ class _InventoryTransferListPageState
                 trailing: Icon(Icons.keyboard_arrow_right),
                 //color: Colors.white, size: 30.0),
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (BuildContext context) =>
-                  //         InventoryTransferDetailPage(data[index].id),
-                  //   ),
-                  //);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          InventoryTransferDetailPage(data[index].id),
+                    ),
+                  );
                 },
               ),
             ),

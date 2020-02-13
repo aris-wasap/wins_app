@@ -1,7 +1,7 @@
 // To parse this JSON data, do
 //
 //     final item = itemFromJson(jsonString);
-//     final transferProductionDetailResponse = transferProductionDetailResponseFromJson(jsonString);
+//     final inventoryTransferDetailResponse = inventoryTransferDetailResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'inventory_transfer_detail_response.g.dart';
 
-InventoryTransferDetailResponse transferProductionDetailResponseFromJson(String str) {
+InventoryTransferDetailResponse inventoryTransferDetailResponseFromJson(String str) {
   final jsonData = json.decode(str);
   return InventoryTransferDetailResponse.fromJson(jsonData);
 }

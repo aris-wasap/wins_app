@@ -5,7 +5,11 @@ import 'package:ncf_app/models/cfl_production_order_response.dart';
 import 'package:ncf_app/models/cfl_purchase_order_response.dart';
 import 'package:ncf_app/models/cfl_sales_order_response.dart';
 import 'package:ncf_app/models/delivery_order_detail_scan_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_scan_response.dart';
 import 'package:ncf_app/models/inventory_transfer_list_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_response.dart'
+    as inventoryTransferDetail;
 import 'package:ncf_app/models/login_response.dart';
 
 import 'package:ncf_app/models/receipt_issue_detail_response.dart'
@@ -1156,6 +1160,81 @@ class ApiProvider {
     }
   }
 
+  //-----------------------------
+  //InventoryTransferDetail
+  //-----------------------------
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_GetById(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(inventoryTransferDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'inventoryTransferDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Add(
+      inventoryTransferDetail.Data data) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/Add",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(inventoryTransferDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_Add:Failed to add InventoryTransfer(2)');
+      }
+    } catch (e) {
+      throw Exception('inventoryTransferDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
+      int prodOrderId, String whsCodeFrom, String qrResult) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "ProdOrderId": prodOrderId,
+        "WhsCodeFrom": whsCodeFrom,
+        "QrResult": qrResult
+      });
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/Scan",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            inventoryTransferDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('inventoryTransferDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('inventoryTransferDetail_Scan:Failed to load post(1)');
+    }
+  }
   //-----------------------------
   //ItemDetail
   //-----------------------------

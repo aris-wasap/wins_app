@@ -4,7 +4,11 @@ import 'package:ncf_app/models/cfl_purchase_order_response.dart';
 import 'package:ncf_app/models/cfl_sales_order_response.dart';
 import 'package:ncf_app/models/cfl_goods_issue_response.dart';
 import 'package:ncf_app/models/delivery_order_detail_scan_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_scan_response.dart';
 import 'package:ncf_app/models/inventory_transfer_list_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_response.dart'
+    as inventoryTransferDetail;
 import 'package:ncf_app/models/login_response.dart';
 import 'package:ncf_app/models/receipt_issue_detail_response.dart' as receiptIssueDetail;
 import 'package:ncf_app/models/receipt_issue_detail_response.dart';
@@ -276,6 +280,22 @@ class Repository {
   Future<InventoryTransferListResponse> inventoryTransferList_Refresh(
           int lastId, String searchQuery) =>
       apiProvider.inventoryTransferList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //InventoryTransferDetail
+  //-----------------------------
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_GetById(
+          int id) =>
+      apiProvider.inventoryTransferDetail_GetById(id);
+
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Add(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Add(data);
+
+  Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
+          int prodOrderId, String whsCodeFrom, String qrResult) =>
+      apiProvider.inventoryTransferDetail_Scan(
+          prodOrderId, whsCodeFrom, qrResult);
 
   
   //-----------------------------

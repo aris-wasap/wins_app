@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:ncf_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:ncf_app/pages/cfl/cfl_production_order_page.dart';
-import 'package:ncf_app/pages/transfer_production/transfer_production_detail_item_detail_page.dart';
+import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/transfer_production/detail/transfer_production_detail_bloc.dart';
-import 'package:ncf_app/blocs/transfer_production/detail/transfer_production_detail_event.dart';
-import 'package:ncf_app/blocs/transfer_production/detail/transfer_production_detail_state.dart';
+import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_bloc.dart';
+import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
+import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
+import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
@@ -21,19 +21,19 @@ import 'package:flutter/services.dart';
 import 'package:ncf_app/models/cfl_production_order_response.dart'
     as cflProductionOrder;
 
-class TransferProductionDetailPage extends StatefulWidget {
-  TransferProductionDetailPage(this._id);
+class InventoryTransferDetailPage extends StatefulWidget {
+  InventoryTransferDetailPage(this._id);
   final int _id;
   @override
-  _TransferProductionDetailPageState createState() =>
-      _TransferProductionDetailPageState(_id);
+  _InventoryTransferDetailPageState createState() =>
+      _InventoryTransferDetailPageState(_id);
 }
 
-class _TransferProductionDetailPageState
-    extends State<TransferProductionDetailPage> {
-  _TransferProductionDetailPageState(this._id);
+class _InventoryTransferDetailPageState
+    extends State<InventoryTransferDetailPage> {
+  _InventoryTransferDetailPageState(this._id);
 
-  TransferProductionDetailBloc bloc = TransferProductionDetailBloc();
+  InventoryTransferDetailBloc bloc = InventoryTransferDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
@@ -43,10 +43,10 @@ class _TransferProductionDetailPageState
   final _prodOrderDateController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
-  final _whsCodeFromController = TextEditingController();
-  final _whsNameFromController = TextEditingController();
-  final _whsCodeToController = TextEditingController();
-  final _whsNameToController = TextEditingController();
+  final _fromWhsCodeController = TextEditingController();
+  final _fromWhsNameController = TextEditingController();
+  final _toWhsCodeController = TextEditingController();
+  final _toWhsNameController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -57,7 +57,7 @@ class _TransferProductionDetailPageState
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(TransferProductionDetailEventGetId(
+        bloc.emitEvent(InventoryTransferDetailEventGetId(
           id: _id,
         ));
       });
@@ -86,10 +86,10 @@ class _TransferProductionDetailPageState
     _prodOrderDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    _whsCodeFromController?.dispose();
-    _whsNameFromController?.dispose();
-    _whsCodeToController?.dispose();
-    _whsNameToController?.dispose();
+    _fromWhsCodeController?.dispose();
+    _fromWhsNameController?.dispose();
+    _toWhsCodeController?.dispose();
+    _toWhsNameController?.dispose();
 
     bloc?.dispose();
 
@@ -99,30 +99,32 @@ class _TransferProductionDetailPageState
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.prodOrderId = int.parse(_prodOrderIdController.text);
-    data.prodOrderNo = _prodOrderNoController.text;
+    //data.prodOrderId = int.parse(_prodOrderIdController.text);
+    //data.prodOrderNo = _prodOrderNoController.text;
     data.transDate = transDate;
-    data.whsCodeFrom = _whsCodeFromController.text;
-    data.whsNameFrom = _whsNameFromController.text;
-    data.whsCodeTo = _whsCodeToController.text;
-    data.whsNameTo = _whsNameToController.text;
+    data.fromWhsCode = _fromWhsCodeController.text;
+    data.fromWhsName = _fromWhsNameController.text;
+    data.toWhsCode = _toWhsCodeController.text;
+    data.toWhsName = _toWhsNameController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
           context: context, massage: "Production Date harus di isi");
       return;
-    } else if (["", null].contains(data.prodOrderNo)) {
+    } 
+    // else if (["", null].contains(data.prodOrderNo)) {
+    //   ValidateDialogWidget(
+    //       context: context, massage: "Production Order No harus di isi");
+    //   return;
+    // } 
+    else if ([null, ""].contains(data.fromWhsCode)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Order No harus di isi");
+          context: context, massage: "From Warehouse harus di isi");
       return;
-    } else if ([null, ""].contains(data.whsCodeFrom)) {
+    } else if ([null, ""].contains(data.toWhsCode)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse from harus di isi");
-      return;
-    } else if ([null, ""].contains(data.whsCodeTo)) {
-      ValidateDialogWidget(
-          context: context, massage: "Warehouse to harus di isi");
+          context: context, massage: "To Warehouse harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -134,14 +136,14 @@ class _TransferProductionDetailPageState
       return;
     }
 
-    bloc.emitEvent(TransferProductionDetailEventAdd(
+    bloc.emitEvent(InventoryTransferDetailEventAdd(
       data: data,
     ));
   }
 
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
-        builder: (BuildContext context) => TransferProductionDetailPage(0));
+        builder: (BuildContext context) => InventoryTransferDetailPage(0));
     Navigator.of(context).pushReplacement(newRoute);
   }
 
@@ -166,7 +168,7 @@ class _TransferProductionDetailPageState
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(TransferProductionDetailEventNormal());
+                    bloc.emitEvent(InventoryTransferDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -200,7 +202,7 @@ class _TransferProductionDetailPageState
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(TransferProductionDetailEventNormal());
+                    bloc.emitEvent(InventoryTransferDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -277,7 +279,7 @@ class _TransferProductionDetailPageState
     }
   }
 
-  TransferProductionDetailState _getState() {
+  InventoryTransferDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
@@ -288,15 +290,15 @@ class _TransferProductionDetailPageState
       ValidateDialogWidget(
           context: context, massage: "Production Order No harus di isi");
       return;
-    } else if (["", null].contains(_whsCodeFromController.text)) {
+    } else if (["", null].contains(_fromWhsCodeController.text)) {
       ValidateDialogWidget(
           context: context, massage: "Warehouse from harus di isi");
       return;
-    } else if (["", null].contains(_whsCodeToController.text)) {
+    } else if (["", null].contains(_toWhsCodeController.text)) {
       ValidateDialogWidget(
           context: context, massage: "Warehouse to harus di isi");
       return;
-    } else if (_whsCodeFromController.text == _whsCodeToController.text) {
+    } else if (_fromWhsCodeController.text == _toWhsCodeController.text) {
       ValidateDialogWidget(
           context: context, massage: "Warehouse from dan to tidak boleh sama");
       return;
@@ -314,18 +316,18 @@ class _TransferProductionDetailPageState
         }
       }
 
-      bloc.emitEvent(TransferProductionDetailEventScan(
+      bloc.emitEvent(InventoryTransferDetailEventScan(
           prodOrderId: int.parse(_prodOrderIdController.text),
           prodOrderNo: _prodOrderNoController.text,
-          whsCodeFrom: _whsCodeFromController.text,
+          whsCodeFrom: _fromWhsCodeController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
-      //         TransferProductionDetailEventScan(
+      //         InventoryTransferDetailEventScan(
       //             prodOrderId: int.parse(_prodOrderIdController.text),
-      //             whsCodeFrom: _whsCodeFromController.text,
+      //             whsCodeFrom: _fromWhsCodeController.text,
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -335,13 +337,13 @@ class _TransferProductionDetailPageState
       //       context,
       //       MaterialPageRoute(
       //         builder: (BuildContext context) =>
-      //             TransferProductionDetailItemDetailPage(onData.newItem),
+      //             InventoryTransferDetailItemDetailPage(onData.newItem),
       //       ),
       //     );
 
       //     item.then((Item item) {
       //       if (item != null) {
-      //         bloc.emitEvent(TransferProductionDetailEventItemAdd(
+      //         bloc.emitEvent(InventoryTransferDetailEventItemAdd(
       //           item: item,
       //         ));
       //       }
@@ -374,18 +376,18 @@ class _TransferProductionDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(TransferProductionDetailEventNormal());
+        bloc.emitEvent(InventoryTransferDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                TransferProductionDetailItemDetailPage(newItem),
+                InventoryTransferDetailItemDetailPage(newItem),
           ),
         );
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(TransferProductionDetailEventItemAdd(
+            bloc.emitEvent(InventoryTransferDetailEventItemAdd(
               item: item,
             ));
           }
@@ -398,9 +400,9 @@ class _TransferProductionDetailPageState
   Widget build(BuildContext context) {
     _context = context;
     var data = _getState().data;
-    return BlocEventStateBuilder<TransferProductionDetailState>(
+    return BlocEventStateBuilder<InventoryTransferDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, TransferProductionDetailState state) {
+        builder: (BuildContext context, InventoryTransferDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -477,13 +479,13 @@ class _TransferProductionDetailPageState
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            TransferProductionDetailItemDetailPage(items[itemIndex]),
+            InventoryTransferDetailItemDetailPage(items[itemIndex]),
       ),
     );
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(TransferProductionDetailEventItemUpdate(
+        bloc.emitEvent(InventoryTransferDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -508,27 +510,27 @@ class _TransferProductionDetailPageState
       } else {
         _transDateController.text = null;
       }
-      _prodOrderNoController.text = data.prodOrderNo;
-      if (data.prodDate != null) {
-        _prodOrderDateController.text =
-            DateFormat("dd-MM-yyyy").format(data.prodDate);
-      } else {
-        _prodOrderDateController.text = "";
-      }
+      // _prodOrderNoController.text = data.prodOrderNo;
+      // if (data.prodDate != null) {
+      //   _prodOrderDateController.text =
+      //       DateFormat("dd-MM-yyyy").format(data.prodDate);
+      // } else {
+      //   _prodOrderDateController.text = "";
+      // }
 
-      _whsCodeFromController.text = data.whsCodeFrom;
-      _whsNameFromController.text = data.whsNameFrom;
-      _whsCodeToController.text = data.whsCodeTo;
-      _whsNameToController.text = data.whsNameTo;
+      _fromWhsCodeController.text = data.fromWhsCode;
+      _fromWhsNameController.text = data.fromWhsName;
+      _toWhsCodeController.text = data.toWhsCode;
+      _toWhsNameController.text = data.toWhsName;
     }
     // else {
-    //   _whsCodeFromController.text =
+    //   _fromWhsCodeController.text =
     //       globalBloc.loginResponse.data.transferProduction_WhsCodeFrom ?? '';
-    //   _whsNameFromController.text =
+    //   _fromWhsNameController.text =
     //       globalBloc.loginResponse.data.transferProduction_WhsNameFrom ?? '';
-    //   _whsCodeToController.text =
+    //   _toWhsCodeController.text =
     //       globalBloc.loginResponse.data.transferProduction_WhsCodeTo ?? '';
-    //   _whsNameToController.text =
+    //   _toWhsNameController.text =
     //       globalBloc.loginResponse.data.transferProduction_WhsCodeTo ?? '';
     // }
 
@@ -668,8 +670,8 @@ class _TransferProductionDetailPageState
                       warehouse
                           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
                         if (warehouse != null) {
-                          _whsCodeFromController.text = warehouse.whsCode;
-                          _whsNameFromController.text = warehouse.whsName;
+                          _fromWhsCodeController.text = warehouse.whsCode;
+                          _fromWhsNameController.text = warehouse.whsName;
                         }
                       });
                     }
@@ -698,11 +700,11 @@ class _TransferProductionDetailPageState
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.all(0),
-                                title: Text(_whsCodeFromController.text),
+                                title: Text(_fromWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_whsNameFromController.text),
+                                    Text(_fromWhsNameController.text),
                                   ],
                                 ),
                               )
@@ -733,8 +735,8 @@ class _TransferProductionDetailPageState
                       warehouse
                           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
                         if (warehouse != null) {
-                          _whsCodeToController.text = warehouse.whsCode;
-                          _whsNameToController.text = warehouse.whsName;
+                          _toWhsCodeController.text = warehouse.whsCode;
+                          _toWhsNameController.text = warehouse.whsName;
                         }
                       });
                     }
@@ -763,11 +765,11 @@ class _TransferProductionDetailPageState
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.all(0),
-                                title: Text(_whsCodeToController.text),
+                                title: Text(_toWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_whsNameToController.text),
+                                    Text(_toWhsNameController.text),
                                   ],
                                 ),
                               )
@@ -879,7 +881,7 @@ class _TransferProductionDetailPageState
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(TransferProductionDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(InventoryTransferDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
               color: Colors.red,
