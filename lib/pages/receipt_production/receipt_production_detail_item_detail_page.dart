@@ -77,10 +77,10 @@ class _ReceiptProductionDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[900],
+              backgroundColor: Colors.blue[500],
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.yellow[900],
+                  color: Colors.orange[500],
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
