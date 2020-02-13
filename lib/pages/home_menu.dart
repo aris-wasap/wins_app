@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/pages/dashboard_menu.dart';
 import 'package:ncf_app/pages/delivery_order/delivery_order_list_page.dart';
+import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_list_page.dart';
 import 'package:ncf_app/pages/option_card.dart';
 import 'package:ncf_app/pages/receipt_issue/receipt_issue_list_page.dart';
 import 'package:ncf_app/pages/receipt_order/receipt_order_list_page.dart';
@@ -46,7 +47,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
   Items item4 = new Items(
       title: "Inventory Transfer",
-      subtitle: "List Inventory Transfer, Scan Item",
+      subtitle: "List Inventory, Scan Item",
       icon: "assets/images/transfer.png",
       authDetail : "inventoryTransfer_Auth_Detail",
   );
@@ -112,10 +113,10 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                 else if ( data.authDetail == "inventoryTransfer_Auth_Detail" && globalBloc.loginResponse.data
                                                 .inventoryTransfer_Auth_Detail ==
                                             'Y') {
-                                         // Navigator.push(context, MaterialPageRoute(
-                                          //     builder: (BuildContext context) {
-                                          //   return InventoryTransferListPage();
-                                          // }));
+                                         Navigator.push(context, MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                            return InventoryTransferListPage();
+                                          }));
                                        }
                 //5
                 else if ( data.authDetail == "deliveryOrder_Auth_Detail" && globalBloc.loginResponse.data
