@@ -29,7 +29,7 @@ class _ReceiptOrderDetailItemDetailPageState
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
-  final _qtySoController = TextEditingController();
+  final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
 
   @override
@@ -112,7 +112,7 @@ class _ReceiptOrderDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
-    _qtySoController.text = data.soQty.toString();
+    _qtyPoController.text = data.poQty.toString();
     if(_data.qty != 0){
       if(_qtyController.text==""){
         _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
@@ -171,7 +171,7 @@ class _ReceiptOrderDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 10)
                 ), 
                 TextField(
-                  controller: _qtySoController,
+                  controller: _qtyPoController,
                   enabled: false,
                   decoration: InputDecoration(
                     labelText: "Open PO Qty",

@@ -1079,10 +1079,10 @@ class ApiProvider {
   }
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
-      int soId, String qrResult) async {
+      int poId, String qrResult) async {
     try {
       var body = json.encode(
-          {"UserId": globalBloc.userId, "SoId": soId, "QrResult": qrResult});
+          {"UserId": globalBloc.userId, "PoId": poId, "QrResult": qrResult});
 
       final response = await http.post("${_url}api/ReceiptOrderDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
