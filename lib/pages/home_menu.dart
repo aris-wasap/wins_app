@@ -46,7 +46,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
   Items item4 = new Items(
       title: "Inventory Transfer",
-      subtitle: "List Inventory Transfer, Scan Item",
+      subtitle: "List Inventory, Scan Item",
       icon: "assets/images/transfer.png",
       authDetail : "inventoryTransfer_Auth_Detail",
   );

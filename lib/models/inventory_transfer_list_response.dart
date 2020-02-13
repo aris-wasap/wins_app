@@ -43,19 +43,34 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'Status')
+  String status;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'WhsCodeFrom')
+  String whsCodeFrom;
+
+  @JsonKey(name: 'WhsNameFrom')
+  String whsNameFrom;
  
+  @JsonKey(name: 'WhsCodeTo')
+  String whsCodeTo;
+ 
+  @JsonKey(name: 'WhsNameTo')
+  String whsNameTo;
+
+  @JsonKey(name: 'CreatedUser')
+  String createdUser;
 
   Data({
     this.id,
     this.transNo,
     this.transDate,
-    this.customerCode,
-    this.customerName,
+    this.status,
+    this.whsCodeFrom,
+    this.whsNameFrom,
+    this.whsCodeTo,
+    this.whsNameTo,
+    this.createdUser
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
