@@ -28,6 +28,7 @@ Map<String, dynamic> _$InventoryTransferDetailResponseToJson(
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     id: json['Id'] as int,
+    userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
     transDate: json['TransDate'] == null
         ? null
@@ -46,6 +47,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
+      'UserId': instance.userId,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'FromWhsCode': instance.fromWhsCode,
@@ -63,6 +65,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
+    availableQty: (json['AvailableQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     toWhsCode: json['ToWhsCode'] as String,
@@ -76,6 +79,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
+      'AvailableQty': instance.availableQty,
       'Qty': instance.qty,
       'Uom': instance.uom,
       'ToWhsCode': instance.toWhsCode,

@@ -37,6 +37,9 @@ class Data {
   @JsonKey(name: 'Id')
   int id;
 
+  @JsonKey(name: 'UserId')
+  int userId;
+
   @JsonKey(name: 'TransNo')
   String transNo;
 
@@ -63,6 +66,7 @@ class Data {
 
   Data({
     this.id,
+    this.userId,
     this.transNo,
     this.transDate,
     this.status,

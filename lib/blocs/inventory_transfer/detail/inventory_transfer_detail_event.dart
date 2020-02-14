@@ -39,14 +39,14 @@ class InventoryTransferDetailEventGetId extends InventoryTransferDetailEvent {
 class InventoryTransferDetailEventScan extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventScan({
     @required Data data,
-    @required int prodOrderId,
-    @required String prodOrderNo,
+    // @required int prodOrderId,
+    // @required String prodOrderNo,
     @required String whsCodeFrom,
     @required String qrResult,
   }) : super(
           data: data,
-          prodOrderId: prodOrderId,
-          prodOrderNo: prodOrderNo,
+          // prodOrderId: prodOrderId,
+          // prodOrderNo: prodOrderNo,
           whsCodeFrom: whsCodeFrom,
           qrResult: qrResult,
         );

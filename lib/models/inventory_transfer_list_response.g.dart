@@ -29,6 +29,7 @@ Map<String, dynamic> _$InventoryTransferListResponseToJson(
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     id: json['Id'] as int,
+    userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
     transDate: json['TransDate'] == null
         ? null
@@ -44,6 +45,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
+      'UserId': instance.userId,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,

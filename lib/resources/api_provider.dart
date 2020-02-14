@@ -1214,7 +1214,7 @@ class ApiProvider {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
-        "ProdOrderId": prodOrderId,
+        //"ProdOrderId": prodOrderId,
         "WhsCodeFrom": whsCodeFrom,
         "QrResult": qrResult
       });

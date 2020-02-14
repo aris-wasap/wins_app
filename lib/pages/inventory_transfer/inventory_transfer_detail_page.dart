@@ -38,9 +38,9 @@ class _InventoryTransferDetailPageState
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _prodOrderIdController = TextEditingController();
-  final _prodOrderNoController = TextEditingController();
-  final _prodOrderDateController = TextEditingController();
+  // final _prodOrderIdController = TextEditingController();
+  // final _prodOrderNoController = TextEditingController();
+  // final _prodOrderDateController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _fromWhsCodeController = TextEditingController();
@@ -81,9 +81,9 @@ class _InventoryTransferDetailPageState
 
   @override
   void dispose() {
-    _prodOrderIdController?.dispose();
-    _prodOrderNoController?.dispose();
-    _prodOrderDateController?.dispose();
+    // _prodOrderIdController?.dispose();
+    // _prodOrderNoController?.dispose();
+    // _prodOrderDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _fromWhsCodeController?.dispose();
@@ -110,7 +110,7 @@ class _InventoryTransferDetailPageState
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Date harus di isi");
+          context: context, massage: "Transfer Date harus di isi");
       return;
     } 
     // else if (["", null].contains(data.prodOrderNo)) {
@@ -286,11 +286,12 @@ class _InventoryTransferDetailPageState
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_prodOrderNoController.text)) {
-      ValidateDialogWidget(
-          context: context, massage: "Production Order No harus di isi");
-      return;
-    } else if (["", null].contains(_fromWhsCodeController.text)) {
+    // if (["", null].contains(_prodOrderNoController.text)) {
+    //   ValidateDialogWidget(
+    //       context: context, massage: "Production Order No harus di isi");
+    //   return;
+    // } else 
+    if (["", null].contains(_fromWhsCodeController.text)) {
       ValidateDialogWidget(
           context: context, massage: "Warehouse from harus di isi");
       return;
@@ -309,7 +310,8 @@ class _InventoryTransferDetailPageState
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;
@@ -317,8 +319,8 @@ class _InventoryTransferDetailPageState
       }
 
       bloc.emitEvent(InventoryTransferDetailEventScan(
-          prodOrderId: int.parse(_prodOrderIdController.text),
-          prodOrderNo: _prodOrderNoController.text,
+          // prodOrderId: int.parse(_prodOrderIdController.text),
+          // prodOrderNo: _prodOrderNoController.text,
           whsCodeFrom: _fromWhsCodeController.text,
           qrResult: qrResult,
           data: data));
@@ -590,71 +592,71 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflProductionOrder.Data> prodOrder =
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute<cflProductionOrder.Data>(
-                                  builder: (BuildContext context) =>
-                                      CflProductionOrderPage()));
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflProductionOrder.Data> prodOrder =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<cflProductionOrder.Data>(
+                //                   builder: (BuildContext context) =>
+                //                       CflProductionOrderPage()));
 
-                      prodOrder.then((cflProductionOrder.Data prodOrder) {
-                        if (prodOrder != null) {
-                          _prodOrderIdController.text = prodOrder.id.toString();
-                          _prodOrderNoController.text = prodOrder.transNo;
-                          _prodOrderDateController.text =
-                              DateFormat("dd-MM-yyyy").format(transDate);
-                        }
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      ),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Production Order No",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.all(0),
-                                title: Text(_prodOrderNoController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_prodOrderDateController.text),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
+                //       prodOrder.then((cflProductionOrder.Data prodOrder) {
+                //         if (prodOrder != null) {
+                //           _prodOrderIdController.text = prodOrder.id.toString();
+                //           _prodOrderNoController.text = prodOrder.transNo;
+                //           _prodOrderDateController.text =
+                //               DateFormat("dd-MM-yyyy").format(transDate);
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //         color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                //       ),
+                //       borderRadius: BorderRadius.all(
+                //           Radius.circular(10)
+                //       ),
+                //     ),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "Production Order No",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.all(0),
+                //                 title: Text(_prodOrderNoController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_prodOrderDateController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
