@@ -10,7 +10,6 @@ Scan QR Code via Mobile App and integration API SAP Business One HANA
 ![create](https://user-images.githubusercontent.com/49827113/74495540-ad101100-4f0a-11ea-8238-2df68c6b0d75.png)
 ![stock](https://user-images.githubusercontent.com/49827113/74495696-227be180-4f0b-11ea-9068-adfbae1eb951.png)
 
-
 ## Getting Started
 
 This project is a starting point for a Flutter application.
