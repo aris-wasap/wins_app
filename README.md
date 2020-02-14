@@ -8,6 +8,8 @@ Scan QR Code via Mobile App and integration API SAP Business One HANA
 ![home](https://user-images.githubusercontent.com/49827113/74495066-53f3ad80-4f09-11ea-9cae-976ad479d1ec.png)
 ![list](https://user-images.githubusercontent.com/49827113/74495072-56ee9e00-4f09-11ea-915e-27ea9691a61e.png)
 ![create](https://user-images.githubusercontent.com/49827113/74495540-ad101100-4f0a-11ea-8238-2df68c6b0d75.png)
+![stock](https://user-images.githubusercontent.com/49827113/74495696-227be180-4f0b-11ea-9068-adfbae1eb951.png)
+
 
 ## Getting Started
 
