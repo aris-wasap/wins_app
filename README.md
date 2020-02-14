@@ -3,13 +3,13 @@
 A new Flutter project.
 
 ## Screenshoot
-![](asset/images/login.PNG).
+![](asset/images/login.png).
 
-![](asset/images/home.PNG).
+![](asset/images/home.png).
 
-![](asset/images/list.PNG).
+![](asset/images/list.png).
 
-![](asset/images/create.PNG).
+![](asset/images/create.png).
 
 ## Getting Started
 
