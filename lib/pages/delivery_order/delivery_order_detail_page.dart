@@ -271,7 +271,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;

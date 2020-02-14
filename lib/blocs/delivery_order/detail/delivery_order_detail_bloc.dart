@@ -87,13 +87,13 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield DeliveryOrderDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang logistic dan SO ${soNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.soId == 0) {
                 yield DeliveryOrderDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang logistic dan SO ${soNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -150,7 +150,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            yield DeliveryOrderDetailState.success(
+            yield DeliveryOrderDetailState.success( 
               succesMessage: response.errorMessage,
               data: response.data ??
                   Data(items: List<deliveryOrderDetail.Item>()),
