@@ -29,6 +29,7 @@ class _InventoryTransferDetailItemDetailPageState
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
+  final _availableQtyController = TextEditingController();
   final _qtyController = TextEditingController();
 
   @override
@@ -110,6 +111,7 @@ class _InventoryTransferDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
+    _availableQtyController.text = data.availableQty.toString();
     if(_data.qty != 0){
       if(_qtyController.text==""){
         _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
@@ -158,6 +160,20 @@ class _InventoryTransferDetailItemDetailPageState
                   enabled: false,
                   decoration: InputDecoration(
                     labelText: "Item Name",
+                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(10.0)
+                    )
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10)
+                ), 
+                TextField(
+                  controller: _availableQtyController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: "Available Qty",
                     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0)

@@ -44,6 +44,9 @@ class Data {
   @JsonKey(name: 'Id')
   int id;  
 
+  @JsonKey(name: 'UserId')
+  int userId;
+
   @JsonKey(name: 'TransNo')
   String transNo;
 
@@ -73,6 +76,7 @@ class Data {
 
   Data({  
     this.id: 0,
+    this.userId,
     this.transNo,
     this.transDate, 
     this.fromWhsCode,
@@ -106,6 +110,9 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName; 
 
+  @JsonKey(name: 'AvailableQty')
+  double availableQty;
+
   @JsonKey(name: 'Qty')
   double qty;
 
@@ -125,7 +132,8 @@ class Item {
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
-    this.itemName, 
+    this.itemName,
+    this.availableQty, 
     this.qty: 0,
     this.uom,
     this.toWhsCode, 

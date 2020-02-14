@@ -208,7 +208,7 @@ class _InventoryTransferListPageState
                 leading: ClipOval(
                   child: Image.network(
                     globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].createdUser}",
+                        "api/UserApi/GetImage?id=${data[index].userId}",
                     width: 50.0,
                     height: 50.0,
                   ),
