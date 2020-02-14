@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Screenshoot
 
-![](asset/images/login.png).
+![](assets/images/login.png).
 
 ## Getting Started
 
