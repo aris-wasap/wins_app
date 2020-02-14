@@ -38,9 +38,9 @@ class _InventoryTransferDetailPageState
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _prodOrderIdController = TextEditingController();
-  final _prodOrderNoController = TextEditingController();
-  final _prodOrderDateController = TextEditingController();
+  // final _prodOrderIdController = TextEditingController();
+  // final _prodOrderNoController = TextEditingController();
+  // final _prodOrderDateController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _fromWhsCodeController = TextEditingController();
@@ -81,9 +81,9 @@ class _InventoryTransferDetailPageState
 
   @override
   void dispose() {
-    _prodOrderIdController?.dispose();
-    _prodOrderNoController?.dispose();
-    _prodOrderDateController?.dispose();
+    // _prodOrderIdController?.dispose();
+    // _prodOrderNoController?.dispose();
+    // _prodOrderDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _fromWhsCodeController?.dispose();
@@ -110,7 +110,7 @@ class _InventoryTransferDetailPageState
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Date harus di isi");
+          context: context, massage: "Transfer Date harus di isi");
       return;
     } 
     // else if (["", null].contains(data.prodOrderNo)) {
@@ -310,7 +310,8 @@ class _InventoryTransferDetailPageState
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;
@@ -318,8 +319,8 @@ class _InventoryTransferDetailPageState
       }
 
       bloc.emitEvent(InventoryTransferDetailEventScan(
-          prodOrderId: int.parse(_prodOrderIdController.text),
-          prodOrderNo: _prodOrderNoController.text,
+          // prodOrderId: int.parse(_prodOrderIdController.text),
+          // prodOrderNo: _prodOrderNoController.text,
           whsCodeFrom: _fromWhsCodeController.text,
           qrResult: qrResult,
           data: data));
@@ -656,71 +657,71 @@ class _InventoryTransferDetailPageState
                 //     ),
                 //   ),
                 // ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                //           Navigator.push(
-                //               context,
-                //               MaterialPageRoute<
-                //                       cflDbWarehouse.CflDbWarehouseModel>(
-                //                   builder: (BuildContext context) =>
-                //                       CflDbWarehousePage()));
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute<
+                                      cflDbWarehouse.CflDbWarehouseModel>(
+                                  builder: (BuildContext context) =>
+                                      CflDbWarehousePage()));
 
-                //       warehouse
-                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                //         if (warehouse != null) {
-                //           _fromWhsCodeController.text = warehouse.whsCode;
-                //           _fromWhsNameController.text = warehouse.whsName;
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                //       ),
-                //       borderRadius: BorderRadius.all(
-                //           Radius.circular(10)
-                //       )
-                //     ),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "Warehouse From",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.all(0),
-                //                 title: Text(_fromWhsCodeController.text),
-                //                 subtitle: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: <Widget>[
-                //                     Text(_fromWhsNameController.text),
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                      warehouse
+                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                        if (warehouse != null) {
+                          _fromWhsCodeController.text = warehouse.whsCode;
+                          _fromWhsNameController.text = warehouse.whsName;
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      )
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Warehouse From",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.all(0),
+                                title: Text(_fromWhsCodeController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_fromWhsNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {

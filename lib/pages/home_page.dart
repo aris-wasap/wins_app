@@ -126,19 +126,19 @@ void _onItemTapped(int index) {
                 Divider(
                   height: 2.0,
                 ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.file_download,
-                //     color: Colors.blue,
-                //   ),
-                //   title: Text('Download'),
-                //   onTap: () {
-                //     Navigator.push(context,
-                //         MaterialPageRoute(builder: (BuildContext context) {
-                //       return DownloadPage();
-                //     }));
-                //   },
-                // ),
+                ListTile(
+                  leading: Icon(
+                    Icons.file_download,
+                    color: Colors.blue,
+                  ),
+                  title: Text('Sync'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return DownloadPage();
+                    }));
+                  },
+                ),
                 Divider(
                   height: 2.0,
                 ),
@@ -147,7 +147,7 @@ void _onItemTapped(int index) {
                     Icons.exit_to_app,
                     color: Colors.orange[500],
                   ),
-                  title: Text('LOG-OUT'),
+                  title: Text('Log-Out'),
                   onTap: () {
                     authenticationBloc.emitEvent(AuthenticationEventLogout());
                   },
