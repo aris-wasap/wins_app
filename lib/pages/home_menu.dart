@@ -300,9 +300,9 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
               dashboardMenu(),
-              SizedBox(height: 50,),
+              SizedBox(height: 5,),
               ////GridDashboard(),
               //  Flexible(
               //   flex: 4,
