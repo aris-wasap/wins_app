@@ -2,6 +2,7 @@ import 'package:ncf_app/models/cfl_db_warehouse_model.dart';
 import 'package:ncf_app/models/cfl_production_order_response.dart';
 import 'package:ncf_app/models/cfl_purchase_order_response.dart';
 import 'package:ncf_app/models/cfl_sales_order_response.dart';
+import 'package:ncf_app/models/cfl_delivery_order_response.dart';
 import 'package:ncf_app/models/cfl_goods_issue_response.dart';
 import 'package:ncf_app/models/delivery_order_detail_scan_response.dart';
 import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
@@ -35,6 +36,9 @@ import 'package:ncf_app/models/transfer_request_list_response.dart';
 import 'package:ncf_app/resources/api_provider.dart';
 import 'package:ncf_app/models/delivery_order_detail_response.dart';
 import 'package:ncf_app/models/delivery_order_list_response.dart';
+import 'package:ncf_app/models/return_sales_detail_response.dart';
+import 'package:ncf_app/models/return_sales_list_response.dart';
+import 'package:ncf_app/models/return_sales_detail_scan_response.dart';
 import 'package:ncf_app/models/item_detail_scan_response.dart';
 import 'package:ncf_app/models/transfer_release_detail_response.dart'
     as transferReleaseDetail;
@@ -46,6 +50,8 @@ import 'package:ncf_app/models/transfer_request_detail_response.dart'
     as transferRequestDetail;
 import 'package:ncf_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
+import 'package:ncf_app/models/return_sales_detail_response.dart'
+    as returnSalesDetail;
 
 import 'package:ncf_app/models/receipt_production_detail_response.dart' as receiptProductionDetail;
 import 'package:ncf_app/models/receipt_production_list_response.dart';
@@ -195,6 +201,31 @@ class Repository {
       apiProvider.deliveryOrderDetail_Scan(soId, qrResult);
 
   //-----------------------------
+  //ReturnSalesList
+  //-----------------------------
+  Future<ReturnSalesListResponse> returnSalesList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.returnSalesList_FetchNextPage(lastId, searchQuery);
+
+  Future<ReturnSalesListResponse> returnSalesList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.returnSalesList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //ReturnSalesDetail
+  //-----------------------------
+  Future<ReturnSalesDetailResponse> returnSalesDetail_GetById(int id) =>
+      apiProvider.returnSalesDetail_GetById(id);
+
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Add(
+          returnSalesDetail.Data data) =>
+      apiProvider.returnSalesDetail_Add(data);
+
+  Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
+          int doId, String qrResult) =>
+      apiProvider.returnSalesDetail_Scan(doId, qrResult);
+
+  //-----------------------------
   //ReceiptProductionDetail
   //-----------------------------
   Future<ReceiptProductionDetailResponse> receiptProductionDetail_GetById(int id) =>
@@ -317,6 +348,13 @@ class Repository {
   Future<CflSalesOrderResponse> cflSalesOrder_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflSalesOrder_FetchNextPage(rowStart, searchQuery);
+  //-----------------------------
+  //CflDeliveryOrder
+  //-----------------------------
+  Future<CflDeliveryOrderResponse> cflDeliveryOrder_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflDeliveryOrder_FetchNextPage(rowStart, searchQuery);
+
 
   //-----------------------------
   //CflGoodsIssue

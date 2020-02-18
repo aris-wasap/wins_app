@@ -4,6 +4,7 @@ import 'package:ncf_app/models/cfl_goods_issue_response.dart';
 import 'package:ncf_app/models/cfl_production_order_response.dart';
 import 'package:ncf_app/models/cfl_purchase_order_response.dart';
 import 'package:ncf_app/models/cfl_sales_order_response.dart';
+import 'package:ncf_app/models/cfl_delivery_order_response.dart';
 import 'package:ncf_app/models/delivery_order_detail_scan_response.dart';
 import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
 import 'package:ncf_app/models/inventory_transfer_detail_scan_response.dart';
@@ -41,6 +42,9 @@ import 'package:ncf_app/models/warehouse_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:ncf_app/models/delivery_order_detail_response.dart';
 import 'package:ncf_app/models/delivery_order_list_response.dart';
+import 'package:ncf_app/models/return_sales_detail_response.dart';
+import 'package:ncf_app/models/return_sales_list_response.dart';
+import 'package:ncf_app/models/return_sales_detail_scan_response.dart';
 import 'package:ncf_app/models/item_detail_scan_response.dart';
 import 'package:ncf_app/models/transfer_release_detail_response.dart'
     as transferReleaseDetail;
@@ -52,6 +56,8 @@ import 'package:ncf_app/models/transfer_request_detail_response.dart'
     as transferRequestDetail;
 import 'package:ncf_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
+import 'package:ncf_app/models/return_sales_detail_response.dart'
+    as returnSalesDetail;
 import 'package:ncf_app/models/receipt_production_detail_response.dart' 
     as receiptProductionDetail;
 import 'package:ncf_app/models/receipt_production_list_response.dart';
@@ -743,6 +749,126 @@ class ApiProvider {
   }
 
   //-----------------------------
+  //ReturnSalesList
+  //-----------------------------
+  Future<ReturnSalesListResponse> returnSalesList_FetchNextPage(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/ReturnSalesListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'returnSalesList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<ReturnSalesListResponse> returnSalesList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/ReturnSalesListApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesListResponseFromJson, response.body);
+      } else {
+        throw Exception('returnSalesList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //ReturnSalesDetail
+  //-----------------------------
+  Future<ReturnSalesDetailResponse> returnSalesDetail_GetById(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/ReturnSalesDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('returnSalesDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Add(
+      returnSalesDetail.Data data) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+
+      final response = await http.post("${_url}api/ReturnSalesDetailApi/Add",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'returnSalesDetail_Add:Failed to add ReturnSales(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
+      int soId, String qrResult) async {
+    try {
+      var body = json.encode(
+          {"UserId": globalBloc.userId, "SoId": soId, "QrResult": qrResult});
+
+      final response = await http.post("${_url}api/ReturnSalesDetailApi/Scan",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('returnSalesDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesDetail_Scan:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
   //ReceiptProductionList
   //-----------------------------
   Future<ReceiptProductionListResponse> receiptProductionList_FetchNextPage(
@@ -1315,6 +1441,35 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflSalesOrder_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflDeliveryOrder
+  //-----------------------------
+  Future<CflDeliveryOrderResponse> cflDeliveryOrder_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/CflDeliveryOrderApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflDeliveryOrderResponseFromJson, response.body);
+      } else {
+        throw Exception('cflDeliveryOrder_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflDeliveryOrder_FetchNextPage:Failed to load post(1)');
     }
   }
 
