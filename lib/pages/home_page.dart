@@ -10,6 +10,7 @@ import 'package:ncf_app/bloc_helpers/bloc_provider.dart';
 import 'package:ncf_app/blocs/authentication/authentication_bloc.dart';
 import 'package:ncf_app/blocs/authentication/authentication_event.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:uuid/uuid.dart';
 
 import 'transfer_release/transfer_release_list_page.dart';
@@ -159,23 +160,7 @@ void _onItemTapped(int index) {
               //title: Text("Hi "+ globalBloc.userName + " , Welcome" ),
               flexibleSpace: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: <Color>[
-                        // Color(0xFF0099FF),
-                        // Color(0xFF0033CC),
-                        Colors.blue[400],
-                        Colors.blue[600],
-                        Colors.blue[700],
-                            //Colors.blue[600],
-                            //Colors.blue[500],
-                            // Colors.blue[400],
-                            // Colors.blue[300],
-                            // Colors.blue[200],
-                            // Colors.blue[100],
-                  ],
-                ),
+                gradient: bgGradientAppBar,
               ),
             ),
             actions: <Widget>[
@@ -199,7 +184,7 @@ void _onItemTapped(int index) {
             //backgroundColor: Colors.blue[900],
             bottom: PreferredSize(
               child: Container(
-                color: Colors.blue[500],
+                color: appBarBgColors,
                 height: 5.0,
               ),
               preferredSize: Size.fromHeight(5.0)

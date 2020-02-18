@@ -8,6 +8,7 @@ import 'package:ncf_app/pages/option_card.dart';
 import 'package:ncf_app/pages/receipt_issue/receipt_issue_list_page.dart';
 import 'package:ncf_app/pages/receipt_order/receipt_order_list_page.dart';
 import 'package:ncf_app/pages/receipt_production/receipt_production_list_page.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class HomeMenuPage extends StatefulWidget {
   @override
@@ -68,7 +69,6 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
   Widget dashboardMenu(){
     List<Items> myList = [item1, item3, item2, item4, item5, item6];
-    var color = 0xffffffff;
     return Flexible(
       child: GridView.count(
           childAspectRatio: 1.0,
@@ -79,7 +79,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
           children: myList.map((data) {
             return Container(
                decoration: BoxDecoration(
-                  color: Color(color), borderRadius: BorderRadius.circular(10)),
+                  color: bgWhite, borderRadius: BorderRadius.circular(10)),
               child: InkWell(
                 onTap: (){
                   //1
