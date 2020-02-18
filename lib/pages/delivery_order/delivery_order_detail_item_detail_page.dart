@@ -132,7 +132,7 @@ class _DeliveryOrderDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: bgPage,
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(

@@ -8,6 +8,7 @@ import 'package:ncf_app/blocs/receipt_issue/list/receipt_issue_list_event.dart';
 import 'package:ncf_app/blocs/receipt_issue/list/receipt_issue_list_state.dart';
 import 'package:ncf_app/pages/receipt_issue/receipt_issue_detail_page.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class ReceiptIssueListPage extends StatefulWidget {
   @override
@@ -79,10 +80,10 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
             hintStyle: TextStyle(color: Colors.white)
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -102,10 +103,15 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
     } else {
       return AppBar(
         title: Text("List Receipt"),
-        backgroundColor: Colors.blue[500],
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: bgGradientAppBar,
+              ),
+            ),
+        //backgroundColor: appBarBgColors,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.blue[500],
+            color: bgBlue,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -156,11 +162,7 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -185,6 +187,9 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+            decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

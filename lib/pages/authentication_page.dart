@@ -368,7 +368,7 @@ Widget _showEnterText(AuthenticationBloc bloc) {
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 50),
           decoration: BoxDecoration(
-                      gradient: btnColor,
+                      gradient: bgGradientPageOrange,
                       shape: BoxShape.rectangle, 
                       borderRadius: BorderRadius.circular(10.0),
                     ),

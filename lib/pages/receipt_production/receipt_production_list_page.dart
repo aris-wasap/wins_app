@@ -112,7 +112,7 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
         //backgroundColor: appBarBgColors,
         bottom: PreferredSize(
           child: Container(
-            color: appBarBgColors,
+            color: bgBlue,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -163,7 +163,7 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgPageWhite,
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -189,7 +189,7 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgPage : bgPageBlue,
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
                   ),
             margin: const EdgeInsets.all(3),
             // decoration:

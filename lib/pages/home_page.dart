@@ -95,7 +95,7 @@ void _onItemTapped(int index) {
                         gradient: bgGradientAppBar,
                         border: Border(
                             bottom: BorderSide(
-                                color: appBarBgColors,
+                                color: bgBlue,
                                 width: 5.0,
                                 style: BorderStyle.solid))),
                   ),
@@ -173,7 +173,7 @@ void _onItemTapped(int index) {
             //backgroundColor: Colors.blue[900],
             bottom: PreferredSize(
               child: Container(
-                color: appBarBgColors,
+                color: bgBlue,
                 height: 5.0,
               ),
               preferredSize: Size.fromHeight(5.0)

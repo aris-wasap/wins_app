@@ -41,7 +41,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
           ),),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: bgAppBar,
+              gradient: bgGradientAppBar,
             ),
           ),
           actions: <Widget>[
@@ -69,7 +69,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
           ),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              gradient: bgPage)
+              gradient: bgGradientPage)
         ),
       ),
     );

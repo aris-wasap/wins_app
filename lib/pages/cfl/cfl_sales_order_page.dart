@@ -76,10 +76,10 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: appBarBgColors,
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: appBarLineBgColors,
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)

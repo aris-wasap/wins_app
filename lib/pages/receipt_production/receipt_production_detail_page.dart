@@ -195,10 +195,10 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Receipt"),
-        backgroundColor: appBarBgColors,
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: appBarLineBgColors,
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -353,7 +353,7 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: bgPageWhite,
+                  gradient: bgGradientPageWhite,
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
