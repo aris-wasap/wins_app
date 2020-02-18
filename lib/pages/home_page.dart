@@ -10,6 +10,7 @@ import 'package:ncf_app/bloc_helpers/bloc_provider.dart';
 import 'package:ncf_app/blocs/authentication/authentication_bloc.dart';
 import 'package:ncf_app/blocs/authentication/authentication_event.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:uuid/uuid.dart';
 
 import 'transfer_release/transfer_release_list_page.dart';
@@ -49,7 +50,7 @@ int _selectedIndex = 0;
     HomeMenuPage(),
     CheckDataPage(),
     Text(
-      'Index 2: Profile',
+      'Profile',
       style: optionStyle,
     ),
   ];
@@ -91,21 +92,10 @@ void _onItemTapped(int index) {
                       ),
                     ),
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                            Colors.blue[800],
-                            Colors.blue[700],
-                            Colors.blue[600],
-                            Colors.blue[500],
-                            //Colors.orange[100],
-                 
-                  ],
-                ),
+                        gradient: bgGradientAppBar,
                         border: Border(
                             bottom: BorderSide(
-                                color: Colors.blue[500],
+                                color: appBarBgColors,
                                 width: 5.0,
                                 style: BorderStyle.solid))),
                   ),
@@ -159,23 +149,7 @@ void _onItemTapped(int index) {
               //title: Text("Hi "+ globalBloc.userName + " , Welcome" ),
               flexibleSpace: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: <Color>[
-                        // Color(0xFF0099FF),
-                        // Color(0xFF0033CC),
-                        Colors.blue[400],
-                        Colors.blue[600],
-                        Colors.blue[700],
-                            //Colors.blue[600],
-                            //Colors.blue[500],
-                            // Colors.blue[400],
-                            // Colors.blue[300],
-                            // Colors.blue[200],
-                            // Colors.blue[100],
-                  ],
-                ),
+                gradient: bgGradientAppBar,
               ),
             ),
             actions: <Widget>[
@@ -199,22 +173,21 @@ void _onItemTapped(int index) {
             //backgroundColor: Colors.blue[900],
             bottom: PreferredSize(
               child: Container(
-                color: Colors.blue[500],
+                color: appBarBgColors,
                 height: 5.0,
               ),
               preferredSize: Size.fromHeight(5.0)
             ),
           ),
           
-          body: _widgetOptions.elementAt(_selectedIndex),
+          body: _widgetOptions.elementAt(_selectedIndex), //Botton Navigation Select
           
-         backgroundColor: Colors.blue[200] ,
+         backgroundColor: Colors.blue[100] , // Background Menu
          bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue[800],
             onTap: _onItemTapped,
-            //backgroundColor: Color.fromRGBO(196, 196, 196, 100),
-           items: [
+            items: [
                   BottomNavigationBarItem(
                     icon: new Icon(Icons.home),
                     title: new Text('Home'),

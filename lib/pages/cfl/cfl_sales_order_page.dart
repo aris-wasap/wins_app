@@ -6,6 +6,7 @@ import 'package:ncf_app/blocs/cfl_sales_order/cfl_sales_order_bloc.dart';
 import 'package:ncf_app/blocs/cfl_sales_order/cfl_sales_order_event.dart';
 import 'package:ncf_app/blocs/cfl_sales_order/cfl_sales_order_state.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class CflSalesOrderPage extends StatefulWidget {
   @override
@@ -75,10 +76,10 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: appBarBgColors,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: appBarLineBgColors,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)

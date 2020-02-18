@@ -9,6 +9,7 @@ import 'package:ncf_app/blocs/delivery_order/detail/delivery_order_detail_event.
 import 'package:ncf_app/blocs/delivery_order/detail/delivery_order_detail_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/models/delivery_order_detail_response.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
@@ -211,10 +212,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Delivery"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: Colors.orange[500],
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -233,10 +234,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     } else {
       return AppBar(
         title: Text("Delivery"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: Colors.orange[500],
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -271,7 +272,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;
@@ -372,11 +374,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
+                  gradient: bgPage,
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -389,7 +387,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               floatingActionButton: data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
-                      backgroundColor: Colors.orange[700],
+                      backgroundColor: btnBgColors,
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();

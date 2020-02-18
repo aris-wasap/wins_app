@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSettingPage extends StatefulWidget {
@@ -40,14 +41,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
           ),),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: <Color>[
-                      Color(0xFF0099FF),
-                      Color(0xFF0033CC),
-                ],
-              ),
+              gradient: bgAppBar,
             ),
           ),
           actions: <Widget>[
@@ -75,14 +69,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
           ),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-               Color(0xFFF0F8FF),
-               Color(0xFFF0F8FF),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ))
+              gradient: bgPage)
         ),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:ncf_app/blocs/delivery_order/list/delivery_order_list_event.dart
 import 'package:ncf_app/blocs/delivery_order/list/delivery_order_list_state.dart';
 import 'package:ncf_app/pages/delivery_order/delivery_order_detail_page.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class DeliveryOrderListPage extends StatefulWidget {
   @override
@@ -156,11 +157,7 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgPage,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),

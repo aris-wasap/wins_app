@@ -9,6 +9,7 @@ import 'package:ncf_app/blocs/receipt_production/detail/receipt_production_detai
 import 'package:ncf_app/blocs/receipt_production/detail/receipt_production_detail_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
@@ -194,10 +195,10 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Receipt"),
-        backgroundColor: Colors.blue[500],
+        backgroundColor: appBarBgColors,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.orange[500],
+            color: appBarLineBgColors,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -352,11 +353,7 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [ Colors.white, Colors.white],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
+                  gradient: bgPageWhite,
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
