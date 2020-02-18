@@ -7,6 +7,7 @@ import 'package:ncf_app/blocs/authentication/authentication_event.dart';
 import 'package:ncf_app/blocs/authentication/authentication_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/pages/login_setting_page.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -120,24 +121,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           padding: EdgeInsets.symmetric(vertical: 0),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                            colors: [
-                            Colors.blue[800],
-                            Colors.blue[700],
-                            Colors.blue[600],
-                            Colors.blue[500],
-                            Colors.blue[400],
-                            Colors.blue[300],
-                            Colors.blue[200],
-                            Colors.blue[100],
-                            Colors.orange[100],
-                            Colors.orange[100],
-                                
-                            ],
-                             begin: Alignment.topCenter,
-                             end: Alignment.bottomCenter,
-                             
-                          )),
+                              gradient: bgGradient),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -384,13 +368,7 @@ Widget _showEnterText(AuthenticationBloc bloc) {
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 50),
           decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                        Colors.orange[700],
-                        Colors.orange[500],
-                        Colors.orange[700],
-                        ],
-                      ),
+                      gradient: btnColor,
                       shape: BoxShape.rectangle, 
                       borderRadius: BorderRadius.circular(10.0),
                     ),
