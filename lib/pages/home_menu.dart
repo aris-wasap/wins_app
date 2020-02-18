@@ -79,6 +79,10 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
           children: myList.map((data) {
             return Container(
                decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 5),
+                BoxShadow(color: Colors.blue[200], offset: Offset(-4, -4), blurRadius: 5),
+              ],
                   color: bgWhite, borderRadius: BorderRadius.circular(10)),
               child: InkWell(
                 onTap: (){

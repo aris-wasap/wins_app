@@ -50,7 +50,7 @@ int _selectedIndex = 0;
     HomeMenuPage(),
     CheckDataPage(),
     Text(
-      'Index 2: Profile',
+      'Profile',
       style: optionStyle,
     ),
   ];
@@ -92,21 +92,10 @@ void _onItemTapped(int index) {
                       ),
                     ),
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                            Colors.blue[800],
-                            Colors.blue[700],
-                            Colors.blue[600],
-                            Colors.blue[500],
-                            //Colors.orange[100],
-                 
-                  ],
-                ),
+                        gradient: bgGradientAppBar,
                         border: Border(
                             bottom: BorderSide(
-                                color: Colors.blue[500],
+                                color: appBarBgColors,
                                 width: 5.0,
                                 style: BorderStyle.solid))),
                   ),
@@ -191,15 +180,14 @@ void _onItemTapped(int index) {
             ),
           ),
           
-          body: _widgetOptions.elementAt(_selectedIndex),
+          body: _widgetOptions.elementAt(_selectedIndex), //Botton Navigation Select
           
-         backgroundColor: Colors.blue[200] ,
+         backgroundColor: Colors.blue[100] , // Background Menu
          bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue[800],
             onTap: _onItemTapped,
-            //backgroundColor: Color.fromRGBO(196, 196, 196, 100),
-           items: [
+            items: [
                   BottomNavigationBarItem(
                     icon: new Icon(Icons.home),
                     title: new Text('Home'),
