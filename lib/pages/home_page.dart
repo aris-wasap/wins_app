@@ -181,11 +181,13 @@ void _onItemTapped(int index) {
           ),
           
           body: _widgetOptions.elementAt(_selectedIndex), //Botton Navigation Select
-          
+        
          backgroundColor: Colors.blue[100] , // Background Menu
          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: bgWhite,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue[800],
+            
             onTap: _onItemTapped,
             items: [
                   BottomNavigationBarItem(

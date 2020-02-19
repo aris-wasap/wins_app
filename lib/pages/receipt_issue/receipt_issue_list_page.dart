@@ -188,7 +188,7 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
                   ),
             margin: const EdgeInsets.all(3),
             // decoration:

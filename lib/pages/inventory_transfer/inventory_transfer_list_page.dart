@@ -9,6 +9,7 @@ import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_st
 //import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class InventoryTransferListPage extends StatefulWidget {
   @override
@@ -82,10 +83,10 @@ class _InventoryTransferListPageState
             hintStyle: TextStyle(color: Colors.white)
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -105,10 +106,15 @@ class _InventoryTransferListPageState
     } else {
       return AppBar(
         title: Text("Inventory Transfer"),
-        backgroundColor: Colors.blue[900],
+        //backgroundColor: bgBlue,
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: bgGradientAppBar,
+              ),
+            ),
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgBlue,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -159,11 +165,7 @@ class _InventoryTransferListPageState
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -188,6 +190,9 @@ class _InventoryTransferListPageState
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+            decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

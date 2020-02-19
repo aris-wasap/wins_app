@@ -142,11 +142,7 @@ class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite
                   ),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
