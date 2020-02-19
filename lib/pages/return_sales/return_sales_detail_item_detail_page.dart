@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_detail_item_detail_bloc.dart';
-import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_detail_item_detail_state.dart';
-import 'package:ncf_app/models/delivery_order_detail_response.dart';
+import 'package:ncf_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_bloc.dart';
+import 'package:ncf_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_event.dart';
+import 'package:ncf_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_state.dart';
+import 'package:ncf_app/models/return_sales_detail_response.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:ncf_app/widgets/set_colors.dart';
@@ -12,25 +12,25 @@ import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 
 import 'dart:math' as math;
 
-class DeliveryOrderDetailItemDetailPage extends StatefulWidget {
-  DeliveryOrderDetailItemDetailPage(this._data);
+class ReturnSalesDetailItemDetailPage extends StatefulWidget {
+  ReturnSalesDetailItemDetailPage(this._data);
   final Item _data;
   @override
-  _DeliveryOrderDetailItemDetailPageState createState() =>
-      _DeliveryOrderDetailItemDetailPageState(_data);
+  _ReturnSalesDetailItemDetailPageState createState() =>
+      _ReturnSalesDetailItemDetailPageState(_data);
 }
 
-class _DeliveryOrderDetailItemDetailPageState
-    extends State<DeliveryOrderDetailItemDetailPage> {
-  _DeliveryOrderDetailItemDetailPageState(this._data);
+class _ReturnSalesDetailItemDetailPageState
+    extends State<ReturnSalesDetailItemDetailPage> {
+  _ReturnSalesDetailItemDetailPageState(this._data);
 
   final Item _data;
-  DeliveryOrderDetailItemDetailBloc bloc;
+  ReturnSalesDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
-  final _qtySoController = TextEditingController();
+  final _qtyDoController = TextEditingController();
   final _qtyController = TextEditingController();
 
   @override
@@ -38,7 +38,7 @@ class _DeliveryOrderDetailItemDetailPageState
     // TODO: implement initState
     super.initState();
 
-    bloc = DeliveryOrderDetailItemDetailBloc(this._data);
+    bloc = ReturnSalesDetailItemDetailBloc(this._data);
   }
 
   @override
@@ -57,22 +57,22 @@ class _DeliveryOrderDetailItemDetailPageState
           context: context, massage: "Qty harus lebih besar dari 0");
       return;
     }
-    bloc.emitEvent(DeliveryOrderDetailItemDetailEventQty(
+    bloc.emitEvent(ReturnSalesDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
     ));
     Navigator.pop(context, _getState().data);
   }
 
-  DeliveryOrderDetailItemDetailState _getState() {
+  ReturnSalesDetailItemDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<DeliveryOrderDetailItemDetailState>(
+    return BlocEventStateBuilder<ReturnSalesDetailItemDetailState>(
         bloc: bloc,
         builder:
-            (BuildContext context, DeliveryOrderDetailItemDetailState state) {
+            (BuildContext context, ReturnSalesDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
@@ -113,7 +113,7 @@ class _DeliveryOrderDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
-    _qtySoController.text = data.soQty.toString();
+    _qtyDoController.text = data.doQty.toString();
     if(_data.qty != 0){
       if(_qtyController.text==""){
         _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
@@ -168,10 +168,10 @@ class _DeliveryOrderDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 10)
                 ), 
                 TextField(
-                  controller: _qtySoController,
+                  controller: _qtyDoController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Open SO Qty",
+                    labelText: "Open DO Qty",
                     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0)
@@ -195,7 +195,7 @@ class _DeliveryOrderDetailItemDetailPageState
                         inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                          labelText: "Delivery Qty",
+                          labelText: "Return Qty",
                           contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)
@@ -206,7 +206,7 @@ class _DeliveryOrderDetailItemDetailPageState
                           ),
                         ))
                     : LabelFieldWidget(
-                        labelText: "Delivery Qty",
+                        labelText: "Return Qty",
                         valueText:
                             "${NumberFormat("#,###.00").format(data.qty)}",
                       ),

@@ -80,10 +80,10 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
             hintStyle: TextStyle(color: Colors.white)
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -157,7 +157,7 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgPage,
+                    gradient: bgGradientPage,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),

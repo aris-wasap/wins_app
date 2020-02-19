@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-const appBarBgColors = Color(0xFF2196F3);
-const appBarLineBgColors = Color(0xFFFF9800);
-const btnBgColors = Color(0xFFF57C00);
+const btnBgOrange = Color(0xFFF57C00);
+const bgBlue = Color(0xFF2196F3);
 const bgWhite = Color(0xffffffff);
+const bgOrange =  Color(0xFFFF9800);
 
-const bgGradientAppBar = LinearGradient(
+
+const bgGradientLogin = LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: <Color>[
@@ -34,7 +35,7 @@ const bgGradient = LinearGradient(
                              end: Alignment.bottomCenter,
                              
                           );
-const btnColor = LinearGradient(
+const btnGradientColor = LinearGradient(
                         colors: <Color>  [
                         Color(0xFFF57C00),
                         Color(0xFFFF9800),
@@ -42,7 +43,7 @@ const btnColor = LinearGradient(
                         ],
                       );
 
-const bgAppBar = LinearGradient(
+const bgGradientAppBar = LinearGradient(
                 colors: <Color>[
                       Color(0xFF0099FF),
                       Color(0xFF0033CC),
@@ -51,7 +52,7 @@ const bgAppBar = LinearGradient(
                 end: Alignment.bottomLeft,
                 
                );
-const bgPage = LinearGradient(
+const bgGradientPage = LinearGradient(
             colors: [
                Color(0xFFF0F8FF),
                Color(0xFFF0F8FF),
@@ -59,7 +60,7 @@ const bgPage = LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           );
-const bgPageWhite = LinearGradient(
+const bgGradientPageWhite = LinearGradient(
             colors: [
                Color(0xFFFFFFFF),
                Color(0xFFFFFFFF),
@@ -68,7 +69,7 @@ const bgPageWhite = LinearGradient(
             end: Alignment.centerRight,
           );
 
-const bgPageOrange = LinearGradient(
+const bgGradientPageOrange = LinearGradient(
             colors: [
                Color(0xFFFFE0B2),
               Color(0xFFFFE0B2),
@@ -77,7 +78,7 @@ const bgPageOrange = LinearGradient(
             end: Alignment.centerRight,
           );
 
-const bgPageBlue = LinearGradient(
+const bgGradientPageBlue = LinearGradient(
             colors: [
               Color(0xFFBBDEFB),
              Color(0xFFBBDEFB),

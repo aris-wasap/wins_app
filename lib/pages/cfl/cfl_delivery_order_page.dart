@@ -2,21 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/receipt_production/list/receipt_production_list_bloc.dart';
-import 'package:ncf_app/blocs/receipt_production/list/receipt_production_list_event.dart';
-import 'package:ncf_app/blocs/receipt_production/list/receipt_production_list_state.dart';
-import 'package:ncf_app/pages/receipt_production/receipt_production_detail_page.dart';
+import 'package:ncf_app/blocs/cfl_delivery_order/cfl_delivery_order_bloc.dart';
+import 'package:ncf_app/blocs/cfl_delivery_order/cfl_delivery_order_event.dart';
+import 'package:ncf_app/blocs/cfl_delivery_order/cfl_delivery_order_state.dart';
 import 'package:intl/intl.dart';
 import 'package:ncf_app/widgets/set_colors.dart';
 
-class ReceiptProductionListPage extends StatefulWidget {
+class CflDeliveryOrderPage extends StatefulWidget {
   @override
-  _ReceiptProductionListPageState createState() => _ReceiptProductionListPageState();
+  _CflDeliveryOrderPageState createState() => _CflDeliveryOrderPageState();
 }
 
-class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
-  ReceiptProductionListBloc bloc = ReceiptProductionListBloc();
+class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
+  CflDeliveryOrderBloc bloc = CflDeliveryOrderBloc();
+
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -28,9 +27,8 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(ReceiptProductionListEvent(
-        event: ReceiptProductionListEventType.firstPage,
+      bloc.emitEvent(CflDeliveryOrderEvent(
+        event: CflDeliveryOrderEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +37,8 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(ReceiptProductionListEvent(
-        event: ReceiptProductionListEventType.nextPage,
+      bloc.emitEvent(CflDeliveryOrderEvent(
+        event: CflDeliveryOrderEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -50,13 +48,12 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(ReceiptProductionListEvent(
-        event: ReceiptProductionListEventType.firstPage,
-      ));
-    });
+    bloc.emitEvent(CflDeliveryOrderEvent(
+      event: CflDeliveryOrderEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -69,22 +66,20 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflDeliveryOrderState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Receipt Production",
-            hintStyle: TextStyle(color: Colors.white)
-            
+            hintText: "Search Delivery Order",
+            hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.orange[500],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -94,8 +89,8 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(ReceiptProductionListEvent(
-                  event: ReceiptProductionListEventType.deactivedSearch,
+                bloc.emitEvent(CflDeliveryOrderEvent(
+                  event: CflDeliveryOrderEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -103,16 +98,11 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt"),
-        flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
-        //backgroundColor: appBarBgColors,
+        title: Text("Choose Delivery Order"),
+        backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
           child: Container(
-            color: bgBlue,
+            color: Colors.yellow[900],
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -121,22 +111,11 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(ReceiptProductionListEvent(
-                event: ReceiptProductionListEventType.activedSearch,
+              bloc.emitEvent(CflDeliveryOrderEvent(
+                event: CflDeliveryOrderEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.receiptProduction_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ReceiptProductionDetailPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -144,29 +123,33 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(ReceiptProductionListEvent(
-      event: ReceiptProductionListEventType.refresh,
+    bloc.emitEvent(CflDeliveryOrderEvent(
+      event: CflDeliveryOrderEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReceiptProductionListState>(
+    return BlocEventStateBuilder<CflDeliveryOrderState>(
         bloc: bloc,
-        builder: (BuildContext context, ReceiptProductionListState state) {
+        builder: (BuildContext context, CflDeliveryOrderState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgGradientPageWhite,
+                    gradient: LinearGradient(
+                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -174,9 +157,7 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflDeliveryOrderState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -188,44 +169,25 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-            decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(0),
             // decoration:
-            //     BoxDecoration(border: Border(bottom: BorderSide(width: 0.5))),
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    //Text(data[index].customerName),
-                    Text("${data[index].status} - ${data[index].createdUser}"),
+                  children: <Widget>[ 
+                    Text("${data[index].customerCode??''}"),
+                    Text("${data[index].customerName??''}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReceiptProductionDetailPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),

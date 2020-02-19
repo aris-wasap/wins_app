@@ -6,6 +6,7 @@ import 'package:ncf_app/blocs/cfl_purchase_order/cfl_purchase_order_bloc.dart';
 import 'package:ncf_app/blocs/cfl_purchase_order/cfl_purchase_order_event.dart';
 import 'package:ncf_app/blocs/cfl_purchase_order/cfl_purchase_order_state.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class CflPurchaseOrderPage extends StatefulWidget {
   @override
@@ -75,10 +76,10 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -98,10 +99,10 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
     } else {
       return AppBar(
         title: Text("Choose Purchase Order"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -141,11 +142,7 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
@@ -168,6 +165,9 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

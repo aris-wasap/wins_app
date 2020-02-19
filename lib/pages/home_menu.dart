@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/pages/dashboard_menu.dart';
 import 'package:ncf_app/pages/delivery_order/delivery_order_list_page.dart';
+import 'package:ncf_app/pages/return_sales/return_sales_list_page.dart';
 import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_list_page.dart';
 import 'package:ncf_app/pages/option_card.dart';
 import 'package:ncf_app/pages/receipt_issue/receipt_issue_list_page.dart';
@@ -135,10 +136,10 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                 else if ( data.authDetail == "returnSales_Auth_Detail" && globalBloc.loginResponse.data
                                                 .returnSales_Auth_Detail ==
                                             'Y') {
-                                          // Navigator.push(context, MaterialPageRoute(
-                                          //     builder: (BuildContext context) {
-                                          //   return ReturnSalesListPage();
-                                          // }));
+                                          Navigator.push(context, MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                            return ReturnSalesListPage();
+                                          }));
                                        }
                 },
                 child: Column(
@@ -300,9 +301,9 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
               dashboardMenu(),
-              SizedBox(height: 50,),
+              SizedBox(height: 5,),
               ////GridDashboard(),
               //  Flexible(
               //   flex: 4,
