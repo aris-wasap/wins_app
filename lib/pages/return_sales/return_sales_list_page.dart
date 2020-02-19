@@ -111,7 +111,7 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
         //backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
-            color: Colors.blue[500],
+            color: bgBlue,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)

@@ -5,11 +5,13 @@ import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_d
 import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_detail_item_detail_event.dart';
 import 'package:ncf_app/blocs/delivery_order/detail_item_detail/delivery_order_detail_item_detail_state.dart';
 import 'package:ncf_app/models/delivery_order_detail_response.dart';
+import 'package:ncf_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
-
+import 'package:ncf_app/models/cfl_db_warehouse_model.dart'
+    as cflDbWarehouse;
 import 'dart:math' as math;
 
 class DeliveryOrderDetailItemDetailPage extends StatefulWidget {
@@ -32,7 +34,8 @@ class _DeliveryOrderDetailItemDetailPageState
   final _uomController = TextEditingController();
   final _qtySoController = TextEditingController();
   final _qtyController = TextEditingController();
-
+  final _whsCodeController = TextEditingController();
+  final _whsNameController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -78,10 +81,10 @@ class _DeliveryOrderDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[500],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.orange[500],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -224,6 +227,72 @@ class _DeliveryOrderDetailItemDetailPageState
                     )
                   ),
                 ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<
+                //                       cflDbWarehouse.CflDbWarehouseModel>(
+                //                   builder: (BuildContext context) =>
+                //                       CflDbWarehousePage()));
+
+                //       warehouse
+                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                //         if (warehouse != null) {
+                //           _whsCodeController.text = warehouse.whsCode;
+                //           _whsNameController.text = warehouse.whsName;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //         color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                //       ),
+                //       borderRadius: BorderRadius.all(
+                //           Radius.circular(10)
+                //       )
+                //     ),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "From Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.all(0),
+                //                 title: Text(_whsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_whsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",

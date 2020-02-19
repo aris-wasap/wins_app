@@ -39,6 +39,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     contactPerson: json['ContactPerson'] as String,
     refNo: json['RefNo'] as String,
     address: json['Address'] as String,
+    seriesNamePo: json['SeriesNamePo'] as String,
+    seriesName: json['SeriesName'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -57,6 +59,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ContactPerson': instance.contactPerson,
       'RefNo': instance.refNo,
       'Address': instance.address,
+      'SeriesNamePo': instance.seriesNamePo,
+      'SeriesName': instance.seriesName,
       'Items': instance.items,
     };
 

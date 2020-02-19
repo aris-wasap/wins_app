@@ -39,7 +39,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
-
+  final _seriesNamePoController = TextEditingController();
+  final _seriesNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -79,6 +80,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _seriesNamePoController?.dispose();
+    _seriesNameController?.dispose();
 
     bloc?.dispose();
 
@@ -92,10 +95,12 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     data.transDate = transDate;
     data.customerCode = _customerCodeController.text;
     data.customerName = _customerNameController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNamePo = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "DO Date harus di isi");
+      ValidateDialogWidget(context: context, massage: "PO Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
       ValidateDialogWidget(context: context, massage: "PO No harus di isi");
@@ -233,7 +238,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Receipt"),
+        title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -472,6 +477,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       }
       _customerCodeController.text = data.customerCode;
       _customerNameController.text = data.customerName;
+      _seriesNamePoController.text = data.seriesNamePo;
+      _seriesNameController.text = data.seriesName;
     }
 
     return Column(
@@ -484,6 +491,21 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                TextFormField(
+                  controller: _seriesNameController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    hintText: "Series No.",
+                    labelText: "Series No.",
+                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(10.0)
+                    )
+                  )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5)
+                ),
                 TextFormField(
                   controller: _transNoController,
                   enabled: false,
@@ -554,6 +576,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           _poNoController.text = po.transNo;
                           _customerCodeController.text = po.customerCode;
                           _customerNameController.text = po.customerName;
+                          _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -581,11 +604,11 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_poNoController.text),
+                                title: Text(_seriesNamePoController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_customerCodeController.text),
+                                    Text(_poNoController.text),
                                   ],
                                 ),
                               )

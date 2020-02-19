@@ -7,6 +7,7 @@ import 'package:ncf_app/blocs/receipt_order/detail_item_detail/receipt_order_det
 import 'package:ncf_app/models/receipt_order_detail_response.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 
 import 'dart:math' as math;
@@ -77,10 +78,10 @@ class _ReceiptOrderDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[900],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.yellow[900],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -131,11 +132,7 @@ class _ReceiptOrderDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(
@@ -208,13 +205,15 @@ class _ReceiptOrderDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
+                    : Padding(padding: EdgeInsets.only(left: 10),
+                    child: LabelFieldWidget(
                         labelText: "Receipt Qty",
                         valueText:
                             "${NumberFormat("#,###.00").format(data.qty)}",
                       ),
+                      ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10)
+                  padding: EdgeInsets.only(top: 15)
                 ),
                 TextFormField(
                   controller: _uomController,

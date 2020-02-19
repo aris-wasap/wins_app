@@ -7,6 +7,7 @@ import 'package:ncf_app/blocs/receipt_production/detail_item_detail/receipt_prod
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'dart:math' as math;
 
@@ -132,11 +133,7 @@ class _ReceiptProductionDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.white, Colors.white],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(
@@ -153,6 +150,9 @@ class _ReceiptProductionDetailItemDetailPageState
                       borderRadius: new BorderRadius.circular(10.0)
                     )
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10)
                 ),
                 TextFormField(
                   controller: _woNoController,
