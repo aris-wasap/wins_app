@@ -103,10 +103,15 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
     } else {
       return AppBar(
         title: Text("List Delivery"),
-        backgroundColor: Colors.blue[500],
+        //backgroundColor: bgBlue,
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: bgGradientAppBar,
+              ),
+            ),
         bottom: PreferredSize(
           child: Container(
-            color: Colors.blue[500],
+            color: bgBlue,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -182,6 +187,9 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

@@ -73,7 +73,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     return Flexible(
       child: GridView.count(
           childAspectRatio: 1.0,
-          padding: EdgeInsets.only(left: 20, right: 20), //only(left: 15, right: 15),
+          padding: EdgeInsets.only( top: 5 ,left: 20, right: 20), //only(left: 15, right: 15),
           crossAxisCount: 2,
           crossAxisSpacing: 25,
           mainAxisSpacing: 25,
@@ -81,8 +81,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
             return Container(
                decoration: BoxDecoration(
               boxShadow: [
-                BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 5),
-                BoxShadow(color: Colors.blue[200], offset: Offset(-4, -4), blurRadius: 5),
+                BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
+                BoxShadow(color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
               ],
                   color: bgWhite, borderRadius: BorderRadius.circular(10)),
               child: InkWell(

@@ -6,6 +6,7 @@ import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_bloc.dar
 import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_event.dart';
 import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_state.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class CflProductionOrderPage extends StatefulWidget {
   @override
@@ -75,10 +76,10 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
             hintStyle: TextStyle(color: Colors.white)
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -98,10 +99,10 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
     } else {
       return AppBar(
         title: Text("Choose Production Order"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -161,6 +162,9 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.only(top:8),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

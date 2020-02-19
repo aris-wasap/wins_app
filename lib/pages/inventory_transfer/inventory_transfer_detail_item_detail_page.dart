@@ -1,3 +1,4 @@
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -130,11 +131,7 @@ class _InventoryTransferDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(

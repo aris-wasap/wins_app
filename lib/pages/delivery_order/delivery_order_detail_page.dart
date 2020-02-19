@@ -212,10 +212,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Delivery"),
-        backgroundColor: Colors.blue[500],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.orange[500],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -234,10 +234,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     } else {
       return AppBar(
         title: Text("Delivery"),
-        backgroundColor: Colors.blue[500],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.orange[500],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)

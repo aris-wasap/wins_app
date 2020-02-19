@@ -10,6 +10,7 @@ import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detai
 import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
@@ -235,10 +236,10 @@ class _InventoryTransferDetailPageState
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Transfer Production"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -257,10 +258,10 @@ class _InventoryTransferDetailPageState
     } else {
       return AppBar(
         title: Text("Transfer Production"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -412,12 +413,8 @@ class _InventoryTransferDetailPageState
               body: Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
-                ),
+                  gradient: bgGradientPageWhite
+                  ),
                 // constraints: BoxConstraints.expand(),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -696,7 +693,7 @@ class _InventoryTransferDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Warehouse From",
+                                "From Warehouse",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
@@ -761,7 +758,7 @@ class _InventoryTransferDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Warehouse To",
+                                "To Warehouse",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),

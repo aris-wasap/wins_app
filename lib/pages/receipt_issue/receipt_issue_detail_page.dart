@@ -16,6 +16,7 @@ import 'package:uuid/uuid.dart';
 import 'package:ncf_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
 import 'package:ncf_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class ReceiptIssueDetailPage extends StatefulWidget {
   ReceiptIssueDetailPage(this._id);
@@ -213,10 +214,10 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     if (_getState().data.id == 0) {
       return AppBar(
         title: Text("Create Receipt From Issue"),
-        backgroundColor: Colors.blue[500],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -235,10 +236,10 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     } else {
       return AppBar(
         title: Text("Receipt From Issue"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -375,11 +376,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
+                  gradient: bgGradientPageWhite,
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -392,7 +389,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               floatingActionButton: data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
-                      backgroundColor: Colors.orange[700],
+                      backgroundColor: btnBgOrange,
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();

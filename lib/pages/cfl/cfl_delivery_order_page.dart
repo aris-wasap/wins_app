@@ -99,10 +99,10 @@ class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
     } else {
       return AppBar(
         title: Text("Choose Delivery Order"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -142,11 +142,7 @@ class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite
                   ),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
@@ -169,6 +165,9 @@ class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

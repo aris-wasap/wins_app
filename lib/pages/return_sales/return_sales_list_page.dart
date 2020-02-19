@@ -103,7 +103,12 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     } else {
       return AppBar(
         title: Text("List Return"),
-        backgroundColor: Colors.blue[500],
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: bgGradientAppBar,
+              ),
+            ),
+        //backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
             color: Colors.blue[500],

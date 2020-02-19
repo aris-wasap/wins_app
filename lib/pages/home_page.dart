@@ -49,10 +49,10 @@ int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomeMenuPage(),
     CheckDataPage(),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
+    // Text(
+    //   'Profile',
+    //   style: optionStyle,
+    // ),
   ];
 
  
@@ -181,11 +181,13 @@ void _onItemTapped(int index) {
           ),
           
           body: _widgetOptions.elementAt(_selectedIndex), //Botton Navigation Select
-          
+        
          backgroundColor: Colors.blue[100] , // Background Menu
          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: bgWhite,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue[800],
+            
             onTap: _onItemTapped,
             items: [
                   BottomNavigationBarItem(
@@ -196,10 +198,10 @@ void _onItemTapped(int index) {
                     icon: Icon(Icons.nfc),
                     title: new Text('Stock'),
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    title: Text('Profile')
-                  )
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.person),
+                  //   title: Text('Profile')
+                  // )
                 ],
                 
          ),
