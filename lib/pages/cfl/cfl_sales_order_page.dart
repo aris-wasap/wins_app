@@ -99,10 +99,10 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
     } else {
       return AppBar(
         title: Text("Choose Sales Order"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -169,6 +169,9 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

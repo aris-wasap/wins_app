@@ -5,6 +5,7 @@ import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:ncf_app/blocs/cfl_db_warehouse/cfl_db_warehouse_bloc.dart';
 import 'package:ncf_app/blocs/cfl_db_warehouse/cfl_db_warehouse_event.dart';
 import 'package:ncf_app/blocs/cfl_db_warehouse/cfl_db_warehouse_state.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class CflDbWarehousePage extends StatefulWidget {
   @override
@@ -74,10 +75,10 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
             hintStyle: TextStyle(color: Colors.white)
           ),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -97,10 +98,10 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
     } else {
       return AppBar(
         title: Text("Choose Warehouse"),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
-            color: Colors.yellow[900],
+            color: bgOrange,
             height: 5.0,
           ),
           preferredSize: Size.fromHeight(5.0)
@@ -160,6 +161,9 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+             decoration: BoxDecoration(
+                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
             //margin: const EdgeInsets.all(8),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

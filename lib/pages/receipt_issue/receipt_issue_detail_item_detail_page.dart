@@ -7,6 +7,7 @@ import 'package:ncf_app/blocs/receipt_issue/detail_item_detail/receipt_issue_det
 import 'package:ncf_app/models/receipt_issue_detail_response.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 
 import 'dart:math' as math;
@@ -77,10 +78,10 @@ class _ReceiptIssueDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[900],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.yellow[900],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -131,11 +132,7 @@ class _ReceiptIssueDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(

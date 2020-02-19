@@ -49,10 +49,10 @@ int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomeMenuPage(),
     CheckDataPage(),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
+    // Text(
+    //   'Profile',
+    //   style: optionStyle,
+    // ),
   ];
 
  
@@ -196,10 +196,10 @@ void _onItemTapped(int index) {
                     icon: Icon(Icons.nfc),
                     title: new Text('Stock'),
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    title: Text('Profile')
-                  )
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.person),
+                  //   title: Text('Profile')
+                  // )
                 ],
                 
          ),
