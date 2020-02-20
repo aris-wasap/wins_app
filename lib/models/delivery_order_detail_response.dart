@@ -50,8 +50,14 @@ class Data {
   @JsonKey(name: 'SoNo')
   String soNo;  
 
+  @JsonKey(name: 'SeriesNameSo')
+  String seriesNameSo;
+
   @JsonKey(name: 'TransNo')
   String transNo;
+
+  @JsonKey(name: 'SeriesName')
+  String seriesName;
 
   @JsonKey(name: 'TransDate')
   DateTime transDate;  
@@ -80,8 +86,10 @@ class Data {
   Data({
     this.soId: 0, 
     this.soNo, 
+    this.seriesNameSo,
     this.id: 0,
     this.transNo,
+    this.seriesName,
     this.transDate, 
     this.customerCode,
     this.customerName,

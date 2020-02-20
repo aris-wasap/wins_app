@@ -552,7 +552,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                       dor.then((cflDeliveryOrder.Data dor) {
                         if (dor != null) {
                           _doIdController.text = dor.id.toString();
-                          _doNoController.text = dor.transNo;
+                          _doNoController.text = dor.seriesName +'-'+ dor.transNo;
                           _customerCodeController.text = dor.customerCode;
                           _customerNameController.text = dor.customerName;
                         }
@@ -583,12 +583,12 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_doNoController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_customerCodeController.text),
-                                  ],
-                                ),
+                                // subtitle: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Text(_customerCodeController.text),
+                                //   ],
+                                // ),
                               )
                             ],
                           ),

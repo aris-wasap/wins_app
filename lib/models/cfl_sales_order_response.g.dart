@@ -36,6 +36,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     status: json['Status'] as String,
     customerCode: json['CustomerCode'] as String,
     customerName: json['CustomerName'] as String,
+    seriesName: json['SeriesName'] as String,
   );
 }
 
@@ -46,4 +47,5 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Status': instance.status,
       'CustomerCode': instance.customerCode,
       'CustomerName': instance.customerName,
+      'SeriesName': instance.seriesName,
     };

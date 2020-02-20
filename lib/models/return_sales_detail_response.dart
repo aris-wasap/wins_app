@@ -48,10 +48,16 @@ class Data {
   int doId;
 
   @JsonKey(name: 'DoNo')
-  String doNo;  
+  String doNo;
+  
+  @JsonKey(name: 'SeriesNameDo')
+  String seriesNameDo;  
 
   @JsonKey(name: 'TransNo')
   String transNo;
+
+  @JsonKey(name: 'SeriesName')
+  String seriesName;
 
   @JsonKey(name: 'TransDate')
   DateTime transDate;  
@@ -79,9 +85,11 @@ class Data {
 
   Data({
     this.doId: 0, 
-    this.doNo, 
+    this.doNo,
+    this.seriesNameDo, 
     this.id: 0,
     this.transNo,
+    this.seriesName,
     this.transDate, 
     this.customerCode,
     this.customerName,

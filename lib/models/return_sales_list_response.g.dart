@@ -38,13 +38,14 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     customerName: json['CustomerName'] as String,
     status: json['Status'] as String,
     createdUser: json['CreatedUser'] as String,
-  );
+  )..seriesName = json['SeriesName'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'UserId': instance.userId,
       'TransNo': instance.transNo,
+      'SeriesName': instance.seriesName,
       'TransDate': instance.transDate?.toIso8601String(),
       'CustomerCode': instance.customerCode,
       'CustomerName': instance.customerName,
