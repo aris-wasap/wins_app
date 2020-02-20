@@ -48,6 +48,9 @@ class Data {
   @JsonKey(name: 'TransNo')
   String transNo;
 
+   @JsonKey(name: 'SeriesName')
+  String seriesName;
+
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 

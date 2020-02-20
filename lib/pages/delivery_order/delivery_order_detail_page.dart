@@ -374,7 +374,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: bgGradientPage,
+                  gradient: bgGradientPageWhite,
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -552,7 +552,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       so.then((cflSalesOrder.Data so) {
                         if (so != null) {
                           _soIdController.text = so.id.toString();
-                          _soNoController.text = so.transNo;
+                          _soNoController.text = so.seriesName +'-'+ so.transNo;
                           _customerCodeController.text = so.customerCode;
                           _customerNameController.text = so.customerName;
                         }
@@ -583,12 +583,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_soNoController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_customerCodeController.text),
-                                  ],
-                                ),
+                                // subtitle: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Text(_customerCodeController.text),
+                                //   ],
+                                // ),
                               )
                             ],
                           ),

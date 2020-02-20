@@ -208,10 +208,12 @@ class _DeliveryOrderDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
+                    : Padding(padding: EdgeInsets.only(left: 10),
+                    child: LabelFieldWidget(
                         labelText: "Delivery Qty",
                         valueText:
                             "${NumberFormat("#,###.00").format(data.qty)}",
+                      ),
                       ),
                 Padding(
                   padding: EdgeInsets.only(top: 10)

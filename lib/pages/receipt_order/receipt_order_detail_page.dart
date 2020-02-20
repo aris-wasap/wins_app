@@ -573,7 +573,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                       po.then((cflPurchaseOrder.Data po) {
                         if (po != null) {
                           _poIdController.text = po.id.toString();
-                          _poNoController.text = po.transNo;
+                          _poNoController.text = po.seriesName + '-'+po.transNo;
                           _customerCodeController.text = po.customerCode;
                           _customerNameController.text = po.customerName;
                          // _seriesNamePoController.text = po.seriesName;
