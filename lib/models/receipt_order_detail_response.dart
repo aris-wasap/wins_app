@@ -71,6 +71,12 @@ class Data {
   @JsonKey(name: 'Address')
   String address;  
 
+  @JsonKey(name: 'SeriesNamePo')
+  String seriesNamePo;
+
+  @JsonKey(name: 'SeriesName')
+  String seriesName;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -88,6 +94,8 @@ class Data {
     this.contactPerson,
     this.refNo,
     this.address, 
+    this.seriesNamePo,
+    this.seriesName,
     this.items,
   });
 

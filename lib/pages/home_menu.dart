@@ -68,18 +68,22 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       authDetail : "returnSales_Auth_Detail",
   );
 
-  Widget dashboardMenu(){
+  Widget dashboardMenu(BuildContext context){
+    var mediaQueryData = MediaQuery.of(context);
+    final double widthScreen = mediaQueryData.size.width;
+    final double heightScreen = mediaQueryData.size.height;
     List<Items> myList = [item1, item3, item2, item4, item5, item6];
     return Flexible(
       child: GridView.count(
           childAspectRatio: 1.0,
-          padding: EdgeInsets.only( top: 5 ,left: 20, right: 20), //only(left: 15, right: 15),
+          padding: EdgeInsets.only( top: 5 ,left: 20, right: 20, bottom: 5), //only(left: 15, right: 15),
           crossAxisCount: 2,
           crossAxisSpacing: 25,
           mainAxisSpacing: 25,
           children: myList.map((data) {
             return Container(
-               decoration: BoxDecoration(
+              //height: 100,
+              decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
                 BoxShadow(color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
@@ -296,14 +300,18 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     final double widthScreen = mediaQueryData.size.width;
     final double heightScreen = mediaQueryData.size.height;
 
-    return  Column(
+    return  Container(
+          height: heightScreen,
+          width: widthScreen,
+          //color: Colors.black,
+          child : Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(height: 10,),
-              dashboardMenu(),
               SizedBox(height: 5,),
+              dashboardMenu(context),
+              SizedBox(height: 2,),
               ////GridDashboard(),
               //  Flexible(
               //   flex: 4,
@@ -335,6 +343,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
               // )
             ],
 
-          );
+          )
+    );
   }
 }

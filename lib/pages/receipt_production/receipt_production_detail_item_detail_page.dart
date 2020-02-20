@@ -7,6 +7,7 @@ import 'package:ncf_app/blocs/receipt_production/detail_item_detail/receipt_prod
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'dart:math' as math;
 
@@ -77,10 +78,10 @@ class _ReceiptProductionDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[500],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.orange[500],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -109,6 +110,7 @@ class _ReceiptProductionDetailItemDetailPageState
 
   Widget _buildForm() {
     var data = _getState().data;
+    
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
     _itemCodeController.text = data.itemCode;
@@ -132,11 +134,7 @@ class _ReceiptProductionDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.white, Colors.white],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(
@@ -153,6 +151,9 @@ class _ReceiptProductionDetailItemDetailPageState
                       borderRadius: new BorderRadius.circular(10.0)
                     )
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10)
                 ),
                 TextFormField(
                   controller: _woNoController,
@@ -222,10 +223,12 @@ class _ReceiptProductionDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
+                    : Padding(padding: EdgeInsets.only(left: 10),
+                    child: LabelFieldWidget(
                         labelText: "Receipt Qty",
                         valueText:
                             "${NumberFormat("#,###.00").format(data.quantity)}",
+                      ),
                       ),
                 Padding(
                   padding: EdgeInsets.only(top: 10)

@@ -197,7 +197,7 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Series ${data[index].seriesName}  -  No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 // subtitle: Column(
                 //   //mainAxisAlignment: MainAxisAlignment.start,
                 //   crossAxisAlignment: CrossAxisAlignment.start,

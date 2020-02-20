@@ -233,7 +233,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Delivery"),
+        title: Text("Return From Sales"),
         backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
@@ -264,7 +264,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_doNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "SO No harus di isi");
+      ValidateDialogWidget(context: context, massage: "DO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -489,8 +489,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                   controller: _transNoController,
                   enabled: false,
                   decoration: InputDecoration(
-                    hintText: "Delivery No.",
-                    labelText: "Delivery No.",
+                    hintText: "Return No.",
+                    labelText: "Return No.",
                     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0)
@@ -511,8 +511,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                           controller: _transDateController,
                           enabled: false,
                           decoration: InputDecoration(
-                            hintText: "Delivery Date",
-                            labelText: "Delivery Date",
+                            hintText: "Return Date",
+                            labelText: "Return Date",
                             contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                             disabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -577,7 +577,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Sales No.",
+                                "Delivery No.",
                                 style: TextStyle(color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(

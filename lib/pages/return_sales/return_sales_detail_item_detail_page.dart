@@ -205,11 +205,22 @@ class _ReturnSalesDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
-                        labelText: "Return Qty",
-                        valueText:
-                            "${NumberFormat("#,###.00").format(data.qty)}",
-                      ),
+                    // : LabelFieldWidget(
+                    //     labelText: "Return Qty",
+                    //     valueText:
+                    //         "${NumberFormat("#,###.00").format(data.qty)}",
+                    //   ),
+                    : TextField(
+                  controller: _qtyController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: "Return Qty",
+                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(10.0)
+                    )
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 10)
                 ),

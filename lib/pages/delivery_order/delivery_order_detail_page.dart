@@ -233,7 +233,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Delivery"),
+        title: Text("Delivery Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(

@@ -78,10 +78,10 @@ class _InventoryTransferDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[900],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.yellow[900],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -204,10 +204,12 @@ class _InventoryTransferDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
+                    : Padding(padding: EdgeInsets.only(left: 10),
+                    child: LabelFieldWidget(
                         labelText: "Qty",
                         valueText:
-                            "${NumberFormat("#,###.0000").format(data.qty)}",
+                            "${NumberFormat("#,###.00").format(data.qty)}",
+                      ),
                       ),
                 Padding(
                   padding: EdgeInsets.only(top: 10)
