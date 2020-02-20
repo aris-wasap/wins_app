@@ -605,31 +605,31 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {}
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {}
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //         color: Colors.grey[400]
+                //       ),
+                //       borderRadius: BorderRadius.all(
+                //           Radius.circular(10)
+                //       )
+                //       // border: Border(
+                //       //   bottom: BorderSide(
+                //       //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                //       //     width: 1.0,
+                //       //   ),
+                //       // ),
+                //     ),
                     
-                  ),
-                ),
+                //   ),
+                // ),
               ],
             ),
           ),

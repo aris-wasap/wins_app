@@ -491,21 +491,21 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _seriesNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Series No.",
-                    labelText: "Series No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5)
-                ),
+                // TextFormField(
+                //   controller: _seriesNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //     hintText: "Series No.",
+                //     labelText: "Series No.",
+                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //       borderRadius: new BorderRadius.circular(10.0)
+                //     )
+                //   )
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 5)
+                // ),
                 TextFormField(
                   controller: _transNoController,
                   enabled: false,
@@ -576,7 +576,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           _poNoController.text = po.transNo;
                           _customerCodeController.text = po.customerCode;
                           _customerNameController.text = po.customerName;
-                          _seriesNamePoController.text = po.seriesName;
+                         // _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -604,13 +604,13 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_seriesNamePoController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_poNoController.text),
-                                  ],
-                                ),
+                                title: Text(_poNoController.text),
+                                // subtitle: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Text(_poNoController.text),
+                                //   ],
+                                // ),
                               )
                             ],
                           ),

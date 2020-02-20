@@ -78,10 +78,10 @@ class _ReceiptProductionDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[500],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
                 child: Container(
-                  color: Colors.orange[500],
+                  color: bgOrange,
                   height: 5.0,
                 ),
                 preferredSize: Size.fromHeight(5.0)
@@ -110,6 +110,7 @@ class _ReceiptProductionDetailItemDetailPageState
 
   Widget _buildForm() {
     var data = _getState().data;
+    
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
     _itemCodeController.text = data.itemCode;
@@ -222,10 +223,12 @@ class _ReceiptProductionDetailItemDetailPageState
                             borderRadius: new BorderRadius.circular(10.0)
                           ),
                         ))
-                    : LabelFieldWidget(
+                    : Padding(padding: EdgeInsets.only(left: 10),
+                    child: LabelFieldWidget(
                         labelText: "Receipt Qty",
                         valueText:
                             "${NumberFormat("#,###.00").format(data.quantity)}",
+                      ),
                       ),
                 Padding(
                   padding: EdgeInsets.only(top: 10)
