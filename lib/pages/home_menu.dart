@@ -89,7 +89,9 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                 BoxShadow(color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
               ],
                   color: bgWhite, borderRadius: BorderRadius.circular(10)),
-              child: InkWell(
+              child: Material(
+                color: bgWhite, borderRadius: BorderRadius.circular(10.0),
+                child: InkWell(
                 onTap: (){
                   //1
                   if ( data.authDetail == "receiptProduction_Auth_Detail" && globalBloc.loginResponse.data
@@ -194,6 +196,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
               ),
               
               )
+              ),
             );
           }).toList()),
     );

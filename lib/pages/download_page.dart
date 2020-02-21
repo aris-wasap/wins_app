@@ -3,6 +3,7 @@ import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:ncf_app/blocs/download/download_bloc.dart';
 import 'package:ncf_app/blocs/download/download_event.dart';
 import 'package:ncf_app/blocs/download/download_state.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 
 class DownloadPage extends StatefulWidget {
   @override
@@ -101,34 +102,99 @@ class _DownloadPageState extends State<DownloadPage> {
     });
   }
 
+  
+  Widget _listDownload(){
+    _errorMessage();
+    _doneMessage();
+    final List<String> entries = <String>['Sync All', 'Warehouse'];
+    final List<int> colorCodes = <int>[500, 500];
+    return ListView.separated(
+      padding: const EdgeInsets.all(10),
+      itemCount: entries.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          height: 50,
+          decoration: BoxDecoration(
+            //color: Colors.orange[colorCodes[index]],
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+                BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
+                BoxShadow(color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
+              ],
+          ),
+          child: Material(
+           borderRadius: BorderRadius.circular(10),
+          color: Colors.orange[colorCodes[index]],
+          child: InkWell(
+          child: Center(
+            child: Text('${entries[index]}',
+              style: TextStyle(color: bgWhite, fontSize: 18, fontWeight: FontWeight.w600) )),
+          onTap: () 
+          {
+            if (index == 0) {
+                 bloc.emitEvent(DownloadEvent(
+                  event: DownloadEventType.all,
+                ));
+             
+            }
+            else if (index == 1){
+              bloc.emitEvent(DownloadEvent(
+                  event: DownloadEventType.warehouse,
+                ));
+            }
+            
+          },
+          ),
+        ),
+          //child: Center(child: Text('${entries[index]}', style: TextStyle(color: bgWhite, fontSize: 18, fontWeight: FontWeight.w600),)),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
+  }
+
   Widget _buildForm() {
     _errorMessage();
     _doneMessage();
     return Center(
-      child: IntrinsicWidth(
+      child: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            RaisedButton(
-              child: Text("All"),
-              onPressed: () {
-                bloc.emitEvent(DownloadEvent(
-                  event: DownloadEventType.all,
-                ));
-              },
-            ), 
-            RaisedButton(
-              child: Text("Warehouse"),
-              onPressed: () {
-                bloc.emitEvent(DownloadEvent(
-                  event: DownloadEventType.warehouse,
-                ));
-              },
-            ), 
+            _listDownload(),
           ],
         ),
       ),
+      // child: IntrinsicWidth(
+      //   child: Container(
+      //     //mainAxisAlignment: MainAxisAlignment.start,
+      //     ///crossAxisAlignment: CrossAxisAlignment.stretch,
+      //     child: Column(
+      //        mainAxisAlignment: MainAxisAlignment.start,
+      //       crossAxisAlignment: CrossAxisAlignment.stretch,
+      //       children: <Widget>[
+      //       //_listDownload(),
+      //       SizedBox(height: 10,),
+      //       RaisedButton(
+      //         child: Text("All"),
+      //         onPressed: () {
+      //           bloc.emitEvent(DownloadEvent(
+      //             event: DownloadEventType.all,
+      //           ));
+      //         },
+      //       ), 
+      //       RaisedButton(
+      //         child: Text("Warehouse"),
+      //         onPressed: () {
+      //           bloc.emitEvent(DownloadEvent(
+      //             event: DownloadEventType.warehouse,
+      //           ));
+      //         },
+      //       ), 
+      //     ],
+      //     ),
+          
+      //   ),
+      // ),
     );
   }
 
@@ -145,11 +211,17 @@ class _DownloadPageState extends State<DownloadPage> {
             child: Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    gradient: bgGradientAppBar,
+                  ),
+                ),
                 title: Text("Download"),
-                backgroundColor: Colors.blue[900],
+                //backgroundColor: bgBlue,
+                
                 bottom: PreferredSize(
                   child: Container(
-                    color: Colors.yellow[900],
+                    color: bgBlue,
                     height: 5.0,
                   ),
                   preferredSize: Size.fromHeight(5.0)
@@ -158,15 +230,12 @@ class _DownloadPageState extends State<DownloadPage> {
               body: Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
+                  gradient: bgGradientPageWhite
                 ),
                 child: Stack(
                   children: <Widget>[
-                    _buildForm(),
+                    _listDownload(),
+                    //_buildForm(),
                     _showCircularProgress(),
                   ],
                 ),

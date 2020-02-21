@@ -376,7 +376,11 @@ Widget _showEnterText(AuthenticationBloc bloc) {
                       shape: BoxShape.rectangle, 
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-          child: InkWell(
+          
+         child: Material(
+           borderRadius: BorderRadius.circular(10.0),
+           color: bgOrange,
+           child: InkWell(
             child: Center(
                       child: Text('Login'.toUpperCase(),
                         style: TextStyle( fontSize: 20.0,
@@ -398,7 +402,7 @@ Widget _showEnterText(AuthenticationBloc bloc) {
                     },
               
           ),
-                    
+         ),           
           
         );
         
