@@ -92,7 +92,7 @@ void _onItemTapped(int index) {
                       ),
                     ),
                     decoration: BoxDecoration(
-                        gradient: bgGradientAppBar,
+                        gradient: bgInversGradientAppBar,
                         border: Border(
                             bottom: BorderSide(
                                 color: bgBlue,

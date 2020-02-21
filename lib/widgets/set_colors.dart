@@ -52,6 +52,16 @@ const bgGradientAppBar = LinearGradient(
                 end: Alignment.bottomLeft,
                 
                );
+const bgInversGradientAppBar = LinearGradient(
+                colors: <Color>[
+                      Color(0xFF0033CC),
+                      Color(0xFF0099FF),
+                      
+                ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                
+               );
 const bgGradientPage = LinearGradient(
             colors: [
                Color(0xFFF0F8FF),
