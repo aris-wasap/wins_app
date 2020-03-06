@@ -384,7 +384,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: data.id == 0
+              floatingActionButton:  _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,

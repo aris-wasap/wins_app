@@ -363,10 +363,10 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: data.id == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
-                      backgroundColor: Colors.orange[700],
+                      backgroundColor: btnBgOrange,
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();

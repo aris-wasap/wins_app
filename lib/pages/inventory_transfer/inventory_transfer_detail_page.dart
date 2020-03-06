@@ -235,7 +235,7 @@ class _InventoryTransferDetailPageState
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Transfer Production"),
+        title: Text("Create Transfer Production"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -267,7 +267,7 @@ class _InventoryTransferDetailPageState
           preferredSize: Size.fromHeight(5.0)
         ),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.transferProduction_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.inventoryTransfer_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
@@ -424,10 +424,10 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: data.id == 0
+              floatingActionButton:  _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
-                      backgroundColor: Colors.orange[700],
+                      backgroundColor: btnBgOrange,
                       label: Text("Scan"),
                       onPressed: () {
                         _scanQR();
