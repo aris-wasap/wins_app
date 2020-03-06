@@ -208,7 +208,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       child: ListView(
         children: <Widget>[
           
-         
+          SizedBox(height: 10,),
           _showLogo(),
           _showEnterText(bloc),
           _showUserNameInput(bloc),
@@ -227,7 +227,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   Widget _showLogo() {
-    return Image.asset('assets/images/logo.png', width: 75, height: 75);
+    return Image.asset('assets/images/icon.jpeg', width: 75, height: 75);
   }
 
 Widget _showIconSetting(AuthenticationBloc bloc) {
@@ -279,7 +279,7 @@ Widget _showEnterText(AuthenticationBloc bloc) {
       child: Text('Please enter your detail bellow here :',
                           style: TextStyle(
                             color: Colors.black54,
-                            fontSize: 16,
+                            fontSize: 13,
                            ),
                         ),
     );

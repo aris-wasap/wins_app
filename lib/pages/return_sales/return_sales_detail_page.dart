@@ -211,7 +211,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Delivery"),
+        title: Text("Create Return"),
         backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
           child: Container(
