@@ -64,6 +64,8 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
       var prodOrderId = event.prodOrderId;
       var prodOrderNo = event.prodOrderNo;
       var whsCodeFrom = event.whsCodeFrom;
+      var absEntryFrom = event.absEntryFrom;
+      var binCodeFrom = event.binCodeFrom;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -73,7 +75,7 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         InventoryTransferDetailScanResponse response = await _repository
-            .inventoryTransferDetail_Scan(prodOrderId, whsCodeFrom, qrResult);
+            .inventoryTransferDetail_Scan(prodOrderId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
         if (response == null) {
           yield InventoryTransferDetailState.failure(
             errorMessage: 'Response null',
@@ -89,7 +91,7 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield InventoryTransferDetailState.failure(
-                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom} dan production order ${prodOrderNo} ', 
+                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom}-bin ${binCodeFrom} dan production order ${prodOrderNo} ', 
                 data: event.data,
               );
             } else {

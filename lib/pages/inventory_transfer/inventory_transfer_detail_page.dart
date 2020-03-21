@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ncf_app/pages/cfl/cfl_db_warehouse_page.dart';
-import 'package:ncf_app/pages/cfl/cfl_production_order_page.dart';
+import 'package:ncf_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
@@ -19,8 +19,8 @@ import 'package:ncf_app/models/cfl_db_warehouse_model.dart'
     as cflDbWarehouse;
 import 'package:ncf_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:ncf_app/models/cfl_production_order_response.dart'
-    as cflProductionOrder;
+import 'package:ncf_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 
 class InventoryTransferDetailPage extends StatefulWidget {
   InventoryTransferDetailPage(this._id);
@@ -46,8 +46,12 @@ class _InventoryTransferDetailPageState
   final _transDateController = TextEditingController();
   final _fromWhsCodeController = TextEditingController();
   final _fromWhsNameController = TextEditingController();
+  final _fromAbsEntryController = TextEditingController();
+  final _fromBinCodeController = TextEditingController();
   final _toWhsCodeController = TextEditingController();
   final _toWhsNameController = TextEditingController();
+  final _toAbsEntryController = TextEditingController();
+  final _toBinCodeController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -91,6 +95,8 @@ class _InventoryTransferDetailPageState
     _fromWhsNameController?.dispose();
     _toWhsCodeController?.dispose();
     _toWhsNameController?.dispose();
+    _toAbsEntryController?.dispose();
+    _toBinCodeController?.dispose();
 
     bloc?.dispose();
 
@@ -105,8 +111,12 @@ class _InventoryTransferDetailPageState
     data.transDate = transDate;
     data.fromWhsCode = _fromWhsCodeController.text;
     data.fromWhsName = _fromWhsNameController.text;
+    data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
+    data.fromBinCode = _fromBinCodeController.text;
     data.toWhsCode = _toWhsCodeController.text;
     data.toWhsName = _toWhsNameController.text;
+    data.toAbsEntry = int.parse(_toAbsEntryController.text);
+    data.toBinCode = _toBinCodeController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -322,7 +332,10 @@ class _InventoryTransferDetailPageState
       bloc.emitEvent(InventoryTransferDetailEventScan(
           // prodOrderId: int.parse(_prodOrderIdController.text),
           // prodOrderNo: _prodOrderNoController.text,
+          
           whsCodeFrom: _fromWhsCodeController.text,
+          absEntryFrom: int.parse(_fromAbsEntryController.text) ,
+          binCodeFrom: _fromBinCodeController.text,
           qrResult: qrResult,
           data: data));
 
@@ -519,8 +532,13 @@ class _InventoryTransferDetailPageState
 
       _fromWhsCodeController.text = data.fromWhsCode;
       _fromWhsNameController.text = data.fromWhsName;
+      _fromAbsEntryController.text = data.fromAbsEntry.toString();
+      _fromBinCodeController.text = data.fromBinCode;
       _toWhsCodeController.text = data.toWhsCode;
       _toWhsNameController.text = data.toWhsName;
+      _toAbsEntryController.text = data.toAbsEntry.toString();
+      _toBinCodeController.text = data.toBinCode;
+
     }
     // else {
     //   _fromWhsCodeController.text =
@@ -723,6 +741,63 @@ class _InventoryTransferDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(_fromWhsCodeController.text)));
+
+                      bin.then((cflBinLocation.Data bin) {
+                        if (bin != null) {
+                          _fromAbsEntryController.text = bin.absEntry.toString();
+                          _fromBinCodeController.text = bin.binCode;
+                         
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      )
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "From Bin Location",
+                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_fromBinCodeController.text),
+                                
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
                       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
                           Navigator.push(
                               context,
@@ -771,6 +846,63 @@ class _InventoryTransferDetailPageState
                                     Text(_toWhsNameController.text),
                                   ],
                                 ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
+                 FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(_toWhsCodeController.text)));
+
+                      bin.then((cflBinLocation.Data bin) {
+                        if (bin != null) {
+                          _toAbsEntryController.text = bin.absEntry.toString();
+                          _toBinCodeController.text = bin.binCode;
+                         
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      )
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "To Bin Location",
+                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_toBinCodeController.text),
+                                
                               )
                             ],
                           ),

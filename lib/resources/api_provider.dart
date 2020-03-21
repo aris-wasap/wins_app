@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:ncf_app/models/cfl_binlocation_response.dart';
 import 'package:ncf_app/models/cfl_goods_issue_response.dart';
 import 'package:ncf_app/models/cfl_production_order_response.dart';
 import 'package:ncf_app/models/cfl_purchase_order_response.dart';
@@ -1336,12 +1337,14 @@ class ApiProvider {
   }
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
-      int prodOrderId, String whsCodeFrom, String qrResult) async {
+      int prodOrderId, String whsCodeFrom, int absEntryFrom, String binCodeFrom ,String qrResult) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         //"ProdOrderId": prodOrderId,
         "WhsCodeFrom": whsCodeFrom,
+        "AbsEntry" : absEntryFrom,
+        "BinCode" : binCodeFrom,
         "QrResult": qrResult
       });
 
@@ -1551,4 +1554,37 @@ class ApiProvider {
       throw Exception('warehouse_GetAll:Failed to load post(1)');
     }
   }
+
+  //-----------------------------
+  //CflBinLocation
+  //-----------------------------
+  Future<CflBinLocationResponse> cflBinLocation_FetchNextPage(
+      int rowStart, String searchQuery, String whsCode) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "whsCode": whsCode
+      });
+
+      final response = await http.post(
+          "${_url}api/CflBinLocationApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflBinLocationResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflBinLocation_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'cflBinLocation_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
 }

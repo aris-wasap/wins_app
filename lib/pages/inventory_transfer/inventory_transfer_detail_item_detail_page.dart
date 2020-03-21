@@ -94,7 +94,7 @@ class _InventoryTransferDetailItemDetailPageState
                           _done();
                         },
                         textColor: Colors.white,
-                        label: Text("Submit"),
+                        label: Text("Done"),
                       )
                     : Container(),
               ],

@@ -8,8 +8,10 @@ class InventoryTransferDetailEvent extends BlocEvent {
     this.data,
     this.prodOrderId,
     this.prodOrderNo,
-    this.item,
     this.whsCodeFrom,
+    this.absEntryFrom,
+    this.binCodeFrom,
+    this.item,
     this.itemIndex,
     this.qrResult, 
   });
@@ -17,9 +19,11 @@ class InventoryTransferDetailEvent extends BlocEvent {
   final int id;
   final Data data;
   final int prodOrderId;
-  final String whsCodeFrom;
-  final Item item;
   final String prodOrderNo;
+  final String whsCodeFrom;
+  final int absEntryFrom;
+  final String binCodeFrom;
+  final Item item;
   final int itemIndex;
   final String qrResult; 
 }
@@ -42,12 +46,16 @@ class InventoryTransferDetailEventScan extends InventoryTransferDetailEvent {
     // @required int prodOrderId,
     // @required String prodOrderNo,
     @required String whsCodeFrom,
+    @required String binCodeFrom,
+    @required int absEntryFrom,
     @required String qrResult,
   }) : super(
           data: data,
           // prodOrderId: prodOrderId,
           // prodOrderNo: prodOrderNo,
           whsCodeFrom: whsCodeFrom,
+          binCodeFrom : binCodeFrom,
+          absEntryFrom : absEntryFrom,
           qrResult: qrResult,
         );
 } 

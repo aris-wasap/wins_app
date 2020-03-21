@@ -1,3 +1,4 @@
+import 'package:ncf_app/models/cfl_binlocation_response.dart';
 import 'package:ncf_app/models/cfl_db_warehouse_model.dart';
 import 'package:ncf_app/models/cfl_production_order_response.dart';
 import 'package:ncf_app/models/cfl_purchase_order_response.dart';
@@ -324,9 +325,9 @@ class Repository {
       apiProvider.inventoryTransferDetail_Add(data);
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
-          int prodOrderId, String whsCodeFrom, String qrResult) =>
+          int prodOrderId, String whsCodeFrom, int absEntryFrom, String binCodeFrom ,String qrResult) =>
       apiProvider.inventoryTransferDetail_Scan(
-          prodOrderId, whsCodeFrom, qrResult);
+          prodOrderId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
 
   
   //-----------------------------
@@ -397,4 +398,11 @@ class Repository {
   Future<List<CflDbWarehouseModel>> cflDbWarehouse_Refresh(
           String id, String searchQuery) =>
       DbProvider.db.cflDbWarehouse_Refresh(id, searchQuery);
+      
+  //-----------------------------
+  //CflBinLocation
+  //-----------------------------
+  Future<CflBinLocationResponse> cflBinLocation_FetchNextPage(int rowStart, String searchQuery 
+          ,String whsCode) =>
+      apiProvider.cflBinLocation_FetchNextPage(rowStart, searchQuery, whsCode);
 }
