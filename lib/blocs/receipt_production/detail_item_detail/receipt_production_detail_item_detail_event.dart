@@ -6,18 +6,22 @@ class ReceiptProductionDetailItemDetailEvent extends BlocEvent {
   ReceiptProductionDetailItemDetailEvent({
     this.data,
     this.qty, 
+    this.binAbs,
+
   });
 
   final Item data;
   final double qty; 
+  final int binAbs;
 }
 
 class ReceiptProductionDetailItemDetailEventQty
     extends ReceiptProductionDetailItemDetailEvent {
   ReceiptProductionDetailItemDetailEventQty({
-    @required double qty,
+    @required double qty,  @required int binAbs,
   }) : super(
           qty: qty,
+          binAbs : binAbs,
         );
 }
  

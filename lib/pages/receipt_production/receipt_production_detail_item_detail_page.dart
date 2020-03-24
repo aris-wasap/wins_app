@@ -5,11 +5,14 @@ import 'package:ncf_app/blocs/receipt_production/detail_item_detail/receipt_prod
 import 'package:ncf_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_event.dart';
 import 'package:ncf_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_state.dart';
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
+import 'package:ncf_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:ncf_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'dart:math' as math;
+import 'package:ncf_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 
 class ReceiptProductionDetailItemDetailPage extends StatefulWidget {
   ReceiptProductionDetailItemDetailPage(this._data);
@@ -40,6 +43,7 @@ class _ReceiptProductionDetailItemDetailPageState
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
 
     bloc = ReceiptProductionDetailItemDetailBloc(this._data);
@@ -48,6 +52,9 @@ class _ReceiptProductionDetailItemDetailPageState
   @override
   void dispose() {
     _qtyController?.dispose();
+
+    _binAbsController?.dispose();
+    _binCodeController?.dispose();
 
     bloc?.dispose();
 
@@ -63,6 +70,7 @@ class _ReceiptProductionDetailItemDetailPageState
     }
     bloc.emitEvent(ReceiptProductionDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
+      binAbs: int.parse(_binAbsController.text), 
     ));
     Navigator.pop(context, _getState().data);
   }
@@ -122,6 +130,9 @@ class _ReceiptProductionDetailItemDetailPageState
     _uomController.text = data.uom;
     _whsCodeController.text = data.whsCode;
     _whsNameController.text = data.whsName;
+    _binAbsController.text = data.binAbs.toString();
+    _binCodeController.text = data.binCode;
+   
     if(_data.quantity != 0){
       if(_qtyController.text==""){
         _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.quantity.toString()));
@@ -265,7 +276,66 @@ class _ReceiptProductionDetailItemDetailPageState
                     )
                   ),
                 ),
-                
+                Padding(
+                  padding: EdgeInsets.only(top: 10)
+                ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(_whsCodeController.text)));
+
+                      bin.then((cflBinLocation.Data bin) {
+                        if (bin != null) {
+                          _binAbsController.text = bin.absEntry.toString();
+                          _binCodeController.text = bin.binCode;
+                         
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      )
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "To Bin Location",
+                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_binCodeController.text),
+                                
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
