@@ -36,8 +36,12 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['TransDate'] as String),
     fromWhsCode: json['FromWhsCode'] as String,
     fromWhsName: json['FromWhsName'] as String,
+    fromAbsEntry: json['FromAbsEntry'] as int,
+    fromBinCode: json['FromBinCode'] as String,
     toWhsCode: json['ToWhsCode'] as String,
     toWhsName: json['ToWhsName'] as String,
+    toAbsEntry: json['ToAbsEntry'] as int,
+    toBinCode: json['ToBinCode'] as String,
     totalQty: (json['TotalQty'] as num)?.toDouble(),
     items: (json['Items'] as List)
         ?.map(
@@ -54,8 +58,12 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'TransDate': instance.transDate?.toIso8601String(),
       'FromWhsCode': instance.fromWhsCode,
       'FromWhsName': instance.fromWhsName,
+      'FromAbsEntry': instance.fromAbsEntry,
+      'FromBinCode': instance.fromBinCode,
       'ToWhsCode': instance.toWhsCode,
       'ToWhsName': instance.toWhsName,
+      'ToAbsEntry': instance.toAbsEntry,
+      'ToBinCode': instance.toBinCode,
       'TotalQty': instance.totalQty,
       'Items': instance.items,
     };
@@ -71,8 +79,13 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     toWhsCode: json['ToWhsCode'] as String,
+    toAbsEntry: json['ToAbsEntry'] as int,
+    toBinCode: json['ToBinCode'] as String,
     batchNo: json['BatchNo'] as String,
-  );
+  )
+    ..fromWhsCode = json['FromWhsCode'] as String
+    ..fromAbsEntry = json['FromAbsEntry'] as int
+    ..fromBinCode = json['FromBinCode'] as String;
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -84,6 +97,11 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'AvailableQty': instance.availableQty,
       'Qty': instance.qty,
       'Uom': instance.uom,
+      'FromWhsCode': instance.fromWhsCode,
+      'FromAbsEntry': instance.fromAbsEntry,
+      'FromBinCode': instance.fromBinCode,
       'ToWhsCode': instance.toWhsCode,
+      'ToAbsEntry': instance.toAbsEntry,
+      'ToBinCode': instance.toBinCode,
       'BatchNo': instance.batchNo,
     };

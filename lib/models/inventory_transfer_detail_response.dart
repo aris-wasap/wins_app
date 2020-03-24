@@ -62,11 +62,23 @@ class Data {
   @JsonKey(name: 'FromWhsName')
   String fromWhsName;
 
+   @JsonKey(name: 'FromAbsEntry')
+  int fromAbsEntry;
+
+  @JsonKey(name: 'FromBinCode')
+  String fromBinCode;
+
   @JsonKey(name: 'ToWhsCode')
   String toWhsCode;
 
   @JsonKey(name: 'ToWhsName')
   String toWhsName;
+
+  @JsonKey(name: 'ToAbsEntry')
+  int toAbsEntry;
+
+  @JsonKey(name: 'ToBinCode')
+  String toBinCode;
 
   @JsonKey(name: 'TotalQty')
   double totalQty;
@@ -85,8 +97,12 @@ class Data {
     this.transDate, 
     this.fromWhsCode,
     this.fromWhsName,
+    this.fromAbsEntry,
+    this.fromBinCode,
     this.toWhsCode, 
     this.toWhsName,
+    this.toAbsEntry,
+    this.toBinCode,
     this.totalQty,
     this.items,
   });
@@ -123,8 +139,23 @@ class Item {
   @JsonKey(name: 'Uom')
   String uom;
 
+  @JsonKey(name: 'FromWhsCode')
+  String fromWhsCode;
+
+  @JsonKey(name: 'FromAbsEntry')
+  int fromAbsEntry;
+
+  @JsonKey(name: 'FromBinCode')
+  String fromBinCode;
+
   @JsonKey(name: 'ToWhsCode')
   String toWhsCode;
+
+  @JsonKey(name: 'ToAbsEntry')
+  int toAbsEntry;
+
+  @JsonKey(name: 'ToBinCode')
+  String toBinCode;
 
   @JsonKey(name: 'BatchNo')
   String batchNo; 
@@ -141,6 +172,8 @@ class Item {
     this.qty: 0,
     this.uom,
     this.toWhsCode, 
+    this.toAbsEntry,
+    this.toBinCode,
     this.batchNo, 
   });
 

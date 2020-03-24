@@ -31,6 +31,10 @@ class _ReceiptProductionDetailItemDetailPageState
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
+  final _whsCodeController = TextEditingController();
+  final _whsNameController = TextEditingController();
+  final _binAbsController = TextEditingController();
+  final _binCodeController = TextEditingController();
   final _qtyController = TextEditingController();
 
   @override
@@ -116,6 +120,8 @@ class _ReceiptProductionDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
+    _whsCodeController.text = data.whsCode;
+    _whsNameController.text = data.whsName;
     if(_data.quantity != 0){
       if(_qtyController.text==""){
         _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.quantity.toString()));
@@ -238,6 +244,21 @@ class _ReceiptProductionDetailItemDetailPageState
                   enabled: false,
                   decoration: InputDecoration(
                     labelText: "UoM",
+                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(10.0)
+                    )
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.only(top: 10)
+                ),
+                TextFormField(
+                  controller: _whsNameController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: "Receipt To Warehouse",
                     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0)
