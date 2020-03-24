@@ -245,7 +245,7 @@ class _InventoryTransferDetailPageState
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Transfer Production"),
+        title: Text("Create Inventory Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -267,7 +267,7 @@ class _InventoryTransferDetailPageState
       );
     } else {
       return AppBar(
-        title: Text("Transfer Production"),
+        title: Text("Inventory Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -607,71 +607,7 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflProductionOrder.Data> prodOrder =
-                //           Navigator.push(
-                //               context,
-                //               MaterialPageRoute<cflProductionOrder.Data>(
-                //                   builder: (BuildContext context) =>
-                //                       CflProductionOrderPage()));
-
-                //       prodOrder.then((cflProductionOrder.Data prodOrder) {
-                //         if (prodOrder != null) {
-                //           _prodOrderIdController.text = prodOrder.id.toString();
-                //           _prodOrderNoController.text = prodOrder.transNo;
-                //           _prodOrderDateController.text =
-                //               DateFormat("dd-MM-yyyy").format(transDate);
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                //       ),
-                //       borderRadius: BorderRadius.all(
-                //           Radius.circular(10)
-                //       ),
-                //     ),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "Production Order No",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.all(0),
-                //                 title: Text(_prodOrderNoController.text),
-                //                 subtitle: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: <Widget>[
-                //                     Text(_prodOrderDateController.text),
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -694,6 +630,7 @@ class _InventoryTransferDetailPageState
                     }
                   },
                   child: Container(
+                    height: 100,
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
@@ -716,7 +653,7 @@ class _InventoryTransferDetailPageState
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_fromWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -838,7 +775,7 @@ class _InventoryTransferDetailPageState
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_toWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -958,6 +895,10 @@ class _InventoryTransferDetailPageState
           Container(
             height: 5,
             color: Colors.grey,
+          ),
+          Container(
+            height: 65,
+            color: Colors.white
           ),
         ]);
   }
