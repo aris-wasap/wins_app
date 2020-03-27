@@ -15,7 +15,6 @@ class CheckDataPage extends StatefulWidget {
 }
 
 class _CheckDataPageState extends State<CheckDataPage> {
-
   ItemDetailBloc bloc = ItemDetailBloc();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
@@ -107,12 +106,11 @@ class _CheckDataPageState extends State<CheckDataPage> {
       title: Text("Check Data"),
       backgroundColor: Colors.blue[900],
       bottom: PreferredSize(
-        child: Container(
-          color: Colors.yellow[900],
-          height: 5.0,
-        ),
-        preferredSize: Size.fromHeight(5.0)
-      ),
+          child: Container(
+            color: Colors.yellow[900],
+            height: 5.0,
+          ),
+          preferredSize: Size.fromHeight(5.0)),
     );
   }
 
@@ -128,9 +126,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
 
-      bloc.emitEvent(ItemDetailEventScan(
-          qrResult: qrResult,
-          data: data));
+      bloc.emitEvent(ItemDetailEventScan(qrResult: qrResult, data: data));
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
@@ -164,19 +160,19 @@ class _CheckDataPageState extends State<CheckDataPage> {
             child: Scaffold(
               key: _scaffoldKey,
               //appBar: _appBar(),
+              //backgroundColor: Colors.blue[100],
               body: Container(
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                            Colors.white, 
-                            Colors.white,
-                            ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
-                ),
+                    gradient: LinearGradient(
+                  colors: [
+                    Colors.blue[100],
+                    Colors.blue[100],
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
                     padding: EdgeInsets.all(0.0),
@@ -186,16 +182,15 @@ class _CheckDataPageState extends State<CheckDataPage> {
                 ]),
               ),
               floatingActionButton: FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      //icon: SizedBox()
-                      backgroundColor: Colors.orange[700],
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
-                    ),
+                icon: Icon(Icons.camera_alt),
+                backgroundColor: Colors.orange[700],
+                label: Text("Scan"),
+                onPressed: () {
+                  _scanQR();
+                },
+              ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+                  FloatingActionButtonLocation.endFloat ,
             ),
           );
         });
@@ -224,147 +219,158 @@ class _CheckDataPageState extends State<CheckDataPage> {
       _stockController.text = data.totalStock.toString();
     }
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                    gradient: LinearGradient(
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 380,
+          child: Card(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Container(
+                        color: Colors.transparent,
+                        height: 50,
+                        child: Text("Stock Item Master Data", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
                       colors: [
-                        Colors.white, 
-                        Colors.white, 
-                        ],
+                        Colors.white,
+                        Colors.white,
+                      ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                    )
-                  ),
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                ),
-                TextFormField(
-                  controller: _itemCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Item code",
-                    labelText: "Item code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    ),
-                  )
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                ),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Item name",
-                    labelText: "Item name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                ),
-                TextFormField(
-                  controller: _batchController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Batch No.",
-                    labelText: "Batch No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5),
-                ),
-                TextFormField(
-                  controller: _stockController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Stock",
-                    labelText: "Stock",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                          color: Colors.blue,
-                          width: 1.0,
+                    )),
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
                         ),
-                ),
-              ),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Break Stock"),
-                  ],
-                ),
-              ),
-            ),
+                        TextFormField(
+                            controller: _itemCodeController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              hintText: "Item code",
+                              labelText: "Item code",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(10.0)),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                        ),
+                        TextFormField(
+                            controller: _itemNameController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Item name",
+                                labelText: "Item name",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(10.0)))),
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                        ),
+                        TextFormField(
+                            controller: _batchController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Batch No.",
+                                labelText: "Batch No.",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(10.0)))),
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                        ),
+                        TextFormField(
+                            controller: _stockController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Stock",
+                                labelText: "Stock",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(10.0))))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.blue,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Break Stock"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                      //color: Colors.brown,
+                      child: ((data.details != null) ? data.details.length : 0) > 0
+                          ? _buildList()
+                          : Container(
+                              padding: EdgeInsets.all(10.0),
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: Text("Item Empty"),
+                            )),
+                  Container(
+                    height: 5,
+                    color: Colors.grey,
+                  )
+                ]),
           ),
-          Container(
-              //color: Colors.brown,
-              child:
-                  ((data.details != null) ? data.details.length : 0) > 0
-                      ? _buildList()
-                      : Container(
-                          padding: EdgeInsets.all(10.0),
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Text("Item Empty"),
-                        )),
-          Container(
-            height: 5,
-            color: Colors.grey,
-          )
-        ]
-      );
+        ),
+      ),
+    );
   }
 
   Widget _rowDetail(List<Item> data, int index) {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("${data[index].whsName}"+"(""${data[index].whsCode}"")"),
+          title:
+              Text("${data[index].whsName}" + "(" "${data[index].whsCode}" ")"),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].stock)}"),
-              Text("Manufacture Date : ${data[index].mnfDate}".substring(0, 29)),
+              Text(
+                  "Qty : ${NumberFormat("#,###.00").format(data[index].stock)}"),
+              Text(
+                  "Manufacture Date : ${data[index].mnfDate}".substring(0, 29)),
               Text("Receive Date : ${data[index].inDate}".substring(0, 25)),
               Text("Expired Date : ${data[index].expDate}".substring(0, 25)),
             ],
