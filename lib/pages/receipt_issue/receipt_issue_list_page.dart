@@ -180,84 +180,92 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
 
-    return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => Divider(),
-      controller: _scrollController,
-      itemCount: data.length + 1,
-      itemBuilder: (contex, index) {
-        if (index < data.length) {
-          return (Container(
-            decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+    return Container(
+      color: Colors.blue[100],
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+        child: Card(
+              child: ListView.separated(
+            separatorBuilder: (BuildContext context, int index) => Divider(),
+            controller: _scrollController,
+            itemCount: data.length + 1,
+            itemBuilder: (contex, index) {
+              if (index < data.length) {
+                return (Container(
+                  decoration: BoxDecoration(
+                          gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                        ),
+                  margin: const EdgeInsets.all(3),
+                  // decoration:
+                  //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(
+                          "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                      // subtitle: Column(
+                      //   //mainAxisAlignment: MainAxisAlignment.start,
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: <Widget>[
+                      //     Text(data[index].customerName),
+                      //     Text("${data[index].status} - ${data[index].createdUser}"),
+                      //   ],
+                      // ),
+                      leading: ClipOval(
+                        child: Image.network(
+                          globalBloc.getUrl() +
+                              "api/UserApi/GetImage?id=${data[index].userId}",
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                      ),
+
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      //color: Colors.white, size: 30.0),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ReceiptIssueDetailPage(data[index].id),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-            margin: const EdgeInsets.all(3),
-            // decoration:
-            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-                // subtitle: Column(
-                //   //mainAxisAlignment: MainAxisAlignment.start,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: <Widget>[
-                //     Text(data[index].customerName),
-                //     Text("${data[index].status} - ${data[index].createdUser}"),
-                //   ],
-                // ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
+                ));
+              }
+
+              if (isFailure) {
+                return ListTile(
+                  title: Text(
+                    'Error while loading data...',
+                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                  ),
+                  isThreeLine: false,
+                  leading: CircleAvatar(
+                    child: Text(':('),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.redAccent,
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Center(
+                  child: Opacity(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                    ),
+                    opacity: isBusy ? 1 : 0,
                   ),
                 ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReceiptIssueDetailPage(data[index].id),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ));
-        }
-
-        if (isFailure) {
-          return ListTile(
-            title: Text(
-              'Error while loading data...',
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-            ),
-            isThreeLine: false,
-            leading: CircleAvatar(
-              child: Text(':('),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.redAccent,
-            ),
-          );
-        }
-
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Center(
-            child: Opacity(
-              child: CircularProgressIndicator(
-                strokeWidth: 2.0,
-              ),
-              opacity: isBusy ? 1 : 0,
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

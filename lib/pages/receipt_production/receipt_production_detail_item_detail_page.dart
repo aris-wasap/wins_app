@@ -71,6 +71,7 @@ class _ReceiptProductionDetailItemDetailPageState
     bloc.emitEvent(ReceiptProductionDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text), 
+      binCode: _binCodeController.text,
     ));
     Navigator.pop(context, _getState().data);
   }

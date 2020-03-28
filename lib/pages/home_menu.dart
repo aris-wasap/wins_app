@@ -477,285 +477,297 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     final double widthScreen = mediaQueryData.size.width;
     final double heightScreen = mediaQueryData.size.height;
     double sideLength = 50;
-    return 
-    
-    CustomScrollView(
-      slivers: <Widget>[
-        SliverGrid.count(
-          crossAxisCount: 2,
-          childAspectRatio: 5,
-          children: <Widget>[
-            Container(color: Colors.blue[100]),
-            Container(color: Colors.blue[100])
-          ],
-        ),
-        SliverPadding(
-          padding: EdgeInsets.all(10),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20),
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return Center(
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Material(
-                          child: InkWell(
-                            onTap: () {
-                              //1
-                              if (subjectList[index]["authDetail"] ==
-                                      "receiptProduction_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .receiptProduction_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ReceiptProductionListPage();
-                                }));
-                              }
-                              //2
-                              else if (subjectList[index]["authDetail"] ==
-                                      "receiptIssue_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .receiptIssue_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ReceiptIssueListPage();
-                                }));
-                              }
-                              //3
-                              else if (subjectList[index]["authDetail"] ==
-                                      "receiptOrder_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .receiptOrder_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ReceiptOrderListPage();
-                                }));
-                              }
-                              //4
-                              else if (subjectList[index]["authDetail"] ==
-                                      "inventoryTransfer_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .inventoryTransfer_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return InventoryTransferListPage();
-                                }));
-                              }
-                              //5
-                              else if (subjectList[index]["authDetail"] ==
-                                      "deliveryOrder_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .deliveryOrder_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return DeliveryOrderListPage();
-                                }));
-                              }
-                              //6 data.authDetail
-                              else if (subjectList[index]["authDetail"] ==
-                                      "returnSales_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .returnSales_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ReturnSalesListPage();
-                                }));
-                              }
-                            },
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  height: 52,
-                                  color: Colors.white10,
-                                  child: Image.asset(
-                                    //data.icon,
-                                    subjectList[index]["icon"],
-                                    height: 45,
-                                    width: 45,
-                                  ),
-                                ),
-                                Container(
-                                  height: 43,
-                                  color: Colors.white10,
-                                  child: ListTile(
-                                    title: Text(
-                                      //data.title,
-                                      subjectList[index]["title"],
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.openSans(
-                                          textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600)),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 30,
-                                  color: Colors.white10,
-                                  child: ListTile(
-                                    title: Text(
-                                      subjectList[index]["subtitle"],
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.openSans(
-                                          textStyle: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600)),
-                                    ),
-                                  ),
-                                )
+    return Padding(
+      padding:
+          const EdgeInsets.only(right: 2.0, left: 2.0, bottom: 10.0, top: 2.0),
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
+          BoxShadow(
+              color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
+        ], color: bgWhite, borderRadius: BorderRadius.circular(10)),
+        child: Card(
+          color: Colors.blue[100],
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverPadding(
+                padding: EdgeInsets.all(10),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return Center(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(4, 4),
+                                    blurRadius: 2),
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(-4, -4),
+                                    blurRadius: 2),
                               ],
+                              color: bgWhite,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
+                            child: Material(
+                              child: InkWell(
+                                onTap: () {
+                                  //1
+                                  if (subjectList[index]["authDetail"] ==
+                                          "receiptProduction_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .receiptProduction_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ReceiptProductionListPage();
+                                    }));
+                                  }
+                                  //2
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "receiptIssue_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .receiptIssue_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ReceiptIssueListPage();
+                                    }));
+                                  }
+                                  //3
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "receiptOrder_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .receiptOrder_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ReceiptOrderListPage();
+                                    }));
+                                  }
+                                  //4
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "inventoryTransfer_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .inventoryTransfer_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return InventoryTransferListPage();
+                                    }));
+                                  }
+                                  //5
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "deliveryOrder_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .deliveryOrder_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return DeliveryOrderListPage();
+                                    }));
+                                  }
+                                  //6 data.authDetail
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "returnSales_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .returnSales_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ReturnSalesListPage();
+                                    }));
+                                  }
+                                },
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      height: 52,
+                                      child: Image.asset(
+                                        subjectList[index]["icon"],
+                                        height: 45,
+                                        width: 45,
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 35,
+                                      child: ListTile(
+                                        title: Text(
+                                          //data.title,
+                                          subjectList[index]["title"],
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 30,
+                                      //color: Colors.white10,
+                                      child: ListTile(
+                                        title: Text(
+                                          subjectList[index]["subtitle"],
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+
+                          // decoration: BoxDecoration(boxShadow: [
+                          //   BoxShadow(
+                          //       color: Colors.black26,
+                          //       offset: Offset(4, 4),
+                          //       blurRadius: 2),
+                          //   BoxShadow(
+                          //       color: Colors.black12,
+                          //       offset: Offset(-4, -4),
+                          //       blurRadius: 2),
+                          // ], color: bgWhite, borderRadius: BorderRadius.circular(10)),
+                          // child: Material(
+                          //     color: bgWhite,
+                          //     borderRadius: BorderRadius.circular(10.0),
+                          //     child: InkWell(
+                          //       onTap: () {
+                          //         //1
+                          //         if (subjectList[index]["authDetail"] ==
+                          //                 "receiptProduction_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .receiptProduction_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return ReceiptProductionListPage();
+                          //           }));
+                          //         }
+                          //         //2
+                          //         else if (subjectList[index]["authDetail"] ==
+                          //                 "receiptIssue_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .receiptIssue_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return ReceiptIssueListPage();
+                          //           }));
+                          //         }
+                          //         //3
+                          //         else if (subjectList[index]["authDetail"] ==
+                          //                 "receiptOrder_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .receiptOrder_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return ReceiptOrderListPage();
+                          //           }));
+                          //         }
+                          //         //4
+                          //         else if (subjectList[index]["authDetail"] ==
+                          //                 "inventoryTransfer_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .inventoryTransfer_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return InventoryTransferListPage();
+                          //           }));
+                          //         }
+                          //         //5
+                          //         else if (subjectList[index]["authDetail"] ==
+                          //                 "deliveryOrder_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .deliveryOrder_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return DeliveryOrderListPage();
+                          //           }));
+                          //         }
+                          //         //6 data.authDetail
+                          //         else if (subjectList[index]["authDetail"] ==
+                          //                 "returnSales_Auth_Detail" &&
+                          //             globalBloc.loginResponse.data
+                          //                     .returnSales_Auth_Detail ==
+                          //                 'Y') {
+                          //           Navigator.push(context, MaterialPageRoute(
+                          //               builder: (BuildContext context) {
+                          //             return ReturnSalesListPage();
+                          //           }));
+                          //         }
+                          //       },
+                          //       child: Column(
+                          //         mainAxisAlignment: MainAxisAlignment.center,
+                          //         children: <Widget>[
+                          //           Image.asset(
+                          //             //data.icon,
+                          //             subjectList[index]["icon"],
+                          //             height: 30,
+                          //             width: 45,
+                          //           ),
+                          //           SizedBox(
+                          //             height: 14,
+                          //           ),
+                          //           Text(
+                          //             //data.title,
+                          //             subjectList[index]["title"],
+                          //             textAlign: TextAlign.center,
+                          //             style: GoogleFonts.openSans(
+                          //                 textStyle: TextStyle(
+                          //                     color: Colors.black,
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.w600)),
+                          //           ),
+
+                          //           SizedBox(
+                          //             height: 14,
+                          //           ),
+                          //           Text(
+                          //             //data.subtitle,
+                          //             subjectList[index]["subtitle"],
+                          //             textAlign: TextAlign.center,
+                          //             style: GoogleFonts.openSans(
+                          //                 textStyle: TextStyle(
+                          //                     color: Colors.black87,
+                          //                     fontSize: 11,
+                          //                     fontWeight: FontWeight.w600)),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     )),
                           ),
-                        )
-                      ],
-                    )
-
-                    // decoration: BoxDecoration(boxShadow: [
-                    //   BoxShadow(
-                    //       color: Colors.black26,
-                    //       offset: Offset(4, 4),
-                    //       blurRadius: 2),
-                    //   BoxShadow(
-                    //       color: Colors.black12,
-                    //       offset: Offset(-4, -4),
-                    //       blurRadius: 2),
-                    // ], color: bgWhite, borderRadius: BorderRadius.circular(10)),
-                    // child: Material(
-                    //     color: bgWhite,
-                    //     borderRadius: BorderRadius.circular(10.0),
-                    //     child: InkWell(
-                    //       onTap: () {
-                    //         //1
-                    //         if (subjectList[index]["authDetail"] ==
-                    //                 "receiptProduction_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .receiptProduction_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return ReceiptProductionListPage();
-                    //           }));
-                    //         }
-                    //         //2
-                    //         else if (subjectList[index]["authDetail"] ==
-                    //                 "receiptIssue_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .receiptIssue_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return ReceiptIssueListPage();
-                    //           }));
-                    //         }
-                    //         //3
-                    //         else if (subjectList[index]["authDetail"] ==
-                    //                 "receiptOrder_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .receiptOrder_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return ReceiptOrderListPage();
-                    //           }));
-                    //         }
-                    //         //4
-                    //         else if (subjectList[index]["authDetail"] ==
-                    //                 "inventoryTransfer_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .inventoryTransfer_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return InventoryTransferListPage();
-                    //           }));
-                    //         }
-                    //         //5
-                    //         else if (subjectList[index]["authDetail"] ==
-                    //                 "deliveryOrder_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .deliveryOrder_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return DeliveryOrderListPage();
-                    //           }));
-                    //         }
-                    //         //6 data.authDetail
-                    //         else if (subjectList[index]["authDetail"] ==
-                    //                 "returnSales_Auth_Detail" &&
-                    //             globalBloc.loginResponse.data
-                    //                     .returnSales_Auth_Detail ==
-                    //                 'Y') {
-                    //           Navigator.push(context, MaterialPageRoute(
-                    //               builder: (BuildContext context) {
-                    //             return ReturnSalesListPage();
-                    //           }));
-                    //         }
-                    //       },
-                    //       child: Column(
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: <Widget>[
-                    //           Image.asset(
-                    //             //data.icon,
-                    //             subjectList[index]["icon"],
-                    //             height: 30,
-                    //             width: 45,
-                    //           ),
-                    //           SizedBox(
-                    //             height: 14,
-                    //           ),
-                    //           Text(
-                    //             //data.title,
-                    //             subjectList[index]["title"],
-                    //             textAlign: TextAlign.center,
-                    //             style: GoogleFonts.openSans(
-                    //                 textStyle: TextStyle(
-                    //                     color: Colors.black,
-                    //                     fontSize: 16,
-                    //                     fontWeight: FontWeight.w600)),
-                    //           ),
-
-                    //           SizedBox(
-                    //             height: 14,
-                    //           ),
-                    //           Text(
-                    //             //data.subtitle,
-                    //             subjectList[index]["subtitle"],
-                    //             textAlign: TextAlign.center,
-                    //             style: GoogleFonts.openSans(
-                    //                 textStyle: TextStyle(
-                    //                     color: Colors.black87,
-                    //                     fontSize: 11,
-                    //                     fontWeight: FontWeight.w600)),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )),
-                    ),
-              );
-            }, childCount: subjectList.length),
+                    );
+                  }, childCount: subjectList.length),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
     // return  Column(
     //   mainAxisAlignment: MainAxisAlignment.start,

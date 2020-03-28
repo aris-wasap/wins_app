@@ -25,6 +25,7 @@ class ReceiptProductionDetailItemDetailBloc extends BlocEventStateBase<
       var newData = currentState.data;
       newData.quantity = event.qty;
       newData.binAbs = event.binAbs;
+      newData.binCode = event.binCode;
       yield ReceiptProductionDetailItemDetailState.success(
         data: newData,
       );

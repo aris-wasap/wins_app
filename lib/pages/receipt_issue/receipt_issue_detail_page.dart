@@ -373,18 +373,24 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
+                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite,
-                ),
-                child: Stack(children: <Widget>[
-                  SingleChildScrollView(
-                    padding: EdgeInsets.all(0.0),
-                    child: _buildForm(),
+                // decoration: BoxDecoration(
+                //   gradient: bgGradientPageWhite,
+                // ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                  child: Card(
+                                    child: Stack(children: <Widget>[
+                      SingleChildScrollView(
+                        padding: EdgeInsets.all(0.0),
+                        child: _buildForm(),
+                      ),
+                      _showCircularProgress(),
+                    ]),
                   ),
-                  _showCircularProgress(),
-                ]),
+                ),
               ),
               floatingActionButton: _getState().data.id  == 0
                   ? FloatingActionButton.extended(

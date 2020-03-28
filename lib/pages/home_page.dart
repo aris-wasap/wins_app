@@ -26,6 +26,7 @@ import 'check_data/check_data_page.dart';
 // import 'delivery_order/delivery_order_list_page.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -42,25 +43,48 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
 
-  int _selectedIndex = 0;
+  int _page = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     HomeMenuPage(),
     CheckDataPage(),
     GeneralSetting(),
-    // Text(
-    //   'Profile',
-    //   style: optionStyle,
-    // ),
   ];
+
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
+  Widget buildPageView() {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (index) {
+        pageChanged(index);
+      },
+      children: <Widget>[
+        HomeMenuPage(),
+        CheckDataPage(),
+        GeneralSetting(),
+      ],
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _page = index;
+      // pageController.animateToPage(index,
+      //     duration: Duration(milliseconds: 10), curve: Curves.ease);
+    });
+   
+  }
+
+  void pageChanged(int index) {
+    setState(() {
+      _page = index;
     });
   }
 
@@ -77,149 +101,26 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPopScope,
       child: SafeArea(
         child: Scaffold(
-          // drawer: Drawer(
-          //   elevation: 20.0,
-          //   child: ListView(
-          //     padding: EdgeInsets.zero,
-          //     children: <Widget>[
-          //       Center(
-          //         child: UserAccountsDrawerHeader(
-          //           accountName: Text(globalBloc.userName),
-          //           accountEmail: Text(''),
-          //           currentAccountPicture: ClipOval(
-          //             child: Image.network(
-          //               globalBloc.getUrl() +
-          //                   "api/UserApi/GetImage?id=${globalBloc.userId}&guid=${Uuid().v4().toString()}",
-          //             ),
-          //           ),
-          //           decoration: BoxDecoration(
-          //               gradient: bgInversGradientAppBar,
-          //               border: Border(
-          //                   bottom: BorderSide(
-          //                       color: bgBlue,
-          //                       width: 5.0,
-          //                       style: BorderStyle.solid))),
-          //         ),
-          //       ),
-          //       // ListTile(
-          //       //   leading: Icon(
-          //       //     Icons.settings,
-          //       //     color: Colors.blue,
-          //       //   ),
-          //       //   title: Text('General Setting'),
-          //       //   onTap: () {
-          //       //     Navigator.push(context,
-          //       //         MaterialPageRoute(builder: (BuildContext context) {
-          //       //       return GeneralSettingPage();
-          //       //     }));
-          //       //   },
-          //       // ),
-          //       Divider(
-          //         height: 2.0,
-          //       ),
-          //       ListTile(
-          //         leading: Icon(
-          //           Icons.file_download,
-          //           color: Colors.blue,
-          //         ),
-          //         title: Text('Sync'),
-          //         onTap: () {
-          //           Navigator.push(context,
-          //               MaterialPageRoute(builder: (BuildContext context) {
-          //             return DownloadPage();
-          //           }));
-          //         },
-          //       ),
-          //       Divider(
-          //         height: 2.0,
-          //       ),
-          //       ListTile(
-          //         leading: Icon(
-          //           Icons.exit_to_app,
-          //           color: Colors.orange[500],
-          //         ),
-          //         title: Text('Log-Out'),
-          //         onTap: () {
-          //           authenticationBloc.emitEvent(AuthenticationEventLogout());
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
-
-          body: _widgetOptions.elementAt(_page), //Botton Navigation Select
-          // body: Stack(
-          //   alignment: AlignmentDirectional.topCenter,
-          //   children: <Widget>[
-          //     _widgetOptions.elementAt(_page),
-          //     Container(
-          //       color: Colors.transparent,
-          //       width: widthScreen,
-          //       height: 50.0,
-          //       child: AppBar(
-          //         elevation: 0,
-          //         backgroundColor: Colors.transparent,
-          //         actions: <Widget>[
-          //           Container(
-          //             decoration:
-          //                 BoxDecoration(borderRadius: BorderRadius.circular(0)),
-          //             child: FlatButton.icon(
-          //                 label: Text('LOG-OUT'),
-          //                 icon: Icon(Icons.exit_to_app),
-          //                 onPressed: () async {
-          //                   authenticationBloc
-          //                       .emitEvent(AuthenticationEventLogout());
-          //                 },
-          //                 textColor: Colors.black),
-          //           )
-          //         ],
-          //         //backgroundColor: Colors.blue[900],
-          //       ),
-          //     ),
-          //   ],
-          // ),
-
-          backgroundColor: Colors.blue[100], // Background Menu
+           body: _widgetOptions.elementAt(_page),
+          //body: buildPageView(),
+          backgroundColor: Colors.blue[100],
           bottomNavigationBar: CurvedNavigationBar(
             height: 50,
-            buttonBackgroundColor: Colors.white70,
+            buttonBackgroundColor: Colors.blueGrey[500],
             backgroundColor: Colors.blue[100],
-            animationCurve: Curves.easeInOutQuart,
-            animationDuration: Duration(
-              milliseconds: 300
-            ), //Colors.blueAccent,
+            animationCurve: Curves.ease,
+           // animationDuration: Duration(milliseconds: 150),
             items: <Widget>[
-              Icon(Icons.home, size: 20, ),
-              Icon(Icons.nfc, size: 20),
-              Icon(Icons.menu, size: 20),
+              Icon(Icons.home, size: 20, color: Colors.white,),
+              Icon(Icons.nfc, size: 20, color: Colors.white,),
+              Icon(Icons.menu, size: 20, color: Colors.white,),
             ],
             onTap: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
+              _onItemTapped(index);
+            },
+            index: _page,
+            color: bgBlue,
           ),
-
-          // bottomNavigationBar: BottomNavigationBar(
-          //   backgroundColor: bgWhite,
-          //   currentIndex: _selectedIndex,
-          //   selectedItemColor: Colors.blue[800],
-          //   onTap: _onItemTapped,
-          //   items: [
-          //     BottomNavigationBarItem(
-          //       icon: new Icon(Icons.home),
-          //       title: new Text('Home'),
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.nfc),
-          //       title: new Text('Stock'),
-          //     ),
-          //     // BottomNavigationBarItem(
-          //     //   icon: Icon(Icons.person),
-          //     //   title: Text('Profile')
-          //     // )
-          //   ],
-          // ),
         ),
       ),
     );
