@@ -145,202 +145,210 @@ class _ReceiptProductionDetailItemDetailPageState
       }
     }
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: bgGradientPageWhite,
-            ),
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: Column(
+    return Container(
+      color: Colors.blue[100],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _woIdController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Wo ID.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    gradient: bgGradientPageWhite,
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _woNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Wo No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _itemCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Item Code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Item Name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
-                
-                _data.id == 0
-                    ? TextField(
+                  padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        controller: _woIdController,
                         enabled: false,
-                        //autofocus: true,
-                        controller: _qtyController,
-                        onEditingComplete: (){
-                          setState(() {
-                            String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
-                            _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
-                          });
-                        },
-                        inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                          labelText: "Receipt Qty",
+                          labelText: "Wo ID.",
                           contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _woNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Wo No.",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _itemCodeController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Item Code",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _itemNameController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Item Name",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ), 
+                      
+                      _data.id == 0
+                          ? TextField(
+                              enabled: false,
+                              //autofocus: true,
+                              controller: _qtyController,
+                              onEditingComplete: (){
+                                setState(() {
+                                  String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
+                                  _qtyController.text = newValue;
+                                  _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
+                                });
+                              },
+                              inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              decoration: InputDecoration(
+                                labelText: "Receipt Qty",
+                                contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(10.0)
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                  borderRadius: new BorderRadius.circular(10.0)
+                                ),
+                              ))
+                          : Padding(padding: EdgeInsets.only(left: 10),
+                          child: LabelFieldWidget(
+                              labelText: "Receipt Qty",
+                              valueText:
+                                  "${NumberFormat("#,###.00").format(data.quantity)}",
+                            ),
+                            ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _uomController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "UoM",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _whsNameController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Receipt To Warehouse",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.id == 0) {
+                            Future<cflBinLocation.Data> bin = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflBinLocation.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflBinLocationPage(_whsCodeController.text)));
+
+                            bin.then((cflBinLocation.Data bin) {
+                              if (bin != null) {
+                                _binAbsController.text = bin.absEntry.toString();
+                                _binCodeController.text = bin.binCode;
+                               
+                              }
+                            });
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
                           ),
-                        ))
-                    : Padding(padding: EdgeInsets.only(left: 10),
-                    child: LabelFieldWidget(
-                        labelText: "Receipt Qty",
-                        valueText:
-                            "${NumberFormat("#,###.00").format(data.quantity)}",
-                      ),
-                      ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _uomController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "UoM",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _whsNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Receipt To Warehouse",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflBinLocation.Data> bin = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflBinLocation.Data>(
-                              builder: (BuildContext context) =>
-                                  CflBinLocationPage(_whsCodeController.text)));
-
-                      bin.then((cflBinLocation.Data bin) {
-                        if (bin != null) {
-                          _binAbsController.text = bin.absEntry.toString();
-                          _binCodeController.text = bin.binCode;
-                         
-                        }
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: <Widget>[
-                              Text(
-                                "To Bin Location",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "To Bin Location",
+                                      style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_binCodeController.text),
+                                      
+                                    )
+                                  ],
+                                ),
                               ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_binCodeController.text),
-                                
-                              )
+                              (data.id == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
                             ],
                           ),
                         ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ]);
+              ]),
+        ),
+      ),
+    );
   }
 }
 

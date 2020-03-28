@@ -592,14 +592,14 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                 child: Column(
                                   children: <Widget>[
                                     SizedBox(
-                                      height: 10,
+                                      height: 5.0,
                                     ),
                                     Container(
-                                      height: 52,
+                                      height: 45,
                                       child: Image.asset(
                                         subjectList[index]["icon"],
-                                        height: 45,
-                                        width: 45,
+                                        height: 40,
+                                        width: 40,
                                       ),
                                     ),
                                     Container(
@@ -612,8 +612,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                           style: GoogleFonts.openSans(
                                               textStyle: TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600)),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w900)),
                                         ),
                                       ),
                                     ),
@@ -627,8 +627,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                           style: GoogleFonts.openSans(
                                               textStyle: TextStyle(
                                                   color: Colors.black87,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600)),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w400)),
                                         ),
                                       ),
                                     )

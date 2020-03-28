@@ -125,144 +125,152 @@ class _ReceiptIssueDetailItemDetailPageState
       }
     }
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: bgGradientPageWhite,
-            ),
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: Column(
+    return Container(
+      color: Colors.blue[100],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _itemCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Item Code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    gradient: bgGradientPageWhite,
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Item Name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
-                TextField(
-                  controller: _qtySoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Open Issue Qty",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
-                _data.id == 0
-                    ? TextField(
-                        //autofocus: true,
+                  padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        controller: _itemCodeController,
                         enabled: false,
-                        controller: _qtyController,
-                        onEditingComplete: (){
-                          setState(() {
-                            String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
-                            _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
-                          });
-                        },
-                        inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                          labelText: "Receipt Qty",
+                          labelText: "Item Code",
                           contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _itemNameController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Item Name",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)
-                          ),
-                        ))
-                    : Padding(padding: EdgeInsets.only(left: 10),
-                    child: LabelFieldWidget(
-                        labelText: "Receipt Qty",
-                        valueText:
-                            "${NumberFormat("#,###.00").format(data.qty)}",
+                          )
+                        ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ), 
+                      TextField(
+                        controller: _qtySoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "Open Issue Qty",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
                       ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
-                TextFormField(
-                  controller: _uomController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "UoM",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ), 
+                      _data.id == 0
+                          ? TextField(
+                              //autofocus: true,
+                              enabled: false,
+                              controller: _qtyController,
+                              onEditingComplete: (){
+                                setState(() {
+                                  String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
+                                  _qtyController.text = newValue;
+                                  _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
+                                });
+                              },
+                              inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              decoration: InputDecoration(
+                                labelText: "Receipt Qty",
+                                contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(10.0)
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                  borderRadius: new BorderRadius.circular(10.0)
+                                ),
+                              ))
+                          : Padding(padding: EdgeInsets.only(left: 10),
+                          child: LabelFieldWidget(
+                              labelText: "Receipt Qty",
+                              valueText:
+                                  "${NumberFormat("#,###.00").format(data.qty)}",
+                            ),
+                            ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10)
+                      ),
+                      TextFormField(
+                        controller: _uomController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          labelText: "UoM",
+                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)
+                          )
+                        ),
+                      ),
+                      // LabelFieldWidget(
+                      //   labelText: "Item Code",
+                      //   valueText: "${data.itemCode}",
+                      // ),
+                      // LabelFieldWidget(
+                      //   labelText: "Item Name",
+                      //   valueText: "${data.itemName}",
+                      // ),
+                      // LabelFieldWidget(
+                      //   labelText: "Open SO Qty",
+                      //   valueText: "${NumberFormat("#,###.0000").format(data.soQty)}",
+                      // ),
+                      // _data.id == 0
+                      //     ? TextField(
+                      //         controller: _qtyController,
+                      //         keyboardType: TextInputType.number,
+                      //         // onChanged: (text) {},
+                      //         decoration: InputDecoration(
+                      //           labelText: "Receipt Qty",
+                      //           contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+                      //           enabledBorder: UnderlineInputBorder(
+                      //               borderSide: BorderSide(color: Colors.blue)),
+                      //         ))
+                      //     : LabelFieldWidget(
+                      //         labelText: "Receipt Qty",
+                      //         valueText:
+                      //             "${NumberFormat("#,###.0000").format(data.qty)}",
+                      //       ),
+                      // LabelFieldWidget(
+                      //   labelText: "UoM",
+                      //   valueText: "${data.uom}",
+                      // ),
+                    ],
                   ),
                 ),
-                // LabelFieldWidget(
-                //   labelText: "Item Code",
-                //   valueText: "${data.itemCode}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Item Name",
-                //   valueText: "${data.itemName}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Open SO Qty",
-                //   valueText: "${NumberFormat("#,###.0000").format(data.soQty)}",
-                // ),
-                // _data.id == 0
-                //     ? TextField(
-                //         controller: _qtyController,
-                //         keyboardType: TextInputType.number,
-                //         // onChanged: (text) {},
-                //         decoration: InputDecoration(
-                //           labelText: "Receipt Qty",
-                //           contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                //           enabledBorder: UnderlineInputBorder(
-                //               borderSide: BorderSide(color: Colors.blue)),
-                //         ))
-                //     : LabelFieldWidget(
-                //         labelText: "Receipt Qty",
-                //         valueText:
-                //             "${NumberFormat("#,###.0000").format(data.qty)}",
-                //       ),
-                // LabelFieldWidget(
-                //   labelText: "UoM",
-                //   valueText: "${data.uom}",
-                // ),
-              ],
-            ),
-          ),
-        ]);
+              ]),
+        ),
+      ),
+    );
   }
 }
 
