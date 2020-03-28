@@ -479,7 +479,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     double sideLength = 50;
     return Padding(
       padding:
-          const EdgeInsets.only(right: 2.0, left: 2.0, bottom: 10.0, top: 2.0),
+          const EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
       child: Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
@@ -487,7 +487,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
               color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
         ], color: bgWhite, borderRadius: BorderRadius.circular(10)),
         child: Card(
-          color: Colors.blue[100],
+          //color: Colors.blue[100],
           child: CustomScrollView(
             slivers: <Widget>[
               SliverPadding(
