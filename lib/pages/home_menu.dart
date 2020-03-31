@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
 import 'package:ncf_app/pages/dashboard_menu.dart';
 import 'package:ncf_app/pages/delivery_order/delivery_order_list_page.dart';
+import 'package:ncf_app/pages/receipt_supplier/receipt_supplier_list_page.dart';
 import 'package:ncf_app/pages/return_sales/return_sales_list_page.dart';
 import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_list_page.dart';
 import 'package:ncf_app/pages/option_card.dart';
@@ -70,8 +71,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
   Items item7 = new Items(
     title: "Receipt Supplier Barcode",
     subtitle: "List Receipt, Scan Receipt",
-    icon: "assets/images/receipt_po.png",
-    authDetail: "receiptOrder_Auth_Detail",
+    icon: "assets/images/receipt_supplier.png",
+    authDetail: "receiptSupplier_Auth_Detail",
   );
 
   Widget dashboardMenuSliverGrid(BuildContext context) {
@@ -449,8 +450,8 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     {
       "title": "Receipt Supplier Barcode",
       "subtitle": "List Receipt, Scan Receipt",
-      "icon": "assets/images/receipt_po.png",
-      "authDetail": "receiptOrder_Auth_Detail",
+      "icon": "assets/images/receipt_supplier.png",
+      "authDetail": "receiptSupplier_Auth_Detail",
     },
     {
       "title": "Inventory Transfer",
@@ -479,7 +480,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     double sideLength = 50;
     return Padding(
       padding:
-          const EdgeInsets.only(right: 10.0, left: 10.0, bottom: 10.0, top: 5.0),
+          const EdgeInsets.only(right: 2.0, left: 3.0, bottom: 10.0, top: 2.0),
       child: Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
@@ -586,6 +587,18 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                     Navigator.push(context, MaterialPageRoute(
                                         builder: (BuildContext context) {
                                       return ReturnSalesListPage();
+                                    }));
+                                  }
+
+                                  //7 data.authDetail
+                                  else if (subjectList[index]["authDetail"] ==
+                                          "receiptSupplier_Auth_Detail" &&
+                                      globalBloc.loginResponse.data
+                                              .receiptSupplier_Auth_Detail ==
+                                          'Y') {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ReceiptSupplierListPage();
                                     }));
                                   }
                                 },

@@ -164,6 +164,18 @@ class Data {
   @JsonKey(name: 'ReceiptOrder_WhsName')
   String receiptOrder_WhsName;
 
+  @JsonKey(name: 'ReceiptSupplier_Auth_Detail')
+  String receiptSupplier_Auth_Detail;
+
+  @JsonKey(name: 'ReceiptSupplier_Auth_Add')
+  String receiptSupplier_Auth_Add;
+
+  @JsonKey(name: 'ReceiptSupplier_WhsCode')
+  String receiptSupplier_WhsCode;
+
+  @JsonKey(name: 'ReceiptSupplier_WhsName')
+  String receiptSupplier_WhsName;
+
   @JsonKey(name: 'ReturnSales_Auth_Detail')
   String returnSales_Auth_Detail;
 
@@ -246,6 +258,11 @@ class Data {
     this.receiptOrder_Auth_Detail,
     this.receiptOrder_WhsCode,
     this.receiptOrder_WhsName,
+
+    this.receiptSupplier_Auth_Add,
+    this.receiptSupplier_Auth_Detail,
+    this.receiptSupplier_WhsCode,
+    this.receiptSupplier_WhsName,
 
     this.returnSales_Auth_Add,
     this.returnSales_Auth_Detail,
