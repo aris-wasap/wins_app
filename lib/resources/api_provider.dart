@@ -20,12 +20,16 @@ import 'package:ncf_app/models/receipt_issue_detail_response.dart';
 import 'package:ncf_app/models/receipt_issue_detail_scan_response.dart';
 import 'package:ncf_app/models/receipt_issue_list_response.dart';
 
+import 'package:ncf_app/models/receipt_supplier_detail_response.dart' as receiptSupplierDetail;
 import 'package:ncf_app/models/receipt_order_detail_response.dart' as receiptOrderDetail;
 import 'package:ncf_app/models/receipt_order_detail_response.dart';
 import 'package:ncf_app/models/receipt_order_detail_scan_response.dart';
 import 'package:ncf_app/models/receipt_order_list_response.dart';
 
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
+import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
+import 'package:ncf_app/models/receipt_supplier_detail_scan_response.dart';
+import 'package:ncf_app/models/receipt_supplier_list_response.dart';
 import 'package:ncf_app/models/serverInfo_response.dart';
 import 'package:ncf_app/models/transfer_production_detail_response.dart';
 import 'package:ncf_app/models/transfer_production_detail_scan_response.dart';
@@ -1230,6 +1234,126 @@ class ApiProvider {
     }
   }
   
+  //-----------------------------
+  //ReceiptSupplierList
+  //-----------------------------
+  Future<ReceiptSupplierListResponse> receiptSupplierList_FetchNextPage(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/ReceiptSupplierListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'receiptSupplierList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptSupplierListResponse> receiptSupplierList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/ReceiptSupplierListApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierListResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptSupplierList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //ReceiptSupplierDetail
+  //-----------------------------
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_GetById(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/ReceiptSupplierDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptSupplierDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Add(
+      receiptSupplierDetail.Data data) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+
+      final response = await http.post("${_url}api/ReceiptSupplierDetailApi/Add",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'receiptSupplierDetail_Add:Failed to add ReceiptSupplier(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
+      int poId, String qrResult) async {
+    try {
+      var body = json.encode(
+          {"UserId": globalBloc.userId, "PoId": poId, "QrResult": qrResult});
+
+      final response = await http.post("${_url}api/ReceiptSupplierDetailApi/Scan",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptSupplierDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierDetail_Scan:Failed to load post(1)');
+    }
+  }
+
   //-----------------------------
   //InventoryTransferList
   //-----------------------------

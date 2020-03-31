@@ -1,47 +1,46 @@
 import 'dart:convert';
 
-import 'package:ncf_app/blocs/receipt_issue/detail/receipt_issue_detail_bloc.dart';
-import 'package:ncf_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
-import 'package:ncf_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
-import 'package:ncf_app/pages/cfl/cfl_goods_issue_page.dart';
-import 'package:ncf_app/pages/receipt_issue/receipt_issue_detail_item_detail_page.dart';
+import 'package:ncf_app/pages/cfl/cfl_purchase_order_page.dart';
+import 'package:ncf_app/pages/receipt_supplier/receipt_supplier_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_bloc.dart';
+import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_event.dart';
+import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_state.dart';
 import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/models/receipt_issue_detail_response.dart';
+import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
+import 'package:ncf_app/widgets/set_colors.dart';
 import 'package:ncf_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:ncf_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
+import 'package:ncf_app/models/cfl_purchase_order_response.dart' as cflPurchaseOrder;
 import 'package:ncf_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
 
-class ReceiptIssueDetailPage extends StatefulWidget {
-  ReceiptIssueDetailPage(this._id);
+class ReceiptSupplierDetailPage extends StatefulWidget {
+  ReceiptSupplierDetailPage(this._id);
   final int _id;
   @override
-  _ReceiptIssueDetailPageState createState() => _ReceiptIssueDetailPageState(_id);
+  _ReceiptSupplierDetailPageState createState() => _ReceiptSupplierDetailPageState(_id);
 }
 
-class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
-  _ReceiptIssueDetailPageState(this._id);
+class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
+  _ReceiptSupplierDetailPageState(this._id);
 
-  ReceiptIssueDetailBloc bloc = ReceiptIssueDetailBloc();
+  ReceiptSupplierDetailBloc bloc = ReceiptSupplierDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _issueIdController = TextEditingController();
-  final _issueNoController = TextEditingController();
-  final _seriesNameController = TextEditingController();
+  final _poIdController = TextEditingController();
+  final _poNoController = TextEditingController();
   final _transNoController = TextEditingController();
-  final _docNumController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
-
+  final _seriesNamePoController = TextEditingController();
+  final _seriesNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -51,7 +50,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(ReceiptIssueDetailEventGetId(
+        bloc.emitEvent(ReceiptSupplierDetailEventGetId(
           id: _id,
         ));
       });
@@ -75,14 +74,14 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
 
   @override
   void dispose() {
-    _issueIdController?.dispose();
-    _issueNoController?.dispose();
-    _seriesNameController?.dispose();
+    _poIdController?.dispose();
+    _poNoController?.dispose();
     _transNoController?.dispose();
-    _docNumController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _seriesNamePoController?.dispose();
+    _seriesNameController?.dispose();
 
     bloc?.dispose();
 
@@ -92,18 +91,22 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.issueId = int.parse(_issueIdController.text);
-    data.issueNo = _issueNoController.text;
-    data.seriesName = _seriesNameController.text;
-    data.docNum = _docNumController.text;
+    data.poNo = _poNoController.text;
     data.transDate = transDate;
+    data.customerCode = _customerCodeController.text;
+    data.customerName = _customerNameController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNamePo = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "Issue Date harus di isi");
+      ValidateDialogWidget(context: context, massage: "PO Date harus di isi");
       return;
-    } else if (["", null].contains(data.issueNo)) {
-      ValidateDialogWidget(context: context, massage: "Issue No harus di isi");
+    } else if (["", null].contains(data.poNo)) {
+      ValidateDialogWidget(context: context, massage: "PO No harus di isi");
+      return;
+    } else if (["", null].contains(data.customerCode)) {
+      ValidateDialogWidget(context: context, massage: "Customer harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -115,14 +118,14 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       return;
     }
 
-    bloc.emitEvent(ReceiptIssueDetailEventAdd(
+    bloc.emitEvent(ReceiptSupplierDetailEventAdd(
       data: data,
     ));
   }
 
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
-        builder: (BuildContext context) => ReceiptIssueDetailPage(0));
+        builder: (BuildContext context) => ReceiptSupplierDetailPage(0));
     Navigator.of(context).pushReplacement(newRoute);
   }
 
@@ -147,7 +150,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(ReceiptIssueDetailEventNormal());
+                    bloc.emitEvent(ReceiptSupplierDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -181,7 +184,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(ReceiptIssueDetailEventNormal());
+                    bloc.emitEvent(ReceiptSupplierDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -213,7 +216,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Receipt From Issue"),
+        title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -235,7 +238,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Receipt From Issue"),
+        title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
           child: Container(
@@ -245,7 +248,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
           preferredSize: Size.fromHeight(5.0)
         ),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.receiptIssue_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.receiptSupplier_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
@@ -258,15 +261,15 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     }
   }
 
-  ReceiptIssueDetailState _getState() {
+  ReceiptSupplierDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_issueNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "Issue No harus di isi");
+    if (["", null].contains(_poNoController.text)) {
+      ValidateDialogWidget(context: context, massage: "SO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -274,24 +277,23 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
-        if (("${item.batchNo}" == qrResult)) {
+        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;
         }
       }
 
-      bloc.emitEvent(ReceiptIssueDetailEventScan(
-          issueId: int.parse(_issueIdController.text),
-          issueNo: _issueNoController.text,
+      bloc.emitEvent(ReceiptSupplierDetailEventScan(
+          poId: int.parse(_poIdController.text),
+          poNo: _poNoController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
-      //         ReceiptIssueDetailEventScan(
-      //             issueId: int.parse(_issueIdController.text),
+      //         ReceiptSupplierDetailEventScan(
+      //             poId: int.parse(_poIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -301,13 +303,13 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       //       context,
       //       MaterialPageRoute(
       //         builder: (BuildContext context) =>
-      //             ReceiptIssueDetailItemDetailPage(onData.newItem),
+      //             ReceiptSupplierDetailItemDetailPage(onData.newItem),
       //       ),
       //     );
 
       //     item.then((Item item) {
       //       if (item != null) {
-      //         bloc.emitEvent(ReceiptIssueDetailEventItemAdd(
+      //         bloc.emitEvent(ReceiptSupplierDetailEventItemAdd(
       //           item: item,
       //         ));
       //       }
@@ -340,18 +342,18 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(ReceiptIssueDetailEventNormal());
+        bloc.emitEvent(ReceiptSupplierDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                ReceiptIssueDetailItemDetailPage(newItem),
+                ReceiptSupplierDetailItemDetailPage(newItem),
           ),
         );
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(ReceiptIssueDetailEventItemAdd(
+            bloc.emitEvent(ReceiptSupplierDetailEventItemAdd(
               item: item,
             ));
           }
@@ -365,34 +367,28 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     _context = context;
     var data = _getState().data;
 
-    return BlocEventStateBuilder<ReceiptIssueDetailState>(
+    return BlocEventStateBuilder<ReceiptSupplierDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, ReceiptIssueDetailState state) {
+        builder: (BuildContext context, ReceiptSupplierDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
-                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                // decoration: BoxDecoration(
-                //   gradient: bgGradientPageWhite,
-                // ),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                  child: Card(
-                                    child: Stack(children: <Widget>[
-                      SingleChildScrollView(
-                        padding: EdgeInsets.all(0.0),
-                        child: _buildForm(),
-                      ),
-                      _showCircularProgress(),
-                    ]),
-                  ),
+                decoration: BoxDecoration(
+                  gradient: bgGradientPageWhite,
                 ),
+                child: Stack(children: <Widget>[
+                  SingleChildScrollView(
+                    padding: EdgeInsets.all(0.0),
+                    child: _buildForm(),
+                  ),
+                  _showCircularProgress(),
+                ]),
               ),
-              floatingActionButton: _getState().data.id  == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -446,13 +442,13 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            ReceiptIssueDetailItemDetailPage(items[itemIndex]),
+            ReceiptSupplierDetailItemDetailPage(items[itemIndex]),
       ),
     );
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(ReceiptIssueDetailEventItemUpdate(
+        bloc.emitEvent(ReceiptSupplierDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -471,17 +467,18 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _issueIdController.text = data.issueId.toString();
-      _seriesNameController.text = data.seriesName;
-      _issueNoController.text = data.issueNo;
-      _docNumController.text = data.docNum;
+      _poIdController.text = data.poId.toString();
+      _poNoController.text = data.poNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
       } else {
         _transDateController.text = null;
       }
-      
+      _customerCodeController.text = data.customerCode;
+      _customerNameController.text = data.customerName;
+      _seriesNamePoController.text = data.seriesNamePo;
+      _seriesNameController.text = data.seriesName;
     }
 
     return Column(
@@ -494,6 +491,21 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                // TextFormField(
+                //   controller: _seriesNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //     hintText: "Series No.",
+                //     labelText: "Series No.",
+                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //       borderRadius: new BorderRadius.circular(10.0)
+                //     )
+                //   )
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 5)
+                // ),
                 TextFormField(
                   controller: _transNoController,
                   enabled: false,
@@ -552,19 +564,20 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflGoodsIssue.Data> gi = Navigator.push(
+                      Future<cflPurchaseOrder.Data> po = Navigator.push(
                           context,
-                          MaterialPageRoute<cflGoodsIssue.Data>(
+                          MaterialPageRoute<cflPurchaseOrder.Data>(
                               builder: (BuildContext context) =>
-                                  CflGoodsIssuePage()));
+                                  CflPurchaseOrderPage()));
 
-                      gi.then((cflGoodsIssue.Data gi) {
-                        if (gi != null) {
-                          _issueIdController.text = gi.id.toString();
-                          _issueNoController.text = gi.transNo;
-                          _seriesNameController.text = gi.seriesName;
-                          _docNumController.text = gi.docNum;
-                         }
+                      po.then((cflPurchaseOrder.Data po) {
+                        if (po != null) {
+                          _poIdController.text = po.id.toString();
+                          _poNoController.text = po.seriesName + '-'+po.transNo;
+                          _customerCodeController.text = po.customerCode;
+                          _customerNameController.text = po.customerName;
+                         // _seriesNamePoController.text = po.seriesName;
+                        }
                       });
                     }
                   },
@@ -586,16 +599,16 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Issue No.",
+                                "Purchase Order No.",
                                 style: TextStyle(color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_docNumController.text),
+                                title: Text(_poNoController.text),
                                 // subtitle: Column(
                                 //   crossAxisAlignment: CrossAxisAlignment.start,
                                 //   children: <Widget>[
-                                //     Text(_issueNoController.text),
+                                //     Text(_poNoController.text),
                                 //   ],
                                 // ),
                               )
@@ -611,31 +624,55 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                     ),
                   ),
                 ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {}
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color: Colors.grey[400]
-                //       ),
-                //       borderRadius: BorderRadius.all(
-                //           Radius.circular(10)
-                //       )
-                //       // border: Border(
-                //       //   bottom: BorderSide(
-                //       //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                //       //     width: 1.0,
-                //       //   ),
-                //       // ),
-                //     ),
-                    
-                //   ),
-                // ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {}
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey[400]
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      )
+                      // border: Border(
+                      //   bottom: BorderSide(
+                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                      //     width: 1.0,
+                      //   ),
+                      // ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Customer",
+                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_customerNameController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_customerCodeController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -733,7 +770,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(ReceiptIssueDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(ReceiptSupplierDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
               color: Colors.red,

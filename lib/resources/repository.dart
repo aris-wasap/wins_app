@@ -17,10 +17,14 @@ import 'package:ncf_app/models/receipt_issue_detail_response.dart';
 import 'package:ncf_app/models/receipt_issue_detail_scan_response.dart';
 import 'package:ncf_app/models/receipt_issue_list_response.dart';
 import 'package:ncf_app/models/receipt_order_detail_response.dart';  
-import 'package:ncf_app/models/receipt_order_detail_response.dart' as receiptOrderDetail;  
+import 'package:ncf_app/models/receipt_order_detail_response.dart' as receiptOrderDetail;
+import 'package:ncf_app/models/receipt_supplier_detail_response.dart' as receiptSupplierDetail;  
 import 'package:ncf_app/models/receipt_order_detail_scan_response.dart';
 import 'package:ncf_app/models/receipt_order_list_response.dart';
 import 'package:ncf_app/models/receipt_production_detail_response.dart';
+import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
+import 'package:ncf_app/models/receipt_supplier_detail_scan_response.dart';
+import 'package:ncf_app/models/receipt_supplier_list_response.dart';
 import 'package:ncf_app/models/serverInfo_response.dart';
 import 'package:ncf_app/models/transfer_production_detail_response.dart';
 import 'package:ncf_app/models/transfer_production_detail_scan_response.dart';
@@ -301,6 +305,32 @@ class Repository {
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
           int poId, String qrResult) =>
       apiProvider.receiptOrderDetail_Scan(poId, qrResult);
+
+  //-----------------------------
+  //ReceiptSupplierList
+  //-----------------------------
+  Future<ReceiptSupplierListResponse> receiptSupplierList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.receiptSupplierList_FetchNextPage(lastId, searchQuery);
+
+  Future<ReceiptSupplierListResponse> receiptSupplierList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.receiptSupplierList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //ReceiptSupplierDetail
+  //-----------------------------
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_GetById(int id) =>
+      apiProvider.receiptSupplierDetail_GetById(id);
+
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Add(
+          receiptSupplierDetail.Data data) =>
+      apiProvider.receiptSupplierDetail_Add(data);
+
+  Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
+          int poId, String qrResult) =>
+      apiProvider.receiptSupplierDetail_Scan(poId, qrResult);
+
 
   //-----------------------------
   //InventoryTransferList

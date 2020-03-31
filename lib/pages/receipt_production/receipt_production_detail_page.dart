@@ -350,18 +350,24 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
+                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite,
-                ),
-                child: Stack(children: <Widget>[
-                  SingleChildScrollView(
-                    padding: EdgeInsets.all(0.0),
-                    child: _buildForm(),
+                // decoration: BoxDecoration(
+                //   gradient: bgGradientPageWhite,
+                // ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                  child: Card(
+                                    child: Stack(children: <Widget>[
+                      SingleChildScrollView(
+                        padding: EdgeInsets.all(0.0),
+                        child: _buildForm(),
+                      ),
+                      _showCircularProgress(),
+                    ]),
                   ),
-                  _showCircularProgress(),
-                ]),
+                ),
               ),
               floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
@@ -436,107 +442,107 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
     }
 
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Receipt No.",
-                    labelText: "Receipt No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      _selectTransDate(context);
-                    }
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Receipt Date",
-                            labelText: "Receipt Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                         
-                        ),
-                      ),
-                      (data.id == 0)
-                          ? Icon(
-                              Icons.date_range,
-                            )
-                          : Container(width: 0, height: 0),
-                    ],
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              controller: _transNoController,
+              enabled: false,
+              decoration: InputDecoration(
+                hintText: "Receipt No.",
+                labelText: "Receipt No.",
+                contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(10.0)
+                )
+              )
+            ),
+            FlatButton(
+              padding: EdgeInsets.only(top: 5),
+              onPressed: () {
+                if (data.id == 0) {
+                  _selectTransDate(context);
+                }
+              },
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                      controller: _transDateController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        hintText: "Receipt Date",
+                        labelText: "Receipt Date",
+                        contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: (data.id == 0) ? Colors.blue : Colors.grey[400]
+                          ),
+                          borderRadius: new BorderRadius.circular(10.0,)
+                        )
+                      )
+                     
+                    ),
                   ),
-                ),
-               
+                  (data.id == 0)
+                      ? Icon(
+                          Icons.date_range,
+                        )
+                      : Container(width: 0, height: 0),
+                ],
+              ),
+            ),
+           
+          ],
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.all(10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: data.id == 0
+                  ? BorderSide(
+                      color: Colors.blue,
+                      width: 1.0,
+                    )
+                  : BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+            ),
+          ),
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("List of Items"),
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: data.id == 0
-                      ? BorderSide(
-                          color: Colors.blue,
-                          width: 1.0,
-                        )
-                      : BorderSide(
-                          color: Colors.grey,
-                          width: 1.0,
-                        ),
-                ),
-              ),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("List of Items"),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-              //color: Colors.brown,
-              child:
-                  ((state.data.items != null) ? state.data.items.length : 0) > 0
-                      ? _buildList()
-                      : Container(
-                          padding: EdgeInsets.all(10.0),
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Text("Item Empty"),
-                        )),
-          Container(
-            height: 5,
-            color: Colors.grey,
-          ),
-        ]);
+        ),
+      ),
+      Container(
+          //color: Colors.brown,
+          child:
+              ((state.data.items != null) ? state.data.items.length : 0) > 0
+                  ? _buildList()
+                  : Container(
+                      padding: EdgeInsets.all(10.0),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Text("Item Empty"),
+                    )),
+      Container(
+        height: 5,
+        color: Colors.grey,
+      ),
+    ]);
   }
 
   Widget _rowDetail(List<Item> data, int index) {
@@ -559,8 +565,9 @@ class _ReceiptProductionDetailPageState extends State<ReceiptProductionDetailPag
             children: <Widget>[
               Text(data[index].itemCode),
               Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].quantity)}"),
+                  "Qty : ${NumberFormat("#,###").format(data[index].quantity)}"),
               Text(data[index].batchNo ?? ''),
+              //Text("${data[index].binCode}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),
