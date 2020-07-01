@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
  
-import 'package:ncf_app/models/cfl_db_warehouse_model.dart';
-import 'package:ncf_app/models/warehouse_response.dart';
+import 'package:admart_app/models/cfl_db_warehouse_model.dart';
+import 'package:admart_app/models/warehouse_response.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,7 +23,7 @@ class DbProvider {
 
   Future initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "ncf.db");
+    String path = join(documentsDirectory.path, "admart.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
           

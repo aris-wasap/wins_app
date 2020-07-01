@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/transfer_production/list/transfer_production_list_bloc.dart';
-import 'package:ncf_app/blocs/transfer_production/list/transfer_production_list_event.dart';
-import 'package:ncf_app/blocs/transfer_production/list/transfer_production_list_state.dart';
-import 'package:ncf_app/pages/transfer_production/transfer_production_detail_page.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/transfer_production/list/transfer_production_list_bloc.dart';
+import 'package:admart_app/blocs/transfer_production/list/transfer_production_list_event.dart';
+import 'package:admart_app/blocs/transfer_production/list/transfer_production_list_state.dart';
+import 'package:admart_app/pages/transfer_production/transfer_production_detail_page.dart';
 import 'package:intl/intl.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class TransferProductionListPage extends StatefulWidget {
   @override
@@ -77,18 +78,16 @@ class _TransferProductionListPageState
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Transfer Production",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Transfer Production",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.orange[500],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -103,15 +102,18 @@ class _TransferProductionListPageState
       );
     } else {
       return AppBar(
-        title: Text("Transfer Production"),
-        backgroundColor: Colors.blue[900],
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
+        title: Text("List Transfer Production"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
           ),
-          preferredSize: Size.fromHeight(5.0)
         ),
+        bottom: PreferredSize(
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -158,11 +160,7 @@ class _TransferProductionListPageState
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -187,21 +185,22 @@ class _TransferProductionListPageState
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
-            // decoration:
-            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "${data[index].whsCodeFrom} to ${data[index].whsCodeTo}"),
-                    Text("${data[index].status} - ${data[index].createdUser}"),
+                        "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
+                    Text("User : ${data[index].createdUser}"),
                   ],
                 ),
                 leading: ClipOval(

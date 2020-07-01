@@ -1,25 +1,29 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class TransferProductionDetailEvent extends BlocEvent {
   TransferProductionDetailEvent({
     this.id,
     this.data,
-    this.prodOrderId,
-    this.prodOrderNo,
+    this.woId,
+    this.woNo,
     this.item,
-    this.whsCodeFrom,
+    this.fromWhsCode,
     this.itemIndex,
+    this.absEntryFrom,
+    this.binCodeFrom,
     this.qrResult, 
   });
 
   final int id;
   final Data data;
-  final int prodOrderId;
-  final String whsCodeFrom;
+  final int woId;
+  final String fromWhsCode;
+  final int absEntryFrom;
+  final String binCodeFrom;
   final Item item;
-  final String prodOrderNo;
+  final String woNo;
   final int itemIndex;
   final String qrResult; 
 }
@@ -39,15 +43,15 @@ class TransferProductionDetailEventGetId extends TransferProductionDetailEvent {
 class TransferProductionDetailEventScan extends TransferProductionDetailEvent {
   TransferProductionDetailEventScan({
     @required Data data,
-    @required int prodOrderId,
-    @required String prodOrderNo,
-    @required String whsCodeFrom,
+    @required int woId,
+    @required String woNo,
+    @required String fromWhsCode,
     @required String qrResult,
   }) : super(
           data: data,
-          prodOrderId: prodOrderId,
-          prodOrderNo: prodOrderNo,
-          whsCodeFrom: whsCodeFrom,
+          woId: woId,
+          woNo: woNo,
+          fromWhsCode: fromWhsCode,
           qrResult: qrResult,
         );
 } 

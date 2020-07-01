@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/return_sales/list/return_sales_list_bloc.dart';
-import 'package:ncf_app/blocs/return_sales/list/return_sales_list_event.dart';
-import 'package:ncf_app/blocs/return_sales/list/return_sales_list_state.dart';
-import 'package:ncf_app/pages/return_sales/return_sales_detail_page.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/return_sales/list/return_sales_list_bloc.dart';
+import 'package:admart_app/blocs/return_sales/list/return_sales_list_event.dart';
+import 'package:admart_app/blocs/return_sales/list/return_sales_list_state.dart';
+import 'package:admart_app/pages/return_sales/return_sales_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class ReturnSalesListPage extends StatefulWidget {
   @override
@@ -199,8 +199,9 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(data[index].customerName),
-                    Text("${data[index].status} - ${data[index].createdUser}"),
+                    Text("Customer : ${data[index].customerCode} - ${data[index].customerName}"),
+                    Text("Status : ${data[index].status}"),
+                    Text("User : ${data[index].createdUser}"),
                   ],
                 ),
                 leading: ClipOval(

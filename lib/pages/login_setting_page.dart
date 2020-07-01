@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSettingPage extends StatefulWidget {

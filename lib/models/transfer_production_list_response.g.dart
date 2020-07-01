@@ -31,12 +31,15 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     id: json['Id'] as int,
     userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
+    seriesName: json['SeriesName'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
     status: json['Status'] as String,
-    whsCodeFrom: json['WhsCodeFrom'] as String,
-    whsCodeTo: json['WhsCodeTo'] as String,
+    fromWhsCode: json['FromWhsCode'] as String,
+    fromWhsName: json['FromWhsName'] as String,
+    toWhsCode: json['ToWhsCode'] as String,
+    toWhsName: json['ToWhsName'] as String,
     createdUser: json['CreatedUser'] as String,
   );
 }
@@ -45,9 +48,12 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'UserId': instance.userId,
       'TransNo': instance.transNo,
+      'SeriesName': instance.seriesName,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,
-      'WhsCodeFrom': instance.whsCodeFrom,
-      'WhsCodeTo': instance.whsCodeTo,
+      'FromWhsCode': instance.fromWhsCode,
+      'FromWhsName': instance.fromWhsName,
+      'ToWhsCode': instance.toWhsCode,
+      'ToWhsName': instance.toWhsName,
       'CreatedUser': instance.createdUser,
     };

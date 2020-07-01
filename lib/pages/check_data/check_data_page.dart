@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/item/detail/item_detail_bloc.dart';
-import 'package:ncf_app/blocs/item/detail/item_detail_event.dart';
-import 'package:ncf_app/blocs/item/detail/item_detail_state.dart';
-import 'package:ncf_app/models/item_detail_scan_response.dart';
-import 'package:ncf_app/widgets/validate_dialog_widget.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/item/detail/item_detail_bloc.dart';
+import 'package:admart_app/blocs/item/detail/item_detail_event.dart';
+import 'package:admart_app/blocs/item/detail/item_detail_state.dart';
+import 'package:admart_app/models/item_detail_scan_response.dart';
+import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/pages/barcode_scan.dart';
+import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class CheckDataPage extends StatefulWidget {
@@ -164,15 +164,17 @@ class _CheckDataPageState extends State<CheckDataPage> {
               body: Container(
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Colors.blue[100],
-                    Colors.blue[100],
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
+                // decoration: BoxDecoration(
+                //    image : DecorationImage(image: AssetImage("assets/images/579.jpg"), fit: BoxFit.cover, repeat: ImageRepeat.noRepeat),
+                // //     gradient: LinearGradient(
+                // //   colors: [
+                // //     Colors.blue[100],
+                // //     Colors.blue[100],
+                // //   ],
+                // //   begin: Alignment.topCenter,
+                // //   end: Alignment.bottomCenter,
+                // // )
+                // ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
                     padding: EdgeInsets.all(0.0),
@@ -222,130 +224,127 @@ class _CheckDataPageState extends State<CheckDataPage> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 380,
-          child: Card(
-                child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 50,
-                        child: Text("Stock Item Master Data", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),),
-                      ),
+        child: Card(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Container(
+                      color: Colors.transparent,
+                      height: 50,
+                      child: Text("Stock Item Master Data", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.white,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )),
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                        ),
-                        TextFormField(
-                            controller: _itemCodeController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              hintText: "Item code",
-                              labelText: "Item code",
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    colors: [
+                      Colors.white,
+                      Colors.white,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )),
+                  padding: EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _itemCodeController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: "Item code",
+                            labelText: "Item code",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0)),
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _itemNameController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Item name",
+                              labelText: "Item name",
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(10.0)),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                        ),
-                        TextFormField(
-                            controller: _itemNameController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Item name",
-                                labelText: "Item name",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(10.0)))),
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                        ),
-                        TextFormField(
-                            controller: _batchController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Batch No.",
-                                labelText: "Batch No.",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(10.0)))),
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                        ),
-                        TextFormField(
-                            controller: _stockController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Stock",
-                                labelText: "Stock",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(10.0))))
-                      ],
-                    ),
+                                  borderRadius: new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _batchController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Batch No.",
+                              labelText: "Batch No.",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _stockController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Stock",
+                              labelText: "Stock",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(10.0))))
+                    ],
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.blue,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.blue,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Break Stock"),
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Break Stock"),
+                        ],
                       ),
                     ),
                   ),
-                  Container(
-                      //color: Colors.brown,
-                      child: ((data.details != null) ? data.details.length : 0) > 0
-                          ? _buildList()
-                          : Container(
-                              padding: EdgeInsets.all(10.0),
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Text("Item Empty"),
-                            )),
-                  Container(
-                    height: 5,
-                    color: Colors.grey,
-                  )
-                ]),
-          ),
+                ),
+                Container(
+                    //color: Colors.brown,
+                    child: ((data.details != null) ? data.details.length : 0) > 0
+                        ? _buildList()
+                        : Container(
+                            padding: EdgeInsets.all(10.0),
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Text("Item Empty"),
+                          )),
+                Container(
+                  height: 5,
+                  color: Colors.grey,
+                )
+              ]),
         ),
       ),
     );

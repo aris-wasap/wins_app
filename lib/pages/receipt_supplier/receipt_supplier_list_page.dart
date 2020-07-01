@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/receipt_supplier/list/receipt_supplier_list_bloc.dart';
-import 'package:ncf_app/blocs/receipt_supplier/list/receipt_supplier_list_event.dart';
-import 'package:ncf_app/blocs/receipt_supplier/list/receipt_supplier_list_state.dart';
-import 'package:ncf_app/pages/receipt_supplier/receipt_supplier_detail_page.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/receipt_supplier/list/receipt_supplier_list_bloc.dart';
+import 'package:admart_app/blocs/receipt_supplier/list/receipt_supplier_list_event.dart';
+import 'package:admart_app/blocs/receipt_supplier/list/receipt_supplier_list_state.dart';
+import 'package:admart_app/pages/receipt_supplier/receipt_supplier_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class ReceiptSupplierListPage extends StatefulWidget {
   @override
@@ -202,8 +202,9 @@ class _ReceiptSupplierListPageState extends State<ReceiptSupplierListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(data[index].customerName),
-                    Text("${data[index].status} - ${data[index].createdUser}"),
+                    Text("Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
+                    Text("Status : ${data[index].status}"),
+                    Text("User : ${data[index].createdUser}"),
                   ],
                 ),
                 leading: ClipOval(

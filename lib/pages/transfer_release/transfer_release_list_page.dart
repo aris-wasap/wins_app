@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/transfer_release/list/transfer_release_list_bloc.dart';
-import 'package:ncf_app/blocs/transfer_release/list/transfer_release_list_event.dart';
-import 'package:ncf_app/blocs/transfer_release/list/transfer_release_list_state.dart';
-import 'package:ncf_app/pages/transfer_release/transfer_release_detail_page.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/transfer_release/list/transfer_release_list_bloc.dart';
+import 'package:admart_app/blocs/transfer_release/list/transfer_release_list_event.dart';
+import 'package:admart_app/blocs/transfer_release/list/transfer_release_list_state.dart';
+import 'package:admart_app/pages/transfer_release/transfer_release_detail_page.dart';
 import 'package:intl/intl.dart';
 
 class TransferReleaseListPage extends StatefulWidget {

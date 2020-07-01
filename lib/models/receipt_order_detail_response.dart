@@ -113,6 +113,12 @@ class Item {
   @JsonKey(name: 'PoLineNo')
   int poLineNo;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebDetId')
+  int webDetId;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -140,6 +146,15 @@ class Item {
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
+   @JsonKey(name: 'WhsName')
+  String whsName;
+
+  @JsonKey(name: 'BinAbs')
+  int binAbs;
+
+  @JsonKey(name: 'BinCode')
+  String binCode;
+
   @JsonKey(name: 'BatchNo')
   String batchNo; 
   
@@ -148,6 +163,8 @@ class Item {
   Item({
     this.poId: 0,
     this.poLineNo: 0,
+    this.webId,
+    this.webDetId,
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
@@ -156,7 +173,10 @@ class Item {
     this.poQty: 0,
     this.qty: 0,
     this.uom,
-    this.whsCode, 
+    this.whsCode,
+    this.whsName,
+    this.binAbs,
+    this.binCode, 
     this.batchNo,
   });
 

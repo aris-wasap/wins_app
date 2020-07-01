@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ncf_app/pages/barcode_scan.dart';
+import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class BarcodeScan extends StatefulWidget {

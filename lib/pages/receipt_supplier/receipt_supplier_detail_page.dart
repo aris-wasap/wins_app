@@ -1,28 +1,30 @@
 import 'dart:convert';
 
-import 'package:ncf_app/pages/cfl/cfl_purchase_order_page.dart';
-import 'package:ncf_app/pages/receipt_supplier/receipt_supplier_detail_item_detail_page.dart';
+import 'package:admart_app/pages/cfl/cfl_purchase_supplier_page.dart';
+import 'package:admart_app/pages/receipt_supplier/receipt_supplier_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_bloc.dart';
-import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_event.dart';
-import 'package:ncf_app/blocs/receipt_supplier/detail/receipt_supplier_detail_state.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
-import 'package:ncf_app/widgets/validate_dialog_widget.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/receipt_supplier/detail/receipt_supplier_detail_bloc.dart';
+import 'package:admart_app/blocs/receipt_supplier/detail/receipt_supplier_detail_event.dart';
+import 'package:admart_app/blocs/receipt_supplier/detail/receipt_supplier_detail_state.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/models/receipt_supplier_detail_response.dart';
+import 'package:admart_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:ncf_app/models/cfl_purchase_order_response.dart' as cflPurchaseOrder;
-import 'package:ncf_app/pages/barcode_scan.dart';
+import 'package:admart_app/models/cfl_purchase_supplier_response.dart'
+    as cflPurchaseSupplier;
+import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class ReceiptSupplierDetailPage extends StatefulWidget {
   ReceiptSupplierDetailPage(this._id);
   final int _id;
   @override
-  _ReceiptSupplierDetailPageState createState() => _ReceiptSupplierDetailPageState(_id);
+  _ReceiptSupplierDetailPageState createState() =>
+      _ReceiptSupplierDetailPageState(_id);
 }
 
 class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
@@ -219,12 +221,11 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -241,12 +242,11 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
         title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.receiptSupplier_Auth_Add == 'Y')
               ? IconButton(
@@ -269,7 +269,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_poNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "SO No harus di isi");
+      ValidateDialogWidget(context: context, massage: "PO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -277,7 +277,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+        if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
               context: context, massage: 'Item sudah pernah di scan');
           return;
@@ -507,17 +507,15 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                 //   padding: EdgeInsets.only(top: 5)
                 // ),
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Receipt No.",
-                    labelText: "Receipt No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Receipt No.",
+                        labelText: "Receipt No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -529,28 +527,30 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Receipt Date",
-                            labelText: "Receipt Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "DO Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Receipt Date",
+                                labelText: "Receipt Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "DO Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -564,19 +564,20 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflPurchaseOrder.Data> po = Navigator.push(
+                      Future<cflPurchaseSupplier.Data> po = Navigator.push(
                           context,
-                          MaterialPageRoute<cflPurchaseOrder.Data>(
+                          MaterialPageRoute<cflPurchaseSupplier.Data>(
                               builder: (BuildContext context) =>
-                                  CflPurchaseOrderPage()));
+                                  CflPurchaseSupplierPage()));
 
-                      po.then((cflPurchaseOrder.Data po) {
+                      po.then((cflPurchaseSupplier.Data po) {
                         if (po != null) {
                           _poIdController.text = po.id.toString();
-                          _poNoController.text = po.seriesName + '-'+po.transNo;
+                          _poNoController.text =
+                              po.seriesName + '-' + po.transNo;
                           _customerCodeController.text = po.customerCode;
                           _customerNameController.text = po.customerName;
-                         // _seriesNamePoController.text = po.seriesName;
+                          // _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -585,13 +586,11 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -600,7 +599,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Purchase Order No.",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -633,19 +633,15 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -653,8 +649,9 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Customer",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                "Supplier",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -723,12 +720,10 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -738,9 +733,10 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+              Text("Batch No : " + data[index].batchNo ?? ''),
+              Text("Line : "+ data[index].poLineNo.toString()??'0'),
+              
               // Text(data[index].whsCode ?? ''),
             ],
           ),
@@ -770,17 +766,18 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(ReceiptSupplierDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  ReceiptSupplierDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

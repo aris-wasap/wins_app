@@ -1,8 +1,8 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/download/download_event.dart';
-import 'package:ncf_app/blocs/download/download_state.dart'; 
-import 'package:ncf_app/resources/db_provider.dart';
-import 'package:ncf_app/resources/repository.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/download/download_event.dart';
+import 'package:admart_app/blocs/download/download_state.dart'; 
+import 'package:admart_app/resources/db_provider.dart';
+import 'package:admart_app/resources/repository.dart';
 
 class DownloadBloc extends BlocEventStateBase<DownloadEvent, DownloadState> {
   DownloadBloc()

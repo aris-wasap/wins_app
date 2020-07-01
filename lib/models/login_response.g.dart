@@ -74,6 +74,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     receiptOrder_Auth_Detail: json['ReceiptOrder_Auth_Detail'] as String,
     receiptOrder_WhsCode: json['ReceiptOrder_WhsCode'] as String,
     receiptOrder_WhsName: json['ReceiptOrder_WhsName'] as String,
+    receiptSupplier_Auth_Add: json['ReceiptSupplier_Auth_Add'] as String,
+    receiptSupplier_Auth_Detail: json['ReceiptSupplier_Auth_Detail'] as String,
+    receiptSupplier_WhsCode: json['ReceiptSupplier_WhsCode'] as String,
+    receiptSupplier_WhsName: json['ReceiptSupplier_WhsName'] as String,
     returnSales_Auth_Add: json['ReturnSales_Auth_Add'] as String,
     returnSales_Auth_Detail: json['ReturnSales_Auth_Detail'] as String,
     returnSales_WhsCode: json['ReturnSales_WhsCode'] as String,
@@ -87,7 +91,29 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         json['InventoryTransfer_WhsNameFrom'] as String,
     inventoryTransfer_WhsCodeTo: json['InventoryTransfer_WhsCodeTo'] as String,
     inventoryTransfer_WhsNameTo: json['InventoryTransfer_WhsNameTo'] as String,
-  );
+  )
+    ..issueProduction_Auth_Detail =
+        json['IssueProduction_Auth_Detail'] as String
+    ..issueProduction_Auth_Add = json['IssueProduction_Auth_Add'] as String
+    ..issueProduction_WhsCode = json['IssueProduction_WhsCode'] as String
+    ..issueProduction_WhsName = json['IssueProduction_WhsName'] as String
+    ..goodsIssue_Auth_Detail = json['GoodsIssue_Auth_Detail'] as String
+    ..goodsIssue_Auth_Add = json['GoodsIssue_Auth_Add'] as String
+    ..goodsIssue_WhsCode = json['GoodsIssue_WhsCode'] as String
+    ..goodsIssue_WhsName = json['GoodsIssue_WhsName'] as String
+    ..goodsReceipt_Auth_Detail = json['GoodsReceipt_Auth_Detail'] as String
+    ..goodsReceipt_Auth_Add = json['GoodsReceipt_Auth_Add'] as String
+    ..goodsReceipt_WhsCode = json['GoodsReceipt_WhsCode'] as String
+    ..goodsReceipt_WhsName = json['GoodsReceipt_WhsName'] as String
+    ..requestIssue_Auth_Detail = json['RequestIssue_Auth_Detail'] as String
+    ..requestIssue_Auth_Add = json['RequestIssue_Auth_Add'] as String
+    ..requestIssue_WhsCode = json['RequestIssue_WhsCode'] as String
+    ..requestIssue_WhsName = json['RequestIssue_WhsName'] as String
+    ..purchaseReturns_Auth_Detail =
+        json['PurchaseReturns_Auth_Detail'] as String
+    ..purchaseReturns_Auth_Add = json['PurchaseReturns_Auth_Add'] as String
+    ..purchaseReturns_WhsCode = json['PurchaseReturns_WhsCode'] as String
+    ..purchaseReturns_WhsName = json['PurchaseReturns_WhsName'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -122,10 +148,26 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'DeliveryOrder_Auth_Add': instance.deliveryOrder_Auth_Add,
       'DeliveryOrder_WhsCode': instance.deliveryOrder_WhsCode,
       'DeliveryOrder_WhsName': instance.deliveryOrder_WhsName,
+      'IssueProduction_Auth_Detail': instance.issueProduction_Auth_Detail,
+      'IssueProduction_Auth_Add': instance.issueProduction_Auth_Add,
+      'IssueProduction_WhsCode': instance.issueProduction_WhsCode,
+      'IssueProduction_WhsName': instance.issueProduction_WhsName,
       'ReceiptProduction_Auth_Detail': instance.receiptProduction_Auth_Detail,
       'ReceiptProduction_Auth_Add': instance.receiptProduction_Auth_Add,
       'ReceiptProduction_WhsCode': instance.receiptProduction_WhsCode,
       'ReceiptProduction_WhsName': instance.receiptProduction_WhsName,
+      'GoodsIssue_Auth_Detail': instance.goodsIssue_Auth_Detail,
+      'GoodsIssue_Auth_Add': instance.goodsIssue_Auth_Add,
+      'GoodsIssue_WhsCode': instance.goodsIssue_WhsCode,
+      'GoodsIssue_WhsName': instance.goodsIssue_WhsName,
+      'GoodsReceipt_Auth_Detail': instance.goodsReceipt_Auth_Detail,
+      'GoodsReceipt_Auth_Add': instance.goodsReceipt_Auth_Add,
+      'GoodsReceipt_WhsCode': instance.goodsReceipt_WhsCode,
+      'GoodsReceipt_WhsName': instance.goodsReceipt_WhsName,
+      'RequestIssue_Auth_Detail': instance.requestIssue_Auth_Detail,
+      'RequestIssue_Auth_Add': instance.requestIssue_Auth_Add,
+      'RequestIssue_WhsCode': instance.requestIssue_WhsCode,
+      'RequestIssue_WhsName': instance.requestIssue_WhsName,
       'ReceiptIssue_Auth_Detail': instance.receiptIssue_Auth_Detail,
       'ReceiptIssue_Auth_Add': instance.receiptIssue_Auth_Add,
       'ReceiptIssue_WhsCode': instance.receiptIssue_WhsCode,
@@ -134,6 +176,14 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ReceiptOrder_Auth_Add': instance.receiptOrder_Auth_Add,
       'ReceiptOrder_WhsCode': instance.receiptOrder_WhsCode,
       'ReceiptOrder_WhsName': instance.receiptOrder_WhsName,
+      'ReceiptSupplier_Auth_Detail': instance.receiptSupplier_Auth_Detail,
+      'ReceiptSupplier_Auth_Add': instance.receiptSupplier_Auth_Add,
+      'ReceiptSupplier_WhsCode': instance.receiptSupplier_WhsCode,
+      'ReceiptSupplier_WhsName': instance.receiptSupplier_WhsName,
+      'PurchaseReturns_Auth_Detail': instance.purchaseReturns_Auth_Detail,
+      'PurchaseReturns_Auth_Add': instance.purchaseReturns_Auth_Add,
+      'PurchaseReturns_WhsCode': instance.purchaseReturns_WhsCode,
+      'PurchaseReturns_WhsName': instance.purchaseReturns_WhsName,
       'ReturnSales_Auth_Detail': instance.returnSales_Auth_Detail,
       'ReturnSales_Auth_Add': instance.returnSales_Auth_Add,
       'ReturnSales_WhsCode': instance.returnSales_WhsCode,

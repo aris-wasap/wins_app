@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-String appName = "NCF";
+String appName = "admart";
 
 Color colorGradientTop = Color(0xFF6137D7);
 Color colorGradientBottom = Color(0xFFBC3358);

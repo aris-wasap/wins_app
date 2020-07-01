@@ -1,5 +1,5 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/models/item_detail_scan_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/models/item_detail_scan_response.dart';
 import 'package:meta/meta.dart';
 
 class ItemDetailState extends BlocState {

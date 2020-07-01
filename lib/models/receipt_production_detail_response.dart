@@ -80,6 +80,12 @@ class Item {
   @JsonKey(name: 'WoNo')
   String woNo;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebDetId')
+  int webDetId;
+
   @JsonKey(name: 'ItemCode')
   String itemCode;
   
@@ -112,6 +118,8 @@ class Item {
     this.id: 0,
     this.woId: 0,
     this.woNo,
+    this.webId,
+    this.webDetId,
     this.itemCode,
     this.itemName,
     this.quantity:0,

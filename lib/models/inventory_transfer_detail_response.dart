@@ -9,7 +9,8 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'inventory_transfer_detail_response.g.dart';
 
-InventoryTransferDetailResponse inventoryTransferDetailResponseFromJson(String str) {
+InventoryTransferDetailResponse inventoryTransferDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return InventoryTransferDetailResponse.fromJson(jsonData);
 }
@@ -35,14 +36,14 @@ class InventoryTransferDetailResponse {
     return _$InventoryTransferDetailResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$InventoryTransferDetailResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$InventoryTransferDetailResponseToJson(this);
 }
 
 @JsonSerializable()
 class Data {
-
   @JsonKey(name: 'Id')
-  int id;  
+  int id;
 
   @JsonKey(name: 'UserId')
   int userId;
@@ -53,16 +54,25 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'RequestId')
+  int requestId;
+
+  @JsonKey(name: 'RequestNo')
+  String requestNo;
+
+  @JsonKey(name: 'SeriesNameReq')
+  String seriesNameReq;
+
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'FromWhsCode')
-  String fromWhsCode; 
-  
+  String fromWhsCode;
+
   @JsonKey(name: 'FromWhsName')
   String fromWhsName;
 
-   @JsonKey(name: 'FromAbsEntry')
+  @JsonKey(name: 'FromAbsEntry')
   int fromAbsEntry;
 
   @JsonKey(name: 'FromBinCode')
@@ -86,20 +96,20 @@ class Data {
   @JsonKey(name: 'Items')
   List<Item> items;
 
-  
-  
-
-  Data({  
+  Data({
     this.id: 0,
     this.userId,
     this.transNo,
     this.seriesName,
-    this.transDate, 
+    this.requestId,
+    this.requestNo,
+    this.seriesNameReq,
+    this.transDate,
     this.fromWhsCode,
     this.fromWhsName,
     this.fromAbsEntry,
     this.fromBinCode,
-    this.toWhsCode, 
+    this.toWhsCode,
     this.toWhsName,
     this.toAbsEntry,
     this.toBinCode,
@@ -110,10 +120,16 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item {  
+class Item {
+
+   @JsonKey(name: 'RequestId')
+  int requestId;
+
+  @JsonKey(name: 'RequestLineNo')
+  int requestLineNo;
 
   @JsonKey(name: 'Id')
   int id;
@@ -128,7 +144,7 @@ class Item {
   String itemCode;
 
   @JsonKey(name: 'ItemName')
-  String itemName; 
+  String itemName;
 
   @JsonKey(name: 'AvailableQty')
   double availableQty;
@@ -158,27 +174,24 @@ class Item {
   String toBinCode;
 
   @JsonKey(name: 'BatchNo')
-  String batchNo; 
-   
- 
- 
-  Item({ 
+  String batchNo;
+
+  Item({
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
-    this.availableQty, 
+    this.availableQty,
     this.qty: 0,
     this.uom,
-    this.toWhsCode, 
+    this.toWhsCode,
     this.toAbsEntry,
     this.toBinCode,
-    this.batchNo, 
+    this.batchNo,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 

@@ -1,5 +1,5 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/models/delivery_order_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/models/delivery_order_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class DeliveryOrderDetailState extends BlocState {

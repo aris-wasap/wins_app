@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'transfer_production_detail_scan_response.g.dart';
 

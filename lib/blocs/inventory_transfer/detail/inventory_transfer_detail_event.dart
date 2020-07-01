@@ -1,13 +1,13 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class InventoryTransferDetailEvent extends BlocEvent {
   InventoryTransferDetailEvent({
     this.id,
     this.data,
-    this.prodOrderId,
-    this.prodOrderNo,
+    this.requestId,
+    this.requestNo,
     this.whsCodeFrom,
     this.absEntryFrom,
     this.binCodeFrom,
@@ -18,8 +18,8 @@ class InventoryTransferDetailEvent extends BlocEvent {
 
   final int id;
   final Data data;
-  final int prodOrderId;
-  final String prodOrderNo;
+  final int requestId;
+  final String requestNo;
   final String whsCodeFrom;
   final int absEntryFrom;
   final String binCodeFrom;
@@ -43,16 +43,16 @@ class InventoryTransferDetailEventGetId extends InventoryTransferDetailEvent {
 class InventoryTransferDetailEventScan extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventScan({
     @required Data data,
-    // @required int prodOrderId,
-    // @required String prodOrderNo,
+    @required int requestId,
+    @required String requestNo,
     @required String whsCodeFrom,
     @required String binCodeFrom,
     @required int absEntryFrom,
     @required String qrResult,
   }) : super(
           data: data,
-          // prodOrderId: prodOrderId,
-          // prodOrderNo: prodOrderNo,
+          requestId: requestId,
+          requestNo: requestNo,
           whsCodeFrom: whsCodeFrom,
           binCodeFrom : binCodeFrom,
           absEntryFrom : absEntryFrom,

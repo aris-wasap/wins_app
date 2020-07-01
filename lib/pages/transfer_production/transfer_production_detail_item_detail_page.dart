@@ -1,13 +1,19 @@
-import 'package:ncf_app/widgets/validate_dialog_widget.dart';
+import 'package:admart_app/pages/cfl/cfl_batch_location_page.dart';
+import 'package:admart_app/pages/cfl/cfl_item_batch__page.dart';
+import 'package:admart_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_bloc.dart';
-import 'package:ncf_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_state.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
-import 'package:ncf_app/widgets/label_field_widget.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_bloc.dart';
+import 'package:admart_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/transfer_production/detail_item_detail/transfer_production_detail_item_detail_state.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart';
+import 'package:admart_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:admart_app/models/cfl_batch_location_response.dart'
+    as cflBatchLocation;
+import 'package:admart_app/models/cfl_item_batch_response.dart' as cflItemBatch;
 
 import 'dart:math' as math;
 
@@ -26,10 +32,20 @@ class _TransferProductionDetailItemDetailPageState
   final Item _data;
   TransferProductionDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _woIdController = TextEditingController();
+  final _lineNumController = TextEditingController();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
+  final _whsCodeController = TextEditingController();
+  final _whsNameController = TextEditingController();
+  final _binAbsController = TextEditingController();
+  final _binCodeController = TextEditingController();
+  final _batchNumberController = TextEditingController();
+  final _availableQtyController = TextEditingController();
+  final _plannedQtyController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _openQtyController = TextEditingController();
 
   @override
   void initState() {
@@ -69,21 +85,20 @@ class _TransferProductionDetailItemDetailPageState
   Widget build(BuildContext context) {
     return BlocEventStateBuilder<TransferProductionDetailItemDetailState>(
         bloc: bloc,
-        builder:
-            (BuildContext context, TransferProductionDetailItemDetailState state) {
+        builder: (BuildContext context,
+            TransferProductionDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
-              backgroundColor: Colors.blue[900],
+              backgroundColor: bgBlue,
               bottom: PreferredSize(
-                child: Container(
-                  color: Colors.yellow[900],
-                  height: 5.0,
-                ),
-                preferredSize: Size.fromHeight(5.0)
-              ),
+                  child: Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
+                  preferredSize: Size.fromHeight(5.0)),
               actions: <Widget>[
                 _data.id == 0
                     ? FlatButton.icon(
@@ -92,7 +107,7 @@ class _TransferProductionDetailItemDetailPageState
                           _done();
                         },
                         textColor: Colors.white,
-                        label: Text("Submit"),
+                        label: Text("DONE"),
                       )
                     : Container(),
               ],
@@ -107,16 +122,29 @@ class _TransferProductionDetailItemDetailPageState
   Widget _buildForm() {
     var data = _getState().data;
 
+    _woIdController.text = data.woId.toString();
+    _lineNumController.text = data.woLineNo.toString();
+    _batchNumberController.text = data.batchNo;
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
-    if(_data.qty != 0){
-      if(_qtyController.text==""){
-        _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
-      }
-      else{
-        if(_data.qty == double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))){
-          _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
+    _whsCodeController.text = data.fromWhsCode;
+    _whsNameController.text = data.fromWhsName;
+    _binAbsController.text = data.fromAbsEntry.toString();
+    _binCodeController.text = data.fromBinCode;
+    _availableQtyController.text = data.availableQty.toString();
+    _plannedQtyController.text = data.plannedQty.toString();
+    _openQtyController.text = data.openQty.toString();
+
+    if (_data.qty != 0) {
+      if (_qtyController.text == "") {
+        _qtyController.text = NumberFormat("###,###.##")
+            .format(double.parse(data.qty.toString()));
+      } else {
+        if (_data.qty ==
+            double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyController.text = NumberFormat("###,###.##")
+              .format(double.parse(data.qty.toString()));
         }
       }
     }
@@ -126,13 +154,9 @@ class _TransferProductionDetailItemDetailPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height,
+            //height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
+              gradient: bgGradientPageWhite,
             ),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(
@@ -140,75 +164,279 @@ class _TransferProductionDetailItemDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _itemCodeController,
+                  controller: _batchNumberController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
+                      labelText: "Batch Number",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      setState(() {
+                        Future<cflItemBatch.Data> itemBatch = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflItemBatch.Data>(
+                                builder: (BuildContext context) =>
+                                    CflItemBatchPage(
+                                      _whsCodeController.text,
+                                      _batchNumberController.text,
+                                      int.parse(_woIdController.text),
+                                    )));
+
+                        itemBatch.then((cflItemBatch.Data itemBatch) {
+                          if (itemBatch != null) {
+                            // _binAbsController.text = bin.absEntry.toString();
+                            // _binCodeController.text =  bin.binCode;
+                            _getState().data.woLineNo = itemBatch.lineNum;
+                            _getState().data.itemCode = itemBatch.itemCode;
+                            _getState().data.itemName = itemBatch.itemName;
+                            _getState().data.fromAbsEntry = itemBatch.absEntry;
+                            _getState().data.fromBinCode = itemBatch.binCode;
+                            _getState().data.availableQty =
+                                double.parse(itemBatch.availableQty.toString());
+                            _getState().data.plannedQty =
+                                double.parse(itemBatch.plannedQty.toString());
+                            _getState().data.openQty =
+                                double.parse(itemBatch.openQty.toString());
+                            _getState().data.issueQty =
+                                double.parse(itemBatch.issueQty.toString());
+                          }
+                        });
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0) ? bgBlue : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Item Code",
+                                style: TextStyle(color: bgBlue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_itemCodeController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_itemNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
+                Padding(padding: EdgeInsets.only(top: 10)),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {}
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? bgBlue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Warehouse",
+                                style: TextStyle(color: bgBlue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_whsCodeController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_whsNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  controller: _itemNameController,
+                Padding(padding: EdgeInsets.only(top: 10)),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      setState(() {
+                        Future<cflBatchLocation.Data> bin = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflBatchLocation.Data>(
+                                builder: (BuildContext context) =>
+                                    CflBatchLocationPage(
+                                        _whsCodeController.text,
+                                        _batchNumberController.text,
+                                        _itemCodeController.text)));
+
+                        bin.then((cflBatchLocation.Data bin) {
+                          if (bin != null) {
+                            // _binAbsController.text = bin.absEntry.toString();
+                            // _binCodeController.text =  bin.binCode;
+                            _getState().data.fromAbsEntry = bin.absEntry;
+                            _getState().data.fromBinCode = bin.binCode;
+                            _getState().data.availableQty =
+                                double.parse(bin.availableQty.toString());
+                          }
+                        });
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0) ? bgBlue : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "From Bin Location",
+                                style: TextStyle(color: bgBlue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_binCodeController.text),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _availableQtyController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Available Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _plannedQtyController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Planned Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _openQtyController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Open Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
                         autofocus: true,
                         controller: _qtyController,
-                        onEditingComplete: (){
+                        onEditingComplete: () {
                           setState(() {
-                            String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
+                            String newValue = NumberFormat("###,###.##").format(
+                                double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
                             _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
                           });
                         },
-                        inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           labelText: "Qty",
-                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
+                              borderRadius: new BorderRadius.circular(10.0)),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
+                              borderSide: BorderSide(color: bgBlue),
+                              borderRadius: new BorderRadius.circular(10.0)),
                         ))
                     : LabelFieldWidget(
                         labelText: "Qty",
                         valueText:
-                            "${NumberFormat("#,###.0000").format(data.qty)}",
+                            "${NumberFormat("#,###.00").format(data.qty)}",
                       ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _uomController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "UoM",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
               ],
             ),
@@ -216,26 +444,28 @@ class _TransferProductionDetailItemDetailPageState
         ]);
   }
 }
-                        
+
 class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+  DecimalTextInputFormatter({this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
 
   final int decimalRange;
-  final money  = NumberFormat("###,###,###", "en_US");
+  final money = NumberFormat("###,###,###", "en_US");
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     TextSelection newSelection = newValue.selection;
-    String truncated =  newValue.text;
+    String truncated = newValue.text;
 
     if (decimalRange != null) {
       String value = newValue.text;
 
-      if (value.contains(".") && value.substring(value.indexOf(".") + 1).length > decimalRange) {
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
-      }
-      else if (value == ".") {
+      } else if (value == ".") {
         truncated = "0.";
 
         newSelection = newValue.selection.copyWith(

@@ -1,9 +1,9 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/item/detail/item_detail_event.dart';
-import 'package:ncf_app/blocs/item/detail/item_detail_state.dart';
-import 'package:ncf_app/models/item_detail_scan_response.dart';
-import 'package:ncf_app/resources/repository.dart';
-import 'package:ncf_app/models/item_detail_scan_response.dart'
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/item/detail/item_detail_event.dart';
+import 'package:admart_app/blocs/item/detail/item_detail_state.dart';
+import 'package:admart_app/models/item_detail_scan_response.dart';
+import 'package:admart_app/resources/repository.dart';
+import 'package:admart_app/models/item_detail_scan_response.dart'
     as itemDetail;
 
 class ItemDetailBloc extends BlocEventStateBase<

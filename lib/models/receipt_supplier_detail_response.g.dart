@@ -77,6 +77,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
+    whsName: json['WhsName'] as String,
+    binAbs: json['BinAbs'] as int,
+    binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
   );
 }
@@ -93,5 +96,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
+      'WhsName': instance.whsName,
+      'BinAbs': instance.binAbs,
+      'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
     };

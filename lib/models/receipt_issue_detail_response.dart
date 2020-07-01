@@ -93,6 +93,12 @@ class Item {
   @JsonKey(name: 'IssueLineNo')
   int issueLineNo;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebDetId')
+  int webDetId;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -114,11 +120,23 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'ItemCost')
+  double itemCost;
+
   @JsonKey(name: 'Uom')
   String uom;
 
   @JsonKey(name: 'WhsCode')
   String whsCode;
+
+  @JsonKey(name: 'WhsName')
+  String whsName;
+
+  @JsonKey(name: 'BinAbs')
+  int binAbs;
+
+  @JsonKey(name: 'BinCode')
+  String binCode;
 
   @JsonKey(name: 'BatchNo')
   String batchNo; 
@@ -128,6 +146,8 @@ class Item {
   Item({
     this.issueId: 0,
     this.issueLineNo: 0,
+    this.webId,
+    this.webDetId,
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
@@ -135,8 +155,12 @@ class Item {
     this.itemName, 
     this.issueQty: 0,
     this.qty: 0,
+    this.itemCost:0,
     this.uom,
-    this.whsCode, 
+    this.whsCode,
+    this.whsName,
+    this.binAbs,
+    this.binCode,  
     this.batchNo,
   });
 

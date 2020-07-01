@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_bloc.dart';
-import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_event.dart';
-import 'package:ncf_app/blocs/cfl_production_order/cfl_production_order_state.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/cfl_production_order/cfl_production_order_bloc.dart';
+import 'package:admart_app/blocs/cfl_production_order/cfl_production_order_event.dart';
+import 'package:admart_app/blocs/cfl_production_order/cfl_production_order_state.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class CflProductionOrderPage extends StatefulWidget {
   @override
@@ -72,18 +72,16 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Production Order",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Production Order",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -101,12 +99,11 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
         title: Text("Choose Production Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -161,33 +158,35 @@ class _CflProductionOrderPageState extends State<CflProductionOrderPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
-            margin: const EdgeInsets.only(top:8),
-            // decoration:
-            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: ListTile(
-                title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
-                subtitle: Column(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ 
-                    Text("${data[index].productCode??''}"),
-                    Text("${data[index].productName??''}"),
-                  ],
-                ),
-                leading: Icon(Icons.keyboard_arrow_left),
-                onTap: () {
-                  Navigator.pop(context, data[index]);
-                },
+          return Card(
+            child: (Container(
+              decoration: BoxDecoration(
+                gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
               ),
-            ),
-          ));
+              //margin: const EdgeInsets.only(top: 8),
+              // decoration:
+              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: ListTile(
+                  title: Text(
+                      "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                  subtitle: Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("${data[index].productCode ?? ''}"),
+                      Text("${data[index].productName ?? ''}"),
+                    ],
+                  ),
+                  leading: Icon(Icons.keyboard_arrow_left),
+                  onTap: () {
+                    Navigator.pop(context, data[index]);
+                  },
+                ),
+              ),
+            )),
+          );
         }
 
         if (isFailure) {

@@ -48,17 +48,26 @@ class Data {
   @JsonKey(name: 'TransNo')
   String transNo;
 
+  @JsonKey(name: 'SeriesName')
+  String seriesName;
+
   @JsonKey(name: 'TransDate')
-  DateTime transDate; 
+  DateTime transDate;
 
   @JsonKey(name: 'Status')
-  String status; 
-  
-  @JsonKey(name: 'WhsCodeFrom')
-  String whsCodeFrom;
+  String status;
 
-  @JsonKey(name: 'WhsCodeTo')
-  String whsCodeTo;
+  @JsonKey(name: 'FromWhsCode')
+  String fromWhsCode;
+
+  @JsonKey(name: 'FromWhsName')
+  String fromWhsName;
+ 
+  @JsonKey(name: 'ToWhsCode')
+  String toWhsCode;
+ 
+  @JsonKey(name: 'ToWhsName')
+  String toWhsName;
   
   @JsonKey(name: 'CreatedUser')
   String createdUser;
@@ -68,10 +77,13 @@ class Data {
     this.id,
     this.userId,
     this.transNo,
+    this.seriesName,
     this.transDate,
-    this.status, 
-    this.whsCodeFrom,
-    this.whsCodeTo, 
+    this.status,
+    this.fromWhsCode,
+    this.fromWhsName,
+    this.toWhsCode,
+    this.toWhsName,
     this.createdUser, 
   });
 

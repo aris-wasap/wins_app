@@ -1,77 +1,112 @@
-import 'package:ncf_app/models/cfl_binlocation_response.dart';
-import 'package:ncf_app/models/cfl_db_warehouse_model.dart';
-import 'package:ncf_app/models/cfl_production_order_response.dart';
-import 'package:ncf_app/models/cfl_purchase_order_response.dart';
-import 'package:ncf_app/models/cfl_sales_order_response.dart';
-import 'package:ncf_app/models/cfl_delivery_order_response.dart';
-import 'package:ncf_app/models/cfl_goods_issue_response.dart';
-import 'package:ncf_app/models/delivery_order_detail_scan_response.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_scan_response.dart';
-import 'package:ncf_app/models/inventory_transfer_list_response.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart'
+import 'package:admart_app/models/cfl_batch_location_response.dart';
+import 'package:admart_app/models/cfl_binlocation_response.dart';
+import 'package:admart_app/models/cfl_db_warehouse_model.dart';
+import 'package:admart_app/models/cfl_item_batch_response.dart';
+import 'package:admart_app/models/cfl_production_order_response.dart';
+import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
+import 'package:admart_app/models/cfl_purchase_item_response.dart';
+import 'package:admart_app/models/cfl_purchase_order_response.dart';
+import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_sales_order_response.dart';
+import 'package:admart_app/models/cfl_delivery_order_response.dart';
+import 'package:admart_app/models/cfl_goods_issue_response.dart';
+import 'package:admart_app/models/cfl_transfer_production_response.dart';
+import 'package:admart_app/models/cfl_transfer_request_response.dart';
+import 'package:admart_app/models/delivery_order_detail_scan_response.dart';
+import 'package:admart_app/models/goods_issue_detail_refresh_response.dart';
+import 'package:admart_app/models/goods_issue_detail_response.dart';
+import 'package:admart_app/models/goods_issue_detail_scan_response.dart';
+import 'package:admart_app/models/goods_issue_list_response.dart';
+import 'package:admart_app/models/goods_receipt_detail_response.dart';
+import 'package:admart_app/models/goods_receipt_detail_scan_response.dart';
+import 'package:admart_app/models/goods_receipt_list_response.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart';
+import 'package:admart_app/models/inventory_transfer_detail_scan_response.dart';
+import 'package:admart_app/models/inventory_transfer_list_response.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart'
     as inventoryTransferDetail;
-import 'package:ncf_app/models/login_response.dart';
-import 'package:ncf_app/models/receipt_issue_detail_response.dart' as receiptIssueDetail;
-import 'package:ncf_app/models/receipt_issue_detail_response.dart';
-import 'package:ncf_app/models/receipt_issue_detail_scan_response.dart';
-import 'package:ncf_app/models/receipt_issue_list_response.dart';
-import 'package:ncf_app/models/receipt_order_detail_response.dart';  
-import 'package:ncf_app/models/receipt_order_detail_response.dart' as receiptOrderDetail;
-import 'package:ncf_app/models/receipt_supplier_detail_response.dart' as receiptSupplierDetail;  
-import 'package:ncf_app/models/receipt_order_detail_scan_response.dart';
-import 'package:ncf_app/models/receipt_order_list_response.dart';
-import 'package:ncf_app/models/receipt_production_detail_response.dart';
-import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
-import 'package:ncf_app/models/receipt_supplier_detail_scan_response.dart';
-import 'package:ncf_app/models/receipt_supplier_list_response.dart';
-import 'package:ncf_app/models/serverInfo_response.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
-import 'package:ncf_app/models/transfer_production_detail_scan_response.dart';
-import 'package:ncf_app/models/transfer_production_list_response.dart';
-import 'package:ncf_app/models/transfer_reject_detail_response.dart';
-import 'package:ncf_app/models/transfer_reject_detail_scan_response.dart';
-import 'package:ncf_app/models/transfer_reject_list_response.dart';
-import 'package:ncf_app/models/transfer_release_detail_response.dart';
-import 'package:ncf_app/models/transfer_release_detail_scan_response.dart';
-import 'package:ncf_app/models/transfer_release_list_response.dart';
-import 'package:ncf_app/models/transfer_request_detail_response.dart';
-import 'package:ncf_app/models/transfer_request_detail_scan_response.dart';
-import 'package:ncf_app/models/transfer_request_list_response.dart';
-import 'package:ncf_app/resources/api_provider.dart';
-import 'package:ncf_app/models/delivery_order_detail_response.dart';
-import 'package:ncf_app/models/delivery_order_list_response.dart';
-import 'package:ncf_app/models/return_sales_detail_response.dart';
-import 'package:ncf_app/models/return_sales_list_response.dart';
-import 'package:ncf_app/models/return_sales_detail_scan_response.dart';
-import 'package:ncf_app/models/item_detail_scan_response.dart';
-import 'package:ncf_app/models/transfer_release_detail_response.dart'
+import 'package:admart_app/models/issue_production_detail_response.dart';
+import 'package:admart_app/models/issue_production_detail_scan_response.dart';
+import 'package:admart_app/models/issue_production_list_response.dart';
+import 'package:admart_app/models/login_response.dart';
+import 'package:admart_app/models/purchase_returns_detail_response.dart';
+import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
+import 'package:admart_app/models/purchase_returns_list_response.dart';
+import 'package:admart_app/models/receipt_issue_detail_response.dart'
+    as receiptIssueDetail;
+import 'package:admart_app/models/request_issue_detail_response.dart'
+    as requestIssueDetail;
+import 'package:admart_app/models/receipt_issue_detail_response.dart';
+import 'package:admart_app/models/receipt_issue_detail_scan_response.dart';
+import 'package:admart_app/models/receipt_issue_list_response.dart';
+import 'package:admart_app/models/receipt_order_detail_response.dart';
+import 'package:admart_app/models/receipt_order_detail_response.dart'
+    as receiptOrderDetail;
+import 'package:admart_app/models/receipt_supplier_detail_response.dart'
+    as receiptSupplierDetail;
+import 'package:admart_app/models/receipt_order_detail_scan_response.dart';
+import 'package:admart_app/models/receipt_order_list_response.dart';
+import 'package:admart_app/models/receipt_production_detail_response.dart';
+import 'package:admart_app/models/receipt_supplier_detail_response.dart';
+import 'package:admart_app/models/receipt_supplier_detail_scan_response.dart';
+import 'package:admart_app/models/receipt_supplier_list_response.dart';
+import 'package:admart_app/models/request_issue_detail_response.dart';
+import 'package:admart_app/models/request_issue_detail_scan_response.dart';
+import 'package:admart_app/models/request_issue_list_response.dart';
+import 'package:admart_app/models/serverInfo_response.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart';
+import 'package:admart_app/models/transfer_production_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_production_list_response.dart';
+import 'package:admart_app/models/transfer_reject_detail_response.dart';
+import 'package:admart_app/models/transfer_reject_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_reject_list_response.dart';
+import 'package:admart_app/models/transfer_release_detail_response.dart';
+import 'package:admart_app/models/transfer_release_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_release_list_response.dart';
+import 'package:admart_app/models/transfer_request_detail_response.dart';
+import 'package:admart_app/models/transfer_request_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_request_list_response.dart';
+import 'package:admart_app/resources/api_provider.dart';
+import 'package:admart_app/models/delivery_order_detail_response.dart';
+import 'package:admart_app/models/delivery_order_list_response.dart';
+import 'package:admart_app/models/return_sales_detail_response.dart';
+import 'package:admart_app/models/return_sales_list_response.dart';
+import 'package:admart_app/models/return_sales_detail_scan_response.dart';
+import 'package:admart_app/models/item_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_release_detail_response.dart'
     as transferReleaseDetail;
-import 'package:ncf_app/models/transfer_reject_detail_response.dart'
+import 'package:admart_app/models/transfer_reject_detail_response.dart'
     as transferRejectDetail;
-import 'package:ncf_app/models/transfer_production_detail_response.dart'
+import 'package:admart_app/models/transfer_production_detail_response.dart'
     as transferProductionDetail;
-import 'package:ncf_app/models/transfer_request_detail_response.dart'
+import 'package:admart_app/models/transfer_request_detail_response.dart'
     as transferRequestDetail;
-import 'package:ncf_app/models/delivery_order_detail_response.dart'
+import 'package:admart_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
-import 'package:ncf_app/models/return_sales_detail_response.dart'
+import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
+import 'package:admart_app/models/purchase_returns_detail_response.dart'
+    as purchaseReturnsDetail;
+import 'package:admart_app/models/receipt_production_detail_response.dart'
+    as receiptProductionDetail;
+import 'package:admart_app/models/issue_production_detail_response.dart'
+    as issueProductionDetail;
+import 'package:admart_app/models/goods_issue_detail_response.dart'
+    as goodsIssueDetail;
+import 'package:admart_app/models/goods_receipt_detail_response.dart'
+    as goodsReceiptDetail;
+import 'package:admart_app/models/receipt_production_list_response.dart';
+import 'package:admart_app/models/receipt_production_detail_scan_response.dart';
 
-import 'package:ncf_app/models/receipt_production_detail_response.dart' as receiptProductionDetail;
-import 'package:ncf_app/models/receipt_production_list_response.dart';
-import 'package:ncf_app/models/receipt_production_detail_scan_response.dart';
-
-import 'package:ncf_app/resources/db_provider.dart';
+import 'package:admart_app/resources/db_provider.dart';
 
 class Repository {
   final apiProvider = ApiProvider();
   //-----------------------------
   //GetServerInfo
   //-----------------------------
-  Future<ServerInfoResponse> getServerInfo() =>
-      apiProvider.getServerInfo();
-      
+  Future<ServerInfoResponse> getServerInfo() => apiProvider.getServerInfo();
+
   //-----------------------------
   //Login
   //-----------------------------
@@ -151,9 +186,8 @@ class Repository {
       apiProvider.transferProductionDetail_Add(data);
 
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
-          int prodOrderId, String whsCodeFrom, String qrResult) =>
-      apiProvider.transferProductionDetail_Scan(
-          prodOrderId, whsCodeFrom, qrResult);
+          int woId, String whsCodeFrom, String qrResult) =>
+      apiProvider.transferProductionDetail_Scan(woId, whsCodeFrom, qrResult);
 
   //-----------------------------
   //TransferRequestList
@@ -231,9 +265,35 @@ class Repository {
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
 
   //-----------------------------
+  //IssueProductionList
+  //-----------------------------
+  Future<IssueProductionListResponse> issueProductionList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.issueProductionList_FetchNextPage(lastId, searchQuery);
+
+  Future<IssueProductionListResponse> issueProductionList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.issueProductionList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //IssueProductionDetail
+  //-----------------------------
+  Future<IssueProductionDetailResponse> issueProductionDetail_GetById(int id) =>
+      apiProvider.issueProductionDetail_GetById(id);
+
+  Future<IssueProductionDetailResponse> issueProductionDetail_Add(
+          issueProductionDetail.Data data) =>
+      apiProvider.issueProductionDetail_Add(data);
+
+  Future<IssueProductionDetailScanResponse> issueProductionDetail_Scan(
+          int poId, String qrResult) =>
+      apiProvider.issueProductionDetail_Scan(poId, qrResult);
+
+  //-----------------------------
   //ReceiptProductionDetail
   //-----------------------------
-  Future<ReceiptProductionDetailResponse> receiptProductionDetail_GetById(int id) =>
+  Future<ReceiptProductionDetailResponse> receiptProductionDetail_GetById(
+          int id) =>
       apiProvider.receiptProductionDetail_GetById(id);
 
   Future<ReceiptProductionDetailResponse> receiptProductionDetail_Add(
@@ -241,7 +301,7 @@ class Repository {
       apiProvider.receiptProductionDetail_Add(data);
 
   Future<ReceiptProductionDetailScanResponse> receiptProductionDetail_Scan(
-         String qrResult) =>
+          String qrResult) =>
       apiProvider.receiptProductionDetail_Scan(qrResult);
 
 //-----------------------------
@@ -255,6 +315,86 @@ class Repository {
           int lastId, String searchQuery) =>
       apiProvider.receiptProductionList_Refresh(lastId, searchQuery);
 
+  //-----------------------------
+  //GoodsIssueList
+  //-----------------------------
+  Future<GoodsIssueListResponse> goodsIssueList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueList_FetchNextPage(lastId, searchQuery);
+
+  Future<GoodsIssueListResponse> goodsIssueList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //GoodsIssueDetail
+  //-----------------------------
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_GetById(int id) =>
+      apiProvider.goodsIssueDetail_GetById(id);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_Add(
+          goodsIssueDetail.Data data) =>
+      apiProvider.goodsIssueDetail_Add(data);
+
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_Scan(
+          int woId, String qrResult) =>
+      apiProvider.goodsIssueDetail_Scan(woId, qrResult);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(int woId) =>
+      apiProvider.goodsIssueDetail_ViewDetailItem(woId);
+
+  //-----------------------------
+  //GoodsReceiptList
+  //-----------------------------
+  Future<GoodsReceiptListResponse> goodsReceiptList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsReceiptList_FetchNextPage(lastId, searchQuery);
+
+  Future<GoodsReceiptListResponse> goodsReceiptList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsReceiptList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //GoodsReceiptDetail
+  //-----------------------------
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_GetById(int id) =>
+      apiProvider.goodsReceiptDetail_GetById(id);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Add(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Add(data);
+
+  Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_Scan(
+          int poId, String qrResult) =>
+      apiProvider.goodsReceiptDetail_Scan(poId, qrResult);
+
+  Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(int woId) =>
+      apiProvider.goodsReceiptDetail_ViewDetailItem(woId);
+      
+  //-----------------------------
+  //RequestIssueList
+  //-----------------------------
+  Future<RequestIssueListResponse> requestIssueList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.requestIssueList_FetchNextPage(lastId, searchQuery);
+
+  Future<RequestIssueListResponse> requestIssueList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.requestIssueList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //RequestIssueDetail
+  //-----------------------------
+  Future<RequestIssueDetailResponse> requestIssueDetail_GetById(int id) =>
+      apiProvider.requestIssueDetail_GetById(id);
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_Add(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Add(data);
+
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+          String qrResult) =>
+      apiProvider.requestIssueDetail_Scan( qrResult);
 
   //-----------------------------
   //ReceiptIssueList
@@ -331,6 +471,30 @@ class Repository {
           int poId, String qrResult) =>
       apiProvider.receiptSupplierDetail_Scan(poId, qrResult);
 
+  //-----------------------------
+  //PurchaseReturnsList
+  //-----------------------------
+  Future<PurchaseReturnsListResponse> purchaseReturnsList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.purchaseReturnsList_FetchNextPage(lastId, searchQuery);
+
+  Future<PurchaseReturnsListResponse> purchaseReturnsList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.purchaseReturnsList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //PurchaseReturnsDetail
+  //-----------------------------
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_GetById(int id) =>
+      apiProvider.purchaseReturnsDetail_GetById(id);
+
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Add(
+          purchaseReturnsDetail.Data data) =>
+      apiProvider.purchaseReturnsDetail_Add(data);
+
+  Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
+          int grpoId, String qrResult) =>
+      apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
 
   //-----------------------------
   //InventoryTransferList
@@ -355,11 +519,14 @@ class Repository {
       apiProvider.inventoryTransferDetail_Add(data);
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
-          int prodOrderId, String whsCodeFrom, int absEntryFrom, String binCodeFrom ,String qrResult) =>
+          int requestId,
+          String whsCodeFrom,
+          int absEntryFrom,
+          String binCodeFrom,
+          String qrResult) =>
       apiProvider.inventoryTransferDetail_Scan(
-          prodOrderId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
+          requestId, whsCodeFrom, absEntryFrom, binCodeFrom, qrResult);
 
-  
   //-----------------------------
   //ItemDetail
   //-----------------------------
@@ -374,6 +541,20 @@ class Repository {
       apiProvider.cflProductionOrder_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
+  //CflTransferProduction
+  //-----------------------------
+  Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflTransferProduction_FetchNextPage(rowStart, searchQuery);
+      
+  //-----------------------------
+  //CflTransferRequest
+  //-----------------------------
+  Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
   //CflSalesOrder
   //-----------------------------
   Future<CflSalesOrderResponse> cflSalesOrder_FetchNextPage(
@@ -385,7 +566,6 @@ class Repository {
   Future<CflDeliveryOrderResponse> cflDeliveryOrder_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflDeliveryOrder_FetchNextPage(rowStart, searchQuery);
-
 
   //-----------------------------
   //CflGoodsIssue
@@ -402,6 +582,27 @@ class Repository {
       apiProvider.cflPurchaseOrder_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
+  //CflPurchaseSupplier
+  //-----------------------------
+  Future<CflPurchaseSupplierResponse> cflPurchaseSupplier_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflPurchaseSupplier_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
+  //CflPurchaseItem
+  //-----------------------------
+  Future<CflPurchaseItemResponse> cflPurchaseItem_FetchNextPage(
+          int rowStart, String searchQuery, int poId) =>
+      apiProvider.cflPurchaseItem_FetchNextPage(rowStart, searchQuery, poId);
+
+//-----------------------------
+  //CflPurchaseDelivery
+  //-----------------------------
+  Future<CflPurchaseDeliveryResponse> cflPurchaseDelivery_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflPurchaseDelivery_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------s
   //Warehouse
   //-----------------------------
   Future<bool> warehouse_CopyApiToDb() async {
@@ -428,11 +629,31 @@ class Repository {
   Future<List<CflDbWarehouseModel>> cflDbWarehouse_Refresh(
           String id, String searchQuery) =>
       DbProvider.db.cflDbWarehouse_Refresh(id, searchQuery);
-      
+
   //-----------------------------
   //CflBinLocation
   //-----------------------------
-  Future<CflBinLocationResponse> cflBinLocation_FetchNextPage(int rowStart, String searchQuery 
-          ,String whsCode) =>
+  Future<CflBinLocationResponse> cflBinLocation_FetchNextPage(
+          int rowStart, String searchQuery, String whsCode) =>
       apiProvider.cflBinLocation_FetchNextPage(rowStart, searchQuery, whsCode);
+
+  //-----------------------------
+  //CflBatchLocation
+  //-----------------------------
+  Future<CflBatchLocationResponse> cflBatchLocation_FetchNextPage(
+          int rowStart,
+          String searchQuery,
+          String whsCode,
+          String batchNo,
+          String itemCode) =>
+      apiProvider.cflBatchLocation_FetchNextPage(
+          rowStart, searchQuery, whsCode, batchNo, itemCode);
+
+  //-----------------------------
+  //CflItemBatch
+  //-----------------------------
+  Future<CflItemBatchResponse> cflItemBatch_FetchNextPage(int rowStart,
+          String searchQuery, String whsCode, String batchNo, int id) =>
+      apiProvider.cflItemBatch_FetchNextPage(
+          rowStart, searchQuery, whsCode, batchNo, id);
 }

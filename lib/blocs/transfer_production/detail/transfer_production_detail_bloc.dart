@@ -1,10 +1,10 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/transfer_production/detail/transfer_production_detail_event.dart';
-import 'package:ncf_app/blocs/transfer_production/detail/transfer_production_detail_state.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart';
-import 'package:ncf_app/models/transfer_production_detail_scan_response.dart';
-import 'package:ncf_app/resources/repository.dart';
-import 'package:ncf_app/models/transfer_production_detail_response.dart'
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/transfer_production/detail/transfer_production_detail_event.dart';
+import 'package:admart_app/blocs/transfer_production/detail/transfer_production_detail_state.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart';
+import 'package:admart_app/models/transfer_production_detail_scan_response.dart';
+import 'package:admart_app/resources/repository.dart';
+import 'package:admart_app/models/transfer_production_detail_response.dart'
     as transferProductionDetail;
 
 class TransferProductionDetailBloc extends BlocEventStateBase<
@@ -61,9 +61,9 @@ class TransferProductionDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is TransferProductionDetailEventScan) {
-      var prodOrderId = event.prodOrderId;
-      var prodOrderNo = event.prodOrderNo;
-      var whsCodeFrom = event.whsCodeFrom;
+      var woId = event.woId;
+      var woNo = event.woNo;
+      var fromWhsCode = event.fromWhsCode;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -73,7 +73,7 @@ class TransferProductionDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         TransferProductionDetailScanResponse response = await _repository
-            .transferProductionDetail_Scan(prodOrderId, whsCodeFrom, qrResult);
+            .transferProductionDetail_Scan(woId, fromWhsCode, qrResult);
         if (response == null) {
           yield TransferProductionDetailState.failure(
             errorMessage: 'Response null',
@@ -89,7 +89,7 @@ class TransferProductionDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferProductionDetailState.failure(
-                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom} dan production order ${prodOrderNo} ', 
+                errorMessage:'${qrResult} tidak di temukan di gudang ${fromWhsCode} dan production order ${woNo} ', 
                 data: event.data,
               );
             } else {

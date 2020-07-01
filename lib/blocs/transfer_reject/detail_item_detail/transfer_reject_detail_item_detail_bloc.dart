@@ -1,7 +1,7 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/transfer_reject/detail_item_detail/transfer_reject_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/transfer_reject/detail_item_detail/transfer_reject_detail_item_detail_state.dart';
-import 'package:ncf_app/models/transfer_reject_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/transfer_reject/detail_item_detail/transfer_reject_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/transfer_reject/detail_item_detail/transfer_reject_detail_item_detail_state.dart';
+import 'package:admart_app/models/transfer_reject_detail_response.dart';
 
 class TransferRejectDetailItemDetailBloc extends BlocEventStateBase<
     TransferRejectDetailItemDetailEvent, TransferRejectDetailItemDetailState> {
