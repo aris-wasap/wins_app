@@ -1,4 +1,4 @@
-# NCF SCAN QR 
+# ADMART SCAN QR 
 
 Scan QR Code via Mobile App and integration API SAP Business One HANA
 
