@@ -1,5 +1,5 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/models/receipt_supplier_list_response.dart'; 
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/models/receipt_supplier_list_response.dart'; 
 import 'package:meta/meta.dart';
 
 class ReceiptSupplierListState extends BlocState {

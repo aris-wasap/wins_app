@@ -1,8 +1,8 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
-import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
-import 'package:ncf_app/models/inventory_transfer_list_response.dart';
-import 'package:ncf_app/resources/repository.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
+import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
+import 'package:admart_app/models/inventory_transfer_list_response.dart';
+import 'package:admart_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class InventoryTransferListBloc

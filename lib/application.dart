@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_helpers/bloc_provider.dart';
-import 'package:ncf_app/blocs/authentication/authentication_bloc.dart';
-import 'package:ncf_app/pages/authentication_page.dart';
-import 'package:ncf_app/pages/home_page.dart';
-import 'package:ncf_app/pages/initialization_page.dart';
-import 'package:ncf_app/pages/decision_page.dart';
+import 'package:admart_app/bloc_helpers/bloc_provider.dart';
+import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
+import 'package:admart_app/pages/authentication_page.dart';
+import 'package:admart_app/pages/home_page.dart';
+import 'package:admart_app/pages/initialization_page.dart';
+import 'package:admart_app/pages/decision_page.dart';
 
 class Application extends StatelessWidget {
   @override
@@ -12,7 +12,7 @@ class Application extends StatelessWidget {
     return BlocProvider<AuthenticationBloc>(
       bloc: AuthenticationBloc(),
       child: MaterialApp(
-        title: "NCF",
+        title: "ADMART",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.blue,

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ncf_app/pages/new_it_page.dart';
-import 'package:ncf_app/pages/detail_it_page.dart';
+import 'package:admart_app/pages/new_it_page.dart';
+import 'package:admart_app/pages/detail_it_page.dart';
 
 class InventoryTransfer extends StatefulWidget {
   @override

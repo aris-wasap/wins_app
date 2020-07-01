@@ -53,7 +53,13 @@ class Data {
   String productCode;  
 
   @JsonKey(name: 'ProductName')
-  String productName;  
+  String productName;
+
+  @JsonKey(name: 'WhsCode')
+  String whsCode;  
+
+  @JsonKey(name: 'WhsName')
+  String whsName;  
 
   @JsonKey(name: 'Status')
   String status;  
@@ -64,7 +70,9 @@ class Data {
     this.transNo, 
     this.transDate, 
     this.productCode, 
-    this.productName, 
+    this.productName,
+    this.whsCode,
+    this.whsName, 
     this.status, 
   });
 

@@ -1,10 +1,10 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/return_sales/detail/return_sales_detail_event.dart';
-import 'package:ncf_app/blocs/return_sales/detail/return_sales_detail_state.dart';
-import 'package:ncf_app/models/return_sales_detail_response.dart';
-import 'package:ncf_app/models/return_sales_detail_scan_response.dart';
-import 'package:ncf_app/resources/repository.dart';
-import 'package:ncf_app/models/return_sales_detail_response.dart'
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_event.dart';
+import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_state.dart';
+import 'package:admart_app/models/return_sales_detail_response.dart';
+import 'package:admart_app/models/return_sales_detail_scan_response.dart';
+import 'package:admart_app/resources/repository.dart';
+import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
 
 class ReturnSalesDetailBloc extends BlocEventStateBase<

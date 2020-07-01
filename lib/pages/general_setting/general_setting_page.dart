@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ncf_app/bloc_helpers/bloc_provider.dart';
-import 'package:ncf_app/blocs/authentication/authentication_bloc.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/pages/download_page.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/bloc_helpers/bloc_provider.dart';
+import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/pages/download_page.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ncf_app/blocs/authentication/authentication_event.dart';
+import 'package:admart_app/blocs/authentication/authentication_event.dart';
 
 class GeneralSetting extends StatefulWidget {
   @override
@@ -26,12 +26,12 @@ class _GeneralSettingState extends State<GeneralSetting> {
         slivers: <Widget>[
           SliverAppBar(
             elevation: 0,
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
             leading: Icon(
               Icons.adjust,
               color: Colors.blue[100],
             ),
-            expandedHeight: 200,
+            expandedHeight: 100,
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(

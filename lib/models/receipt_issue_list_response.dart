@@ -59,6 +59,12 @@ class Data {
   
   @JsonKey(name: 'CreatedUser')
   String createdUser;
+
+  @JsonKey(name: 'IssueNo')
+  String issueNo;
+
+  @JsonKey(name: 'SeriesNameIssue')
+  String seriesNameIssue;
  
 
   Data({
@@ -68,7 +74,9 @@ class Data {
     this.transNo,
     this.transDate,
     this.status, 
-    this.createdUser, 
+    this.createdUser,
+    this.issueNo,
+    this.seriesNameIssue,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

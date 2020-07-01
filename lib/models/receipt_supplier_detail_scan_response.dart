@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
+import 'package:admart_app/models/receipt_supplier_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'receipt_supplier_detail_scan_response.g.dart';
 

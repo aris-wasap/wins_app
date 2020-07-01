@@ -1,26 +1,27 @@
 import 'dart:convert';
 
-import 'package:ncf_app/pages/cfl/cfl_db_warehouse_page.dart';
-import 'package:ncf_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
+import 'package:admart_app/pages/cfl/cfl_db_warehouse_page.dart';
+import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:admart_app/pages/cfl/cfl_transfer_request_page.dart';
+import 'package:admart_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_bloc.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
-import 'package:ncf_app/widgets/validate_dialog_widget.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_bloc.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart';
+import 'package:admart_app/widgets/set_colors.dart';
+import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:ncf_app/models/cfl_db_warehouse_model.dart'
-    as cflDbWarehouse;
-import 'package:ncf_app/pages/barcode_scan.dart';
+import 'package:admart_app/models/cfl_db_warehouse_model.dart' as cflDbWarehouse;
+import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:ncf_app/models/cfl_binlocation_response.dart'
-    as cflBinLocation;
+import 'package:admart_app/models/cfl_binlocation_response.dart' as cflBinLocation;
+import 'package:admart_app/models/cfl_transfer_request_response.dart'
+    as cflTransferRequest;
 
 class InventoryTransferDetailPage extends StatefulWidget {
   InventoryTransferDetailPage(this._id);
@@ -39,10 +40,10 @@ class _InventoryTransferDetailPageState
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  // final _prodOrderIdController = TextEditingController();
-  // final _prodOrderNoController = TextEditingController();
-  // final _prodOrderDateController = TextEditingController();
+  // final _requestDateController = TextEditingController();
   final _transNoController = TextEditingController();
+  final _requestNoController = TextEditingController();
+  final _requestIdController = TextEditingController();
   final _transDateController = TextEditingController();
   final _fromWhsCodeController = TextEditingController();
   final _fromWhsNameController = TextEditingController();
@@ -86,11 +87,13 @@ class _InventoryTransferDetailPageState
 
   @override
   void dispose() {
-    // _prodOrderIdController?.dispose();
-    // _prodOrderNoController?.dispose();
-    // _prodOrderDateController?.dispose();
+    // _requestIdController?.dispose();
+    // _requestNoController?.dispose();
+    // _requestDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
+    _requestNoController?.dispose();
+    _requestIdController?.dispose();
     _fromWhsCodeController?.dispose();
     _fromWhsNameController?.dispose();
     _toWhsCodeController?.dispose();
@@ -106,8 +109,7 @@ class _InventoryTransferDetailPageState
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    //data.prodOrderId = int.parse(_prodOrderIdController.text);
-    //data.prodOrderNo = _prodOrderNoController.text;
+    data.requestNo = _requestNoController.text;
     data.transDate = transDate;
     data.fromWhsCode = _fromWhsCodeController.text;
     data.fromWhsName = _fromWhsNameController.text;
@@ -123,12 +125,12 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, massage: "Transfer Date harus di isi");
       return;
-    } 
-    // else if (["", null].contains(data.prodOrderNo)) {
+    }
+    // else if (["", null].contains(data.requestNo)) {
     //   ValidateDialogWidget(
     //       context: context, massage: "Production Order No harus di isi");
     //   return;
-    // } 
+    // }
     else if ([null, ""].contains(data.fromWhsCode)) {
       ValidateDialogWidget(
           context: context, massage: "From Warehouse harus di isi");
@@ -248,21 +250,19 @@ class _InventoryTransferDetailPageState
         title: Text("Create Inventory Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              _create();
-            },
-            textColor: Colors.white,
-            label: Text("Submit")
-          )
+              icon: Icon(Icons.check),
+              onPressed: () {
+                _create();
+              },
+              textColor: Colors.white,
+              label: Text("Submit"))
         ],
       );
     } else {
@@ -270,12 +270,11 @@ class _InventoryTransferDetailPageState
         title: Text("Inventory Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.inventoryTransfer_Auth_Add == 'Y')
               ? IconButton(
@@ -297,11 +296,11 @@ class _InventoryTransferDetailPageState
   BuildContext _context;
 
   Future _scanQR() async {
-    // if (["", null].contains(_prodOrderNoController.text)) {
+    // if (["", null].contains(_requestNoController.text)) {
     //   ValidateDialogWidget(
-    //       context: context, massage: "Production Order No harus di isi");
+    //       context: context, massage: "Transfer Request No harus di isi");
     //   return;
-    // } else 
+    // } else
     if (["", null].contains(_fromWhsCodeController.text)) {
       ValidateDialogWidget(
           context: context, massage: "Warehouse from harus di isi");
@@ -310,10 +309,10 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, massage: "Warehouse to harus di isi");
       return;
-    } else if (_fromWhsCodeController.text == _toWhsCodeController.text) {
-      ValidateDialogWidget(
-          context: context, massage: "Warehouse from dan to tidak boleh sama");
-      return;
+      // } else if (_fromWhsCodeController.text == _toWhsCodeController.text) {
+      //   ValidateDialogWidget(
+      //       context: context, massage: "Warehouse from dan to tidak boleh sama");
+      //   return;
     }
 
     var data = _getState().data;
@@ -329,12 +328,22 @@ class _InventoryTransferDetailPageState
         }
       }
 
+      var reqId = 0 ;
+      if (_requestIdController.text == "" || _requestIdController.text == null)
+      {
+        reqId = 0;
+      }
+      else
+      {
+        reqId = int.parse(_requestIdController.text);
+      }
+
       bloc.emitEvent(InventoryTransferDetailEventScan(
-          // prodOrderId: int.parse(_prodOrderIdController.text),
-          // prodOrderNo: _prodOrderNoController.text,
           
+          requestId: reqId ,
+          requestNo: _requestNoController.text,
           whsCodeFrom: _fromWhsCodeController.text,
-          absEntryFrom: int.parse(_fromAbsEntryController.text) ,
+          absEntryFrom: int.parse(_fromAbsEntryController.text),
           binCodeFrom: _fromBinCodeController.text,
           qrResult: qrResult,
           data: data));
@@ -342,7 +351,7 @@ class _InventoryTransferDetailPageState
       // bloc
       //     .eventHandler(
       //         InventoryTransferDetailEventScan(
-      //             prodOrderId: int.parse(_prodOrderIdController.text),
+      //             requestId: int.parse(_requestIdController.text),
       //             whsCodeFrom: _fromWhsCodeController.text,
       //             qrResult: qrResult,
       //             data: data),
@@ -425,9 +434,7 @@ class _InventoryTransferDetailPageState
               appBar: _appBar(),
               body: Container(
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite
-                  ),
+                decoration: BoxDecoration(gradient: bgGradientPageWhite),
                 // constraints: BoxConstraints.expand(),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -437,7 +444,7 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton:  _getState().data.id == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -516,19 +523,14 @@ class _InventoryTransferDetailPageState
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _requestIdController.text = data.requestId.toString();
+      _requestNoController.text = data.requestNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
       } else {
         _transDateController.text = null;
       }
-      // _prodOrderNoController.text = data.prodOrderNo;
-      // if (data.prodDate != null) {
-      //   _prodOrderDateController.text =
-      //       DateFormat("dd-MM-yyyy").format(data.prodDate);
-      // } else {
-      //   _prodOrderDateController.text = "";
-      // }
 
       _fromWhsCodeController.text = data.fromWhsCode;
       _fromWhsNameController.text = data.fromWhsName;
@@ -538,18 +540,7 @@ class _InventoryTransferDetailPageState
       _toWhsNameController.text = data.toWhsName;
       _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
-
     }
-    // else {
-    //   _fromWhsCodeController.text =
-    //       globalBloc.loginResponse.data.transferProduction_WhsCodeFrom ?? '';
-    //   _fromWhsNameController.text =
-    //       globalBloc.loginResponse.data.transferProduction_WhsNameFrom ?? '';
-    //   _toWhsCodeController.text =
-    //       globalBloc.loginResponse.data.transferProduction_WhsCodeTo ?? '';
-    //   _toWhsNameController.text =
-    //       globalBloc.loginResponse.data.transferProduction_WhsCodeTo ?? '';
-    // }
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -562,17 +553,15 @@ class _InventoryTransferDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Transfer No.",
-                    labelText: "Transfer No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Transfer No.",
+                        labelText: "Transfer No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
                   onPressed: () {
@@ -587,16 +576,18 @@ class _InventoryTransferDetailPageState
                           controller: _transDateController,
                           enabled: false,
                           decoration: InputDecoration(
-                            hintText: "Transfer Date",
-                            labelText: "Transfer Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          ),
+                              hintText: "Transfer Date",
+                              labelText: "Transfer Date",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: (data.id == 0)
+                                          ? Colors.blue
+                                          : Colors.grey[400]),
+                                  borderRadius: new BorderRadius.circular(
+                                    10.0,
+                                  ))),
                         ),
                       ),
                       (data.id == 0)
@@ -607,7 +598,68 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflTransferRequest.Data> trq = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflTransferRequest.Data>(
+                              builder: (BuildContext context) =>
+                                  CflTransferRequestPage()));
+
+                      trq.then((cflTransferRequest.Data trq) {
+                        if (trq != null) {
+                          _requestIdController.text = trq.id.toString();
+                          _requestNoController.text = trq.transNo;
+                          _fromWhsCodeController.text = trq.fromWhsCode;
+                          _fromWhsNameController.text = trq.fromWhsName;
+                          _fromAbsEntryController.text = "";
+                          _fromBinCodeController.text = "";
+                          _toWhsCodeController.text = trq.toWhsCode;
+                          _toWhsNameController.text = trq.toWhsName;
+                          _toAbsEntryController.text = "";
+                          _toBinCodeController.text = "";
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Transfer Request No",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_requestNoController.text),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -634,13 +686,11 @@ class _InventoryTransferDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -682,13 +732,14 @@ class _InventoryTransferDetailPageState
                           context,
                           MaterialPageRoute<cflBinLocation.Data>(
                               builder: (BuildContext context) =>
-                                  CflBinLocationPage(_fromWhsCodeController.text)));
+                                  CflBinLocationPage(
+                                      _fromWhsCodeController.text)));
 
                       bin.then((cflBinLocation.Data bin) {
                         if (bin != null) {
-                          _fromAbsEntryController.text = bin.absEntry.toString();
+                          _fromAbsEntryController.text =
+                              bin.absEntry.toString();
                           _fromBinCodeController.text = bin.binCode;
-                         
                         }
                       });
                     }
@@ -697,13 +748,11 @@ class _InventoryTransferDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -712,12 +761,12 @@ class _InventoryTransferDetailPageState
                             children: <Widget>[
                               Text(
                                 "From Bin Location",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_fromBinCodeController.text),
-                                
                               )
                             ],
                           ),
@@ -757,11 +806,9 @@ class _InventoryTransferDetailPageState
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      ),
+                          color:
+                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     child: Row(
                       children: <Widget>[
@@ -796,7 +843,7 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
-                 FlatButton(
+                FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
@@ -804,13 +851,13 @@ class _InventoryTransferDetailPageState
                           context,
                           MaterialPageRoute<cflBinLocation.Data>(
                               builder: (BuildContext context) =>
-                                  CflBinLocationPage(_toWhsCodeController.text)));
+                                  CflBinLocationPage(
+                                      _toWhsCodeController.text)));
 
                       bin.then((cflBinLocation.Data bin) {
                         if (bin != null) {
                           _toAbsEntryController.text = bin.absEntry.toString();
                           _toBinCodeController.text = bin.binCode;
-                         
                         }
                       });
                     }
@@ -819,13 +866,11 @@ class _InventoryTransferDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -834,12 +879,12 @@ class _InventoryTransferDetailPageState
                             children: <Widget>[
                               Text(
                                 "To Bin Location",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_toBinCodeController.text),
-                                
                               )
                             ],
                           ),
@@ -876,7 +921,8 @@ class _InventoryTransferDetailPageState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("List of Items", style: new TextStyle(fontWeight: FontWeight.bold)),
+                    Text("List of Items",
+                        style: new TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -896,9 +942,8 @@ class _InventoryTransferDetailPageState
             height: 5,
             color: Colors.grey,
           ),
-          Container(
+          SizedBox(
             height: 65,
-            color: Colors.white
           ),
         ]);
   }
@@ -907,12 +952,10 @@ class _InventoryTransferDetailPageState
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -953,17 +996,18 @@ class _InventoryTransferDetailPageState
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(InventoryTransferDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  InventoryTransferDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

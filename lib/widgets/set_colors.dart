@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const btnBgOrange = Color(0xFFF57C00);
+const btnBgBlue = Color(0xFF2196F3);
 const bgBlue = Color(0xFF2196F3);
 const bgWhite = Color(0xffffffff);
 const bgOrange =  Color(0xFFFF9800);

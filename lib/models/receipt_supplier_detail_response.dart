@@ -140,6 +140,15 @@ class Item {
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
+   @JsonKey(name: 'WhsName')
+  String whsName;
+
+  @JsonKey(name: 'BinAbs')
+  int binAbs;
+
+  @JsonKey(name: 'BinCode')
+  String binCode;
+
   @JsonKey(name: 'BatchNo')
   String batchNo; 
   
@@ -157,6 +166,9 @@ class Item {
     this.qty: 0,
     this.uom,
     this.whsCode, 
+    this.whsName,
+    this.binAbs,
+    this.binCode, 
     this.batchNo,
   });
 

@@ -1,7 +1,7 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/receipt_supplier/detail_item_detail/receipt_supplier_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/receipt_supplier/detail_item_detail/receipt_supplier_detail_item_detail_state.dart';
-import 'package:ncf_app/models/receipt_supplier_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/receipt_supplier/detail_item_detail/receipt_supplier_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/receipt_supplier/detail_item_detail/receipt_supplier_detail_item_detail_state.dart';
+import 'package:admart_app/models/receipt_supplier_detail_response.dart';
 
 class ReceiptSupplierDetailItemDetailBloc extends BlocEventStateBase<
     ReceiptSupplierDetailItemDetailEvent, ReceiptSupplierDetailItemDetailState> {

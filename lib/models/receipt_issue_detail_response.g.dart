@@ -58,6 +58,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
     issueId: json['IssueId'] as int,
     issueLineNo: json['IssueLineNo'] as int,
+    webId: json['WebId'] as int,
+    webDetId: json['WebDetId'] as int,
     id: json['Id'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
@@ -65,8 +67,12 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     itemName: json['ItemName'] as String,
     issueQty: (json['IssueQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    itemCost: (json['ItemCost'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
+    whsName: json['WhsName'] as String,
+    binAbs: json['BinAbs'] as int,
+    binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
   );
 }
@@ -74,6 +80,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'IssueId': instance.issueId,
       'IssueLineNo': instance.issueLineNo,
+      'WebId': instance.webId,
+      'WebDetId': instance.webDetId,
       'Id': instance.id,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
@@ -81,7 +89,11 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemName': instance.itemName,
       'IssueQty': instance.issueQty,
       'Qty': instance.qty,
+      'ItemCost': instance.itemCost,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
+      'WhsName': instance.whsName,
+      'BinAbs': instance.binAbs,
+      'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
     };

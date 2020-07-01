@@ -1,8 +1,8 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/transfer_release/list/transfer_release_list_event.dart';
-import 'package:ncf_app/blocs/transfer_release/list/transfer_release_list_state.dart';
-import 'package:ncf_app/models/transfer_release_list_response.dart';
-import 'package:ncf_app/resources/repository.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/transfer_release/list/transfer_release_list_event.dart';
+import 'package:admart_app/blocs/transfer_release/list/transfer_release_list_state.dart';
+import 'package:admart_app/models/transfer_release_list_response.dart';
+import 'package:admart_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TransferReleaseListBloc

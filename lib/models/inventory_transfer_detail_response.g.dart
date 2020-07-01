@@ -31,6 +31,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
     seriesName: json['SeriesName'] as String,
+    requestId: json['RequestId'] as int,
+    requestNo: json['RequestNo'] as String,
+    seriesNameReq: json['SeriesNameReq'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
@@ -55,6 +58,9 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'UserId': instance.userId,
       'TransNo': instance.transNo,
       'SeriesName': instance.seriesName,
+      'RequestId': instance.requestId,
+      'RequestNo': instance.requestNo,
+      'SeriesNameReq': instance.seriesNameReq,
       'TransDate': instance.transDate?.toIso8601String(),
       'FromWhsCode': instance.fromWhsCode,
       'FromWhsName': instance.fromWhsName,
@@ -83,12 +89,16 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     toBinCode: json['ToBinCode'] as String,
     batchNo: json['BatchNo'] as String,
   )
+    ..requestId = json['RequestId'] as int
+    ..requestLineNo = json['RequestLineNo'] as int
     ..fromWhsCode = json['FromWhsCode'] as String
     ..fromAbsEntry = json['FromAbsEntry'] as int
     ..fromBinCode = json['FromBinCode'] as String;
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'RequestId': instance.requestId,
+      'RequestLineNo': instance.requestLineNo,
       'Id': instance.id,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,

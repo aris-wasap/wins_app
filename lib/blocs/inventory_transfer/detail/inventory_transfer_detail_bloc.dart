@@ -1,10 +1,10 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_scan_response.dart';
-import 'package:ncf_app/resources/repository.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart'
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart';
+import 'package:admart_app/models/inventory_transfer_detail_scan_response.dart';
+import 'package:admart_app/resources/repository.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart'
     as inventoryTransferDetail;
 
 class InventoryTransferDetailBloc extends BlocEventStateBase<
@@ -61,8 +61,8 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is InventoryTransferDetailEventScan) {
-      var prodOrderId = event.prodOrderId;
-      var prodOrderNo = event.prodOrderNo;
+      var requestId = event.requestId;
+      var requestNo = event.requestNo;
       var whsCodeFrom = event.whsCodeFrom;
       var absEntryFrom = event.absEntryFrom;
       var binCodeFrom = event.binCodeFrom;
@@ -75,7 +75,7 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         InventoryTransferDetailScanResponse response = await _repository
-            .inventoryTransferDetail_Scan(prodOrderId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
+            .inventoryTransferDetail_Scan(requestId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
         if (response == null) {
           yield InventoryTransferDetailState.failure(
             errorMessage: 'Response null',
@@ -91,7 +91,7 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield InventoryTransferDetailState.failure(
-                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom}-bin ${binCodeFrom} dan production order ${prodOrderNo} ', 
+                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom}-bin ${binCodeFrom} dan inventory transfer request ${requestNo} ', 
                 data: event.data,
               );
             } else {

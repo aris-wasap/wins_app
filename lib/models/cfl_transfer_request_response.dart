@@ -12,7 +12,6 @@ CflTransferRequestResponse cflTransferRequestResponseFromJson(String str) {
   final jsonData = json.decode(str);
   return CflTransferRequestResponse.fromJson(jsonData);
 }
- 
 
 @JsonSerializable()
 class CflTransferRequestResponse {
@@ -39,39 +38,55 @@ class CflTransferRequestResponse {
 }
 
 @JsonSerializable()
-class Data { 
+class Data {
   @JsonKey(name: 'Id')
   int id;
 
   @JsonKey(name: 'TransNo')
-  String transNo;  
+  String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'Status')
-  String status;  
+  String status;
 
   @JsonKey(name: 'CustomerCode')
-  String customerCode;  
+  String customerCode;
 
   @JsonKey(name: 'CustomerName')
-  String customerName;  
+  String customerName;
 
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
-  Data({ 
-    this.id=0,
-    this.transNo, 
-    this.transDate, 
-    this.status, 
-    this.customerCode, 
+  @JsonKey(name: 'FromWhsCode')
+  String fromWhsCode;
+
+  @JsonKey(name: 'FromWhsName')
+  String fromWhsName;
+
+  @JsonKey(name: 'ToWhsCode')
+  String toWhsCode;
+
+  @JsonKey(name: 'ToWhsName')
+  String toWhsName;
+
+  Data({
+    this.id = 0,
+    this.transNo,
+    this.transDate,
+    this.status,
+    this.customerCode,
     this.customerName,
-    this.seriesName 
+    this.seriesName,
+    this.fromWhsCode,
+    this.fromWhsName,
+    this.toWhsCode,
+    this.toWhsName,
   });
 
- factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }

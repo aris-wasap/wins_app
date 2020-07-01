@@ -1,7 +1,7 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail_item_detail/inventory_transfer_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/inventory_transfer/detail_item_detail/inventory_transfer_detail_item_detail_state.dart';
-import 'package:ncf_app/models/inventory_transfer_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail_item_detail/inventory_transfer_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/inventory_transfer/detail_item_detail/inventory_transfer_detail_item_detail_state.dart';
+import 'package:admart_app/models/inventory_transfer_detail_response.dart';
 
 class InventoryTransferDetailItemDetailBloc extends BlocEventStateBase<
     InventoryTransferDetailItemDetailEvent, InventoryTransferDetailItemDetailState> {

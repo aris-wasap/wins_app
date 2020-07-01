@@ -1,6 +1,6 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/application_initialization/application_initialization_event.dart';
-import 'package:ncf_app/blocs/application_initialization/application_initialization_state.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/application_initialization/application_initialization_event.dart';
+import 'package:admart_app/blocs/application_initialization/application_initialization_state.dart';
 
 class ApplicationInitializationBloc
     extends BlocEventStateBase<ApplicationInitializationEvent, ApplicationInitializationState> {

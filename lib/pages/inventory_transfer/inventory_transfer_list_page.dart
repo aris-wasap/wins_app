@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
-import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_bloc.dart';
-import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
-import 'package:ncf_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
-//import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_bloc.dart';
+import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
+import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
+//import 'package:admart_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/pages/inventory_transfer/inventory_transfer_detail_page.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class InventoryTransferListPage extends StatefulWidget {
   @override
@@ -206,8 +206,8 @@ class _InventoryTransferListPageState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
-                    Text("${data[index].status} - ${data[index].createdUser}"),
+                        "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
+                    Text("User : ${data[index].createdUser}"),
                   ],
                 ),
                 leading: ClipOval(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ncf_app/pages/barcode_scan.dart';
-// import 'package:ncf_app/blocs/trf_release/detail/trf_release_detail_bloc.dart';
-// import 'package:ncf_app/blocs/trf_release/detail/trf_release_detail_event.dart';
-// import 'package:ncf_app/blocs/trf_release/detail/trf_release_detail_state.dart';
-import 'package:ncf_app/widgets/validate_dialog_widget.dart';
+import 'package:admart_app/pages/barcode_scan.dart';
+// import 'package:admart_app/blocs/trf_release/detail/trf_release_detail_bloc.dart';
+// import 'package:admart_app/blocs/trf_release/detail/trf_release_detail_event.dart';
+// import 'package:admart_app/blocs/trf_release/detail/trf_release_detail_state.dart';
+import 'package:admart_app/widgets/validate_dialog_widget.dart';
 
 class NewTrfRelease extends StatefulWidget {
   @override

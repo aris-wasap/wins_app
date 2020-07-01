@@ -68,6 +68,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
     poId: json['PoId'] as int,
     poLineNo: json['PoLineNo'] as int,
+    webId: json['WebId'] as int,
+    webDetId: json['WebDetId'] as int,
     id: json['Id'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
@@ -77,6 +79,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
+    whsName: json['WhsName'] as String,
+    binAbs: json['BinAbs'] as int,
+    binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
   );
 }
@@ -84,6 +89,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'PoId': instance.poId,
       'PoLineNo': instance.poLineNo,
+      'WebId': instance.webId,
+      'WebDetId': instance.webDetId,
       'Id': instance.id,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
@@ -93,5 +100,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
+      'WhsName': instance.whsName,
+      'BinAbs': instance.binAbs,
+      'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
     };

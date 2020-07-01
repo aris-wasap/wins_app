@@ -1,9 +1,9 @@
-import 'package:ncf_app/bloc_helpers/bloc_state_transform_base.dart';
-import 'package:ncf_app/blocs/authentication/authentication_bloc.dart';
-import 'package:ncf_app/blocs/authentication/authentication_state.dart';
-import 'package:ncf_app/blocs/decision/decision_state_action.dart';
-import 'package:ncf_app/pages/authentication_page.dart';
-import 'package:ncf_app/pages/home_page.dart';
+import 'package:admart_app/bloc_helpers/bloc_state_transform_base.dart';
+import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
+import 'package:admart_app/blocs/authentication/authentication_state.dart';
+import 'package:admart_app/blocs/decision/decision_state_action.dart';
+import 'package:admart_app/pages/authentication_page.dart';
+import 'package:admart_app/pages/home_page.dart';
 
 ///
 /// Business Logic related to the DecisionPage

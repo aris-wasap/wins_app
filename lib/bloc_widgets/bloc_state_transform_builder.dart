@@ -1,5 +1,5 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/bloc_helpers/bloc_state_transform_base.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/bloc_helpers/bloc_state_transform_base.dart';
 import 'package:flutter/material.dart';
 
 typedef Widget AsyncBlocStateBuilder<BlocState>(BuildContext context, BlocState state);

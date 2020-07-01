@@ -6,12 +6,12 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
-import 'package:ncf_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // the unique ID of the application
-const String _applicationId = "NcfMantap";
+const String _applicationId = "admartMantap";
 
 // the storage key for the token
 const String _storageKeyMobileToken = "token";

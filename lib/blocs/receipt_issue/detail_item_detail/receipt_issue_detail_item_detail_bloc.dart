@@ -1,7 +1,7 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
-import 'package:ncf_app/blocs/receipt_issue/detail_item_detail/receipt_issue_detail_item_detail_event.dart';
-import 'package:ncf_app/blocs/receipt_issue/detail_item_detail/receipt_issue_detail_item_detail_state.dart';
-import 'package:ncf_app/models/receipt_issue_detail_response.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/blocs/receipt_issue/detail_item_detail/receipt_issue_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/receipt_issue/detail_item_detail/receipt_issue_detail_item_detail_state.dart';
+import 'package:admart_app/models/receipt_issue_detail_response.dart';
 
 class ReceiptIssueDetailItemDetailBloc extends BlocEventStateBase<
     ReceiptIssueDetailItemDetailEvent, ReceiptIssueDetailItemDetailState> {
@@ -24,6 +24,8 @@ class ReceiptIssueDetailItemDetailBloc extends BlocEventStateBase<
     if (event is ReceiptIssueDetailItemDetailEventQty) {
       var newData = currentState.data;
       newData.qty = event.qty;
+      newData.binAbs = event.binAbs;
+      newData.binCode = event.binCode;
       yield ReceiptIssueDetailItemDetailState.success(
         data: newData,
       );

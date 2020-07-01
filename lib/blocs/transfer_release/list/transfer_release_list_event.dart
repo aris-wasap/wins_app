@@ -1,4 +1,4 @@
-import 'package:ncf_app/bloc_helpers/bloc_event_state.dart';
+import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
 
 class TransferReleaseListEvent extends BlocEvent {
   TransferReleaseListEvent({

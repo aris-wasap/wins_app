@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncf_app/pages/icon_color.dart';
+import 'package:admart_app/pages/icon_color.dart';
 
 
 class OptionCard extends StatelessWidget{

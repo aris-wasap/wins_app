@@ -127,6 +127,18 @@ class Data {
   @JsonKey(name: 'DeliveryOrder_WhsName')
   String deliveryOrder_WhsName;
 
+  @JsonKey(name: 'IssueProduction_Auth_Detail')
+  String issueProduction_Auth_Detail;
+
+  @JsonKey(name: 'IssueProduction_Auth_Add')
+  String issueProduction_Auth_Add;
+
+  @JsonKey(name: 'IssueProduction_WhsCode')
+  String issueProduction_WhsCode;
+
+  @JsonKey(name: 'IssueProduction_WhsName')
+  String issueProduction_WhsName;
+
   @JsonKey(name: 'ReceiptProduction_Auth_Detail')
   String receiptProduction_Auth_Detail;
 
@@ -139,7 +151,42 @@ class Data {
   @JsonKey(name: 'ReceiptProduction_WhsName')
   String receiptProduction_WhsName;
 
-  
+  @JsonKey(name: 'GoodsIssue_Auth_Detail')
+  String goodsIssue_Auth_Detail;
+
+  @JsonKey(name: 'GoodsIssue_Auth_Add')
+  String goodsIssue_Auth_Add;
+
+  @JsonKey(name: 'GoodsIssue_WhsCode')
+  String goodsIssue_WhsCode;
+
+  @JsonKey(name: 'GoodsIssue_WhsName')
+  String goodsIssue_WhsName;
+
+  @JsonKey(name: 'GoodsReceipt_Auth_Detail')
+  String goodsReceipt_Auth_Detail;
+
+  @JsonKey(name: 'GoodsReceipt_Auth_Add')
+  String goodsReceipt_Auth_Add;
+
+  @JsonKey(name: 'GoodsReceipt_WhsCode')
+  String goodsReceipt_WhsCode;
+
+  @JsonKey(name: 'GoodsReceipt_WhsName')
+  String goodsReceipt_WhsName;
+
+   @JsonKey(name: 'RequestIssue_Auth_Detail')
+  String requestIssue_Auth_Detail;
+
+  @JsonKey(name: 'RequestIssue_Auth_Add')
+  String requestIssue_Auth_Add;
+
+  @JsonKey(name: 'RequestIssue_WhsCode')
+  String requestIssue_WhsCode;
+
+  @JsonKey(name: 'RequestIssue_WhsName')
+  String requestIssue_WhsName;
+
   @JsonKey(name: 'ReceiptIssue_Auth_Detail')
   String receiptIssue_Auth_Detail;
 
@@ -175,6 +222,18 @@ class Data {
 
   @JsonKey(name: 'ReceiptSupplier_WhsName')
   String receiptSupplier_WhsName;
+
+  @JsonKey(name: 'PurchaseReturns_Auth_Detail')
+  String purchaseReturns_Auth_Detail;
+
+  @JsonKey(name: 'PurchaseReturns_Auth_Add')
+  String purchaseReturns_Auth_Add;
+
+  @JsonKey(name: 'PurchaseReturns_WhsCode')
+  String purchaseReturns_WhsCode;
+
+  @JsonKey(name: 'PurchaseReturns_WhsName')
+  String purchaseReturns_WhsName;
 
   @JsonKey(name: 'ReturnSales_Auth_Detail')
   String returnSales_Auth_Detail;

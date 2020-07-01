@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ncf_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:ncf_app/blocs/cfl_binlocation/cfl_binlocation_bloc.dart';
-import 'package:ncf_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
-import 'package:ncf_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
+import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_bloc.dart';
+import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
+import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
 import 'package:intl/intl.dart';
-import 'package:ncf_app/models/cfl_binlocation_response.dart';
-import 'package:ncf_app/widgets/set_colors.dart';
+import 'package:admart_app/models/cfl_binlocation_response.dart';
+import 'package:admart_app/widgets/set_colors.dart';
 
 class CflBinLocationPage extends StatefulWidget {
   CflBinLocationPage(this.whsCode);
@@ -184,11 +184,17 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Warehouse. ${data[index].whsCode} - Bin Location ${data[index].binCode} "),
+                    "Bin Location ${data[index].binCode} "),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
                 },
+                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text("Warehouse. ${data[index].whsCode}"),
+                                  ],
+                                ),
               ),
             ),
           ));

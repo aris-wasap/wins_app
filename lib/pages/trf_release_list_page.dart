@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ncf_app/pages/new_tfr_release_page.dart';
+import 'package:admart_app/pages/new_tfr_release_page.dart';
 
 class TrfRelease extends StatefulWidget {
   @override
