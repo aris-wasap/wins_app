@@ -120,13 +120,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 0),
                           width: double.infinity,
-                          // decoration: BoxDecoration(
-                          //   //gradient: bgGradient,
-                          //   image: DecorationImage(
-                          //       image: AssetImage("assets/images/579.jpg"),
-                          //       fit: BoxFit.cover,
-                          //       repeat: ImageRepeat.noRepeat),
-                          // ),
+                          decoration: BoxDecoration(
+                            //gradient: bgGradient,
+                            image: DecorationImage(
+                                image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"),
+                                fit: BoxFit.cover,
+                                repeat: ImageRepeat.noRepeat),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
