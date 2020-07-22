@@ -40,27 +40,27 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "icon": "assets/images/transfer.png",
       "authDetail": "inventoryTransfer_Auth_Detail",
     },
-    //Active
-    {
-      "title": "Transfer For Production Order",
-      "subtitle": "List Inventory, Scan Item",
-      "icon": "assets/images/transfer_production.png",
-      "authDetail": "transferProduction_Auth_Detail",
-    },
-    //Active
-    {
-      "title": "Issue For Production",
-      "subtitle": "List Issue, Scan Item",
-      "icon": "assets/images/goods_issue.png",
-      "authDetail": "goodsIssue_Auth_Detail",
-    },
-    //Active
-    {
-      "title": "Receipt From Production",
-      "subtitle": "List Receipt, Scan Receipt",
-      "icon": "assets/images/goods_receipt.png",
-      "authDetail": "goodsReceipt_Auth_Detail",
-    },
+    //Admart - InActive 
+    // {
+    //   "title": "Transfer For Production Order",
+    //   "subtitle": "List Inventory, Scan Item",
+    //   "icon": "assets/images/transfer_production.png",
+    //   "authDetail": "transferProduction_Auth_Detail",
+    // },
+    //Admart - InActive
+    // {
+    //   "title": "Issue For Production",
+    //   "subtitle": "List Issue, Scan Item",
+    //   "icon": "assets/images/goods_issue.png",
+    //   "authDetail": "goodsIssue_Auth_Detail",
+    // },
+    //Admart - InActive
+    // {
+    //   "title": "Receipt From Production",
+    //   "subtitle": "List Receipt, Scan Receipt",
+    //   "icon": "assets/images/goods_receipt.png",
+    //   "authDetail": "goodsReceipt_Auth_Detail",
+    // },
 
     // Active
     {
@@ -173,40 +173,41 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                         child: Material(
                           child: InkWell(
                             onTap: () {
-                              //Production
-                              if (subjectList[index]["authDetail"] ==
-                                      "transferProduction_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .transferProduction_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return TransferProductionListPage();
-                                }));
-                              } else if (subjectList[index]["authDetail"] ==
-                                      "goodsIssue_Auth_Detail" &&
-                                  globalBloc.loginResponse.data
-                                          .goodsIssue_Auth_Detail ==
-                                      'Y') {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return GoodsIssueListPage();
-                                }));
-                              }
+                              //Admart - InActive - Production
+                              // if (subjectList[index]["authDetail"] ==
+                              //         "transferProduction_Auth_Detail" &&
+                              //     globalBloc.loginResponse.data
+                              //             .transferProduction_Auth_Detail ==
+                              //         'Y') {
+                              //   Navigator.push(context, MaterialPageRoute(
+                              //       builder: (BuildContext context) {
+                              //     return TransferProductionListPage();
+                              //   }));
+                              // } else if (subjectList[index]["authDetail"] ==
+                              //         "goodsIssue_Auth_Detail" &&
+                              //     globalBloc.loginResponse.data
+                              //             .goodsIssue_Auth_Detail ==
+                              //         'Y') {
+                              //   Navigator.push(context, MaterialPageRoute(
+                              //       builder: (BuildContext context) {
+                              //     return GoodsIssueListPage();
+                              //   }));
+                              // }
                                
-                                else if (subjectList[index]["authDetail"] ==
-                                        "goodsReceipt_Auth_Detail" &&
-                                    globalBloc.loginResponse.data
-                                            .goodsReceipt_Auth_Detail ==
-                                        'Y') {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return GoodsReceiptListPage();
-                                  }));
-                                }
+                              //   else if (subjectList[index]["authDetail"] ==
+                              //           "goodsReceipt_Auth_Detail" &&
+                              //       globalBloc.loginResponse.data
+                              //               .goodsReceipt_Auth_Detail ==
+                              //           'Y') {
+                              //     Navigator.push(context, MaterialPageRoute(
+                              //         builder: (BuildContext context) {
+                              //       return GoodsReceiptListPage();
+                              //     }));
+                              //   }
 
                               // Change Product
-                              else if (subjectList[index]["authDetail"] ==
+                              //else
+                               if (subjectList[index]["authDetail"] ==
                                       "requestIssue_Auth_Detail" &&
                                   globalBloc.loginResponse.data
                                           .requestIssue_Auth_Detail ==

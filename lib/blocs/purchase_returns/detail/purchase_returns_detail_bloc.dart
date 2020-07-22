@@ -87,13 +87,13 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield PurchaseReturnsDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang logistic dan GRPO ${grpoNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.grpoId == 0) {
                 yield PurchaseReturnsDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang logistic dan GRPO ${grpoNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (2)',
                   data: event.data,
                 );
               } else {

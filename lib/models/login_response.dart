@@ -43,6 +43,12 @@ class Data {
   @JsonKey(name: 'IsAdmin')
   String isAdmin;
 
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
   @JsonKey(name: 'TransferRelease_Auth_Detail')
   String transferRelease_Auth_Detail;
 
@@ -175,7 +181,7 @@ class Data {
   @JsonKey(name: 'GoodsReceipt_WhsName')
   String goodsReceipt_WhsName;
 
-   @JsonKey(name: 'RequestIssue_Auth_Detail')
+  @JsonKey(name: 'RequestIssue_Auth_Detail')
   String requestIssue_Auth_Detail;
 
   @JsonKey(name: 'RequestIssue_Auth_Add')
@@ -264,77 +270,67 @@ class Data {
 
   @JsonKey(name: 'InventoryTransfer_WhsNameTo')
   String inventoryTransfer_WhsNameTo;
-  
 
   Data({
     this.userId,
     this.roleName,
     this.isAdmin,
+    this.branchId,
+    this.branchName,
     this.transferRelease_Auth_Detail,
     this.transferRelease_Auth_Add,
     this.transferRelease_WhsCodeFrom,
     this.transferRelease_WhsNameFrom,
     this.transferRelease_WhsCodeTo,
     this.transferRelease_WhsNameTo,
-
     this.transferReject_Auth_Detail,
     this.transferReject_Auth_Add,
     this.transferReject_WhsCodeFrom,
     this.transferReject_WhsNameFrom,
     this.transferReject_WhsCodeTo,
     this.transferReject_WhsNameTo,
-
     this.transferProduction_Auth_Detail,
     this.transferProduction_Auth_Add,
     this.transferProduction_WhsCodeFrom,
     this.transferProduction_WhsNameFrom,
     this.transferProduction_WhsCodeTo,
     this.transferProduction_WhsNameTo,
-
     this.transferRequest_Auth_Detail,
     this.transferRequest_Auth_Add,
     this.transferRequest_WhsCodeFrom,
     this.transferRequest_WhsNameFrom,
     this.transferRequest_WhsCodeTo,
     this.transferRequest_WhsNameTo,
-
     this.deliveryOrder_Auth_Detail,
     this.deliveryOrder_Auth_Add,
     this.deliveryOrder_WhsCode,
     this.deliveryOrder_WhsName,
-
     this.receiptProduction_Auth_Add,
     this.receiptProduction_Auth_Detail,
     this.receiptProduction_WhsCode,
     this.receiptProduction_WhsName,
-
     this.receiptIssue_Auth_Add,
     this.receiptIssue_Auth_Detail,
     this.receiptIssue_WhsCode,
     this.receiptIssue_WhsName,
-
     this.receiptOrder_Auth_Add,
     this.receiptOrder_Auth_Detail,
     this.receiptOrder_WhsCode,
     this.receiptOrder_WhsName,
-
     this.receiptSupplier_Auth_Add,
     this.receiptSupplier_Auth_Detail,
     this.receiptSupplier_WhsCode,
     this.receiptSupplier_WhsName,
-
     this.returnSales_Auth_Add,
     this.returnSales_Auth_Detail,
     this.returnSales_WhsCode,
     this.returnSales_WhsName,
-    
     this.inventoryTransfer_Auth_Detail,
     this.inventoryTransfer_Auth_Add,
     this.inventoryTransfer_WhsCodeFrom,
     this.inventoryTransfer_WhsNameFrom,
     this.inventoryTransfer_WhsCodeTo,
     this.inventoryTransfer_WhsNameTo,
-    
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

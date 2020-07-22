@@ -120,43 +120,43 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 0),
                           width: double.infinity,
-                          // decoration: BoxDecoration(
-                          //   //gradient: bgGradient,
-                          //   image: DecorationImage(
-                          //       image: AssetImage("assets/images/579.jpg"),
-                          //       fit: BoxFit.cover,
-                          //       repeat: ImageRepeat.noRepeat),
-                          // ),
+                          decoration: BoxDecoration(
+                            //gradient: bgGradient,
+                            image: DecorationImage(
+                                image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"),
+                                fit: BoxFit.cover,
+                                repeat: ImageRepeat.noRepeat),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Hi,",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 40),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "Welcome Back",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
+                              // SizedBox(
+                              //   height: 50,
+                              // ),
+                              // Padding(
+                              //   padding: EdgeInsets.all(20),
+                              //   child: Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: <Widget>[
+                              //       Text(
+                              //         "Hi,",
+                              //         style: TextStyle(
+                              //             color: Colors.black, fontSize: 40),
+                              //       ),
+                              //       SizedBox(
+                              //         height: 10,
+                              //       ),
+                              //       Text(
+                              //         "Welcome Back",
+                              //         style: TextStyle(
+                              //             color: Colors.black, fontSize: 20),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
                               Expanded(
                                 child: Card(
                                   margin: EdgeInsets.all(15.0),
@@ -229,9 +229,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       child: ListView(
         children: <Widget>[
           SizedBox(
-            height: 10,
+            height: 30,
           ),
           _showLogo(),
+          SizedBox(
+            height: 50,
+          ),
           _showEnterText(bloc),
           _showUserNameInput(bloc),
           _showPasswordInput(bloc),
@@ -250,7 +253,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   Widget _showLogo() {
-    return Image.asset('assets/images/icon.png', width: 75, height: 75);
+    return Image.asset('assets/images/logo-admart.png', width: 100, height: 75);
   }
 
   Widget _showIconSetting(AuthenticationBloc bloc) {

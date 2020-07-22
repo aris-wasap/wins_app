@@ -38,7 +38,8 @@ class AuthenticationBloc
               globalBloc.userId = loginResponse.data.userId;
               globalBloc.roleName = loginResponse.data.roleName;
               globalBloc.isAdmin = loginResponse.data.isAdmin;
-
+              globalBloc.branchId = loginResponse.data.branchId;
+              globalBloc.branchName = loginResponse.data.branchName;
               globalBloc.loginResponse = loginResponse;
 
               yield AuthenticationState.authenticated();
@@ -49,6 +50,8 @@ class AuthenticationBloc
           globalBloc.userId = 1;
           globalBloc.roleName = "Admin";
           globalBloc.isAdmin = "Y";
+          globalBloc.branchId = 1;
+          globalBloc.branchName = "IDU";
 
           //yield AuthenticationState.authenticated();
         }

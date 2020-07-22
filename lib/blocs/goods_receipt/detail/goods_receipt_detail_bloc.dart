@@ -87,13 +87,13 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield GoodsReceiptDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang logistic dan WO ${woNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan dan WO ${woNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.woId == 0) {
                 yield GoodsReceiptDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang logistic dan WO ${woNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan dan WO ${woNo} (2)',
                   data: event.data,
                 );
               } else {

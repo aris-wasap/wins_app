@@ -89,12 +89,12 @@ class _HomePageState extends State<HomePage> {
       child: SafeArea(
         child: Scaffold(
           body: Container(
-              // decoration: BoxDecoration(
-              //   image: DecorationImage(
-              //       image: AssetImage("assets/images/579.jpg"),
-              //       fit: BoxFit.cover,
-              //       repeat: ImageRepeat.noRepeat),
-              // ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"),
+                    fit: BoxFit.cover,
+                    repeat: ImageRepeat.noRepeat),
+              ),
               child: _widgetOptions.elementAt(_page)),
           bottomNavigationBar: BottomNavigationBar(
             

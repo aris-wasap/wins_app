@@ -23,6 +23,8 @@ class GlobalBloc {
   String userName;
   String roleName;
   String isAdmin;
+  int branchId;
+  String branchName;
 
   LoginResponse loginResponse = LoginResponse();
 
