@@ -13,6 +13,7 @@ import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_transfer_production_response.dart';
 import 'package:admart_app/models/cfl_transfer_request_response.dart';
+import 'package:admart_app/models/cfl_warehouse_response.dart';
 import 'package:admart_app/models/delivery_order_detail_scan_response.dart';
 import 'package:admart_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:admart_app/models/goods_issue_detail_response.dart';
@@ -1275,8 +1276,10 @@ class ApiProvider {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
 
-      final response = await http.post("${_url}api/GoodsIssueDetailApi/ViewDetailItem",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsIssueDetailApi/ViewDetailItem",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1312,7 +1315,8 @@ class ApiProvider {
         //print(response.body);
         return compute(goodsReceiptListResponseFromJson, response.body);
       } else {
-        throw Exception('goodsReceiptList_FetchNextPage:Failed to load post(2)');
+        throw Exception(
+            'goodsReceiptList_FetchNextPage:Failed to load post(2)');
       }
     } catch (e) {
       throw Exception('goodsReceiptList_FetchNextPage:Failed to load post(1)');
@@ -1349,8 +1353,10 @@ class ApiProvider {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "Id": id});
 
-      final response = await http.post("${_url}api/GoodsReceiptDetailApi/GetById",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1408,8 +1414,10 @@ class ApiProvider {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
 
-      final response = await http.post("${_url}api/GoodsReceiptDetailApi/ViewDetailItem",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/ViewDetailItem",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1419,11 +1427,12 @@ class ApiProvider {
             'goodsReceiptDetail_ViewDetailItem:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('goodsReceiptDetail_ViewDetailItem:Failed to load post(1)');
+      throw Exception(
+          'goodsReceiptDetail_ViewDetailItem:Failed to load post(1)');
     }
   }
 
-    //-----------------------------
+  //-----------------------------
   //RequestIssueList
   //-----------------------------
   Future<RequestIssueListResponse> requestIssueList_FetchNextPage(
@@ -1522,10 +1531,8 @@ class ApiProvider {
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
       String qrResult) async {
     try {
-      var body = json.encode({
-        "UserId": globalBloc.userId,
-        "QrResult": qrResult
-      });
+      var body =
+          json.encode({"UserId": globalBloc.userId, "QrResult": qrResult});
 
       final response = await http.post("${_url}api/RequestIssueDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -1739,8 +1746,11 @@ class ApiProvider {
   Future<ReceiptOrderDetailResponse> receiptOrderDetail_Add(
       receiptOrderDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/ReceiptOrderDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -2510,6 +2520,36 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('warehouse_GetAll:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflWarehouse
+  //-----------------------------
+  Future<CflWarehouseResponse> cflWarehouse_FetchNextPage(
+      int rowStart, String searchQuery, int branchId) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": branchId
+      });
+
+      final response = await http.post(
+          "${_url}api/CflWarehouseApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflWarehouseResponseFromJson, response.body);
+      } else {
+        throw Exception('cflWarehouse_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflWarehouse_FetchNextPage:Failed to load post(1)');
     }
   }
 

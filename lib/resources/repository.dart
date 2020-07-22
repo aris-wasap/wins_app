@@ -12,6 +12,7 @@ import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
 import 'package:admart_app/models/cfl_transfer_production_response.dart';
 import 'package:admart_app/models/cfl_transfer_request_response.dart';
+import 'package:admart_app/models/cfl_warehouse_response.dart';
 import 'package:admart_app/models/delivery_order_detail_scan_response.dart';
 import 'package:admart_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:admart_app/models/goods_issue_detail_response.dart';
@@ -368,9 +369,10 @@ class Repository {
           int poId, String qrResult) =>
       apiProvider.goodsReceiptDetail_Scan(poId, qrResult);
 
-  Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(int woId) =>
+  Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(
+          int woId) =>
       apiProvider.goodsReceiptDetail_ViewDetailItem(woId);
-      
+
   //-----------------------------
   //RequestIssueList
   //-----------------------------
@@ -394,7 +396,7 @@ class Repository {
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           String qrResult) =>
-      apiProvider.requestIssueDetail_Scan( qrResult);
+      apiProvider.requestIssueDetail_Scan(qrResult);
 
   //-----------------------------
   //ReceiptIssueList
@@ -546,7 +548,7 @@ class Repository {
   Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflTransferProduction_FetchNextPage(rowStart, searchQuery);
-      
+
   //-----------------------------
   //CflTransferRequest
   //-----------------------------
@@ -629,6 +631,13 @@ class Repository {
   Future<List<CflDbWarehouseModel>> cflDbWarehouse_Refresh(
           String id, String searchQuery) =>
       DbProvider.db.cflDbWarehouse_Refresh(id, searchQuery);
+
+  //-----------------------------
+  //CflWarehouse
+  //-----------------------------
+  Future<CflWarehouseResponse> cflWarehouse_FetchNextPage(
+          int rowStart, String searchQuery, int branchId) =>
+      apiProvider.cflWarehouse_FetchNextPage(rowStart, searchQuery, branchId);
 
   //-----------------------------
   //CflBinLocation

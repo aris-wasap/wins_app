@@ -87,13 +87,13 @@ class ReceiptSupplierDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptSupplierDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang logistic dan PO ${poNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptSupplierDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang logistic dan PO ${poNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (2)',
                   data: event.data,
                 );
               } else {
