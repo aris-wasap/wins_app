@@ -76,18 +76,16 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Delivery",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Delivery",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -105,17 +103,16 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
         title: Text("List Delivery"),
         //backgroundColor: bgBlue,
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
-        bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
           ),
-          preferredSize: Size.fromHeight(5.0)
         ),
+        bottom: PreferredSize(
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -187,9 +184,9 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -202,7 +199,9 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Customer : ${data[index].customerCode} - ${data[index].customerName}"),
+                    Text("${data[index].branchName}"),
+                    Text(
+                        "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
