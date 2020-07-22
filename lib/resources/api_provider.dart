@@ -235,8 +235,11 @@ class ApiProvider {
   Future<TransferReleaseDetailResponse> transferReleaseDetail_Add(
       transferReleaseDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/TransferReleaseDetailApi/Add",
@@ -364,8 +367,11 @@ class ApiProvider {
   Future<TransferRejectDetailResponse> transferRejectDetail_Add(
       transferRejectDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/TransferRejectDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -493,8 +499,11 @@ class ApiProvider {
   Future<TransferProductionDetailResponse> transferProductionDetail_Add(
       transferProductionDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/TransferProductionDetailApi/Add",
@@ -623,8 +632,11 @@ class ApiProvider {
   Future<TransferRequestDetailResponse> transferRequestDetail_Add(
       transferRequestDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/TransferRequestDetailApi/Add",
@@ -751,8 +763,11 @@ class ApiProvider {
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Add(
       deliveryOrderDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/DeliveryOrderDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -867,8 +882,11 @@ class ApiProvider {
   Future<ReturnSalesDetailResponse> returnSalesDetail_Add(
       returnSalesDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/ReturnSalesDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -987,8 +1005,11 @@ class ApiProvider {
   Future<IssueProductionDetailResponse> issueProductionDetail_Add(
       issueProductionDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/IssueProductionDetailApi/Add",
@@ -1114,8 +1135,11 @@ class ApiProvider {
   Future<ReceiptProductionDetailResponse> receiptProductionDetail_Add(
       receiptProductionDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/ReceiptProductionDetailApi/Add",
@@ -1234,8 +1258,11 @@ class ApiProvider {
   Future<GoodsIssueDetailResponse> goodsIssueDetail_Add(
       goodsIssueDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/GoodsIssueDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -1372,8 +1399,11 @@ class ApiProvider {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Add(
       goodsReceiptDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/GoodsReceiptDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -1511,8 +1541,11 @@ class ApiProvider {
   Future<RequestIssueDetailResponse> requestIssueDetail_Add(
       requestIssueDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/RequestIssueDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -1627,8 +1660,11 @@ class ApiProvider {
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Add(
       receiptIssueDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post("${_url}api/ReceiptIssueDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -1869,8 +1905,11 @@ class ApiProvider {
   Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Add(
       receiptSupplierDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/ReceiptSupplierDetailApi/Add",
@@ -1995,8 +2034,11 @@ class ApiProvider {
   Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Add(
       purchaseReturnsDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/PurchaseReturnsDetailApi/Add",
@@ -2125,8 +2167,11 @@ class ApiProvider {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Add(
       inventoryTransferDetail.Data data) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "Data": data.toJson()});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
 
       final response = await http.post(
           "${_url}api/InventoryTransferDetailApi/Add",

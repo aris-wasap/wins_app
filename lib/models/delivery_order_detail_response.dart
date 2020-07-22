@@ -76,6 +76,12 @@ class Data {
 
   @JsonKey(name: 'Address')
   String address;  
+  
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;  
 
   @JsonKey(name: 'Items')
   List<Item> items;
@@ -95,7 +101,9 @@ class Data {
     this.customerName,
     this.contactPerson,
     this.refNo,
-    this.address, 
+    this.address,
+    this.branchId,
+    this.branchName,
     this.items,
   });
 

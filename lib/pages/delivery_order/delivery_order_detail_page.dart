@@ -14,7 +14,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_sales_order_response.dart' as cflSalesOrder;
+import 'package:admart_app/models/cfl_sales_order_response.dart'
+    as cflSalesOrder;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -22,7 +23,8 @@ class DeliveryOrderDetailPage extends StatefulWidget {
   DeliveryOrderDetailPage(this._id);
   final int _id;
   @override
-  _DeliveryOrderDetailPageState createState() => _DeliveryOrderDetailPageState(_id);
+  _DeliveryOrderDetailPageState createState() =>
+      _DeliveryOrderDetailPageState(_id);
 }
 
 class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
@@ -39,7 +41,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
-
+  final _branchIdController = TextEditingController();
+  final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -79,6 +82,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _branchIdController?.dispose();
+    _branchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -214,12 +219,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         title: Text("Create Delivery"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -236,12 +240,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         title: Text("Delivery Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.deliveryOrder_Auth_Add == 'Y')
               ? IconButton(
@@ -384,7 +387,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton:  _getState().data.id == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -473,6 +476,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       }
       _customerCodeController.text = data.customerCode;
       _customerNameController.text = data.customerName;
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
     }
 
     return Column(
@@ -486,17 +491,15 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Delivery No.",
-                    labelText: "Delivery No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Delivery No.",
+                        labelText: "Delivery No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -508,28 +511,30 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Delivery Date",
-                            labelText: "Delivery Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "DO Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Delivery Date",
+                                labelText: "Delivery Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "DO Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -552,9 +557,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       so.then((cflSalesOrder.Data so) {
                         if (so != null) {
                           _soIdController.text = so.id.toString();
-                          _soNoController.text = so.seriesName +'-'+ so.transNo;
+                          _soNoController.text =
+                              so.seriesName + '-' + so.transNo;
                           _customerCodeController.text = so.customerCode;
                           _customerNameController.text = so.customerName;
+                          _branchIdController.text = so.branchId.toString();
+                          _branchNameController.text = so.branchName;
                         }
                       });
                     }
@@ -563,13 +571,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -578,17 +584,18 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Sales No.",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_soNoController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_customerCodeController.text),
-                                //   ],
-                                // ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -611,19 +618,15 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -632,7 +635,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Customer",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -701,12 +705,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -748,17 +750,18 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(DeliveryOrderDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  DeliveryOrderDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

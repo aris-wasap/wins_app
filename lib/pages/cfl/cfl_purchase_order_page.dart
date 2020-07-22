@@ -78,12 +78,11 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -101,12 +100,11 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
         title: Text("Choose Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -165,9 +163,9 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -179,9 +177,10 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ 
-                    Text("${data[index].customerCode??''}"),
-                    Text("${data[index].customerName??''}"),
+                  children: <Widget>[
+                    Text("${data[index].branchName ?? ''}"),
+                    Text("${data[index].customerCode ?? ''}"),
+                    Text("${data[index].customerName ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),
