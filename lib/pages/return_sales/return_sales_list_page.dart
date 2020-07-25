@@ -76,18 +76,16 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Return",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Return",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -104,18 +102,17 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       return AppBar(
         title: Text("List Return"),
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
         //backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -199,7 +196,9 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Customer : ${data[index].customerCode} - ${data[index].customerName}"),
+                    Text("${data[index].branchName}"),
+                    Text(
+                        "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],

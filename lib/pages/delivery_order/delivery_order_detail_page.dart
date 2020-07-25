@@ -718,8 +718,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],

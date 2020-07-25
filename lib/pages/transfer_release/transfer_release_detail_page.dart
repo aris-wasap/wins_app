@@ -219,12 +219,11 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
         title: Text("Transfer Release"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.yellow[900],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -241,12 +240,11 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
         title: Text("Transfer Release"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.yellow[900],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.transferRelease_Auth_Add == 'Y')
               ? IconButton(
@@ -386,12 +384,11 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
               body: Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )
-                ),
+                    gradient: LinearGradient(
+                  colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
                     padding: EdgeInsets.all(0.0),
@@ -512,17 +509,15 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Transfer No.",
-                    labelText: "Transfer No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Transfer No.",
+                        labelText: "Transfer No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -534,28 +529,30 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Transfer Date",
-                            labelText: "Transfer Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "Transfer Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Transfer Date",
+                                labelText: "Transfer Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "Transfer Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -577,7 +574,8 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                                   builder: (BuildContext context) =>
                                       CflDbWarehousePage()));
 
-                      warehouse.then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                      warehouse
+                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
                         if (warehouse != null) {
                           _whsCodeFromController.text = warehouse.whsCode;
                           _whsNameFromController.text = warehouse.whsName;
@@ -589,19 +587,18 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -610,7 +607,8 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Warehouse From",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.all(0),
@@ -659,19 +657,18 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -728,7 +725,8 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("List of Items", style: new TextStyle(fontWeight: FontWeight.bold)),
+                    Text("List of Items",
+                        style: new TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -754,12 +752,10 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -769,8 +765,7 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
             ],
           ),
@@ -800,17 +795,18 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(TransferReleaseDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  TransferReleaseDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

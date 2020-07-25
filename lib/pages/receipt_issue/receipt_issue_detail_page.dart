@@ -13,7 +13,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
+import 'package:admart_app/models/cfl_goods_issue_response.dart'
+    as cflGoodsIssue;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/widgets/set_colors.dart';
@@ -22,7 +23,8 @@ class ReceiptIssueDetailPage extends StatefulWidget {
   ReceiptIssueDetailPage(this._id);
   final int _id;
   @override
-  _ReceiptIssueDetailPageState createState() => _ReceiptIssueDetailPageState(_id);
+  _ReceiptIssueDetailPageState createState() =>
+      _ReceiptIssueDetailPageState(_id);
 }
 
 class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
@@ -100,7 +102,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "Issue Date harus di isi");
+      ValidateDialogWidget(
+          context: context, massage: "Issue Date harus di isi");
       return;
     } else if (["", null].contains(data.issueNo)) {
       ValidateDialogWidget(context: context, massage: "Issue No harus di isi");
@@ -216,12 +219,11 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
         title: Text("Create Receipt From Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -238,12 +240,11 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
         title: Text("Receipt From Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.receiptIssue_Auth_Add == 'Y')
               ? IconButton(
@@ -382,7 +383,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                   child: Card(
-                                    child: Stack(children: <Widget>[
+                    child: Stack(children: <Widget>[
                       SingleChildScrollView(
                         padding: EdgeInsets.all(0.0),
                         child: _buildForm(),
@@ -392,7 +393,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                   ),
                 ),
               ),
-              floatingActionButton: _getState().data.id  == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -481,7 +482,6 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       } else {
         _transDateController.text = null;
       }
-      
     }
 
     return Column(
@@ -495,17 +495,15 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Receipt No.",
-                    labelText: "Receipt No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Receipt No.",
+                        labelText: "Receipt No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -517,28 +515,30 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Receipt Date",
-                            labelText: "Receipt Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "DO Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Receipt Date",
+                                labelText: "Receipt Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "DO Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -564,7 +564,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                           _issueNoController.text = gi.transNo;
                           _seriesNameController.text = gi.seriesName;
                           _docNumController.text = gi.docNum;
-                         }
+                        }
                       });
                     }
                   },
@@ -572,13 +572,11 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -587,7 +585,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Issue No.",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -633,7 +632,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 //       //   ),
                 //       // ),
                 //     ),
-                    
+
                 //   ),
                 // ),
               ],
@@ -686,12 +685,10 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -701,8 +698,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],
@@ -733,17 +729,18 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(ReceiptIssueDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  ReceiptIssueDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

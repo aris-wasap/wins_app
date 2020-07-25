@@ -13,7 +13,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
+import 'package:admart_app/models/cfl_goods_issue_response.dart'
+    as cflGoodsIssue;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/widgets/set_colors.dart';
@@ -22,7 +23,8 @@ class RequestIssueDetailPage extends StatefulWidget {
   RequestIssueDetailPage(this._id);
   final int _id;
   @override
-  _RequestIssueDetailPageState createState() => _RequestIssueDetailPageState(_id);
+  _RequestIssueDetailPageState createState() =>
+      _RequestIssueDetailPageState(_id);
 }
 
 class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
@@ -100,7 +102,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "Issue Date harus di isi");
+      ValidateDialogWidget(
+          context: context, massage: "Issue Date harus di isi");
       return;
     } else if (["", null].contains(data.issueNo)) {
       ValidateDialogWidget(context: context, massage: "Issue No harus di isi");
@@ -216,12 +219,11 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         title: Text("Create Request From Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -238,12 +240,11 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         title: Text("Request From Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.requestIssue_Auth_Add == 'Y')
               ? IconButton(
@@ -282,9 +283,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         }
       }
 
-      bloc.emitEvent(RequestIssueDetailEventScan(
-          qrResult: qrResult,
-          data: data));
+      bloc.emitEvent(
+          RequestIssueDetailEventScan(qrResult: qrResult, data: data));
 
       // bloc
       //     .eventHandler(
@@ -380,7 +380,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                   child: Card(
-                                    child: Stack(children: <Widget>[
+                    child: Stack(children: <Widget>[
                       SingleChildScrollView(
                         padding: EdgeInsets.all(0.0),
                         child: _buildForm(),
@@ -390,7 +390,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                   ),
                 ),
               ),
-              floatingActionButton: _getState().data.id  == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -479,7 +479,6 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       } else {
         _transDateController.text = null;
       }
-      
     }
 
     return Column(
@@ -493,17 +492,15 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Request No.",
-                    labelText: "Request No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Request No.",
+                        labelText: "Request No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -515,28 +512,30 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Request Date",
-                            labelText: "Request Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "DO Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Request Date",
+                                labelText: "Request Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "DO Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -631,7 +630,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                 //       //   ),
                 //       // ),
                 //     ),
-                    
+
                 //   ),
                 // ),
               ],
@@ -684,12 +683,10 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -699,8 +696,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],
@@ -731,17 +727,18 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(RequestIssueDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  RequestIssueDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

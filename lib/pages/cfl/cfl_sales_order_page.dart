@@ -176,10 +176,10 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].mobBaseType ?? ''}"),
                     Text("${data[index].branchName ?? ''}"),
                     Text("${data[index].customerCode ?? ''}"),
                     Text("${data[index].customerName ?? ''}"),
+                    Text("${data[index].mobBaseType ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

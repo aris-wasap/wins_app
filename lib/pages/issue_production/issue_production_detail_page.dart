@@ -563,8 +563,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                         if (wo != null) {
                           _woIdController.text = wo.id.toString();
                           _woNoController.text = wo.transNo;
-                        
-                         }
+                        }
                       });
                     }
                   },
@@ -572,13 +571,11 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -587,7 +584,8 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Production Order No.",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -611,7 +609,6 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                     ),
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -675,8 +672,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],

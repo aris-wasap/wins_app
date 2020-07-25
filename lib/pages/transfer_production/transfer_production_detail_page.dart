@@ -16,12 +16,14 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_db_warehouse_model.dart' as cflDbWarehouse;
+import 'package:admart_app/models/cfl_db_warehouse_model.dart'
+    as cflDbWarehouse;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart'
     as cflProductionOrder;
-import 'package:admart_app/models/cfl_binlocation_response.dart' as cflBinLocation;
+import 'package:admart_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 
 class TransferProductionDetailPage extends StatefulWidget {
   TransferProductionDetailPage(this._id);
@@ -1061,8 +1063,7 @@ class _TransferProductionDetailPageState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
             ],
           ),

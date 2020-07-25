@@ -78,12 +78,11 @@ class _TransferRequestDetailItemDetailPageState
               title: Text("Item Detail"),
               backgroundColor: Colors.blue[900],
               bottom: PreferredSize(
-                child: Container(
-                  color: Colors.yellow[900],
-                  height: 5.0,
-                ),
-                preferredSize: Size.fromHeight(5.0)
-              ),
+                  child: Container(
+                    color: Colors.yellow[900],
+                    height: 5.0,
+                  ),
+                  preferredSize: Size.fromHeight(5.0)),
               actions: <Widget>[
                 _data.id == 0
                     ? FlatButton.icon(
@@ -110,13 +109,15 @@ class _TransferRequestDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
-    if(_data.qty != 0){
-      if(_qtyController.text==""){
-        _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
-      }
-      else{
-        if(_data.qty == double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))){
-          _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
+    if (_data.qty != 0) {
+      if (_qtyController.text == "") {
+        _qtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.qty.toString()));
+      } else {
+        if (_data.qty ==
+            double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.qty.toString()));
         }
       }
     }
@@ -128,12 +129,11 @@ class _TransferRequestDetailItemDetailPageState
           Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )
-            ),
+                gradient: LinearGradient(
+              colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
             padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -143,73 +143,70 @@ class _TransferRequestDetailItemDetailPageState
                   controller: _itemCodeController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Item Code",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _itemNameController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Item Name",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
+                Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
                         autofocus: true,
                         controller: _qtyController,
-                        onEditingComplete: (){
+                        onEditingComplete: () {
                           setState(() {
-                            String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
                             _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
                           });
                         },
-                        inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           labelText: "Request Qty",
-                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
+                              borderRadius: new BorderRadius.circular(10.0)),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
-                        )
-                      )
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
                     : LabelFieldWidget(
                         labelText: "Request Qty",
                         valueText:
-                            "${NumberFormat("#,###.0000").format(data.qty)}",
+                            "${NumberFormat("#,###.00").format(data.qty)}",
                       ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _uomController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "UoM",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
               ],
             ),
@@ -219,24 +216,26 @@ class _TransferRequestDetailItemDetailPageState
 }
 
 class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+  DecimalTextInputFormatter({this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
 
   final int decimalRange;
-  final money  = NumberFormat("###,###,###", "en_US");
+  final money = NumberFormat("###,###,###", "en_US");
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     TextSelection newSelection = newValue.selection;
-    String truncated =  newValue.text;
+    String truncated = newValue.text;
 
     if (decimalRange != null) {
       String value = newValue.text;
 
-      if (value.contains(".") && value.substring(value.indexOf(".") + 1).length > decimalRange) {
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
-      }
-      else if (value == ".") {
+      } else if (value == ".") {
         truncated = "0.";
 
         newSelection = newValue.selection.copyWith(
