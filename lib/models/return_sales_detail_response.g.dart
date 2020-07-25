@@ -41,6 +41,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     contactPerson: json['ContactPerson'] as String,
     refNo: json['RefNo'] as String,
     address: json['Address'] as String,
+    branchId: json['BranchId'] as int,
+    branchName: json['BranchName'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -61,6 +63,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ContactPerson': instance.contactPerson,
       'RefNo': instance.refNo,
       'Address': instance.address,
+      'BranchId': instance.branchId,
+      'BranchName': instance.branchName,
       'Items': instance.items,
     };
 
@@ -77,6 +81,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
+    whsName: json['WhsName'] as String,
+    binAbs: json['BinAbs'] as int,
+    binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
   );
 }
@@ -93,5 +100,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
+      'WhsName': instance.whsName,
+      'BinAbs': instance.binAbs,
+      'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
     };

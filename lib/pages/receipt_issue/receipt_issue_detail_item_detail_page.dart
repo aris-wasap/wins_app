@@ -338,7 +338,7 @@ class _ReceiptIssueDetailItemDetailPageState
                       // ),
                       // LabelFieldWidget(
                       //   labelText: "Open SO Qty",
-                      //   valueText: "${NumberFormat("#,###.0000").format(data.soQty)}",
+                      //   valueText: "${NumberFormat("#,###.00").format(data.soQty)}",
                       // ),
                       // _data.id == 0
                       //     ? TextField(
@@ -354,7 +354,7 @@ class _ReceiptIssueDetailItemDetailPageState
                       //     : LabelFieldWidget(
                       //         labelText: "Receipt Qty",
                       //         valueText:
-                      //             "${NumberFormat("#,###.0000").format(data.qty)}",
+                      //             "${NumberFormat("#,###.00").format(data.qty)}",
                       //       ),
                       // LabelFieldWidget(
                       //   labelText: "UoM",

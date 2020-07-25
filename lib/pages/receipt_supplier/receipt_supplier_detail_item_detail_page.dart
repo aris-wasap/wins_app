@@ -13,7 +13,8 @@ import 'package:admart_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart' as cflBinLocation;
+import 'package:admart_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 import 'dart:math' as math;
 
 class ReceiptSupplierDetailItemDetailPage extends StatefulWidget {
@@ -410,7 +411,7 @@ class _ReceiptSupplierDetailItemDetailPageState
                 // ),
                 // LabelFieldWidget(
                 //   labelText: "Open PO Qty",
-                //   valueText: "${NumberFormat("#,###.0000").format(data.soQty)}",
+                //   valueText: "${NumberFormat("#,###.00").format(data.soQty)}",
                 // ),
                 // _data.id == 0
                 //     ? TextField(
@@ -426,7 +427,7 @@ class _ReceiptSupplierDetailItemDetailPageState
                 //     : LabelFieldWidget(
                 //         labelText: "Receipt Qty",
                 //         valueText:
-                //             "${NumberFormat("#,###.0000").format(data.qty)}",
+                //             "${NumberFormat("#,###.00").format(data.qty)}",
                 //       ),
                 // LabelFieldWidget(
                 //   labelText: "UoM",

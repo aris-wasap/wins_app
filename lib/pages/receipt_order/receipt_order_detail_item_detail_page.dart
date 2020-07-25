@@ -56,6 +56,8 @@ class _ReceiptOrderDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _whsCodeController?.dispose();
+    _whsNameController?.dispose();
 
     bloc?.dispose();
 
@@ -394,7 +396,7 @@ class _ReceiptOrderDetailItemDetailPageState
                 // ),
                 // LabelFieldWidget(
                 //   labelText: "Open PO Qty",
-                //   valueText: "${NumberFormat("#,###.0000").format(data.soQty)}",
+                //   valueText: "${NumberFormat("#,###.00").format(data.soQty)}",
                 // ),
                 // _data.id == 0
                 //     ? TextField(
@@ -410,7 +412,7 @@ class _ReceiptOrderDetailItemDetailPageState
                 //     : LabelFieldWidget(
                 //         labelText: "Receipt Qty",
                 //         valueText:
-                //             "${NumberFormat("#,###.0000").format(data.qty)}",
+                //             "${NumberFormat("#,###.00").format(data.qty)}",
                 //       ),
                 // LabelFieldWidget(
                 //   labelText: "UoM",

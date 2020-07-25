@@ -15,7 +15,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_purchase_delivery_response.dart' as cflPurchaseDelivery;
+import 'package:admart_app/models/cfl_purchase_delivery_response.dart'
+    as cflPurchaseDelivery;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +24,8 @@ class PurchaseReturnsDetailPage extends StatefulWidget {
   PurchaseReturnsDetailPage(this._id);
   final int _id;
   @override
-  _PurchaseReturnsDetailPageState createState() => _PurchaseReturnsDetailPageState(_id);
+  _PurchaseReturnsDetailPageState createState() =>
+      _PurchaseReturnsDetailPageState(_id);
 }
 
 class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
@@ -220,12 +222,11 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.check),
@@ -242,12 +243,11 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
         title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           (globalBloc.loginResponse.data.purchaseReturns_Auth_Add == 'Y')
               ? IconButton(
@@ -508,17 +508,15 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                 //   padding: EdgeInsets.only(top: 5)
                 // ),
                 TextFormField(
-                  controller: _transNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    hintText: "Receipt No.",
-                    labelText: "Receipt No.",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  )
-                ),
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Receipt No.",
+                        labelText: "Receipt No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -530,28 +528,30 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                          controller: _transDateController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: "Receipt Date",
-                            labelText: "Receipt Date",
-                            contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                              ),
-                              borderRadius: new BorderRadius.circular(10.0,)
-                            )
-                          )
-                          // decoration: InputDecoration(
-                          //   labelText: "DO Date",
-                          //   disabledBorder: UnderlineInputBorder(
-                          //     borderSide: data.id == 0
-                          //         ? BorderSide(color: Colors.blue)
-                          //         : BorderSide(color: Colors.grey),
-                          //   ),
-                          // ),
-                        ),
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Receipt Date",
+                                labelText: "Receipt Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))
+                            // decoration: InputDecoration(
+                            //   labelText: "DO Date",
+                            //   disabledBorder: UnderlineInputBorder(
+                            //     borderSide: data.id == 0
+                            //         ? BorderSide(color: Colors.blue)
+                            //         : BorderSide(color: Colors.grey),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       (data.id == 0)
                           ? Icon(
@@ -574,10 +574,11 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                       po.then((cflPurchaseDelivery.Data po) {
                         if (po != null) {
                           _grpoIdController.text = po.id.toString();
-                          _grpoNoController.text = po.seriesName + '-'+po.transNo;
+                          _grpoNoController.text =
+                              po.seriesName + '-' + po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
-                         // _seriesNamePoController.text = po.seriesName;
+                          // _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -586,13 +587,11 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -601,7 +600,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Purchase Order No.",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -634,19 +634,15 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey[400]
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
-                      )
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                      //     width: 1.0,
-                      //   ),
-                      // ),
-                    ),
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -655,7 +651,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             children: <Widget>[
                               Text(
                                 "Supplier",
-                                style: TextStyle(color: Colors.blue, fontSize: 12.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
@@ -724,12 +721,10 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-        color: Colors.grey[400].withOpacity(0.5),
-        border: Border(
-          bottom: BorderSide(width: 1, color: Colors.grey[500]),
-          left: BorderSide(width: 5, color: Colors.blue)
-        )
-      ),
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
@@ -739,8 +734,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(data[index].itemCode),
-              Text(
-                  "Qty : ${NumberFormat("#,###.0000").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],
@@ -771,17 +765,18 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(PurchaseReturnsDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(
+                  PurchaseReturnsDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
-              color: Colors.red,
-              child: Align(
-                child: Text('Delete',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)
-                )
-              )
-            ),
+                color: Colors.red,
+                child: Align(
+                    child: Text('Delete',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)))),
             child: _rowDetail(data, index),
           );
         } else {

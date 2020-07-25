@@ -40,18 +40,17 @@ class ReturnSalesDetailResponse {
 
 @JsonSerializable()
 class Data {
-  
   @JsonKey(name: 'Id')
-  int id; 
+  int id;
 
   @JsonKey(name: 'DoId')
   int doId;
 
   @JsonKey(name: 'DoNo')
   String doNo;
-  
+
   @JsonKey(name: 'SeriesNameDo')
-  String seriesNameDo;  
+  String seriesNameDo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
@@ -60,7 +59,7 @@ class Data {
   String seriesName;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'CustomerCode')
   String customerCode;
@@ -70,43 +69,47 @@ class Data {
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
-  
+
   @JsonKey(name: 'RefNo')
   String refNo;
 
   @JsonKey(name: 'Address')
-  String address;  
+  String address;
+
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
 
   @JsonKey(name: 'Items')
   List<Item> items;
 
-  
-  
-
   Data({
-    this.doId: 0, 
+    this.doId: 0,
     this.doNo,
-    this.seriesNameDo, 
+    this.seriesNameDo,
     this.id: 0,
     this.transNo,
     this.seriesName,
-    this.transDate, 
+    this.transDate,
     this.customerCode,
     this.customerName,
     this.contactPerson,
     this.refNo,
-    this.address, 
+    this.address,
+    this.branchId,
+    this.branchName,
     this.items,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item { 
-
+class Item {
   @JsonKey(name: 'DoId')
   int doId;
 
@@ -126,7 +129,7 @@ class Item {
   String itemCode;
 
   @JsonKey(name: 'ItemName')
-  String itemName; 
+  String itemName;
 
   @JsonKey(name: 'DoQty')
   double doQty;
@@ -140,11 +143,18 @@ class Item {
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
+  @JsonKey(name: 'WhsName')
+  String whsName;
+
+  @JsonKey(name: 'BinAbs')
+  int binAbs;
+
+  @JsonKey(name: 'BinCode')
+  String binCode;
+
   @JsonKey(name: 'BatchNo')
-  String batchNo; 
-  
- 
- 
+  String batchNo;
+
   Item({
     this.doId: 0,
     this.doLineNo: 0,
@@ -152,11 +162,14 @@ class Item {
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
-    this.itemName, 
+    this.itemName,
     this.doQty: 0,
     this.qty: 0,
     this.uom,
-    this.whsCode, 
+    this.whsCode,
+    this.whsName,
+    this.binAbs,
+    this.binCode,
     this.batchNo,
   });
 
@@ -164,4 +177,3 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 
