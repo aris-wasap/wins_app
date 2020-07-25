@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'dart:math' as math;
-import 'package:admart_app/models/cfl_binlocation_response.dart' as cflBinLocation;
+import 'package:admart_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 
 class ReceiptProductionDetailItemDetailPage extends StatefulWidget {
   ReceiptProductionDetailItemDetailPage(this._data);
@@ -64,7 +65,7 @@ class _ReceiptProductionDetailItemDetailPageState
   void _done() {
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
-          context: context, massage: "Qty harus lebih besar dari 0");
+          context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
     bloc.emitEvent(ReceiptProductionDetailItemDetailEventQty(

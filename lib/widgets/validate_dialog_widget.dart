@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ValidateDialogWidget {
-  ValidateDialogWidget({this.context, this.massage}) {
+  ValidateDialogWidget({this.context, this.message}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       return showDialog<void>(
         context: context,
@@ -12,7 +12,7 @@ class ValidateDialogWidget {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text("${this.massage}"),
+                  Text("${this.message}"),
                 ],
               ),
             ),
@@ -31,5 +31,5 @@ class ValidateDialogWidget {
   }
 
   final BuildContext context;
-  final String massage;
+  final String message;
 }

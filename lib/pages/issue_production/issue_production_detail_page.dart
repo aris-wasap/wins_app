@@ -96,18 +96,18 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "WO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "WO Date harus di isi");
       return;
     } else if (["", null].contains(data.woNo)) {
-      ValidateDialogWidget(context: context, massage: "WO No harus di isi");
+      ValidateDialogWidget(context: context, message: "WO No harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -260,7 +260,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_woNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "WO No harus di isi");
+      ValidateDialogWidget(context: context, message: "WO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -270,7 +270,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, massage: 'Item sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
@@ -310,21 +310,21 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
-      //     massage: "Scan : You press back button before scan");
+      //     message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }

@@ -125,29 +125,29 @@ class _InventoryTransferDetailPageState
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, massage: "Transfer Date harus di isi");
+          context: context, message: "Transfer Date harus di isi");
       return;
     }
     // else if (["", null].contains(data.requestNo)) {
     //   ValidateDialogWidget(
-    //       context: context, massage: "Production Order No harus di isi");
+    //       context: context, message: "Production Order No harus di isi");
     //   return;
     // }
     else if ([null, ""].contains(data.fromWhsCode)) {
       ValidateDialogWidget(
-          context: context, massage: "From Warehouse harus di isi");
+          context: context, message: "From Warehouse harus di isi");
       return;
     } else if ([null, ""].contains(data.toWhsCode)) {
       ValidateDialogWidget(
-          context: context, massage: "To Warehouse harus di isi");
+          context: context, message: "To Warehouse harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -300,20 +300,20 @@ class _InventoryTransferDetailPageState
   Future _scanQR() async {
     // if (["", null].contains(_requestNoController.text)) {
     //   ValidateDialogWidget(
-    //       context: context, massage: "Transfer Request No harus di isi");
+    //       context: context, message: "Transfer Request No harus di isi");
     //   return;
     // } else
     if (["", null].contains(_fromWhsCodeController.text)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse from harus di isi");
+          context: context, message: "Warehouse from harus di isi");
       return;
     } else if (["", null].contains(_toWhsCodeController.text)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse to harus di isi");
+          context: context, message: "Warehouse to harus di isi");
       return;
       // } else if (_fromWhsCodeController.text == _toWhsCodeController.text) {
       //   ValidateDialogWidget(
-      //       context: context, massage: "Warehouse from dan to tidak boleh sama");
+      //       context: context, message: "Warehouse from dan to tidak boleh sama");
       //   return;
     }
 
@@ -325,7 +325,7 @@ class _InventoryTransferDetailPageState
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, massage: 'Item sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
@@ -377,21 +377,21 @@ class _InventoryTransferDetailPageState
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
-      //     massage: "Scan : You press back button before scan");
+      //     message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }

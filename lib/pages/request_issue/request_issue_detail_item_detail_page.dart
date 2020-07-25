@@ -61,7 +61,7 @@ class _RequestIssueDetailItemDetailPageState
   void _done() {
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
-          context: context, massage: "Qty harus lebih besar dari 0");
+          context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
     bloc.emitEvent(RequestIssueDetailItemDetailEventQty(

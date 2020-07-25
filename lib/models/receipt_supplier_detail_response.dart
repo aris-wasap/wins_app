@@ -9,7 +9,8 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'receipt_supplier_detail_response.g.dart';
 
-ReceiptSupplierDetailResponse receiptSupplierDetailResponseFromJson(String str) {
+ReceiptSupplierDetailResponse receiptSupplierDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return ReceiptSupplierDetailResponse.fromJson(jsonData);
 }
@@ -40,21 +41,20 @@ class ReceiptSupplierDetailResponse {
 
 @JsonSerializable()
 class Data {
-  
   @JsonKey(name: 'Id')
-  int id; 
+  int id;
 
   @JsonKey(name: 'PoId')
   int poId;
 
   @JsonKey(name: 'PoNo')
-  String poNo;  
+  String poNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'CustomerCode')
   String customerCode;
@@ -64,12 +64,12 @@ class Data {
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
-  
+
   @JsonKey(name: 'RefNo')
   String refNo;
 
   @JsonKey(name: 'Address')
-  String address;  
+  String address;
 
   @JsonKey(name: 'SeriesNamePo')
   String seriesNamePo;
@@ -77,36 +77,40 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
-  
-  
-
   Data({
-    this.poId: 0, 
-    this.poNo, 
+    this.poId: 0,
+    this.poNo,
     this.id: 0,
     this.transNo,
-    this.transDate, 
+    this.transDate,
     this.customerCode,
     this.customerName,
     this.contactPerson,
     this.refNo,
-    this.address, 
+    this.address,
     this.seriesNamePo,
     this.seriesName,
+    this.branchId,
+    this.branchName,
     this.items,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item { 
-
+class Item {
   @JsonKey(name: 'PoId')
   int poId;
 
@@ -126,7 +130,7 @@ class Item {
   String itemCode;
 
   @JsonKey(name: 'ItemName')
-  String itemName; 
+  String itemName;
 
   @JsonKey(name: 'PoQty')
   double poQty;
@@ -140,7 +144,7 @@ class Item {
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
-   @JsonKey(name: 'WhsName')
+  @JsonKey(name: 'WhsName')
   String whsName;
 
   @JsonKey(name: 'BinAbs')
@@ -150,10 +154,8 @@ class Item {
   String binCode;
 
   @JsonKey(name: 'BatchNo')
-  String batchNo; 
-  
- 
- 
+  String batchNo;
+
   Item({
     this.poId: 0,
     this.poLineNo: 0,
@@ -161,14 +163,14 @@ class Item {
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
-    this.itemName, 
+    this.itemName,
     this.poQty: 0,
     this.qty: 0,
     this.uom,
-    this.whsCode, 
+    this.whsCode,
     this.whsName,
     this.binAbs,
-    this.binCode, 
+    this.binCode,
     this.batchNo,
   });
 
@@ -176,4 +178,3 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 

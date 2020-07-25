@@ -11,7 +11,6 @@ class NewTrfRelease extends StatefulWidget {
 }
 
 class _NewTrfReleaseState extends State<NewTrfRelease> {
-
   final _itemCodeController = TextEditingController();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -40,7 +39,7 @@ class _NewTrfReleaseState extends State<NewTrfRelease> {
       // for (var item in _getState().data.items) {
       //   if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
       //     ValidateDialogWidget(
-      //         context: context, massage: 'Item sudah pernah di scan');
+      //         context: context, message: 'Item sudah pernah di scan');
       //     return;
       //   }
       // }
@@ -53,23 +52,23 @@ class _NewTrfReleaseState extends State<NewTrfRelease> {
     // on PlatformException catch (ex) {
     //   if (ex.code == BarcodeScanner.CameraAccessDenied) {
     //     ValidateDialogWidget(
-    //         context: context, massage: "Scan : Camera permition was denied");
+    //         context: context, message: "Scan : Camera permition was denied");
     //     return;
     //   } else {
     //     ValidateDialogWidget(
-    //         context: context, massage: "Scan : Unknown error $ex");
+    //         context: context, message: "Scan : Unknown error $ex");
     //     return;
     //   }
     // }
     // on FormatException {
     //   ValidateDialogWidget(
     //       context: context,
-    //       massage: "Scan : You press back button before scan");
+    //       message: "Scan : You press back button before scan");
     //   return;
     // }
     catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }
@@ -77,106 +76,105 @@ class _NewTrfReleaseState extends State<NewTrfRelease> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text("New Transfer Release"),
-        backgroundColor: Colors.blue[900],
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900], height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text("New Transfer Release"),
+          backgroundColor: Colors.blue[900],
+          bottom: PreferredSize(
+              child: Container(
+                color: Colors.yellow[900],
+                height: 5.0,
+              ),
+              preferredSize: Size.fromHeight(5.0)),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.photo_camera),
+            ),
+          ],
         ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.photo_camera),
-          ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          )
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(0,5,0,0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextFormField(
-                    enabled: false,
-                    decoration: InputDecoration(labelText: "Trans No."),
-                  ),
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {},
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              labelText: "Date",
-                              disabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
+        body: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        enabled: false,
+                        decoration: InputDecoration(labelText: "Trans No."),
+                      ),
+                      FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {},
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: "Date",
+                                  disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Icon(
+                              Icons.date_range,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.date_range,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0,15,0,0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blue,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-                child: Container(
-                  decoration: new BoxDecoration(
-                    border: new Border.all(color: Colors.grey)
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("List of Items", textAlign: TextAlign.right,),
+                      )
                     ],
                   ),
                 ),
-              ),
-            ),
-            FloatingActionButton.extended(
-              icon: Icon(Icons.camera_alt),
-              backgroundColor: Colors.orange[700],
-              label: Text("Scan"),
-              onPressed: () {
-                _scanQR();
-              },
-            ),
-          ],
-        )
-      )
-    );
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.blue,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                    child: Container(
+                      decoration: new BoxDecoration(
+                          border: new Border.all(color: Colors.grey)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "List of Items",
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                FloatingActionButton.extended(
+                  icon: Icon(Icons.camera_alt),
+                  backgroundColor: Colors.orange[700],
+                  label: Text("Scan"),
+                  onPressed: () {
+                    _scanQR();
+                  },
+                ),
+              ],
+            )));
   }
 }

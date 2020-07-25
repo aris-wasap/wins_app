@@ -98,23 +98,23 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, massage: "Release Date harus di isi");
+          context: context, message: "Release Date harus di isi");
       return;
     } else if ([null, ""].contains(data.whsCodeFrom)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse from harus di isi");
+          context: context, message: "Warehouse from harus di isi");
       return;
     } else if ([null, ""].contains(data.whsCodeTo)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse to harus di isi");
+          context: context, message: "Warehouse to harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -268,15 +268,15 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
   Future _scanQR() async {
     if (["", null].contains(_whsCodeFromController.text)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse from harus di isi");
+          context: context, message: "Warehouse from harus di isi");
       return;
     } else if (["", null].contains(_whsCodeToController.text)) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse to harus di isi");
+          context: context, message: "Warehouse to harus di isi");
       return;
     } else if (_whsCodeFromController.text == _whsCodeToController.text) {
       ValidateDialogWidget(
-          context: context, massage: "Warehouse from dan to tidak boleh sama");
+          context: context, message: "Warehouse from dan to tidak boleh sama");
       return;
     }
 
@@ -287,7 +287,7 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, massage: 'Item sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
@@ -327,21 +327,21 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
-      //     massage: "Scan : You press back button before scan");
+      //     message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }
