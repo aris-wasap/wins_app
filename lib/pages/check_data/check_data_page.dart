@@ -130,21 +130,21 @@ class _CheckDataPageState extends State<CheckDataPage> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       ValidateDialogWidget(
           context: context,
-          massage: "Scan : You press back button before scan");
+          message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }
@@ -165,15 +165,19 @@ class _CheckDataPageState extends State<CheckDataPage> {
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                   image : DecorationImage(image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"), fit: BoxFit.cover, repeat: ImageRepeat.noRepeat),
-                //     gradient: LinearGradient(
-                //   colors: [
-                //     Colors.blue[100],
-                //     Colors.blue[100],
-                //   ],
-                //   begin: Alignment.topCenter,
-                //   end: Alignment.bottomCenter,
-                // )
+                  image: DecorationImage(
+                      image: AssetImage(
+                          "assets/images/white-and-blue-surface-illustration.jpg"),
+                      fit: BoxFit.cover,
+                      repeat: ImageRepeat.noRepeat),
+                  //     gradient: LinearGradient(
+                  //   colors: [
+                  //     Colors.blue[100],
+                  //     Colors.blue[100],
+                  //   ],
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  // )
                 ),
                 child: Stack(children: <Widget>[
                   SingleChildScrollView(
@@ -192,7 +196,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
                 },
               ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.endFloat ,
+                  FloatingActionButtonLocation.endFloat,
             ),
           );
         });
@@ -225,7 +229,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
-              child: Column(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -235,7 +239,13 @@ class _CheckDataPageState extends State<CheckDataPage> {
                     child: Container(
                       color: Colors.transparent,
                       height: 50,
-                      child: Text("Stock Item Master Data", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),),
+                      child: Text(
+                        "Stock Item Master Data",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),
@@ -280,7 +290,8 @@ class _CheckDataPageState extends State<CheckDataPage> {
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(10.0)))),
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                       ),
@@ -293,7 +304,8 @@ class _CheckDataPageState extends State<CheckDataPage> {
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(10.0)))),
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                       ),
@@ -306,7 +318,8 @@ class _CheckDataPageState extends State<CheckDataPage> {
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(10.0))))
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0))))
                     ],
                   ),
                 ),
@@ -333,13 +346,14 @@ class _CheckDataPageState extends State<CheckDataPage> {
                 ),
                 Container(
                     //color: Colors.brown,
-                    child: ((data.details != null) ? data.details.length : 0) > 0
-                        ? _buildList()
-                        : Container(
-                            padding: EdgeInsets.all(10.0),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Text("Item Empty"),
-                          )),
+                    child:
+                        ((data.details != null) ? data.details.length : 0) > 0
+                            ? _buildList()
+                            : Container(
+                                padding: EdgeInsets.all(10.0),
+                                alignment: AlignmentDirectional(0.0, 0.0),
+                                child: Text("Item Empty"),
+                              )),
                 Container(
                   height: 5,
                   color: Colors.grey,

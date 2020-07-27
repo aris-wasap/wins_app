@@ -44,6 +44,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _vendorNameController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _branchIdController = TextEditingController();
+  final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -85,6 +87,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     _vendorNameController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
+    _branchIdController?.dispose();
+    _branchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -103,21 +107,21 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "GRPO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "GRPO Date harus di isi");
       return;
     } else if (["", null].contains(data.grpoNo)) {
-      ValidateDialogWidget(context: context, massage: "GRPO No harus di isi");
+      ValidateDialogWidget(context: context, message: "GRPO No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
-      ValidateDialogWidget(context: context, massage: "Vendor harus di isi");
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -270,7 +274,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_grpoNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "SO No harus di isi");
+      ValidateDialogWidget(context: context, message: "SO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -280,7 +284,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, massage: 'Item sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
@@ -320,21 +324,21 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
-      //     massage: "Scan : You press back button before scan");
+      //     message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }
@@ -480,6 +484,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       _vendorNameController.text = data.vendorName;
       _seriesNamePoController.text = data.seriesNameGrpo;
       _seriesNameController.text = data.seriesName;
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
     }
 
     return Column(
@@ -578,6 +584,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                               po.seriesName + '-' + po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
+                          _branchIdController.text = po.branchId.toString();
+                          _branchNameController.text = po.branchName;
+
                           // _seriesNamePoController.text = po.seriesName;
                         }
                       });
@@ -599,19 +608,19 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Purchase Order No.",
+                                "Receipt Purchase Order No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_grpoNoController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_grpoNoController.text),
-                                //   ],
-                                // ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),

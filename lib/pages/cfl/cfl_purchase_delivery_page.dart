@@ -10,7 +10,8 @@ import 'package:admart_app/widgets/set_colors.dart';
 
 class CflPurchaseDeliveryPage extends StatefulWidget {
   @override
-  _CflPurchaseDeliveryPageState createState() => _CflPurchaseDeliveryPageState();
+  _CflPurchaseDeliveryPageState createState() =>
+      _CflPurchaseDeliveryPageState();
 }
 
 class _CflPurchaseDeliveryPageState extends State<CflPurchaseDeliveryPage> {
@@ -72,18 +73,17 @@ class _CflPurchaseDeliveryPageState extends State<CflPurchaseDeliveryPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Purchase Order",
+            hintText: "Search Receipt PO",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -98,15 +98,14 @@ class _CflPurchaseDeliveryPageState extends State<CflPurchaseDeliveryPage> {
       );
     } else {
       return AppBar(
-        title: Text("Choose Purchase Order"),
+        title: Text("Choose Receipt PO"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -165,9 +164,9 @@ class _CflPurchaseDeliveryPageState extends State<CflPurchaseDeliveryPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -179,9 +178,10 @@ class _CflPurchaseDeliveryPageState extends State<CflPurchaseDeliveryPage> {
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ 
-                    Text("${data[index].vendorCode??''}"),
-                    Text("${data[index].vendorName??''}"),
+                  children: <Widget>[
+                    Text("${data[index].branchName ?? ''}"),
+                    Text("${data[index].vendorCode ?? ''}"),
+                    Text("${data[index].vendorName ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

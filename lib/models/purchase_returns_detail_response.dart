@@ -9,7 +9,8 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'purchase_returns_detail_response.g.dart';
 
-PurchaseReturnsDetailResponse purchaseReturnsDetailResponseFromJson(String str) {
+PurchaseReturnsDetailResponse purchaseReturnsDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return PurchaseReturnsDetailResponse.fromJson(jsonData);
 }
@@ -40,21 +41,20 @@ class PurchaseReturnsDetailResponse {
 
 @JsonSerializable()
 class Data {
-  
   @JsonKey(name: 'Id')
-  int id; 
+  int id;
 
   @JsonKey(name: 'GrpoId')
   int grpoId;
 
   @JsonKey(name: 'GrpoNo')
-  String grpoNo;  
+  String grpoNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'VendorCode')
   String vendorCode;
@@ -64,12 +64,12 @@ class Data {
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
-  
+
   @JsonKey(name: 'RefNo')
   String refNo;
 
   @JsonKey(name: 'Address')
-  String address;  
+  String address;
 
   @JsonKey(name: 'SeriesNameGrpo')
   String seriesNameGrpo;
@@ -77,36 +77,40 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
-  
-  
-
   Data({
-    this.grpoId: 0, 
-    this.grpoNo, 
+    this.grpoId: 0,
+    this.grpoNo,
     this.id: 0,
     this.transNo,
-    this.transDate, 
+    this.transDate,
     this.vendorCode,
     this.vendorName,
     this.contactPerson,
     this.refNo,
-    this.address, 
+    this.address,
     this.seriesNameGrpo,
     this.seriesName,
+    this.branchId,
+    this.branchName,
     this.items,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item { 
-
+class Item {
   @JsonKey(name: 'GrpoId')
   int grpoId;
 
@@ -132,7 +136,7 @@ class Item {
   String itemCode;
 
   @JsonKey(name: 'ItemName')
-  String itemName; 
+  String itemName;
 
   @JsonKey(name: 'GrpoQty')
   double grpoQty;
@@ -146,7 +150,7 @@ class Item {
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
-   @JsonKey(name: 'WhsName')
+  @JsonKey(name: 'WhsName')
   String whsName;
 
   @JsonKey(name: 'BinAbs')
@@ -156,10 +160,8 @@ class Item {
   String binCode;
 
   @JsonKey(name: 'BatchNo')
-  String batchNo; 
-  
- 
- 
+  String batchNo;
+
   Item({
     this.grpoId: 0,
     this.grpoLineNo: 0,
@@ -169,14 +171,14 @@ class Item {
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
-    this.itemName, 
+    this.itemName,
     this.grpoQty: 0,
     this.qty: 0,
     this.uom,
     this.whsCode,
     this.whsName,
     this.binAbs,
-    this.binCode, 
+    this.binCode,
     this.batchNo,
   });
 
@@ -184,4 +186,3 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 

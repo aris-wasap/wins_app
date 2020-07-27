@@ -101,19 +101,19 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Date harus di isi");
+          context: context, message: "Production Date harus di isi");
       return;
     } else if (["", null].contains(data.woNo)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Order No harus di isi");
+          context: context, message: "Production Order No harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -123,7 +123,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           (double.parse("${item.qty}") <= 0)) {
         ValidateDialogWidget(
             context: context,
-            massage: 'Line ' +
+            message: 'Line ' +
                 "${item.woVisOrder}" +
                 ' : Batch No. dan Quantity tidak boleh kosong/0');
         return;
@@ -131,15 +131,15 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           double.parse("${item.woQty}"))) {
         ValidateDialogWidget(
             context: context,
-            massage: 'Line ' +
+            message: 'Line ' +
                 "${item.woVisOrder}" +
                 ' : Quantity tidak boleh lebih besar dari Planned Quantity');
         return;
-      }else if ((double.parse("${item.qty}") <
+      } else if ((double.parse("${item.qty}") <
           double.parse("${item.woQty}"))) {
         ValidateDialogWidget(
             context: context,
-            massage: 'Line ' +
+            message: 'Line ' +
                 "${item.woVisOrder}" +
                 ' : Quantity tidak boleh kurang dari Planned Quantity');
         return;
@@ -297,14 +297,14 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   Future _refreshDetailItem() async {
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
-          context: context, massage: "Production Order No harus di isi");
+          context: context, message: "Production Order No harus di isi");
       return;
     }
     //var data = _getState().data;
     //   for (var item in _getState().data.items) {
     //     if (("${item.batchNo}" == qrResult)) {
     //       ValidateDialogWidget(
-    //           context: context, massage: 'Item sudah pernah di scan');
+    //           context: context, message: 'Item sudah pernah di scan');
     //       return;
     //     }
     //   }
@@ -313,14 +313,14 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           GoodsIssueDetailEventRefresh(woId: int.parse(_woIdController.text)));
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Refresh : Unknown error $ex");
+          context: context, message: "Refresh : Unknown error $ex");
       return;
     }
   }
 
   // Future _scanQR() async {
   //   if (["", null].contains(_woNoController.text)) {
-  //     ValidateDialogWidget(context: context, massage: "WO No harus di isi");
+  //     ValidateDialogWidget(context: context, message: "WO No harus di isi");
   //     return;
   //   }
   //   var data = _getState().data;
@@ -330,7 +330,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //     for (var item in _getState().data.items) {
   //       if (("${item.batchNo}" == qrResult)) {
   //         ValidateDialogWidget(
-  //             context: context, massage: 'Item sudah pernah di scan');
+  //             context: context, message: 'Item sudah pernah di scan');
   //         return;
   //       }
   //     }
@@ -343,21 +343,21 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //   } on PlatformException catch (ex) {
   //     if (ex.code == BarcodeScanner.CameraAccessDenied) {
   //       ValidateDialogWidget(
-  //           context: context, massage: "Scan : Camera permition was denied");
+  //           context: context, message: "Scan : Camera permition was denied");
   //       return;
   //     } else {
   //       ValidateDialogWidget(
-  //           context: context, massage: "Scan : Unknown error $ex");
+  //           context: context, message: "Scan : Unknown error $ex");
   //       return;
   //     }
   //   } on FormatException {
   //     // ValidateDialogWidget(
   //     //     context: context,
-  //     //     massage: "Scan : You press back button before scan");
+  //     //     message: "Scan : You press back button before scan");
   //     return;
   //   } catch (ex) {
   //     ValidateDialogWidget(
-  //         context: context, massage: "Scan : Unknown error $ex");
+  //         context: context, message: "Scan : Unknown error $ex");
   //     return;
   //   }
   // }
@@ -693,10 +693,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
               Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text("Open Qty : ${NumberFormat("#,###.00").format(data[index].openQty)}"),
+              Text(
+                  "Open Qty : ${NumberFormat("#,###.00").format(data[index].openQty)}"),
               Text(
                   "Planned Qty : ${NumberFormat("#,###.00").format(data[index].woQty)}"),
-               Text('Uom : ' + "${data[index].uom}"),
+              Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),

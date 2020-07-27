@@ -54,7 +54,7 @@ class _InventoryTransferDetailItemDetailPageState
   void _done() {
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
-          context: context, massage: "Qty harus lebih besar dari 0");
+          context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
     bloc.emitEvent(InventoryTransferDetailItemDetailEventQty(
@@ -71,8 +71,8 @@ class _InventoryTransferDetailItemDetailPageState
   Widget build(BuildContext context) {
     return BlocEventStateBuilder<InventoryTransferDetailItemDetailState>(
         bloc: bloc,
-        builder:
-            (BuildContext context, InventoryTransferDetailItemDetailState state) {
+        builder: (BuildContext context,
+            InventoryTransferDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
@@ -80,12 +80,11 @@ class _InventoryTransferDetailItemDetailPageState
               title: Text("Item Detail"),
               backgroundColor: bgBlue,
               bottom: PreferredSize(
-                child: Container(
-                  color: bgOrange,
-                  height: 5.0,
-                ),
-                preferredSize: Size.fromHeight(5.0)
-              ),
+                  child: Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
+                  preferredSize: Size.fromHeight(5.0)),
               actions: <Widget>[
                 _data.id == 0
                     ? FlatButton.icon(
@@ -113,13 +112,15 @@ class _InventoryTransferDetailItemDetailPageState
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
     _availableQtyController.text = data.availableQty.toString();
-    if(_data.qty != 0){
-      if(_qtyController.text==""){
-        _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
-      }
-      else{
-        if(_data.qty == double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))){
-          _qtyController.text = NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
+    if (_data.qty != 0) {
+      if (_qtyController.text == "") {
+        _qtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.qty.toString()));
+      } else {
+        if (_data.qty ==
+            double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.qty.toString()));
         }
       }
     }
@@ -142,88 +143,84 @@ class _InventoryTransferDetailItemDetailPageState
                   controller: _itemCodeController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Code",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Item Code",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _itemNameController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Item Name",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Item Name",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _availableQtyController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Available Qty",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "Available Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ), 
+                Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
                         autofocus: true,
                         controller: _qtyController,
-                        onEditingComplete: (){
+                        onEditingComplete: () {
                           setState(() {
-                            String newValue = NumberFormat("###,###.####").format(double.parse(_qtyController.text.replaceAll(new RegExp(','), '').replaceAll(new RegExp('-'), '').replaceAll(new RegExp(' '), '')));
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
                             _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(offset: newValue.length);
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
                           });
                         },
-                        inputFormatters: [DecimalTextInputFormatter(decimalRange: 4)],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           labelText: "Qty",
-                          contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
+                              borderRadius: new BorderRadius.circular(10.0)),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
-                            borderRadius: new BorderRadius.circular(10.0)
-                          ),
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(padding: EdgeInsets.only(left: 10),
-                    child: LabelFieldWidget(
-                        labelText: "Qty",
-                        valueText:
-                            "${NumberFormat("#,###.00").format(data.qty)}",
+                    : Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: LabelFieldWidget(
+                          labelText: "Qty",
+                          valueText:
+                              "${NumberFormat("#,###.00").format(data.qty)}",
+                        ),
                       ),
-                      ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10)
-                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _uomController,
                   enabled: false,
                   decoration: InputDecoration(
-                    labelText: "UoM",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
               ],
             ),
@@ -231,26 +228,28 @@ class _InventoryTransferDetailItemDetailPageState
         ]);
   }
 }
-                        
+
 class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+  DecimalTextInputFormatter({this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
 
   final int decimalRange;
-  final money  = NumberFormat("###,###,###", "en_US");
+  final money = NumberFormat("###,###,###", "en_US");
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     TextSelection newSelection = newValue.selection;
-    String truncated =  newValue.text;
+    String truncated = newValue.text;
 
     if (decimalRange != null) {
       String value = newValue.text;
 
-      if (value.contains(".") && value.substring(value.indexOf(".") + 1).length > decimalRange) {
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
-      }
-      else if (value == ".") {
+      } else if (value == ".") {
         truncated = "0.";
 
         newSelection = newValue.selection.copyWith(

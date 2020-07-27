@@ -43,6 +43,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   final _customerNameController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _branchIdController = TextEditingController();
+  final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -84,6 +86,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     _customerNameController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
+    _branchIdController?.dispose();
+    _branchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -102,21 +106,21 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, massage: "PO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "PO Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, massage: "PO No harus di isi");
+      ValidateDialogWidget(context: context, message: "PO No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
-      ValidateDialogWidget(context: context, massage: "Customer harus di isi");
+      ValidateDialogWidget(context: context, message: "Customer harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     } else if ([0].contains(data.items.length)) {
       ValidateDialogWidget(
-          context: context, massage: "Item detail harus di isi");
+          context: context, message: "Item detail harus di isi");
       return;
     }
 
@@ -269,7 +273,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_poNoController.text)) {
-      ValidateDialogWidget(context: context, massage: "PO No harus di isi");
+      ValidateDialogWidget(context: context, message: "PO No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -279,7 +283,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, massage: 'Item sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
@@ -319,21 +323,21 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Camera permition was denied");
+            context: context, message: "Scan : Camera permition was denied");
         return;
       } else {
         ValidateDialogWidget(
-            context: context, massage: "Scan : Unknown error $ex");
+            context: context, message: "Scan : Unknown error $ex");
         return;
       }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
-      //     massage: "Scan : You press back button before scan");
+      //     message: "Scan : You press back button before scan");
       return;
     } catch (ex) {
       ValidateDialogWidget(
-          context: context, massage: "Scan : Unknown error $ex");
+          context: context, message: "Scan : Unknown error $ex");
       return;
     }
   }
@@ -479,6 +483,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       _customerNameController.text = data.customerName;
       _seriesNamePoController.text = data.seriesNamePo;
       _seriesNameController.text = data.seriesName;
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
     }
 
     return Column(
@@ -577,7 +583,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                               po.seriesName + '-' + po.transNo;
                           _customerCodeController.text = po.customerCode;
                           _customerNameController.text = po.customerName;
-                          // _seriesNamePoController.text = po.seriesName;
+                          _branchIdController.text = po.branchId.toString();
+                          _branchNameController.text = po.branchName;
                         }
                       });
                     }
@@ -605,12 +612,12 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_poNoController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_poNoController.text),
-                                //   ],
-                                // ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -735,8 +742,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
               Text(data[index].itemCode),
               Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               Text("Batch No : " + data[index].batchNo ?? ''),
-              Text("Line : "+ data[index].poLineNo.toString()??'0'),
-              
+              Text("Line : " + data[index].poLineNo.toString() ?? '0'),
+
               // Text(data[index].whsCode ?? ''),
             ],
           ),
