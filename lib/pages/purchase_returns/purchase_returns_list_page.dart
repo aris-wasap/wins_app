@@ -12,7 +12,8 @@ import 'package:admart_app/widgets/set_colors.dart';
 
 class PurchaseReturnsListPage extends StatefulWidget {
   @override
-  _PurchaseReturnsListPageState createState() => _PurchaseReturnsListPageState();
+  _PurchaseReturnsListPageState createState() =>
+      _PurchaseReturnsListPageState();
 }
 
 class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
@@ -76,18 +77,16 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Receipt",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
-        ), 
+              hintText: "Search Receipt",
+              hintStyle: TextStyle(color: Colors.white)),
+        ),
         backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.orange[500],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.orange[500],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -104,18 +103,17 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
       return AppBar(
         title: Text("List Receipt"),
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -188,8 +186,8 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -202,7 +200,9 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
+                    Text("${data[index].branchName}"),
+                    Text(
+                        "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],

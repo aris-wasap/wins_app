@@ -17,7 +17,6 @@ import 'package:admart_app/models/cfl_db_warehouse_model.dart'
     as cflDbWarehouse;
 import 'package:admart_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-import 'package:admart_app/models/cfl_item_batch_response.dart' as cflItemBatch;
 import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 

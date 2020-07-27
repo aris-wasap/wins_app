@@ -44,6 +44,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _vendorNameController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _branchIdController = TextEditingController();
+  final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -85,6 +87,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     _vendorNameController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
+    _branchIdController?.dispose();
+    _branchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -480,6 +484,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       _vendorNameController.text = data.vendorName;
       _seriesNamePoController.text = data.seriesNameGrpo;
       _seriesNameController.text = data.seriesName;
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
     }
 
     return Column(
@@ -578,6 +584,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                               po.seriesName + '-' + po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
+                          _branchIdController.text = po.branchId.toString();
+                          _branchNameController.text = po.branchName;
+
                           // _seriesNamePoController.text = po.seriesName;
                         }
                       });
@@ -599,19 +608,19 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Purchase Order No.",
+                                "Receipt Purchase Order No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_grpoNoController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_grpoNoController.text),
-                                //   ],
-                                // ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
