@@ -107,6 +107,14 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     ..goodsReceipt_Auth_Add = json['GoodsReceipt_Auth_Add'] as String
     ..goodsReceipt_WhsCode = json['GoodsReceipt_WhsCode'] as String
     ..goodsReceipt_WhsName = json['GoodsReceipt_WhsName'] as String
+    ..transferBranch_Auth_Detail = json['TransferBranch_Auth_Detail'] as String
+    ..transferBranch_Auth_Add = json['TransferBranch_Auth_Add'] as String
+    ..transferBranch_WhsCode = json['TransferBranch_WhsCode'] as String
+    ..transferBranch_WhsName = json['TransferBranch_WhsName'] as String
+    ..receiptBranch_Auth_Detail = json['ReceiptBranch_Auth_Detail'] as String
+    ..receiptBranch_Auth_Add = json['ReceiptBranch_Auth_Add'] as String
+    ..receiptBranch_WhsCode = json['ReceiptBranch_WhsCode'] as String
+    ..receiptBranch_WhsName = json['ReceiptBranch_WhsName'] as String
     ..requestIssue_Auth_Detail = json['RequestIssue_Auth_Detail'] as String
     ..requestIssue_Auth_Add = json['RequestIssue_Auth_Add'] as String
     ..requestIssue_WhsCode = json['RequestIssue_WhsCode'] as String
@@ -168,6 +176,14 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'GoodsReceipt_Auth_Add': instance.goodsReceipt_Auth_Add,
       'GoodsReceipt_WhsCode': instance.goodsReceipt_WhsCode,
       'GoodsReceipt_WhsName': instance.goodsReceipt_WhsName,
+      'TransferBranch_Auth_Detail': instance.transferBranch_Auth_Detail,
+      'TransferBranch_Auth_Add': instance.transferBranch_Auth_Add,
+      'TransferBranch_WhsCode': instance.transferBranch_WhsCode,
+      'TransferBranch_WhsName': instance.transferBranch_WhsName,
+      'ReceiptBranch_Auth_Detail': instance.receiptBranch_Auth_Detail,
+      'ReceiptBranch_Auth_Add': instance.receiptBranch_Auth_Add,
+      'ReceiptBranch_WhsCode': instance.receiptBranch_WhsCode,
+      'ReceiptBranch_WhsName': instance.receiptBranch_WhsName,
       'RequestIssue_Auth_Detail': instance.requestIssue_Auth_Detail,
       'RequestIssue_Auth_Add': instance.requestIssue_Auth_Add,
       'RequestIssue_WhsCode': instance.requestIssue_WhsCode,
