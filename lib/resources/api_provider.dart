@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/cfl_batch_location_response.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart';
+import 'package:admart_app/models/cfl_branch_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
 import 'package:admart_app/models/cfl_item_batch_response.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart';
@@ -59,6 +60,9 @@ import 'package:admart_app/models/request_issue_detail_response.dart';
 import 'package:admart_app/models/request_issue_detail_scan_response.dart';
 import 'package:admart_app/models/request_issue_list_response.dart';
 import 'package:admart_app/models/serverInfo_response.dart';
+import 'package:admart_app/models/transfer_branch_detail_response.dart';
+import 'package:admart_app/models/transfer_branch_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_branch_list_response.dart';
 import 'package:admart_app/models/transfer_production_detail_response.dart';
 import 'package:admart_app/models/transfer_production_detail_scan_response.dart';
 import 'package:admart_app/models/transfer_production_list_response.dart';
@@ -101,6 +105,10 @@ import 'package:admart_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
 import 'package:admart_app/models/goods_receipt_detail_response.dart'
     as goodsReceiptDetail;
+//import 'package:admart_app/models/receipt_branch_detail_response.dart'
+//    as receiptBranchDetail;
+import 'package:admart_app/models/transfer_branch_detail_response.dart'
+    as transferBranchDetail;
 import 'package:admart_app/models/receipt_production_list_response.dart';
 import 'package:admart_app/models/receipt_production_detail_scan_response.dart';
 
@@ -1462,6 +1470,125 @@ class ApiProvider {
     }
   }
 
+   //-----------------------------
+  //TransferBranchList
+  //-----------------------------
+  Future<TransferBranchListResponse> transferBranchList_FetchNextPage(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/TransferBranchListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferBranchList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferBranchListResponse> transferBranchList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post("${_url}api/TransferBranchListApi/Refresh",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchListResponseFromJson, response.body);
+      } else {
+        throw Exception('transferBranchList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //TransferBranchDetail
+  //-----------------------------
+  Future<TransferBranchDetailResponse> transferBranchDetail_GetById(int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/TransferBranchDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('transferBranchDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferBranchDetailResponse> transferBranchDetail_Add(
+      transferBranchDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/TransferBranchDetailApi/Add",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('transferBranchDetail_Add:Failed to add TransferBranch(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
+      String qrResult) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "QrResult": qrResult});
+
+      final response = await http.post("${_url}api/TransferBranchDetailApi/Scan",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('transferBranchDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchDetail_Scan:Failed to load post(1)');
+    }
+  }
+
   //-----------------------------
   //RequestIssueList
   //-----------------------------
@@ -2565,6 +2692,36 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('warehouse_GetAll:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflBranch
+  //-----------------------------
+  Future<CflBranchResponse> cflBranch_FetchNextPage(
+      int rowStart, String searchQuery, int branchId) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": branchId
+      });
+
+      final response = await http.post(
+          "${_url}api/CflBranchApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflBranchResponseFromJson, response.body);
+      } else {
+        throw Exception('cflBranch_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflBranch_FetchNextPage:Failed to load post(1)');
     }
   }
 

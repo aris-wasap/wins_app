@@ -1,3 +1,4 @@
+import 'package:admart_app/pages/transfer_branch/transfer_branch_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
@@ -40,7 +41,23 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "icon": "assets/images/transfer.png",
       "authDetail": "inventoryTransfer_Auth_Detail",
     },
-    //Admart - InActive 
+    // Active
+    {
+      "title": "Transfer To Depo",
+      "subtitle": "List Transfer, Scan Item",
+      "icon": "assets/images/transfer_branch.png",
+      "authDetail": "transferBranch_Auth_Detail",
+    },
+
+    // Active
+    {
+      "title": "Receipt From Depo",
+      "subtitle": "List Receipt, Scan Item",
+      "icon": "assets/images/receipt_branch.png",
+      "authDetail": "receiptBranch_Auth_Detail",
+    },
+
+    //Admart - InActive
     // {
     //   "title": "Transfer For Production Order",
     //   "subtitle": "List Inventory, Scan Item",
@@ -62,20 +79,20 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     //   "authDetail": "goodsReceipt_Auth_Detail",
     // },
 
-    // Active
-    {
-      "title": "Issue Change Product",
-      "subtitle": "List Issue, Scan Item",
-      "icon": "assets/images/request_issue.png",
-      "authDetail": "requestIssue_Auth_Detail",
-    },
-    // Active
-    {
-      "title": "Receipt From Change Product",
-      "subtitle": "List Receipt, Scan Receipt",
-      "icon": "assets/images/receipt_issue.png",
-      "authDetail": "receiptIssue_Auth_Detail",
-    },
+    // // Active
+    // {
+    //   "title": "Issue Change Product",
+    //   "subtitle": "List Issue, Scan Item",
+    //   "icon": "assets/images/request_issue.png",
+    //   "authDetail": "requestIssue_Auth_Detail",
+    // },
+    // // Active
+    // {
+    //   "title": "Receipt From Change Product",
+    //   "subtitle": "List Receipt, Scan Receipt",
+    //   "icon": "assets/images/receipt_issue.png",
+    //   "authDetail": "receiptIssue_Auth_Detail",
+    // },
     // Active
     {
       "title": "Receipt From Purchase Order",
@@ -193,7 +210,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                               //     return GoodsIssueListPage();
                               //   }));
                               // }
-                               
+
                               //   else if (subjectList[index]["authDetail"] ==
                               //           "goodsReceipt_Auth_Detail" &&
                               //       globalBloc.loginResponse.data
@@ -207,28 +224,48 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
                               // Change Product
                               //else
-                               if (subjectList[index]["authDetail"] ==
-                                      "requestIssue_Auth_Detail" &&
+                              // if (subjectList[index]["authDetail"] ==
+                              //         "requestIssue_Auth_Detail" &&
+                              //     globalBloc.loginResponse.data
+                              //             .requestIssue_Auth_Detail ==
+                              //         'Y') {
+                              //   Navigator.push(context, MaterialPageRoute(
+                              //       builder: (BuildContext context) {
+                              //     return RequestIssueListPage();
+                              //   }));
+                              // } else if (subjectList[index]["authDetail"] ==
+                              //         "receiptIssue_Auth_Detail" &&
+                              //     globalBloc.loginResponse.data
+                              //             .receiptIssue_Auth_Detail ==
+                              //         'Y') {
+                              //   Navigator.push(context, MaterialPageRoute(
+                              //       builder: (BuildContext context) {
+                              //     return ReceiptIssueListPage();
+                              //   }));
+                              // }
+
+                              //Transfer To Branch
+                              if (subjectList[index]["authDetail"] ==
+                                      "transferBranch_Auth_Detail" &&
                                   globalBloc.loginResponse.data
-                                          .requestIssue_Auth_Detail ==
+                                          .transferBranch_Auth_Detail ==
                                       'Y') {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return RequestIssueListPage();
+                                  return TransferBranchListPage();
                                 }));
                               }
-
+                              //Receipt From Branch
                               else if (subjectList[index]["authDetail"] ==
-                                      "receiptIssue_Auth_Detail" &&
+                                      "receiptBranch_Auth_Detail" &&
                                   globalBloc.loginResponse.data
-                                          .receiptIssue_Auth_Detail ==
+                                          .receiptBranch_Auth_Detail ==
                                       'Y') {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return ReceiptIssueListPage();
+                                  // return ReceiptBranchListPage();
                                 }));
                               }
-
                               // Transfer Item From To Warehouse
                               else if (subjectList[index]["authDetail"] ==
                                       "inventoryTransfer_Auth_Detail" &&

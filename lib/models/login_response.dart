@@ -181,6 +181,30 @@ class Data {
   @JsonKey(name: 'GoodsReceipt_WhsName')
   String goodsReceipt_WhsName;
 
+  @JsonKey(name: 'TransferBranch_Auth_Detail')
+  String transferBranch_Auth_Detail;
+
+  @JsonKey(name: 'TransferBranch_Auth_Add')
+  String transferBranch_Auth_Add;
+
+  @JsonKey(name: 'TransferBranch_WhsCode')
+  String transferBranch_WhsCode;
+
+  @JsonKey(name: 'TransferBranch_WhsName')
+  String transferBranch_WhsName;
+
+  @JsonKey(name: 'ReceiptBranch_Auth_Detail')
+  String receiptBranch_Auth_Detail;
+
+  @JsonKey(name: 'ReceiptBranch_Auth_Add')
+  String receiptBranch_Auth_Add;
+
+  @JsonKey(name: 'ReceiptBranch_WhsCode')
+  String receiptBranch_WhsCode;
+
+  @JsonKey(name: 'ReceiptBranch_WhsName')
+  String receiptBranch_WhsName;
+
   @JsonKey(name: 'RequestIssue_Auth_Detail')
   String requestIssue_Auth_Detail;
 

@@ -1,5 +1,6 @@
 import 'package:admart_app/models/cfl_batch_location_response.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart';
+import 'package:admart_app/models/cfl_branch_response.dart';
 import 'package:admart_app/models/cfl_db_warehouse_model.dart';
 import 'package:admart_app/models/cfl_item_batch_response.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart';
@@ -55,6 +56,9 @@ import 'package:admart_app/models/request_issue_detail_response.dart';
 import 'package:admart_app/models/request_issue_detail_scan_response.dart';
 import 'package:admart_app/models/request_issue_list_response.dart';
 import 'package:admart_app/models/serverInfo_response.dart';
+import 'package:admart_app/models/transfer_branch_detail_response.dart';
+import 'package:admart_app/models/transfer_branch_detail_scan_response.dart';
+import 'package:admart_app/models/transfer_branch_list_response.dart';
 import 'package:admart_app/models/transfer_production_detail_response.dart';
 import 'package:admart_app/models/transfer_production_detail_scan_response.dart';
 import 'package:admart_app/models/transfer_production_list_response.dart';
@@ -96,6 +100,10 @@ import 'package:admart_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
 import 'package:admart_app/models/goods_receipt_detail_response.dart'
     as goodsReceiptDetail;
+//import 'package:admart_app/models/receipt_branch_detail_response.dart'
+//    as receiptBranchDetail;
+import 'package:admart_app/models/transfer_branch_detail_response.dart'
+    as transferBranchDetail;
 import 'package:admart_app/models/receipt_production_list_response.dart';
 import 'package:admart_app/models/receipt_production_detail_scan_response.dart';
 
@@ -374,6 +382,31 @@ class Repository {
       apiProvider.goodsReceiptDetail_ViewDetailItem(woId);
 
   //-----------------------------
+  //TransferBranchList
+  //-----------------------------
+  Future<TransferBranchListResponse> transferBranchList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.transferBranchList_FetchNextPage(lastId, searchQuery);
+
+  Future<TransferBranchListResponse> transferBranchList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.transferBranchList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //TransferBranchDetail
+  //-----------------------------
+  Future<TransferBranchDetailResponse> transferBranchDetail_GetById(int id) =>
+      apiProvider.transferBranchDetail_GetById(id);
+
+  Future<TransferBranchDetailResponse> transferBranchDetail_Add(
+          transferBranchDetail.Data data) =>
+      apiProvider.transferBranchDetail_Add(data);
+
+  Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
+          String qrResult) =>
+      apiProvider.transferBranchDetail_Scan(qrResult);
+
+  //-----------------------------
   //RequestIssueList
   //-----------------------------
   Future<RequestIssueListResponse> requestIssueList_FetchNextPage(
@@ -631,6 +664,13 @@ class Repository {
   Future<List<CflDbWarehouseModel>> cflDbWarehouse_Refresh(
           String id, String searchQuery) =>
       DbProvider.db.cflDbWarehouse_Refresh(id, searchQuery);
+
+  //-----------------------------
+  //CflBranch
+  //-----------------------------
+  Future<CflBranchResponse> cflBranch_FetchNextPage(
+          int rowStart, String searchQuery, int branchId) =>
+      apiProvider.cflBranch_FetchNextPage(rowStart, searchQuery, branchId);
 
   //-----------------------------
   //CflWarehouse
