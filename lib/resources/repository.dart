@@ -11,6 +11,7 @@ import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
+import 'package:admart_app/models/cfl_transfer_branch_response.dart';
 import 'package:admart_app/models/cfl_transfer_production_response.dart';
 import 'package:admart_app/models/cfl_transfer_request_response.dart';
 import 'package:admart_app/models/cfl_warehouse_response.dart';
@@ -588,6 +589,13 @@ class Repository {
   Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
+  //CflTransferBranch
+  //-----------------------------
+  Future<CflTransferBranchResponse> cflTransferBranch_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflTransferBranch_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
   //CflSalesOrder
