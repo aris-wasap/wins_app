@@ -61,8 +61,6 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is TransferBranchDetailEventScan) {
-      var issueId = event.issueId;
-      var issueNo = event.issueNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -88,13 +86,13 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferBranchDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang  (1)',
+                errorMessage: '${qrResult} tidak di temukan (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.id == 0) {
+              if (response.data == null) {
                 yield TransferBranchDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang (2)',
+                  errorMessage: '${qrResult} tidak di temukan (2)',
                   data: event.data,
                 );
               } else {

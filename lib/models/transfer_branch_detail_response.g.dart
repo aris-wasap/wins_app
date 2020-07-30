@@ -64,18 +64,17 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
     qty: (json['Qty'] as num)?.toDouble(),
-    itemCost: (json['ItemCost'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
+    toWhsCode: json['ToWhsCode'] as String,
+    toWhsName: json['ToWhsName'] as String,
+    toBinAbs: json['ToBinAbs'] as int,
+    toBinCode: json['ToBinCode'] as String,
     batchNo: json['BatchNo'] as String,
-  )
-    ..toWhsCode = json['ToWhsCode'] as String
-    ..ToWhsName = json['ToWhsName'] as String
-    ..ToBinAbs = json['ToBinAbs'] as int
-    ..ToBinCode = json['ToBinCode'] as String;
+  );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -85,15 +84,14 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
       'Qty': instance.qty,
-      'ItemCost': instance.itemCost,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
       'ToWhsCode': instance.toWhsCode,
-      'ToWhsName': instance.ToWhsName,
-      'ToBinAbs': instance.ToBinAbs,
-      'ToBinCode': instance.ToBinCode,
+      'ToWhsName': instance.toWhsName,
+      'ToBinAbs': instance.toBinAbs,
+      'ToBinCode': instance.toBinCode,
       'BatchNo': instance.batchNo,
     };

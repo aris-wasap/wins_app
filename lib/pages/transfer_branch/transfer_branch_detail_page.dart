@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_bloc.dart';
 import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_event.dart';
 import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_state.dart';
+import 'package:admart_app/pages/cfl/cfl_branch_page.dart';
 import 'package:admart_app/pages/cfl/cfl_goods_issue_page.dart';
 import 'package:admart_app/pages/transfer_branch/transfer_branch_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart'
     as cflGoodsIssue;
+import 'package:admart_app/models/cfl_branch_response.dart' as cflBranch;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/widgets/set_colors.dart';
@@ -45,6 +47,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   final _customerNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _toBranchIdController = TextEditingController();
+  final _toBranchNameController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -89,6 +93,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     _customerNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
+    _toBranchIdController?.dispose();
+    _toBranchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -100,6 +106,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.seriesName = _seriesNameController.text;
     data.transDate = transDate;
+    data.toBranchId = int.parse(_toBranchIdController.text);
+    data.toBranchName = _toBranchNameController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -463,9 +471,10 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
     _transNoController.text = data.transNo;
-    _branchIdController.text = data.branchId.toString();
-    _branchNameController.text = data.branchName;
-
+    _branchIdController.text = globalBloc.branchId.toString();
+    _branchNameController.text = globalBloc.branchName;
+    _toBranchIdController.text = data.toBranchId.toString();
+    _toBranchNameController.text = data.toBranchName;
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
@@ -499,6 +508,18 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextFormField(
+                  controller: _branchNameController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Branch",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -541,6 +562,60 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                             )
                           : Container(width: 0, height: 0),
                     ],
+                  ),
+                ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflBranch.Data> brn = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBranch.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBranchPage(globalBloc.branchId)));
+
+                      brn.then((cflBranch.Data brn) {
+                        if (brn != null) {
+                          _toBranchIdController.text = brn.branchId.toString();
+                          _toBranchNameController.text = brn.branchName;
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "To Branch",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_toBranchNameController.text),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
                   ),
                 ),
                 // FlatButton(

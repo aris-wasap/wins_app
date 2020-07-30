@@ -179,17 +179,17 @@ class _CflBranchPageState extends State<CflBranchPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text("${data[index].branchId} "),
+                title: Text("${data[index].branchName} "),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
                 },
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("${data[index].branchName}"),
-                  ],
-                ),
+                // subtitle: Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: <Widget>[
+                //     Text("${data[index].branchName}"),
+                //   ],
+                // ),
               ),
             ),
           ));
