@@ -485,6 +485,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
       } else {
         _transDateController.text = null;
       }
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
     }
 
     return Column(
