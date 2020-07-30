@@ -1,3 +1,4 @@
+import 'package:admart_app/pages/receipt_branch/receipt_branch_list_page.dart';
 import 'package:admart_app/pages/transfer_branch/transfer_branch_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -263,7 +264,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                       'Y') {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  // return ReceiptBranchListPage();
+                                  return ReceiptBranchListPage();
                                 }));
                               }
                               // Transfer Item From To Warehouse

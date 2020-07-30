@@ -2,20 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_bloc.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_state.dart';
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/blocs/receipt_branch/list/receipt_branch_list_bloc.dart';
+import 'package:admart_app/blocs/receipt_branch/list/receipt_branch_list_event.dart';
+import 'package:admart_app/blocs/receipt_branch/list/receipt_branch_list_state.dart';
+import 'package:admart_app/pages/receipt_branch/receipt_branch_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class CflTransferBranchPage extends StatefulWidget {
+class ReceiptBranchListPage extends StatefulWidget {
   @override
-  _CflTransferBranchPageState createState() => _CflTransferBranchPageState();
+  _ReceiptBranchListPageState createState() => _ReceiptBranchListPageState();
 }
 
-class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
-  CflTransferBranchBloc bloc = CflTransferBranchBloc();
-
+class _ReceiptBranchListPageState extends State<ReceiptBranchListPage> {
+  ReceiptBranchListBloc bloc = ReceiptBranchListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -27,8 +28,9 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      bloc.emitEvent(CflTransferBranchEvent(
-        event: CflTransferBranchEventType.firstPage,
+      var state = bloc.lastState ?? bloc.initialState;
+      bloc.emitEvent(ReceiptBranchListEvent(
+        event: ReceiptBranchListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -37,8 +39,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(CflTransferBranchEvent(
-        event: CflTransferBranchEventType.nextPage,
+      bloc.emitEvent(ReceiptBranchListEvent(
+        event: ReceiptBranchListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -48,12 +50,13 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   void initState() {
     super.initState();
 
-    bloc.emitEvent(CflTransferBranchEvent(
-      event: CflTransferBranchEventType.firstPage,
-    ));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bloc.emitEvent(ReceiptBranchListEvent(
+        event: ReceiptBranchListEventType.firstPage,
+      ));
+    });
 
     _scrollController = ScrollController()..addListener(_onScroll);
-
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -66,17 +69,17 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar(CflTransferBranchState state) {
+  PreferredSizeWidget _appBar() {
+    var state = bloc.lastState ?? bloc.initialState;
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Transfer Detail",
-            hintStyle: TextStyle(color: Colors.white),
-          ),
+              hintText: "Search Receipt",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
               color: bgOrange,
@@ -88,8 +91,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(CflTransferBranchEvent(
-                  event: CflTransferBranchEventType.deactivedSearch,
+                bloc.emitEvent(ReceiptBranchListEvent(
+                  event: ReceiptBranchListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -97,11 +100,16 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
       );
     } else {
       return AppBar(
-        title: Text("Choose Transfer No."),
-        backgroundColor: bgBlue,
+        title: Text("List Receipt"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
+        //backgroundColor: appBarBgColors,
         bottom: PreferredSize(
             child: Container(
-              color: bgOrange,
+              color: bgBlue,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -109,11 +117,22 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(CflTransferBranchEvent(
-                event: CflTransferBranchEventType.activedSearch,
+              bloc.emitEvent(ReceiptBranchListEvent(
+                event: ReceiptBranchListEventType.activedSearch,
               ));
             },
           ),
+          (globalBloc.loginResponse.data.receiptIssue_Auth_Add == 'Y')
+              ? IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ReceiptBranchDetailPage(0);
+                    }));
+                  },
+                )
+              : Container(),
         ],
       );
     }
@@ -121,27 +140,29 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(CflTransferBranchEvent(
-      event: CflTransferBranchEventType.refresh,
+    bloc.emitEvent(ReceiptBranchListEvent(
+      event: ReceiptBranchListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<CflTransferBranchState>(
+    return BlocEventStateBuilder<ReceiptBranchListState>(
         bloc: bloc,
-        builder: (BuildContext context, CflTransferBranchState state) {
+        builder: (BuildContext context, ReceiptBranchListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(state),
+              appBar: _appBar(),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
-                  decoration: BoxDecoration(gradient: bgGradientPageWhite),
+                  decoration: BoxDecoration(
+                    gradient: bgGradientPageWhite,
+                  ),
                   constraints: BoxConstraints.expand(),
-                  child: buildList(state),
+                  child: _buildList(),
                 ),
               ),
             ),
@@ -149,7 +170,9 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
         });
   }
 
-  Widget buildList(CflTransferBranchState state) {
+  Widget _buildList() {
+    var state = bloc.lastState ?? bloc.initialState;
+
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -164,24 +187,44 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
             ),
-            margin: const EdgeInsets.all(0),
+            margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("From : ${data[index].branchName ?? ''}"),
+                    Text("${data[index].branchName}"),
+                    Text(
+                        "Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
+                    Text("From : ${data[index].fromBranchName}"),
+                    Text("User : ${data[index].createdUser}"),
                   ],
                 ),
-                leading: Icon(Icons.keyboard_arrow_left),
+                leading: ClipOval(
+                  child: Image.network(
+                    globalBloc.getUrl() +
+                        "api/UserApi/GetImage?id=${data[index].userId}",
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
+
+                trailing: Icon(Icons.keyboard_arrow_right),
+                //color: Colors.white, size: 30.0),
                 onTap: () {
-                  Navigator.pop(context, data[index]);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          ReceiptBranchDetailPage(data[index].id),
+                    ),
+                  );
                 },
               ),
             ),

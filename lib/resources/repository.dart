@@ -35,6 +35,11 @@ import 'package:admart_app/models/login_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
+import 'package:admart_app/models/receipt_branch_detail_response.dart';
+import 'package:admart_app/models/receipt_branch_detail_scan_response.dart';
+import 'package:admart_app/models/receipt_branch_list_response.dart';
+import 'package:admart_app/models/receipt_branch_detail_response.dart'
+    as receiptBranchDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart'
     as receiptIssueDetail;
 import 'package:admart_app/models/request_issue_detail_response.dart'
@@ -431,6 +436,31 @@ class Repository {
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           String qrResult) =>
       apiProvider.requestIssueDetail_Scan(qrResult);
+
+  //-----------------------------
+  //ReceiptBranchList
+  //-----------------------------
+  Future<ReceiptBranchListResponse> receiptBranchList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.receiptBranchList_FetchNextPage(lastId, searchQuery);
+
+  Future<ReceiptBranchListResponse> receiptBranchList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.receiptBranchList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //ReceiptBranchDetail
+  //-----------------------------
+  Future<ReceiptBranchDetailResponse> receiptBranchDetail_GetById(int id) =>
+      apiProvider.receiptBranchDetail_GetById(id);
+
+  Future<ReceiptBranchDetailResponse> receiptBranchDetail_Add(
+          receiptBranchDetail.Data data) =>
+      apiProvider.receiptBranchDetail_Add(data);
+
+  Future<ReceiptBranchDetailScanResponse> receiptBranchDetail_Scan(
+          int soId, String qrResult) =>
+      apiProvider.receiptBranchDetail_Scan(soId, qrResult);
 
   //-----------------------------
   //ReceiptIssueList
