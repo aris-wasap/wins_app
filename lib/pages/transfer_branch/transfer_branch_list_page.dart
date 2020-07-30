@@ -199,7 +199,8 @@ class _TransferBranchListPageState extends State<TransferBranchListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].branchName}"),
+                    Text("From : ${data[index].branchName}"),
+                    Text("To : ${data[index].toBranchName}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

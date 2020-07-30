@@ -104,9 +104,6 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
-  @JsonKey(name: 'ItemCost')
-  double itemCost;
-
   @JsonKey(name: 'Uom')
   String uom;
 
@@ -126,13 +123,13 @@ class Item {
   String toWhsCode;
 
   @JsonKey(name: 'ToWhsName')
-  String ToWhsName;
+  String toWhsName;
 
   @JsonKey(name: 'ToBinAbs')
-  int ToBinAbs;
+  int toBinAbs;
 
   @JsonKey(name: 'ToBinCode')
-  String ToBinCode;
+  String toBinCode;
 
   @JsonKey(name: 'BatchNo')
   String batchNo;
@@ -144,12 +141,15 @@ class Item {
     this.itemCode,
     this.itemName,
     this.qty: 0,
-    this.itemCost: 0,
     this.uom,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode,
+    this.toWhsCode,
+    this.toWhsName,
+    this.toBinAbs,
+    this.toBinCode,
     this.batchNo,
   });
 
