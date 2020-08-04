@@ -473,6 +473,8 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
     _transNoController.text = data.transNo;
+    _branchIdController.text = globalBloc.branchId.toString();
+    _branchNameController.text = globalBloc.branchName;
 
     //jika nama signature berbah di kasih tanda
 
@@ -503,15 +505,28 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Receipt No.",
-                        labelText: "Receipt No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                  controller: _transNoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      hintText: "Receipt No.",
+                      labelText: "Receipt No.",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextFormField(
+                  controller: _branchNameController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: "Branch",
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10.0)),
+                  ),
+                ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -556,6 +571,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                     ],
                   ),
                 ),
+
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {

@@ -1,4 +1,5 @@
 import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/pages/cfl/cfl_batch_location_page.dart';
 import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +13,8 @@ import 'package:admart_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'
-    as cflBinLocation;
+import 'package:admart_app/models/cfl_batch_location_response.dart'
+    as cflBatchLocation;
 import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
@@ -62,11 +63,22 @@ class _TransferBranchDetailItemDetailPageState
   }
 
   void _done() {
+    if (_whsCodeController.text == "" || _whsCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Warehouse");
+      return;
+    } else if (_binCodeController.text == "" ||
+        _binCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Bin Location");
+      return;
+    }
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
+
     bloc.emitEvent(TransferBranchDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text),
@@ -173,7 +185,30 @@ class _TransferBranchDetailItemDetailPageState
                                 borderRadius: new BorderRadius.circular(10.0))),
                       ),
                       Padding(padding: EdgeInsets.only(top: 10)),
+                      TextFormField(
+                        controller: _itemCodeController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Item Code",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      TextFormField(
+                        controller: _itemNameController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Item Name",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 10)),
                       FlatButton(
+                        autofocus: true,
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
                           if (data.id == 0) {
@@ -244,19 +279,22 @@ class _TransferBranchDetailItemDetailPageState
                         onPressed: () {
                           if (data.id == 0) {
                             setState(() {
-                              Future<cflBinLocation.Data> bin = Navigator.push(
-                                  context,
-                                  MaterialPageRoute<cflBinLocation.Data>(
-                                      builder: (BuildContext context) =>
-                                          CflBinLocationPage(
-                                              _whsCodeController.text)));
+                              Future<cflBatchLocation.Data> bin =
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute<cflBatchLocation.Data>(
+                                          builder: (BuildContext context) =>
+                                              CflBatchLocationPage(
+                                                  _whsCodeController.text,
+                                                  _batchNumberController.text,
+                                                  _itemCodeController.text)));
 
-                              bin.then((cflBinLocation.Data bin) {
+                              bin.then((cflBatchLocation.Data bin) {
                                 if (bin != null) {
-                                  // _binAbsController.text = bin.absEntry.toString();
-                                  // _binCodeController.text =  bin.binCode;
                                   _getState().data.binAbs = bin.absEntry;
                                   _getState().data.binCode = bin.binCode;
+                                  _getState().data.qty =
+                                      double.parse(bin.availableQty.toString());
                                 }
                               });
                             });
@@ -268,7 +306,7 @@ class _TransferBranchDetailItemDetailPageState
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: (data.id == 0)
-                                      ? Colors.blue
+                                      ? bgBlue
                                       : Colors.grey[400]),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
@@ -281,7 +319,7 @@ class _TransferBranchDetailItemDetailPageState
                                     Text(
                                       "From Bin Location",
                                       style: TextStyle(
-                                          color: Colors.blue, fontSize: 12.0),
+                                          color: bgBlue, fontSize: 12.0),
                                     ),
                                     ListTile(
                                       contentPadding: EdgeInsets.only(left: 5),
@@ -299,32 +337,11 @@ class _TransferBranchDetailItemDetailPageState
                           ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.only(top: 10)),
-                      TextFormField(
-                        controller: _itemCodeController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            labelText: "Item Code",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 10)),
-                      TextFormField(
-                        controller: _itemNameController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            labelText: "Item Name",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      ),
+
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              autofocus: true,
+                              //autofocus: true,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
@@ -345,7 +362,7 @@ class _TransferBranchDetailItemDetailPageState
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               decoration: InputDecoration(
-                                labelText: "Qty",
+                                labelText: "Quantity",
                                 contentPadding: new EdgeInsets.symmetric(
                                     vertical: 15.0, horizontal: 10.0),
                                 border: new OutlineInputBorder(
@@ -356,13 +373,16 @@ class _TransferBranchDetailItemDetailPageState
                                     borderRadius:
                                         new BorderRadius.circular(10.0)),
                               ))
-                          : Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: LabelFieldWidget(
-                                labelText: "Qty",
-                                valueText:
-                                    "${NumberFormat("#,###.00").format(data.qty)}",
-                              ),
+                          : TextFormField(
+                              controller: _qtyController,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  labelText: "Quantity",
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  border: new OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0))),
                             ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextFormField(
