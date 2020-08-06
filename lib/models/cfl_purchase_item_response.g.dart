@@ -45,7 +45,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     quantity: (json['Quantity'] as num)?.toDouble(),
     lineNum: json['LineNum'] as int,
     lineStatus: json['LineStatus'] as String,
-  )..uom = json['Uom'] as String;
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
+    uom: json['Uom'] as String,
+  );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -65,4 +68,6 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Quantity': instance.quantity,
       'LineNum': instance.lineNum,
       'LineStatus': instance.lineStatus,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
     };

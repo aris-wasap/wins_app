@@ -12,7 +12,6 @@ CflPurchaseItemResponse cflPurchaseItemResponseFromJson(String str) {
   final jsonData = json.decode(str);
   return CflPurchaseItemResponse.fromJson(jsonData);
 }
- 
 
 @JsonSerializable()
 class CflPurchaseItemResponse {
@@ -39,24 +38,24 @@ class CflPurchaseItemResponse {
 }
 
 @JsonSerializable()
-class Data { 
+class Data {
   @JsonKey(name: 'Id')
   int id;
 
   @JsonKey(name: 'TransNo')
-  String transNo;  
+  String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'Status')
-  String status;  
+  String status;
 
   @JsonKey(name: 'VendorCode')
-  String vendorCode;  
+  String vendorCode;
 
   @JsonKey(name: 'VendorName')
-  String vendorName;  
+  String vendorName;
 
   @JsonKey(name: 'SeriesName')
   String seriesName;
@@ -88,13 +87,19 @@ class Data {
   @JsonKey(name: 'LineStatus')
   String lineStatus;
 
-  Data({ 
-    this.id=0,
-    this.transNo, 
-    this.transDate, 
-    this.status, 
-    this.vendorCode, 
-    this.vendorName, 
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  Data({
+    this.id = 0,
+    this.transNo,
+    this.transDate,
+    this.status,
+    this.vendorCode,
+    this.vendorName,
     this.seriesName,
     this.itemCode,
     this.itemName,
@@ -103,10 +108,13 @@ class Data {
     this.unitPriceTc,
     this.quantity,
     this.lineNum,
-    this.lineStatus
+    this.lineStatus,
+    this.isAsset,
+    this.isBatch,
+    this.uom,
   });
 
- factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }
