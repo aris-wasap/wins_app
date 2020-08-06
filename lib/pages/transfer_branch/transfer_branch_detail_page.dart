@@ -473,8 +473,6 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     _transNoController.text = data.transNo;
     _branchIdController.text = globalBloc.branchId.toString();
     _branchNameController.text = globalBloc.branchName;
-    _toBranchIdController.text = data.toBranchId.toString();
-    _toBranchNameController.text = data.toBranchName;
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
@@ -485,6 +483,10 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
       } else {
         _transDateController.text = null;
       }
+      _branchIdController.text = data.branchId.toString();
+      _branchNameController.text = data.branchName;
+      _toBranchIdController.text = data.toBranchId.toString();
+      _toBranchNameController.text = data.toBranchName;
     }
 
     return Column(
@@ -508,7 +510,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                   controller: _branchNameController,
                   enabled: false,
@@ -519,7 +521,6 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -564,6 +565,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                     ],
                   ),
                 ),
+                //Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -768,10 +770,11 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
-              // Text(data[index].whsCode ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(
