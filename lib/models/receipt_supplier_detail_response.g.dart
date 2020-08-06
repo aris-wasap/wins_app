@@ -84,6 +84,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
     batchNo: json['BatchNo'] as String,
   );
 }
@@ -103,5 +105,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
       'BatchNo': instance.batchNo,
     };

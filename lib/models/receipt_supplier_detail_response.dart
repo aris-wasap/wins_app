@@ -153,6 +153,12 @@ class Item {
   @JsonKey(name: 'BinCode')
   String binCode;
 
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
@@ -171,6 +177,8 @@ class Item {
     this.whsName,
     this.binAbs,
     this.binCode,
+    this.isAsset,
+    this.isBatch,
     this.batchNo,
   });
 

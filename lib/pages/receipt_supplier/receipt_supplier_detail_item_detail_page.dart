@@ -1,3 +1,5 @@
+import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -15,6 +17,7 @@ import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
+import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
 class ReceiptSupplierDetailItemDetailPage extends StatefulWidget {
@@ -44,6 +47,8 @@ class _ReceiptSupplierDetailItemDetailPageState
   final _binCodeController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _isAssetController = TextEditingController();
+  final _isBatchController = TextEditingController();
 
   @override
   void initState() {
@@ -132,6 +137,8 @@ class _ReceiptSupplierDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
+    _isAssetController.text = data.isAsset;
+    _isBatchController.text = data.isBatch;
     _qtyPoController.text = data.poQty.toString();
     _qtyController.text = data.qty.toString();
     if (_data.qty != 0) {
@@ -203,6 +210,8 @@ class _ReceiptSupplierDetailItemDetailPageState
                           _getState().data.uom = pi.uom;
                           _getState().data.whsCode = pi.whsCode;
                           _getState().data.whsName = pi.whsName;
+                          _getState().data.isAsset = pi.isAsset;
+                          _getState().data.isBatch = pi.isBatch;
                         }
                       });
                     }
@@ -333,15 +342,67 @@ class _ReceiptSupplierDetailItemDetailPageState
                 //           borderRadius: new BorderRadius.circular(10.0))),
                 // ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _whsNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "To Warehouse Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      setState(() {
+                        Future<cflWarehouse.Data> whs = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflWarehouse.Data>(
+                                builder: (BuildContext context) =>
+                                    CflWarehousePage(globalBloc.branchId)));
+
+                        whs.then((cflWarehouse.Data whs) {
+                          if (whs != null) {
+                            _getState().data.whsCode = whs.whsCode;
+                            _getState().data.whsName = whs.whsName;
+                          }
+                        });
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "To Warehouse",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_whsCodeController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_whsNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
