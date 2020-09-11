@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'receipt_order_detail_response.dart';
+part of 'purchase_credit_detail_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReceiptOrderDetailResponse _$ReceiptOrderDetailResponseFromJson(
+PurchaseCreditDetailResponse _$PurchaseCreditDetailResponseFromJson(
     Map<String, dynamic> json) {
-  return ReceiptOrderDetailResponse(
+  return PurchaseCreditDetailResponse(
     error: json['Error'] as bool,
     errorMessage: json['ErrorMessage'] as String,
     data: json['Data'] == null
@@ -17,8 +17,8 @@ ReceiptOrderDetailResponse _$ReceiptOrderDetailResponseFromJson(
   );
 }
 
-Map<String, dynamic> _$ReceiptOrderDetailResponseToJson(
-        ReceiptOrderDetailResponse instance) =>
+Map<String, dynamic> _$PurchaseCreditDetailResponseToJson(
+        PurchaseCreditDetailResponse instance) =>
     <String, dynamic>{
       'Error': instance.error,
       'ErrorMessage': instance.errorMessage,
@@ -27,19 +27,19 @@ Map<String, dynamic> _$ReceiptOrderDetailResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
-    poId: json['PoId'] as int,
-    poNo: json['PoNo'] as String,
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestNo: json['ReturnRequestNo'] as String,
     id: json['Id'] as int,
     transNo: json['TransNo'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
-    customerCode: json['CustomerCode'] as String,
-    customerName: json['CustomerName'] as String,
+    vendorCode: json['VendorCode'] as String,
+    vendorName: json['VendorName'] as String,
     contactPerson: json['ContactPerson'] as String,
     refNo: json['RefNo'] as String,
     address: json['Address'] as String,
-    seriesNamePo: json['SeriesNamePo'] as String,
+    seriesNameReturnRequest: json['SeriesNameReturnRequest'] as String,
     seriesName: json['SeriesName'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
@@ -52,16 +52,16 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
-      'PoId': instance.poId,
-      'PoNo': instance.poNo,
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestNo': instance.returnRequestNo,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
-      'CustomerCode': instance.customerCode,
-      'CustomerName': instance.customerName,
+      'VendorCode': instance.vendorCode,
+      'VendorName': instance.vendorName,
       'ContactPerson': instance.contactPerson,
       'RefNo': instance.refNo,
       'Address': instance.address,
-      'SeriesNamePo': instance.seriesNamePo,
+      'SeriesNameReturnRequest': instance.seriesNameReturnRequest,
       'SeriesName': instance.seriesName,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
@@ -70,8 +70,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
-    poId: json['PoId'] as int,
-    poLineNo: json['PoLineNo'] as int,
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestLineNo: json['ReturnRequestLineNo'] as int,
     webId: json['WebId'] as int,
     webDetId: json['WebDetId'] as int,
     id: json['Id'] as int,
@@ -79,30 +79,20 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
-    poQty: (json['PoQty'] as num)?.toDouble(),
+    returnRequestQty: (json['ReturnRequestQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
-    length: (json['Length'] as num)?.toDouble(),
-    width: (json['Width'] as num)?.toDouble(),
-    weight: (json['Weight'] as num)?.toDouble(),
-    unitPriceTc: (json['UnitPriceTc'] as num)?.toDouble(),
-    priceTc: (json['PriceTc'] as num)?.toDouble(),
-    itemType: json['ItemType'] as String,
     uom: json['Uom'] as String,
-    type: json['Type'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
-    isAsset: json['IsAsset'] as String,
-    isBatch: json['IsBatch'] as String,
-    priceMode: json['PriceMode'] as String,
     batchNo: json['BatchNo'] as String,
-  )..micron = (json['Micron'] as num)?.toDouble();
+  );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
-      'PoId': instance.poId,
-      'PoLineNo': instance.poLineNo,
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestLineNo': instance.returnRequestLineNo,
       'WebId': instance.webId,
       'WebDetId': instance.webDetId,
       'Id': instance.id,
@@ -110,23 +100,12 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
-      'PoQty': instance.poQty,
+      'ReturnRequestQty': instance.returnRequestQty,
       'Qty': instance.qty,
-      'Length': instance.length,
-      'Width': instance.width,
-      'Weight': instance.weight,
-      'Micron': instance.micron,
-      'UnitPriceTc': instance.unitPriceTc,
-      'PriceTc': instance.priceTc,
-      'ItemType': instance.itemType,
       'Uom': instance.uom,
-      'Type': instance.type,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
-      'IsAsset': instance.isAsset,
-      'IsBatch': instance.isBatch,
-      'PriceMode': instance.priceMode,
       'BatchNo': instance.batchNo,
     };

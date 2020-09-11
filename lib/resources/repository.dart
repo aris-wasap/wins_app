@@ -32,6 +32,9 @@ import 'package:admart_app/models/issue_production_detail_response.dart';
 import 'package:admart_app/models/issue_production_detail_scan_response.dart';
 import 'package:admart_app/models/issue_production_list_response.dart';
 import 'package:admart_app/models/login_response.dart';
+import 'package:admart_app/models/purchase_credit_detail_response.dart';
+import 'package:admart_app/models/purchase_credit_detail_scan_response.dart';
+import 'package:admart_app/models/purchase_credit_list_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
@@ -98,6 +101,8 @@ import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
 import 'package:admart_app/models/purchase_returns_detail_response.dart'
     as purchaseReturnsDetail;
+import 'package:admart_app/models/purchase_credit_detail_response.dart'
+    as purchaseCreditDetail;
 import 'package:admart_app/models/receipt_production_detail_response.dart'
     as receiptProductionDetail;
 import 'package:admart_app/models/issue_production_detail_response.dart'
@@ -561,6 +566,31 @@ class Repository {
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
           int grpoId, String qrResult) =>
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
+
+  //-----------------------------
+  //PurchaseCreditList
+  //-----------------------------
+  Future<PurchaseCreditListResponse> purchaseCreditList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.purchaseCreditList_FetchNextPage(lastId, searchQuery);
+
+  Future<PurchaseCreditListResponse> purchaseCreditList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.purchaseCreditList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //PurchaseCreditDetail
+  //-----------------------------
+  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_GetById(int id) =>
+      apiProvider.purchaseCreditDetail_GetById(id);
+
+  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_Add(
+          purchaseCreditDetail.Data data) =>
+      apiProvider.purchaseCreditDetail_Add(data);
+
+  Future<PurchaseCreditDetailScanResponse> purchaseCreditDetail_Scan(
+          int grpoId, String qrResult) =>
+      apiProvider.purchaseCreditDetail_Scan(grpoId, qrResult);
 
   //-----------------------------
   //InventoryTransferList

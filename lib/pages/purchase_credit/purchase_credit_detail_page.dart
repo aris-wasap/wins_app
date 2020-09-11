@@ -1,46 +1,49 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_sales_order_page.dart';
-import 'package:admart_app/pages/delivery_order/delivery_order_detail_item_detail_page.dart';
+import 'package:admart_app/pages/cfl/cfl_purchase_delivery_page.dart';
+import 'package:admart_app/pages/cfl/cfl_purchase_order_page.dart';
+import 'package:admart_app/pages/purchase_credit/purchase_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/delivery_order/detail/delivery_order_detail_bloc.dart';
-import 'package:admart_app/blocs/delivery_order/detail/delivery_order_detail_event.dart';
-import 'package:admart_app/blocs/delivery_order/detail/delivery_order_detail_state.dart';
+import 'package:admart_app/blocs/purchase_credit/detail/purchase_credit_detail_bloc.dart';
+import 'package:admart_app/blocs/purchase_credit/detail/purchase_credit_detail_event.dart';
+import 'package:admart_app/blocs/purchase_credit/detail/purchase_credit_detail_state.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/delivery_order_detail_response.dart';
+import 'package:admart_app/models/purchase_credit_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_sales_order_response.dart'
-    as cflSalesOrder;
+import 'package:admart_app/models/cfl_purchase_delivery_response.dart'
+    as cflPurchaseDelivery;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
-class DeliveryOrderDetailPage extends StatefulWidget {
-  DeliveryOrderDetailPage(this._id);
+class PurchaseCreditDetailPage extends StatefulWidget {
+  PurchaseCreditDetailPage(this._id);
   final int _id;
   @override
-  _DeliveryOrderDetailPageState createState() =>
-      _DeliveryOrderDetailPageState(_id);
+  _PurchaseCreditDetailPageState createState() =>
+      _PurchaseCreditDetailPageState(_id);
 }
 
-class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
-  _DeliveryOrderDetailPageState(this._id);
+class _PurchaseCreditDetailPageState extends State<PurchaseCreditDetailPage> {
+  _PurchaseCreditDetailPageState(this._id);
 
-  DeliveryOrderDetailBloc bloc = DeliveryOrderDetailBloc();
+  PurchaseCreditDetailBloc bloc = PurchaseCreditDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _soIdController = TextEditingController();
-  final _soNoController = TextEditingController();
+  final _returnRequestIdController = TextEditingController();
+  final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
-  final _customerCodeController = TextEditingController();
-  final _customerNameController = TextEditingController();
+  final _vendorCodeController = TextEditingController();
+  final _vendorNameController = TextEditingController();
+  final _seriesNamePoController = TextEditingController();
+  final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
@@ -52,7 +55,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(DeliveryOrderDetailEventGetId(
+        bloc.emitEvent(PurchaseCreditDetailEventGetId(
           id: _id,
         ));
       });
@@ -76,12 +79,14 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
   @override
   void dispose() {
-    _soIdController?.dispose();
-    _soNoController?.dispose();
+    _returnRequestIdController?.dispose();
+    _returnRequestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    _customerCodeController?.dispose();
-    _customerNameController?.dispose();
+    _vendorCodeController?.dispose();
+    _vendorNameController?.dispose();
+    _seriesNamePoController?.dispose();
+    _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
 
@@ -93,21 +98,22 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.id = _id;
-    data.soNo = _soNoController.text;
+    data.returnRequestNo = _returnRequestNoController.text;
     data.transDate = transDate;
-    data.customerCode = _customerCodeController.text;
-    data.customerName = _customerNameController.text;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReturnRequest = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "DO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "Return Request Date harus di isi");
       return;
-    } else if (["", null].contains(data.soNo)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
       return;
-    } else if (["", null].contains(data.customerCode)) {
-      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -119,14 +125,14 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       return;
     }
 
-    bloc.emitEvent(DeliveryOrderDetailEventAdd(
+    bloc.emitEvent(PurchaseCreditDetailEventAdd(
       data: data,
     ));
   }
 
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
-        builder: (BuildContext context) => DeliveryOrderDetailPage(0));
+        builder: (BuildContext context) => PurchaseCreditDetailPage(0));
     Navigator.of(context).pushReplacement(newRoute);
   }
 
@@ -151,7 +157,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(DeliveryOrderDetailEventNormal());
+                    bloc.emitEvent(PurchaseCreditDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -185,7 +191,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(DeliveryOrderDetailEventNormal());
+                    bloc.emitEvent(PurchaseCreditDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -215,9 +221,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapDeliveryId == 0) {
+    if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Delivery"),
+        title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -238,7 +244,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Delivery Order"),
+        title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -247,7 +253,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.deliveryOrder_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.purchaseCredit_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
@@ -260,14 +266,14 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     }
   }
 
-  DeliveryOrderDetailState _getState() {
+  PurchaseCreditDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_soNoController.text)) {
+    if (["", null].contains(_returnRequestNoController.text)) {
       ValidateDialogWidget(context: context, message: "SO No harus di isi");
       return;
     }
@@ -276,24 +282,23 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     try {
       String qrResult = await BarcodeScanner.scan();
       for (var item in _getState().data.items) {
-        //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context, message: 'Item sudah pernah di scan');
           return;
         }
       }
 
-      bloc.emitEvent(DeliveryOrderDetailEventScan(
-          soId: int.parse(_soIdController.text),
-          soNo: _soNoController.text,
+      bloc.emitEvent(PurchaseCreditDetailEventScan(
+          returnRequestId: int.parse(_returnRequestIdController.text),
+          returnRequestNo: _returnRequestNoController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
-      //         DeliveryOrderDetailEventScan(
-      //             soId: int.parse(_soIdController.text),
+      //         PurchaseCreditDetailEventScan(
+      //             returnRequestId: int.parse(_returnRequestIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -303,13 +308,13 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       //       context,
       //       MaterialPageRoute(
       //         builder: (BuildContext context) =>
-      //             DeliveryOrderDetailItemDetailPage(onData.newItem),
+      //             PurchaseCreditDetailItemDetailPage(onData.newItem),
       //       ),
       //     );
 
       //     item.then((Item item) {
       //       if (item != null) {
-      //         bloc.emitEvent(DeliveryOrderDetailEventItemAdd(
+      //         bloc.emitEvent(PurchaseCreditDetailEventItemAdd(
       //           item: item,
       //         ));
       //       }
@@ -342,18 +347,18 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(DeliveryOrderDetailEventNormal());
+        bloc.emitEvent(PurchaseCreditDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                DeliveryOrderDetailItemDetailPage(newItem),
+                PurchaseCreditDetailItemDetailPage(newItem),
           ),
         );
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(DeliveryOrderDetailEventItemAdd(
+            bloc.emitEvent(PurchaseCreditDetailEventItemAdd(
               item: item,
             ));
           }
@@ -367,9 +372,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _context = context;
     var data = _getState().data;
 
-    return BlocEventStateBuilder<DeliveryOrderDetailState>(
+    return BlocEventStateBuilder<PurchaseCreditDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, DeliveryOrderDetailState state) {
+        builder: (BuildContext context, PurchaseCreditDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -388,7 +393,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapDeliveryId == 0
+              floatingActionButton: _getState().data.id == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -442,13 +447,13 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            DeliveryOrderDetailItemDetailPage(items[itemIndex]),
+            PurchaseCreditDetailItemDetailPage(items[itemIndex]),
       ),
     );
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(DeliveryOrderDetailEventItemUpdate(
+        bloc.emitEvent(PurchaseCreditDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -467,16 +472,18 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _soIdController.text = data.soId.toString();
-      _soNoController.text = data.soNo;
+      _returnRequestIdController.text = data.returnRequestId.toString();
+      _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
       } else {
         _transDateController.text = null;
       }
-      _customerCodeController.text = data.customerCode;
-      _customerNameController.text = data.customerName;
+      _vendorCodeController.text = data.vendorCode;
+      _vendorNameController.text = data.vendorName;
+      _seriesNamePoController.text = data.seriesNameReturnRequest;
+      _seriesNameController.text = data.seriesName;
       _branchIdController.text = data.branchId.toString();
       _branchNameController.text = data.branchName;
     }
@@ -491,12 +498,27 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                // TextFormField(
+                //   controller: _seriesNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //     hintText: "Series No.",
+                //     labelText: "Series No.",
+                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //       borderRadius: new BorderRadius.circular(10.0)
+                //     )
+                //   )
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 5)
+                // ),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,
                     decoration: InputDecoration(
-                        hintText: "Delivery No.",
-                        labelText: "Delivery No.",
+                        hintText: "Receipt No.",
+                        labelText: "Receipt No.",
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
@@ -515,8 +537,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             controller: _transDateController,
                             enabled: false,
                             decoration: InputDecoration(
-                                hintText: "Delivery Date",
-                                labelText: "Delivery Date",
+                                hintText: "Receipt Date",
+                                labelText: "Receipt Date",
                                 contentPadding: new EdgeInsets.symmetric(
                                     vertical: 15.0, horizontal: 10.0),
                                 disabledBorder: OutlineInputBorder(
@@ -549,21 +571,23 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflSalesOrder.Data> so = Navigator.push(
+                      Future<cflPurchaseDelivery.Data> po = Navigator.push(
                           context,
-                          MaterialPageRoute<cflSalesOrder.Data>(
+                          MaterialPageRoute<cflPurchaseDelivery.Data>(
                               builder: (BuildContext context) =>
-                                  CflSalesOrderPage()));
+                                  CflPurchaseDeliveryPage()));
 
-                      so.then((cflSalesOrder.Data so) {
-                        if (so != null) {
-                          _soIdController.text = so.id.toString();
-                          _soNoController.text =
-                              so.seriesName + '-' + so.transNo;
-                          _customerCodeController.text = so.customerCode;
-                          _customerNameController.text = so.customerName;
-                          _branchIdController.text = so.branchId.toString();
-                          _branchNameController.text = so.branchName;
+                      po.then((cflPurchaseDelivery.Data po) {
+                        if (po != null) {
+                          _returnRequestIdController.text = po.id.toString();
+                          _returnRequestNoController.text =
+                              po.seriesName + '-' + po.transNo;
+                          _vendorCodeController.text = po.vendorCode;
+                          _vendorNameController.text = po.vendorName;
+                          _branchIdController.text = po.branchId.toString();
+                          _branchNameController.text = po.branchName;
+
+                          // _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -584,13 +608,13 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Sales No.",
+                                "Receipt Purchase Order No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_soNoController.text),
+                                title: Text(_returnRequestNoController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -635,17 +659,17 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Customer",
+                                "Supplier",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_customerNameController.text),
+                                title: Text(_vendorNameController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_customerCodeController.text),
+                                    Text(_vendorCodeController.text),
                                   ],
                                 ),
                               )
@@ -746,12 +770,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapDeliveryId == 0) {
+        if (_getState().data.id == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
               bloc.emitEvent(
-                  DeliveryOrderDetailEventItemRemove(itemIndex: index));
+                  PurchaseCreditDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
                 color: Colors.red,

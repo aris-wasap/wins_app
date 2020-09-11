@@ -3,10 +3,10 @@ import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_state.dart';
-import 'package:admart_app/models/receipt_order_detail_response.dart';
+import 'package:admart_app/blocs/purchase_credit/detail_item_detail/purchase_credit_detail_item_detail_bloc.dart';
+import 'package:admart_app/blocs/purchase_credit/detail_item_detail/purchase_credit_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/purchase_credit/detail_item_detail/purchase_credit_detail_item_detail_state.dart';
+import 'package:admart_app/models/purchase_credit_detail_response.dart';
 import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:admart_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
@@ -15,23 +15,22 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
 import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
-
 import 'dart:math' as math;
 
-class ReceiptOrderDetailItemDetailPage extends StatefulWidget {
-  ReceiptOrderDetailItemDetailPage(this._data);
+class PurchaseCreditDetailItemDetailPage extends StatefulWidget {
+  PurchaseCreditDetailItemDetailPage(this._data);
   final Item _data;
   @override
-  _ReceiptOrderDetailItemDetailPageState createState() =>
-      _ReceiptOrderDetailItemDetailPageState(_data);
+  _PurchaseCreditDetailItemDetailPageState createState() =>
+      _PurchaseCreditDetailItemDetailPageState(_data);
 }
 
-class _ReceiptOrderDetailItemDetailPageState
-    extends State<ReceiptOrderDetailItemDetailPage> {
-  _ReceiptOrderDetailItemDetailPageState(this._data);
+class _PurchaseCreditDetailItemDetailPageState
+    extends State<PurchaseCreditDetailItemDetailPage> {
+  _PurchaseCreditDetailItemDetailPageState(this._data);
 
   final Item _data;
-  ReceiptOrderDetailItemDetailBloc bloc;
+  PurchaseCreditDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
@@ -42,15 +41,14 @@ class _ReceiptOrderDetailItemDetailPageState
   final _binCodeController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
-  final _isAssetController = TextEditingController();
-  final _isBatchController = TextEditingController();
+  final _batchNumberController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    bloc = ReceiptOrderDetailItemDetailBloc(this._data);
+    bloc = PurchaseCreditDetailItemDetailBloc(this._data);
   }
 
   @override
@@ -58,8 +56,6 @@ class _ReceiptOrderDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
-    _whsCodeController?.dispose();
-    _whsNameController?.dispose();
 
     bloc?.dispose();
 
@@ -73,17 +69,7 @@ class _ReceiptOrderDetailItemDetailPageState
           context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
-    if (_whsCodeController.text == null || _whsCodeController.text == "") {
-      ValidateDialogWidget(
-          context: context, message: "Pilih Warehouse terlebih dahulu");
-      return;
-    }
-    if (_binCodeController.text == null || _binCodeController.text == "") {
-      ValidateDialogWidget(
-          context: context, message: "Pilih Bin Location terlebih dahulu");
-      return;
-    }
-    bloc.emitEvent(ReceiptOrderDetailItemDetailEventQty(
+    bloc.emitEvent(PurchaseCreditDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text),
       binCode: _binCodeController.text,
@@ -91,16 +77,16 @@ class _ReceiptOrderDetailItemDetailPageState
     Navigator.pop(context, _getState().data);
   }
 
-  ReceiptOrderDetailItemDetailState _getState() {
+  PurchaseCreditDetailItemDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReceiptOrderDetailItemDetailState>(
+    return BlocEventStateBuilder<PurchaseCreditDetailItemDetailState>(
         bloc: bloc,
         builder:
-            (BuildContext context, ReceiptOrderDetailItemDetailState state) {
+            (BuildContext context, PurchaseCreditDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
@@ -139,14 +125,13 @@ class _ReceiptOrderDetailItemDetailPageState
 
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
+    _batchNumberController.text = data.batchNo;
     _uomController.text = data.uom;
     _whsCodeController.text = data.whsCode;
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _isAssetController.text = data.isAsset;
-    _isBatchController.text = data.isBatch;
-    _qtyPoController.text = data.poQty.toString();
+    _qtyPoController.text = data.returnRequestQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -157,7 +142,7 @@ class _ReceiptOrderDetailItemDetailPageState
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
         }
-      } 
+      }
     }
 
     return Column(
@@ -173,89 +158,15 @@ class _ReceiptOrderDetailItemDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _itemCodeController,
+                  controller: _batchNumberController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "Item Code",
+                      labelText: "Batch Number",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextField(
-                  controller: _qtyPoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Open PO Qty",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                _data.id == 0
-                    ? TextField(
-                        autofocus: true,
-                        controller: _qtyController,
-                        onEditingComplete: () {
-                          setState(() {
-                            String newValue = NumberFormat("###,###.####")
-                                .format(double.parse(_qtyController.text
-                                    .replaceAll(new RegExp(','), '')
-                                    .replaceAll(new RegExp('-'), '')
-                                    .replaceAll(new RegExp(' '), '')));
-                            _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(
-                                offset: newValue.length);
-                          });
-                        },
-                        inputFormatters: [
-                          DecimalTextInputFormatter(decimalRange: 4)
-                        ],
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                          labelText: "Receipt Qty",
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(10.0)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
-                              borderRadius: new BorderRadius.circular(10.0)),
-                        ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Receipt Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
-                      ),
-                Padding(padding: EdgeInsets.only(top: 15)),
-                TextFormField(
-                  controller: _uomController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "UoM",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -318,28 +229,6 @@ class _ReceiptOrderDetailItemDetailPageState
                     ),
                   ),
                 ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _whsCodeController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "To Warehouse Code",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _whsNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "To Warehouse Name",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -351,7 +240,7 @@ class _ReceiptOrderDetailItemDetailPageState
                             MaterialPageRoute<cflBinLocation.Data>(
                                 builder: (BuildContext context) =>
                                     CflBinLocationPage(
-                                        _getState().data.whsCode)));
+                                        _whsCodeController.text)));
 
                         bin.then((cflBinLocation.Data bin) {
                           if (bin != null) {
@@ -400,6 +289,91 @@ class _ReceiptOrderDetailItemDetailPageState
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextFormField(
+                  controller: _itemCodeController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Item Code",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextFormField(
+                  controller: _itemNameController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Item Name",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _qtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Open Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                _data.id == 0
+                    ? TextField(
+                        autofocus: true,
+                        controller: _qtyController,
+                        onEditingComplete: () {
+                          setState(() {
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
+                            _qtyController.text = newValue;
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
+                          });
+                        },
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          labelText: "Receipt Qty",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
+                    : Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: LabelFieldWidget(
+                          labelText: "Receipt Qty",
+                          valueText:
+                              "${NumberFormat("#,###.00").format(data.qty)}",
+                        ),
+                      ),
+                Padding(padding: EdgeInsets.only(top: 15)),
+                TextFormField(
+                  controller: _uomController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",

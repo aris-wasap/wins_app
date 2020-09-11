@@ -3,20 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/delivery_order/list/delivery_order_list_bloc.dart';
-import 'package:admart_app/blocs/delivery_order/list/delivery_order_list_event.dart';
-import 'package:admart_app/blocs/delivery_order/list/delivery_order_list_state.dart';
-import 'package:admart_app/pages/delivery_order/delivery_order_detail_page.dart';
+import 'package:admart_app/blocs/purchase_credit/list/purchase_credit_list_bloc.dart';
+import 'package:admart_app/blocs/purchase_credit/list/purchase_credit_list_event.dart';
+import 'package:admart_app/blocs/purchase_credit/list/purchase_credit_list_state.dart';
+import 'package:admart_app/pages/purchase_credit/purchase_credit_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class DeliveryOrderListPage extends StatefulWidget {
+class PurchaseCreditListPage extends StatefulWidget {
   @override
-  _DeliveryOrderListPageState createState() => _DeliveryOrderListPageState();
+  _PurchaseCreditListPageState createState() =>
+      _PurchaseCreditListPageState();
 }
 
-class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
-  DeliveryOrderListBloc bloc = DeliveryOrderListBloc();
+class _PurchaseCreditListPageState extends State<PurchaseCreditListPage> {
+  PurchaseCreditListBloc bloc = PurchaseCreditListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,8 +30,8 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(DeliveryOrderListEvent(
-        event: DeliveryOrderListEventType.firstPage,
+      bloc.emitEvent(PurchaseCreditListEvent(
+        event: PurchaseCreditListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +40,8 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(DeliveryOrderListEvent(
-        event: DeliveryOrderListEventType.nextPage,
+      bloc.emitEvent(PurchaseCreditListEvent(
+        event: PurchaseCreditListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,8 +52,8 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(DeliveryOrderListEvent(
-        event: DeliveryOrderListEventType.firstPage,
+      bloc.emitEvent(PurchaseCreditListEvent(
+        event: PurchaseCreditListEventType.firstPage,
       ));
     });
 
@@ -76,13 +77,13 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Delivery",
+              hintText: "Search Receipt",
               hintStyle: TextStyle(color: Colors.white)),
         ),
-        backgroundColor: bgOrange,
+        backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
             child: Container(
-              color: bgOrange,
+              color: Colors.orange[500],
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -91,8 +92,8 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(DeliveryOrderListEvent(
-                  event: DeliveryOrderListEventType.deactivedSearch,
+                bloc.emitEvent(PurchaseCreditListEvent(
+                  event: PurchaseCreditListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -100,13 +101,13 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Delivery"),
-        //backgroundColor: bgBlue,
+        title: Text("List Receipt"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
           ),
         ),
+        //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
             child: Container(
               color: bgBlue,
@@ -117,18 +118,18 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(DeliveryOrderListEvent(
-                event: DeliveryOrderListEventType.activedSearch,
+              bloc.emitEvent(PurchaseCreditListEvent(
+                event: PurchaseCreditListEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.deliveryOrder_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.purchaseCredit_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return DeliveryOrderDetailPage(0);
+                      return PurchaseCreditDetailPage(0);
                     }));
                   },
                 )
@@ -140,17 +141,17 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(DeliveryOrderListEvent(
-      event: DeliveryOrderListEventType.refresh,
+    bloc.emitEvent(PurchaseCreditListEvent(
+      event: PurchaseCreditListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<DeliveryOrderListState>(
+    return BlocEventStateBuilder<PurchaseCreditListState>(
         bloc: bloc,
-        builder: (BuildContext context, DeliveryOrderListState state) {
+        builder: (BuildContext context, PurchaseCreditListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -159,7 +160,7 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgGradientPage,
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -194,14 +195,14 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("${data[index].branchName}"),
                     Text(
-                        "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
+                        "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
@@ -222,7 +223,7 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          DeliveryOrderDetailPage(data[index].id),
+                          PurchaseCreditDetailPage(data[index].id),
                     ),
                   );
                 },

@@ -82,6 +82,15 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapDeliveryId')
+  int sapDeliveryId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -100,6 +109,9 @@ class Data {
     this.address,
     this.branchId,
     this.branchName,
+    this.sapDeliveryId:0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 

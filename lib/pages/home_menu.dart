@@ -1,3 +1,4 @@
+import 'package:admart_app/pages/purchase_credit/purchase_credit_list_page.dart';
 import 'package:admart_app/pages/receipt_branch/receipt_branch_list_page.dart';
 import 'package:admart_app/pages/transfer_branch/transfer_branch_list_page.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +115,14 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "subtitle": "List Returns, Scan Item",
       "icon": "assets/images/purchase_returns.png",
       "authDetail": "purchaseReturns_Auth_Detail",
+    },
+
+    // Active
+    {
+      "title": "A/P Credit Memo",
+      "subtitle": "List Returns, Scan Item",
+      "icon": "assets/images/purchase_credit.png",
+      "authDetail": "purchaseCredit_Auth_Detail",
     },
 
     // Active
@@ -326,6 +335,16 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return PurchaseReturnsListPage();
+                                }));
+                              }
+                              else if (subjectList[index]["authDetail"] ==
+                                      "purchaseCredit_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .purchaseCredit_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return PurchaseCreditListPage();
                                 }));
                               }
                             },

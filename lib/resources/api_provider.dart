@@ -33,6 +33,9 @@ import 'package:admart_app/models/issue_production_detail_response.dart';
 import 'package:admart_app/models/issue_production_detail_scan_response.dart';
 import 'package:admart_app/models/issue_production_list_response.dart';
 import 'package:admart_app/models/login_response.dart';
+import 'package:admart_app/models/purchase_credit_detail_response.dart';
+import 'package:admart_app/models/purchase_credit_detail_scan_response.dart';
+import 'package:admart_app/models/purchase_credit_list_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
@@ -106,6 +109,8 @@ import 'package:admart_app/models/issue_production_detail_response.dart'
     as issueProductionDetail;
 import 'package:admart_app/models/purchase_returns_detail_response.dart'
     as purchaseReturnsDetail;
+import 'package:admart_app/models/purchase_credit_detail_response.dart'
+    as purchaseCreditDetail;
 import 'package:admart_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
 import 'package:admart_app/models/goods_receipt_detail_response.dart'
@@ -2345,6 +2350,138 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('purchaseReturnsDetail_Scan:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //PurchaseCreditList
+  //-----------------------------
+  Future<PurchaseCreditListResponse> purchaseCreditList_FetchNextPage(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/PurchaseCreditListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(purchaseCreditListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'purchaseCreditList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'purchaseCreditList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<PurchaseCreditListResponse> purchaseCreditList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/PurchaseCreditListApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(purchaseCreditListResponseFromJson, response.body);
+      } else {
+        throw Exception('purchaseCreditList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('purchaseCreditList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //PurchaseCreditDetail
+  //-----------------------------
+  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_GetById(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/PurchaseCreditDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(purchaseCreditDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('purchaseCreditDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('purchaseCreditDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_Add(
+      purchaseCreditDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/PurchaseCreditDetailApi/Add",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(purchaseCreditDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'purchaseCreditDetail_Add:Failed to add PurchaseCredit(2)');
+      }
+    } catch (e) {
+      throw Exception('purchaseCreditDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<PurchaseCreditDetailScanResponse> purchaseCreditDetail_Scan(
+      int grpoId, String qrResult) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "GrpoId": grpoId,
+        "QrResult": qrResult
+      });
+
+      final response = await http.post(
+          "${_url}api/PurchaseCreditDetailApi/Scan",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            purchaseCreditDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('purchaseCreditDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('purchaseCreditDetail_Scan:Failed to load post(1)');
     }
   }
 

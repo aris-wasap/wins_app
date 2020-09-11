@@ -138,8 +138,32 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'UnitPriceTc')
+  double unitPriceTc;
+
+  @JsonKey(name: 'PriceTc')
+  double priceTc;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   @JsonKey(name: 'Uom')
   String uom;
+
+  @JsonKey(name: 'Type')
+  String type;
 
   @JsonKey(name: 'WhsCode')
   String whsCode;
@@ -159,6 +183,9 @@ class Item {
   @JsonKey(name: 'IsBatch')
   String isBatch;
 
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
+
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
@@ -172,13 +199,21 @@ class Item {
     this.itemName,
     this.poQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.unitPriceTc,
+    this.priceTc,
+    this.itemType,
     this.uom,
+    this.type,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode,
     this.isAsset,
     this.isBatch,
+    this.priceMode,
     this.batchNo,
   });
 
