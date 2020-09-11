@@ -143,6 +143,27 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'UnitPriceTc')
+  double unitPriceTc;
+
+  @JsonKey(name: 'NetUnitPriceTc')
+  double netUnitPriceTc;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   @JsonKey(name: 'Uom')
   String uom;
 
@@ -173,6 +194,12 @@ class Item {
     this.itemName,
     this.poQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.unitPriceTc,
+    this.netUnitPriceTc,
+    this.itemType,
     this.uom,
     this.whsCode,
     this.whsName,

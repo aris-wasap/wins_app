@@ -273,7 +273,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_poNoController.text)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+      ValidateDialogWidget(context: context, message: "PO No harus di isi");
       return;
     }
     var data = _getState().data;

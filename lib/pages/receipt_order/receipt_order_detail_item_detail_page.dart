@@ -143,7 +143,7 @@ class _ReceiptOrderDetailItemDetailPageState
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
         }
-      }
+      } 
     }
 
     return Column(
