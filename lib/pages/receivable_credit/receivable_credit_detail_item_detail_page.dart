@@ -4,10 +4,10 @@ import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/return_sales/detail_item_detail/return_sales_detail_item_detail_state.dart';
-import 'package:admart_app/models/return_sales_detail_response.dart';
+import 'package:admart_app/blocs/receivable_credit/detail_item_detail/receivable_credit_detail_item_detail_bloc.dart';
+import 'package:admart_app/blocs/receivable_credit/detail_item_detail/receivable_credit_detail_item_detail_event.dart';
+import 'package:admart_app/blocs/receivable_credit/detail_item_detail/receivable_credit_detail_item_detail_state.dart';
+import 'package:admart_app/models/receivable_credit_detail_response.dart';
 import 'package:admart_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
@@ -17,20 +17,20 @@ import 'package:admart_app/models/cfl_binlocation_response.dart'
 import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
-class ReturnSalesDetailItemDetailPage extends StatefulWidget {
-  ReturnSalesDetailItemDetailPage(this._data);
+class ReceivableCreditDetailItemDetailPage extends StatefulWidget {
+  ReceivableCreditDetailItemDetailPage(this._data);
   final Item _data;
   @override
-  _ReturnSalesDetailItemDetailPageState createState() =>
-      _ReturnSalesDetailItemDetailPageState(_data);
+  _ReceivableCreditDetailItemDetailPageState createState() =>
+      _ReceivableCreditDetailItemDetailPageState(_data);
 }
 
-class _ReturnSalesDetailItemDetailPageState
-    extends State<ReturnSalesDetailItemDetailPage> {
-  _ReturnSalesDetailItemDetailPageState(this._data);
+class _ReceivableCreditDetailItemDetailPageState
+    extends State<ReceivableCreditDetailItemDetailPage> {
+  _ReceivableCreditDetailItemDetailPageState(this._data);
 
   final Item _data;
-  ReturnSalesDetailItemDetailBloc bloc;
+  ReceivableCreditDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
@@ -49,7 +49,7 @@ class _ReturnSalesDetailItemDetailPageState
     // TODO: implement initState
     super.initState();
 
-    bloc = ReturnSalesDetailItemDetailBloc(this._data);
+    bloc = ReceivableCreditDetailItemDetailBloc(this._data);
   }
 
   @override
@@ -82,22 +82,22 @@ class _ReturnSalesDetailItemDetailPageState
           context: context, message: "Pilih Bin Location terlebih dahulu");
       return;
     }
-    bloc.emitEvent(ReturnSalesDetailItemDetailEventQty(
+    bloc.emitEvent(ReceivableCreditDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
     ));
     Navigator.pop(context, _getState().data);
   }
 
-  ReturnSalesDetailItemDetailState _getState() {
+  ReceivableCreditDetailItemDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReturnSalesDetailItemDetailState>(
+    return BlocEventStateBuilder<ReceivableCreditDetailItemDetailState>(
         bloc: bloc,
         builder:
-            (BuildContext context, ReturnSalesDetailItemDetailState state) {
+            (BuildContext context, ReceivableCreditDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
@@ -142,7 +142,7 @@ class _ReturnSalesDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyDoController.text = data.doQty.toString();
+    _qtyDoController.text = data.reqQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")

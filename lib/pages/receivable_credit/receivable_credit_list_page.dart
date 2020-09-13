@@ -3,20 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_event.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_state.dart';
-import 'package:admart_app/pages/return_sales/return_sales_detail_page.dart';
+import 'package:admart_app/blocs/receivable_credit/list/receivable_credit_list_bloc.dart';
+import 'package:admart_app/blocs/receivable_credit/list/receivable_credit_list_event.dart';
+import 'package:admart_app/blocs/receivable_credit/list/receivable_credit_list_state.dart';
+import 'package:admart_app/pages/receivable_credit/receivable_credit_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class ReturnSalesListPage extends StatefulWidget {
+class ReceivableCreditListPage extends StatefulWidget {
   @override
-  _ReturnSalesListPageState createState() => _ReturnSalesListPageState();
+  _ReceivableCreditListPageState createState() => _ReceivableCreditListPageState();
 }
 
-class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
-  ReturnSalesListBloc bloc = ReturnSalesListBloc();
+class _ReceivableCreditListPageState extends State<ReceivableCreditListPage> {
+  ReceivableCreditListBloc bloc = ReceivableCreditListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,8 +29,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
+      bloc.emitEvent(ReceivableCreditListEvent(
+        event: ReceivableCreditListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +39,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.nextPage,
+      bloc.emitEvent(ReceivableCreditListEvent(
+        event: ReceivableCreditListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,8 +51,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
+      bloc.emitEvent(ReceivableCreditListEvent(
+        event: ReceivableCreditListEventType.firstPage,
       ));
     });
 
@@ -91,8 +91,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(ReturnSalesListEvent(
-                  event: ReturnSalesListEventType.deactivedSearch,
+                bloc.emitEvent(ReceivableCreditListEvent(
+                  event: ReceivableCreditListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -117,18 +117,18 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(ReturnSalesListEvent(
-                event: ReturnSalesListEventType.activedSearch,
+              bloc.emitEvent(ReceivableCreditListEvent(
+                event: ReceivableCreditListEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.returnSales_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.receivableCredit_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return ReturnSalesDetailPage(0);
+                      return ReceivableCreditDetailPage(0);
                     }));
                   },
                 )
@@ -140,17 +140,17 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(ReturnSalesListEvent(
-      event: ReturnSalesListEventType.refresh,
+    bloc.emitEvent(ReceivableCreditListEvent(
+      event: ReceivableCreditListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReturnSalesListState>(
+    return BlocEventStateBuilder<ReceivableCreditListState>(
         bloc: bloc,
-        builder: (BuildContext context, ReturnSalesListState state) {
+        builder: (BuildContext context, ReceivableCreditListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -219,7 +219,7 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          ReturnSalesDetailPage(data[index].id),
+                          ReceivableCreditDetailPage(data[index].id),
                     ),
                   );
                 },

@@ -87,13 +87,13 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReturnSalesDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan DO ${doNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Delivery Order No. : ${doNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.doId == 0) {
                 yield ReturnSalesDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan DO ${doNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Delivery Order No. : ${doNo} (2)',
                   data: event.data,
                 );
               } else {

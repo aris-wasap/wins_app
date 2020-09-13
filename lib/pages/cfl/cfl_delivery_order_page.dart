@@ -176,7 +176,7 @@ class _CflDeliveryOrderPageState extends State<CflDeliveryOrderPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].branchName ?? ''}"),
+                    Text("Depo : ${data[index].branchName ?? ''}"),
                     Text("${data[index].customerCode ?? ''}"),
                     Text("${data[index].customerName ?? ''}"),
                   ],

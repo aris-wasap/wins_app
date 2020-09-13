@@ -1,21 +1,22 @@
 // To parse this JSON data, do
 //
 //     final item = itemFromJson(jsonString);
-//     final returnSalesDetailResponse = returnSalesDetailResponseFromJson(jsonString);
+//     final payableCreditDetailResponse = payableCreditDetailResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-part 'return_sales_detail_response.g.dart';
+part 'payable_credit_detail_response.g.dart';
 
-ReturnSalesDetailResponse returnSalesDetailResponseFromJson(String str) {
+PayableCreditDetailResponse payableCreditDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
-  return ReturnSalesDetailResponse.fromJson(jsonData);
+  return PayableCreditDetailResponse.fromJson(jsonData);
 }
 
 @JsonSerializable()
-class ReturnSalesDetailResponse {
+class PayableCreditDetailResponse {
   @JsonKey(name: 'Error')
   bool error;
 
@@ -25,17 +26,17 @@ class ReturnSalesDetailResponse {
   @JsonKey(name: 'Data')
   Data data;
 
-  ReturnSalesDetailResponse({
+  PayableCreditDetailResponse({
     this.error,
     this.errorMessage,
     this.data,
   });
 
-  factory ReturnSalesDetailResponse.fromJson(Map<String, dynamic> json) {
-    return _$ReturnSalesDetailResponseFromJson(json);
+  factory PayableCreditDetailResponse.fromJson(Map<String, dynamic> json) {
+    return _$PayableCreditDetailResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$ReturnSalesDetailResponseToJson(this);
+  Map<String, dynamic> toJson() => _$PayableCreditDetailResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -43,29 +44,23 @@ class Data {
   @JsonKey(name: 'Id')
   int id;
 
-  @JsonKey(name: 'DoId')
-  int doId;
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
 
-  @JsonKey(name: 'DoNo')
-  String doNo;
-
-  @JsonKey(name: 'SeriesNameDo')
-  String seriesNameDo;
+  @JsonKey(name: 'ReturnRequestNo')
+  String returnRequestNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
 
-  @JsonKey(name: 'SeriesName')
-  String seriesName;
-
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'VendorCode')
+  String vendorCode;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'VendorName')
+  String vendorName;
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
@@ -76,42 +71,36 @@ class Data {
   @JsonKey(name: 'Address')
   String address;
 
+  @JsonKey(name: 'SeriesNameReturnRequest')
+  String seriesNameReturnRequest;
+
+  @JsonKey(name: 'SeriesName')
+  String seriesName;
+
   @JsonKey(name: 'BranchId')
   int branchId;
 
   @JsonKey(name: 'BranchName')
   String branchName;
 
-  @JsonKey(name: 'SapReturnId')
-  int sapReturnId;
-
-  @JsonKey(name: 'CreatedUser')
-  int createdUser;
-
-  @JsonKey(name: 'Status')
-  String status;
-
   @JsonKey(name: 'Items')
   List<Item> items;
 
   Data({
-    this.doId: 0,
-    this.doNo,
-    this.seriesNameDo,
+    this.returnRequestId: 0,
+    this.returnRequestNo,
     this.id: 0,
     this.transNo,
-    this.seriesName,
     this.transDate,
-    this.customerCode,
-    this.customerName,
+    this.vendorCode,
+    this.vendorName,
     this.contactPerson,
     this.refNo,
     this.address,
+    this.seriesNameReturnRequest,
+    this.seriesName,
     this.branchId,
     this.branchName,
-    this.sapReturnId:0,
-    this.createdUser,
-    this.status,
     this.items,
   });
 
@@ -122,11 +111,17 @@ class Data {
 
 @JsonSerializable()
 class Item {
-  @JsonKey(name: 'DoId')
-  int doId;
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
 
-  @JsonKey(name: 'DoLineNo')
-  int doLineNo;
+  @JsonKey(name: 'ReturnRequestLineNo')
+  int returnRequestLineNo;
+
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebDetId')
+  int webDetId;
 
   @JsonKey(name: 'Id')
   int id;
@@ -143,8 +138,8 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
-  @JsonKey(name: 'DoQty')
-  double doQty;
+  @JsonKey(name: 'ReturnRequestQty')
+  double returnRequestQty;
 
   @JsonKey(name: 'Qty')
   double qty;
@@ -168,14 +163,16 @@ class Item {
   String batchNo;
 
   Item({
-    this.doId: 0,
-    this.doLineNo: 0,
+    this.returnRequestId: 0,
+    this.returnRequestLineNo: 0,
+    this.webId,
+    this.webDetId,
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
-    this.doQty: 0,
+    this.returnRequestQty: 0,
     this.qty: 0,
     this.uom,
     this.whsCode,
@@ -183,7 +180,6 @@ class Item {
     this.binAbs,
     this.binCode,
     this.batchNo,
-
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

@@ -10,6 +10,7 @@ import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_transfer_branch_response.dart';
@@ -33,9 +34,9 @@ import 'package:admart_app/models/issue_production_detail_response.dart';
 import 'package:admart_app/models/issue_production_detail_scan_response.dart';
 import 'package:admart_app/models/issue_production_list_response.dart';
 import 'package:admart_app/models/login_response.dart';
-import 'package:admart_app/models/purchase_credit_detail_response.dart';
-import 'package:admart_app/models/purchase_credit_detail_scan_response.dart';
-import 'package:admart_app/models/purchase_credit_list_response.dart';
+import 'package:admart_app/models/payable_credit_detail_response.dart';
+import 'package:admart_app/models/payable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/payable_credit_list_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
@@ -46,6 +47,9 @@ import 'package:admart_app/models/receipt_branch_detail_response.dart'
     as receiptBranchDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart'
     as receiptIssueDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart';
+import 'package:admart_app/models/receivable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/receivable_credit_list_response.dart';
 import 'package:admart_app/models/request_issue_detail_response.dart'
     as requestIssueDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart';
@@ -103,14 +107,16 @@ import 'package:admart_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
 import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart'
+    as receivableCreditDetail;
 import 'package:admart_app/models/receipt_production_detail_response.dart'
     as receiptProductionDetail;
 import 'package:admart_app/models/issue_production_detail_response.dart'
     as issueProductionDetail;
 import 'package:admart_app/models/purchase_returns_detail_response.dart'
     as purchaseReturnsDetail;
-import 'package:admart_app/models/purchase_credit_detail_response.dart'
-    as purchaseCreditDetail;
+import 'package:admart_app/models/payable_credit_detail_response.dart'
+    as payableCreditDetail;
 import 'package:admart_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
 import 'package:admart_app/models/goods_receipt_detail_response.dart'
@@ -937,6 +943,125 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('returnSalesDetail_Scan:Failed to load post(1)');
+    }
+  }
+
+
+  //-----------------------------
+  //ReceivableCreditList
+  //-----------------------------
+  Future<ReceivableCreditListResponse> receivableCreditList_FetchNextPage(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/ReceivableCreditListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditListResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceivableCreditListResponse> receivableCreditList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post("${_url}api/ReceivableCreditListApi/Refresh",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditListResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //ReceivableCreditDetail
+  //-----------------------------
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_GetById(int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/ReceivableCreditDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Add(
+      receivableCreditDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceivableCreditDetailApi/Add",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditDetail_Add:Failed to add ReceivableCredit(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
+      int soId, String qrResult) async {
+    try {
+      var body = json.encode(
+          {"UserId": globalBloc.userId, "SoId": soId, "QrResult": qrResult});
+
+      final response = await http.post("${_url}api/ReceivableCreditDetailApi/Scan",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditDetail_Scan:Failed to load post(1)');
     }
   }
 
@@ -2354,9 +2479,9 @@ class ApiProvider {
   }
 
   //-----------------------------
-  //PurchaseCreditList
+  //PayableCreditList
   //-----------------------------
-  Future<PurchaseCreditListResponse> purchaseCreditList_FetchNextPage(
+  Future<PayableCreditListResponse> payableCreditList_FetchNextPage(
       int lastId, String searchQuery) async {
     try {
       var body = json.encode({
@@ -2367,24 +2492,24 @@ class ApiProvider {
       });
 
       final response = await http.post(
-          "${_url}api/PurchaseCreditListApi/FetchNextPage",
+          "${_url}api/PayableCreditListApi/FetchNextPage",
           headers: {'Content-type': 'application/json'},
           body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
-        return compute(purchaseCreditListResponseFromJson, response.body);
+        return compute(payableCreditListResponseFromJson, response.body);
       } else {
         throw Exception(
-            'purchaseCreditList_FetchNextPage:Failed to load post(2)');
+            'payableCreditList_FetchNextPage:Failed to load post(2)');
       }
     } catch (e) {
       throw Exception(
-          'purchaseCreditList_FetchNextPage:Failed to load post(1)');
+          'payableCreditList_FetchNextPage:Failed to load post(1)');
     }
   }
 
-  Future<PurchaseCreditListResponse> purchaseCreditList_Refresh(
+  Future<PayableCreditListResponse> payableCreditList_Refresh(
       int lastId, String searchQuery) async {
     try {
       var body = json.encode({
@@ -2394,47 +2519,47 @@ class ApiProvider {
       });
 
       final response = await http.post(
-          "${_url}api/PurchaseCreditListApi/Refresh",
+          "${_url}api/PayableCreditListApi/Refresh",
           headers: {'Content-type': 'application/json'},
           body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
-        return compute(purchaseCreditListResponseFromJson, response.body);
+        return compute(payableCreditListResponseFromJson, response.body);
       } else {
-        throw Exception('purchaseCreditList_Refresh:Failed to load post(2)');
+        throw Exception('payableCreditList_Refresh:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('purchaseCreditList_Refresh:Failed to load post(1)');
+      throw Exception('payableCreditList_Refresh:Failed to load post(1)');
     }
   }
 
   //-----------------------------
-  //PurchaseCreditDetail
+  //PayableCreditDetail
   //-----------------------------
-  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_GetById(
+  Future<PayableCreditDetailResponse> payableCreditDetail_GetById(
       int id) async {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "Id": id});
 
       final response = await http.post(
-          "${_url}api/PurchaseCreditDetailApi/GetById",
+          "${_url}api/PayableCreditDetailApi/GetById",
           headers: {'Content-type': 'application/json'},
           body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
-        return compute(purchaseCreditDetailResponseFromJson, response.body);
+        return compute(payableCreditDetailResponseFromJson, response.body);
       } else {
-        throw Exception('purchaseCreditDetail_GetById:Failed to load post(2)');
+        throw Exception('payableCreditDetail_GetById:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('purchaseCreditDetail_GetById:Failed to load post(1)');
+      throw Exception('payableCreditDetail_GetById:Failed to load post(1)');
     }
   }
 
-  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_Add(
-      purchaseCreditDetail.Data data) async {
+  Future<PayableCreditDetailResponse> payableCreditDetail_Add(
+      payableCreditDetail.Data data) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
@@ -2443,23 +2568,23 @@ class ApiProvider {
       });
 
       final response = await http.post(
-          "${_url}api/PurchaseCreditDetailApi/Add",
+          "${_url}api/PayableCreditDetailApi/Add",
           headers: {'Content-type': 'application/json'},
           body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
-        return compute(purchaseCreditDetailResponseFromJson, response.body);
+        return compute(payableCreditDetailResponseFromJson, response.body);
       } else {
         throw Exception(
-            'purchaseCreditDetail_Add:Failed to add PurchaseCredit(2)');
+            'payableCreditDetail_Add:Failed to add PayableCredit(2)');
       }
     } catch (e) {
-      throw Exception('purchaseCreditDetail_Add:Failed to load post(1)');
+      throw Exception('payableCreditDetail_Add:Failed to load post(1)');
     }
   }
 
-  Future<PurchaseCreditDetailScanResponse> purchaseCreditDetail_Scan(
+  Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
       int grpoId, String qrResult) async {
     try {
       var body = json.encode({
@@ -2469,19 +2594,19 @@ class ApiProvider {
       });
 
       final response = await http.post(
-          "${_url}api/PurchaseCreditDetailApi/Scan",
+          "${_url}api/PayableCreditDetailApi/Scan",
           headers: {'Content-type': 'application/json'},
           body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
         return compute(
-            purchaseCreditDetailScanResponseFromJson, response.body);
+            payableCreditDetailScanResponseFromJson, response.body);
       } else {
-        throw Exception('purchaseCreditDetail_Scan:Failed to load post(2)');
+        throw Exception('payableCreditDetail_Scan:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('purchaseCreditDetail_Scan:Failed to load post(1)');
+      throw Exception('payableCreditDetail_Scan:Failed to load post(1)');
     }
   }
 
@@ -2977,6 +3102,36 @@ class ApiProvider {
     } catch (e) {
       throw Exception(
           'cflPurchaseDelivery_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflReturnRequest
+  //-----------------------------
+  Future<CflReturnRequestResponse> cflReturnRequest_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/CflReturnRequestApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflReturnRequestResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflReturnRequest_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflReturnRequest_FetchNextPage:Failed to load post(1)');
     }
   }
 

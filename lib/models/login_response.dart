@@ -265,17 +265,17 @@ class Data {
   @JsonKey(name: 'PurchaseReturns_WhsName')
   String purchaseReturns_WhsName;
 
-  @JsonKey(name: 'PurchaseCredit_Auth_Detail')
-  String purchaseCredit_Auth_Detail;
+  @JsonKey(name: 'PayableCredit_Auth_Detail')
+  String payableCredit_Auth_Detail;
 
-  @JsonKey(name: 'PurchaseCredit_Auth_Add')
-  String purchaseCredit_Auth_Add;
+  @JsonKey(name: 'PayableCredit_Auth_Add')
+  String payableCredit_Auth_Add;
 
-  @JsonKey(name: 'PurchaseCredit_WhsCode')
-  String purchaseCredit_WhsCode;
+  @JsonKey(name: 'PayableCredit_WhsCode')
+  String payableCredit_WhsCode;
 
-  @JsonKey(name: 'PurchaseCredit_WhsName')
-  String purchaseCredit_WhsName;
+  @JsonKey(name: 'PayableCredit_WhsName')
+  String payableCredit_WhsName;
 
   @JsonKey(name: 'ReturnSales_Auth_Detail')
   String returnSales_Auth_Detail;
@@ -289,17 +289,17 @@ class Data {
   @JsonKey(name: 'ReturnSales_WhsName')
   String returnSales_WhsName;
 
-  @JsonKey(name: 'CreditNotes_Auth_Detail')
-  String creditNotes_Auth_Detail;
+  @JsonKey(name: 'ReceivableCredit_Auth_Detail')
+  String receivableCredit_Auth_Detail;
 
-  @JsonKey(name: 'CreditNotes_Auth_Add')
-  String creditNotes_Auth_Add;
+  @JsonKey(name: 'ReceivableCredit_Auth_Add')
+  String receivableCredit_Auth_Add;
 
-  @JsonKey(name: 'CreditNotes_WhsCode')
-  String creditNotes_WhsCode;
+  @JsonKey(name: 'ReceivableCredit_WhsCode')
+  String receivableCredit_WhsCode;
 
-  @JsonKey(name: 'CreditNotes_WhsName')
-  String creditNotes_WhsName;
+  @JsonKey(name: 'ReceivableCredit_WhsName')
+  String receivableCredit_WhsName;
 
   @JsonKey(name: 'InventoryTransfer_Auth_Detail')
   String inventoryTransfer_Auth_Detail;
@@ -383,10 +383,10 @@ class Data {
     this.purchaseReturns_Auth_Detail,
     this.purchaseReturns_WhsCode,
     this.purchaseReturns_WhsName,
-    this.purchaseCredit_Auth_Add,
-    this.purchaseCredit_Auth_Detail,
-    this.purchaseCredit_WhsCode,
-    this.purchaseCredit_WhsName,
+    this.payableCredit_Auth_Add,
+    this.payableCredit_Auth_Detail,
+    this.payableCredit_WhsCode,
+    this.payableCredit_WhsName,
     this.transferBranch_Auth_Add,
     this.transferBranch_Auth_Detail,
     this.transferBranch_WhsCode,
@@ -411,10 +411,10 @@ class Data {
     this.requestIssue_Auth_Detail,
     this.requestIssue_WhsCode,
     this.requestIssue_WhsName,
-    this.creditNotes_Auth_Add,
-    this.creditNotes_Auth_Detail,
-    this.creditNotes_WhsCode,
-    this.creditNotes_WhsName,
+    this.receivableCredit_Auth_Add,
+    this.receivableCredit_Auth_Detail,
+    this.receivableCredit_WhsCode,
+    this.receivableCredit_WhsName,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

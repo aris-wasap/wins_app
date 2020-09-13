@@ -3,20 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_event.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_state.dart';
-import 'package:admart_app/pages/return_sales/return_sales_detail_page.dart';
+import 'package:admart_app/blocs/payable_credit/list/payable_credit_list_bloc.dart';
+import 'package:admart_app/blocs/payable_credit/list/payable_credit_list_event.dart';
+import 'package:admart_app/blocs/payable_credit/list/payable_credit_list_state.dart';
+import 'package:admart_app/pages/payable_credit/payable_credit_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class ReturnSalesListPage extends StatefulWidget {
+class PayableCreditListPage extends StatefulWidget {
   @override
-  _ReturnSalesListPageState createState() => _ReturnSalesListPageState();
+  _PayableCreditListPageState createState() =>
+      _PayableCreditListPageState();
 }
 
-class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
-  ReturnSalesListBloc bloc = ReturnSalesListBloc();
+class _PayableCreditListPageState extends State<PayableCreditListPage> {
+  PayableCreditListBloc bloc = PayableCreditListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,8 +30,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
+      bloc.emitEvent(PayableCreditListEvent(
+        event: PayableCreditListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +40,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.nextPage,
+      bloc.emitEvent(PayableCreditListEvent(
+        event: PayableCreditListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,8 +52,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
+      bloc.emitEvent(PayableCreditListEvent(
+        event: PayableCreditListEventType.firstPage,
       ));
     });
 
@@ -76,13 +77,13 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Return",
+              hintText: "Search Receipt",
               hintStyle: TextStyle(color: Colors.white)),
         ),
-        backgroundColor: bgOrange,
+        backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
             child: Container(
-              color: bgOrange,
+              color: Colors.orange[500],
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -91,8 +92,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(ReturnSalesListEvent(
-                  event: ReturnSalesListEventType.deactivedSearch,
+                bloc.emitEvent(PayableCreditListEvent(
+                  event: PayableCreditListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -100,13 +101,13 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Return"),
+        title: Text("List Receipt"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
           ),
         ),
-        //backgroundColor: Colors.blue[500],
+        //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
             child: Container(
               color: bgBlue,
@@ -117,18 +118,18 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(ReturnSalesListEvent(
-                event: ReturnSalesListEventType.activedSearch,
+              bloc.emitEvent(PayableCreditListEvent(
+                event: PayableCreditListEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.returnSales_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.payableCredit_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return ReturnSalesDetailPage(0);
+                      return PayableCreditDetailPage(0);
                     }));
                   },
                 )
@@ -140,17 +141,17 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(ReturnSalesListEvent(
-      event: ReturnSalesListEventType.refresh,
+    bloc.emitEvent(PayableCreditListEvent(
+      event: PayableCreditListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReturnSalesListState>(
+    return BlocEventStateBuilder<PayableCreditListState>(
         bloc: bloc,
-        builder: (BuildContext context, ReturnSalesListState state) {
+        builder: (BuildContext context, PayableCreditListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -159,7 +160,7 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgGradientPage,
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
@@ -184,6 +185,9 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -191,14 +195,14 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Depo : ${data[index].branchName}"),
+                    Text("${data[index].branchName}"),
                     Text(
-                        "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
+                        "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
@@ -219,7 +223,7 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          ReturnSalesDetailPage(data[index].id),
+                          PayableCreditDetailPage(data[index].id),
                     ),
                   );
                 },

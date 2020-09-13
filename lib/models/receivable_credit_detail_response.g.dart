@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'return_sales_detail_response.dart';
+part of 'receivable_credit_detail_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReturnSalesDetailResponse _$ReturnSalesDetailResponseFromJson(
+ReceivableCreditDetailResponse _$ReceivableCreditDetailResponseFromJson(
     Map<String, dynamic> json) {
-  return ReturnSalesDetailResponse(
+  return ReceivableCreditDetailResponse(
     error: json['Error'] as bool,
     errorMessage: json['ErrorMessage'] as String,
     data: json['Data'] == null
@@ -17,8 +17,8 @@ ReturnSalesDetailResponse _$ReturnSalesDetailResponseFromJson(
   );
 }
 
-Map<String, dynamic> _$ReturnSalesDetailResponseToJson(
-        ReturnSalesDetailResponse instance) =>
+Map<String, dynamic> _$ReceivableCreditDetailResponseToJson(
+        ReceivableCreditDetailResponse instance) =>
     <String, dynamic>{
       'Error': instance.error,
       'ErrorMessage': instance.errorMessage,
@@ -27,8 +27,8 @@ Map<String, dynamic> _$ReturnSalesDetailResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
-    doId: json['DoId'] as int,
-    doNo: json['DoNo'] as String,
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestNo: json['ReturnRequestNo'] as String,
     seriesNameDo: json['SeriesNameDo'] as String,
     id: json['Id'] as int,
     transNo: json['TransNo'] as String,
@@ -43,7 +43,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     address: json['Address'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
-    sapReturnId: json['SapReturnId'] as int,
+    sapReceivableCreditId: json['SapReceivableCreditId'] as int,
     createdUser: json['CreatedUser'] as int,
     status: json['Status'] as String,
     items: (json['Items'] as List)
@@ -55,8 +55,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
-      'DoId': instance.doId,
-      'DoNo': instance.doNo,
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestNo': instance.returnRequestNo,
       'SeriesNameDo': instance.seriesNameDo,
       'TransNo': instance.transNo,
       'SeriesName': instance.seriesName,
@@ -68,7 +68,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Address': instance.address,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
-      'SapReturnId': instance.sapReturnId,
+      'SapReceivableCreditId': instance.sapReceivableCreditId,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
       'Items': instance.items,
@@ -76,14 +76,14 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
-    doId: json['DoId'] as int,
-    doLineNo: json['DoLineNo'] as int,
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestLineNo: json['ReturnRequestLineNo'] as int,
     id: json['Id'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
-    doQty: (json['DoQty'] as num)?.toDouble(),
+    reqQty: (json['ReqQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
@@ -95,14 +95,14 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
-      'DoId': instance.doId,
-      'DoLineNo': instance.doLineNo,
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestLineNo': instance.returnRequestLineNo,
       'Id': instance.id,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
-      'DoQty': instance.doQty,
+      'ReqQty': instance.reqQty,
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,

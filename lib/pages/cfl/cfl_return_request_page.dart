@@ -2,21 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_bloc.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_event.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_state.dart';
-import 'package:admart_app/pages/return_sales/return_sales_detail_page.dart';
+import 'package:admart_app/blocs/cfl_return_request/cfl_return_request_bloc.dart';
+import 'package:admart_app/blocs/cfl_return_request/cfl_return_request_event.dart';
+import 'package:admart_app/blocs/cfl_return_request/cfl_return_request_state.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class ReturnSalesListPage extends StatefulWidget {
+class CflReturnRequestPage extends StatefulWidget {
   @override
-  _ReturnSalesListPageState createState() => _ReturnSalesListPageState();
+  _CflReturnRequestPageState createState() => _CflReturnRequestPageState();
 }
 
-class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
-  ReturnSalesListBloc bloc = ReturnSalesListBloc();
+class _CflReturnRequestPageState extends State<CflReturnRequestPage> {
+  CflReturnRequestBloc bloc = CflReturnRequestBloc();
+
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -28,9 +27,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
+      bloc.emitEvent(CflReturnRequestEvent(
+        event: CflReturnRequestEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +37,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.nextPage,
+      bloc.emitEvent(CflReturnRequestEvent(
+        event: CflReturnRequestEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -50,13 +48,12 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(ReturnSalesListEvent(
-        event: ReturnSalesListEventType.firstPage,
-      ));
-    });
+    bloc.emitEvent(CflReturnRequestEvent(
+      event: CflReturnRequestEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -69,15 +66,15 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflReturnRequestState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Return",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Return Request",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
@@ -91,8 +88,8 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(ReturnSalesListEvent(
-                  event: ReturnSalesListEventType.deactivedSearch,
+                bloc.emitEvent(CflReturnRequestEvent(
+                  event: CflReturnRequestEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -100,16 +97,11 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Return"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradientAppBar,
-          ),
-        ),
-        //backgroundColor: Colors.blue[500],
+        title: Text("Choose Return Request"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: bgBlue,
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -117,22 +109,11 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(ReturnSalesListEvent(
-                event: ReturnSalesListEventType.activedSearch,
+              bloc.emitEvent(CflReturnRequestEvent(
+                event: CflReturnRequestEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.returnSales_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ReturnSalesDetailPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -140,29 +121,29 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(ReturnSalesListEvent(
-      event: ReturnSalesListEventType.refresh,
+    bloc.emitEvent(CflReturnRequestEvent(
+      event: CflReturnRequestEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReturnSalesListState>(
+    return BlocEventStateBuilder<CflReturnRequestState>(
         bloc: bloc,
-        builder: (BuildContext context, ReturnSalesListState state) {
+        builder: (BuildContext context, CflReturnRequestState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: bgGradientPage,
+                    gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -170,9 +151,7 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflReturnRequestState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -184,44 +163,29 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-            margin: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
+            margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Depo : ${data[index].branchName}"),
-                    Text(
-                        "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
-                    Text("Status : ${data[index].status}"),
-                    Text("User : ${data[index].createdUser}"),
+                    Text("${data[index].branchName ?? ''}"),
+                    Text("${data[index].customerCode ?? ''}"),
+                    Text("${data[index].customerName ?? ''}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReturnSalesDetailPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),

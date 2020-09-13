@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:admart_app/pages/cfl/cfl_delivery_order_page.dart';
-import 'package:admart_app/pages/return_sales/return_sales_detail_item_detail_page.dart';
+import 'package:admart_app/pages/receivable_credit/receivable_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_bloc.dart';
-import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_event.dart';
-import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_state.dart';
+import 'package:admart_app/blocs/receivable_credit/detail/receivable_credit_detail_bloc.dart';
+import 'package:admart_app/blocs/receivable_credit/detail/receivable_credit_detail_event.dart';
+import 'package:admart_app/blocs/receivable_credit/detail/receivable_credit_detail_state.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/return_sales_detail_response.dart';
+import 'package:admart_app/models/receivable_credit_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
@@ -19,23 +19,23 @@ import 'package:admart_app/models/cfl_delivery_order_response.dart'
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
-class ReturnSalesDetailPage extends StatefulWidget {
-  ReturnSalesDetailPage(this._id);
+class ReceivableCreditDetailPage extends StatefulWidget {
+  ReceivableCreditDetailPage(this._id);
   final int _id;
   @override
-  _ReturnSalesDetailPageState createState() => _ReturnSalesDetailPageState(_id);
+  _ReceivableCreditDetailPageState createState() => _ReceivableCreditDetailPageState(_id);
 }
 
-class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
-  _ReturnSalesDetailPageState(this._id);
+class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage> {
+  _ReceivableCreditDetailPageState(this._id);
 
-  ReturnSalesDetailBloc bloc = ReturnSalesDetailBloc();
+  ReceivableCreditDetailBloc bloc = ReceivableCreditDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _doIdController = TextEditingController();
-  final _doNoController = TextEditingController();
+  final _returnRequestIdController = TextEditingController();
+  final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
@@ -52,7 +52,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(ReturnSalesDetailEventGetId(
+        bloc.emitEvent(ReceivableCreditDetailEventGetId(
           id: _id,
         ));
       });
@@ -76,8 +76,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
   @override
   void dispose() {
-    _doIdController?.dispose();
-    _doNoController?.dispose();
+    _returnRequestIdController?.dispose();
+    _returnRequestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
@@ -94,7 +94,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.id = _id;
-    data.doNo = _doNoController.text;
+    data.returnRequestNo = _returnRequestNoController.text;
     data.transDate = transDate;
     data.customerCode = _customerCodeController.text;
     data.customerName = _customerNameController.text;
@@ -103,7 +103,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(context: context, message: "DO Date harus di isi");
       return;
-    } else if (["", null].contains(data.doNo)) {
+    } else if (["", null].contains(data.returnRequestNo)) {
       ValidateDialogWidget(context: context, message: "SO No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
@@ -119,14 +119,14 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       return;
     }
 
-    bloc.emitEvent(ReturnSalesDetailEventAdd(
+    bloc.emitEvent(ReceivableCreditDetailEventAdd(
       data: data,
     ));
   }
 
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
-        builder: (BuildContext context) => ReturnSalesDetailPage(0));
+        builder: (BuildContext context) => ReceivableCreditDetailPage(0));
     Navigator.of(context).pushReplacement(newRoute);
   }
 
@@ -151,7 +151,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(ReturnSalesDetailEventNormal());
+                    bloc.emitEvent(ReceivableCreditDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -185,7 +185,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(ReturnSalesDetailEventNormal());
+                    bloc.emitEvent(ReceivableCreditDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -215,7 +215,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapReturnId == 0) {
+    if (_getState().data.sapReceivableCreditId == 0) {
       return AppBar(
         title: Text("Create Return"),
         backgroundColor: Colors.blue[500],
@@ -247,7 +247,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.returnSales_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.receivableCredit_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
@@ -260,14 +260,14 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     }
   }
 
-  ReturnSalesDetailState _getState() {
+  ReceivableCreditDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_doNoController.text)) {
+    if (["", null].contains(_returnRequestNoController.text)) {
       ValidateDialogWidget(context: context, message: "DO No harus di isi");
       return;
     }
@@ -284,16 +284,16 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
         }
       }
 
-      bloc.emitEvent(ReturnSalesDetailEventScan(
-          doId: int.parse(_doIdController.text),
-          doNo: _doNoController.text,
+      bloc.emitEvent(ReceivableCreditDetailEventScan(
+          returnRequestId: int.parse(_returnRequestIdController.text),
+          returnRequestNo: _returnRequestNoController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
-      //         ReturnSalesDetailEventScan(
-      //             doId: int.parse(_doIdController.text),
+      //         ReceivableCreditDetailEventScan(
+      //             returnRequestId: int.parse(_returnRequestIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -303,13 +303,13 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       //       context,
       //       MaterialPageRoute(
       //         builder: (BuildContext context) =>
-      //             ReturnSalesDetailItemDetailPage(onData.newItem),
+      //             ReceivableCreditDetailItemDetailPage(onData.newItem),
       //       ),
       //     );
 
       //     item.then((Item item) {
       //       if (item != null) {
-      //         bloc.emitEvent(ReturnSalesDetailEventItemAdd(
+      //         bloc.emitEvent(ReceivableCreditDetailEventItemAdd(
       //           item: item,
       //         ));
       //       }
@@ -342,18 +342,18 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(ReturnSalesDetailEventNormal());
+        bloc.emitEvent(ReceivableCreditDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                ReturnSalesDetailItemDetailPage(newItem),
+                ReceivableCreditDetailItemDetailPage(newItem),
           ),
         );
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(ReturnSalesDetailEventItemAdd(
+            bloc.emitEvent(ReceivableCreditDetailEventItemAdd(
               item: item,
             ));
           }
@@ -367,9 +367,9 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     _context = context;
     var data = _getState().data;
 
-    return BlocEventStateBuilder<ReturnSalesDetailState>(
+    return BlocEventStateBuilder<ReceivableCreditDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, ReturnSalesDetailState state) {
+        builder: (BuildContext context, ReceivableCreditDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -388,7 +388,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapReturnId == 0
+              floatingActionButton: _getState().data.sapReceivableCreditId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -442,13 +442,13 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            ReturnSalesDetailItemDetailPage(items[itemIndex]),
+            ReceivableCreditDetailItemDetailPage(items[itemIndex]),
       ),
     );
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(ReturnSalesDetailEventItemUpdate(
+        bloc.emitEvent(ReceivableCreditDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -467,8 +467,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _doIdController.text = data.doId.toString();
-      _doNoController.text = data.doNo;
+      _returnRequestIdController.text = data.returnRequestId.toString();
+      _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -557,8 +557,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
                       dor.then((cflDeliveryOrder.Data dor) {
                         if (dor != null) {
-                          _doIdController.text = dor.id.toString();
-                          _doNoController.text =
+                          _returnRequestIdController.text = dor.id.toString();
+                          _returnRequestNoController.text =
                               dor.seriesName + '-' + dor.transNo;
                           _customerCodeController.text = dor.customerCode;
                           _customerNameController.text = dor.customerName;
@@ -590,7 +590,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_doNoController.text),
+                                title: Text(_returnRequestNoController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -746,12 +746,12 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0) {
+        if (_getState().data.sapReceivableCreditId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
               bloc.emitEvent(
-                  ReturnSalesDetailEventItemRemove(itemIndex: index));
+                  ReceivableCreditDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
                 color: Colors.red,

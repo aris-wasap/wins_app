@@ -87,13 +87,13 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield DeliveryOrderDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.soId == 0) {
                 yield DeliveryOrderDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (2)',
                   data: event.data,
                 );
               } else {

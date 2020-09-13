@@ -8,6 +8,7 @@ import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
@@ -32,9 +33,9 @@ import 'package:admart_app/models/issue_production_detail_response.dart';
 import 'package:admart_app/models/issue_production_detail_scan_response.dart';
 import 'package:admart_app/models/issue_production_list_response.dart';
 import 'package:admart_app/models/login_response.dart';
-import 'package:admart_app/models/purchase_credit_detail_response.dart';
-import 'package:admart_app/models/purchase_credit_detail_scan_response.dart';
-import 'package:admart_app/models/purchase_credit_list_response.dart';
+import 'package:admart_app/models/payable_credit_detail_response.dart';
+import 'package:admart_app/models/payable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/payable_credit_list_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
@@ -45,6 +46,9 @@ import 'package:admart_app/models/receipt_branch_detail_response.dart'
     as receiptBranchDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart'
     as receiptIssueDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart';
+import 'package:admart_app/models/receivable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/receivable_credit_list_response.dart';
 import 'package:admart_app/models/request_issue_detail_response.dart'
     as requestIssueDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart';
@@ -99,10 +103,12 @@ import 'package:admart_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
 import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart'
+    as receivableCreditDetail;
 import 'package:admart_app/models/purchase_returns_detail_response.dart'
     as purchaseReturnsDetail;
-import 'package:admart_app/models/purchase_credit_detail_response.dart'
-    as purchaseCreditDetail;
+import 'package:admart_app/models/payable_credit_detail_response.dart'
+    as payableCreditDetail;
 import 'package:admart_app/models/receipt_production_detail_response.dart'
     as receiptProductionDetail;
 import 'package:admart_app/models/issue_production_detail_response.dart'
@@ -283,6 +289,31 @@ class Repository {
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
           int doId, String qrResult) =>
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
+
+  //-----------------------------
+  //ReceivableCreditList
+  //-----------------------------
+  Future<ReceivableCreditListResponse> receivableCreditList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.receivableCreditList_FetchNextPage(lastId, searchQuery);
+
+  Future<ReceivableCreditListResponse> receivableCreditList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.receivableCreditList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //ReceivableCreditDetail
+  //-----------------------------
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_GetById(int id) =>
+      apiProvider.receivableCreditDetail_GetById(id);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Add(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Add(data);
+
+  Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
+          int doId, String qrResult) =>
+      apiProvider.receivableCreditDetail_Scan(doId, qrResult);
 
   //-----------------------------
   //IssueProductionList
@@ -568,29 +599,29 @@ class Repository {
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
 
   //-----------------------------
-  //PurchaseCreditList
+  //PayableCreditList
   //-----------------------------
-  Future<PurchaseCreditListResponse> purchaseCreditList_FetchNextPage(
+  Future<PayableCreditListResponse> payableCreditList_FetchNextPage(
           int lastId, String searchQuery) =>
-      apiProvider.purchaseCreditList_FetchNextPage(lastId, searchQuery);
+      apiProvider.payableCreditList_FetchNextPage(lastId, searchQuery);
 
-  Future<PurchaseCreditListResponse> purchaseCreditList_Refresh(
+  Future<PayableCreditListResponse> payableCreditList_Refresh(
           int lastId, String searchQuery) =>
-      apiProvider.purchaseCreditList_Refresh(lastId, searchQuery);
+      apiProvider.payableCreditList_Refresh(lastId, searchQuery);
 
   //-----------------------------
-  //PurchaseCreditDetail
+  //PayableCreditDetail
   //-----------------------------
-  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_GetById(int id) =>
-      apiProvider.purchaseCreditDetail_GetById(id);
+  Future<PayableCreditDetailResponse> payableCreditDetail_GetById(int id) =>
+      apiProvider.payableCreditDetail_GetById(id);
 
-  Future<PurchaseCreditDetailResponse> purchaseCreditDetail_Add(
-          purchaseCreditDetail.Data data) =>
-      apiProvider.purchaseCreditDetail_Add(data);
+  Future<PayableCreditDetailResponse> payableCreditDetail_Add(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Add(data);
 
-  Future<PurchaseCreditDetailScanResponse> purchaseCreditDetail_Scan(
+  Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
           int grpoId, String qrResult) =>
-      apiProvider.purchaseCreditDetail_Scan(grpoId, qrResult);
+      apiProvider.payableCreditDetail_Scan(grpoId, qrResult);
 
   //-----------------------------
   //InventoryTransferList
@@ -704,6 +735,13 @@ class Repository {
   Future<CflPurchaseDeliveryResponse> cflPurchaseDelivery_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPurchaseDelivery_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflReturnRequest
+  //-----------------------------
+  Future<CflReturnRequestResponse> cflReturnRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflReturnRequest_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------s
   //Warehouse

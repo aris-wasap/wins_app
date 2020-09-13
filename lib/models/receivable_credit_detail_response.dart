@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
 //     final item = itemFromJson(jsonString);
-//     final returnSalesDetailResponse = returnSalesDetailResponseFromJson(jsonString);
+//     final receivableCreditDetailResponse = receivableCreditDetailResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-part 'return_sales_detail_response.g.dart';
+part 'receivable_credit_detail_response.g.dart';
 
-ReturnSalesDetailResponse returnSalesDetailResponseFromJson(String str) {
+ReceivableCreditDetailResponse receivableCreditDetailResponseFromJson(String str) {
   final jsonData = json.decode(str);
-  return ReturnSalesDetailResponse.fromJson(jsonData);
+  return ReceivableCreditDetailResponse.fromJson(jsonData);
 }
 
 @JsonSerializable()
-class ReturnSalesDetailResponse {
+class ReceivableCreditDetailResponse {
   @JsonKey(name: 'Error')
   bool error;
 
@@ -25,17 +25,17 @@ class ReturnSalesDetailResponse {
   @JsonKey(name: 'Data')
   Data data;
 
-  ReturnSalesDetailResponse({
+  ReceivableCreditDetailResponse({
     this.error,
     this.errorMessage,
     this.data,
   });
 
-  factory ReturnSalesDetailResponse.fromJson(Map<String, dynamic> json) {
-    return _$ReturnSalesDetailResponseFromJson(json);
+  factory ReceivableCreditDetailResponse.fromJson(Map<String, dynamic> json) {
+    return _$ReceivableCreditDetailResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$ReturnSalesDetailResponseToJson(this);
+  Map<String, dynamic> toJson() => _$ReceivableCreditDetailResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -43,11 +43,11 @@ class Data {
   @JsonKey(name: 'Id')
   int id;
 
-  @JsonKey(name: 'DoId')
-  int doId;
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
 
-  @JsonKey(name: 'DoNo')
-  String doNo;
+  @JsonKey(name: 'ReturnRequestNo')
+  String returnRequestNo;
 
   @JsonKey(name: 'SeriesNameDo')
   String seriesNameDo;
@@ -82,8 +82,8 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
-  @JsonKey(name: 'SapReturnId')
-  int sapReturnId;
+  @JsonKey(name: 'SapReceivableCreditId')
+  int sapReceivableCreditId;
 
   @JsonKey(name: 'CreatedUser')
   int createdUser;
@@ -95,8 +95,8 @@ class Data {
   List<Item> items;
 
   Data({
-    this.doId: 0,
-    this.doNo,
+    this.returnRequestId: 0,
+    this.returnRequestNo,
     this.seriesNameDo,
     this.id: 0,
     this.transNo,
@@ -109,7 +109,7 @@ class Data {
     this.address,
     this.branchId,
     this.branchName,
-    this.sapReturnId:0,
+    this.sapReceivableCreditId:0,
     this.createdUser,
     this.status,
     this.items,
@@ -122,11 +122,11 @@ class Data {
 
 @JsonSerializable()
 class Item {
-  @JsonKey(name: 'DoId')
-  int doId;
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
 
-  @JsonKey(name: 'DoLineNo')
-  int doLineNo;
+  @JsonKey(name: 'ReturnRequestLineNo')
+  int returnRequestLineNo;
 
   @JsonKey(name: 'Id')
   int id;
@@ -143,8 +143,8 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
-  @JsonKey(name: 'DoQty')
-  double doQty;
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
 
   @JsonKey(name: 'Qty')
   double qty;
@@ -168,14 +168,14 @@ class Item {
   String batchNo;
 
   Item({
-    this.doId: 0,
-    this.doLineNo: 0,
+    this.returnRequestId: 0,
+    this.returnRequestLineNo: 0,
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
-    this.doQty: 0,
+    this.reqQty: 0,
     this.qty: 0,
     this.uom,
     this.whsCode,
