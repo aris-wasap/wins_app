@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_delivery_order_page.dart';
+import 'package:admart_app/pages/cfl/cfl_return_request_page.dart';
 import 'package:admart_app/pages/receivable_credit/receivable_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -14,8 +14,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_delivery_order_response.dart'
-    as cflDeliveryOrder;
+import 'package:admart_app/models/cfl_return_request_response.dart'
+    as cflReturnRequest;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -549,21 +549,21 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflDeliveryOrder.Data> dor = Navigator.push(
+                      Future<cflReturnRequest.Data> req = Navigator.push(
                           context,
-                          MaterialPageRoute<cflDeliveryOrder.Data>(
+                          MaterialPageRoute<cflReturnRequest.Data>(
                               builder: (BuildContext context) =>
-                                  CflDeliveryOrderPage()));
+                                  CflReturnRequestPage()));
 
-                      dor.then((cflDeliveryOrder.Data dor) {
-                        if (dor != null) {
-                          _returnRequestIdController.text = dor.id.toString();
+                      req.then((cflReturnRequest.Data req) {
+                        if (req != null) {
+                          _returnRequestIdController.text = req.id.toString();
                           _returnRequestNoController.text =
-                              dor.seriesName + '-' + dor.transNo;
-                          _customerCodeController.text = dor.customerCode;
-                          _customerNameController.text = dor.customerName;
-                          _branchIdController.text = dor.branchId.toString();
-                          _branchNameController.text = dor.branchName;
+                              req.seriesName + '-' + req.transNo;
+                          _customerCodeController.text = req.customerCode;
+                          _customerNameController.text = req.customerName;
+                          _branchIdController.text = req.branchId.toString();
+                          _branchNameController.text = req.branchName;
                         }
                       });
                     }
@@ -584,7 +584,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Delivery No.",
+                                "Return Request No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
