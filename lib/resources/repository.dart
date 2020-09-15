@@ -8,6 +8,7 @@ import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
 import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
@@ -742,6 +743,14 @@ class Repository {
   Future<CflReturnRequestResponse> cflReturnRequest_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflReturnRequest_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflReturnRequestDelivery
+  //-----------------------------
+  Future<CflReturnRequestDeliveryResponse> cflReturnRequestDelivery_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflReturnRequestDelivery_FetchNextPage(rowStart, searchQuery);
+
 
   //-----------------------------s
   //Warehouse

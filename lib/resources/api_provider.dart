@@ -10,6 +10,7 @@ import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
 import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
@@ -927,10 +928,10 @@ class ApiProvider {
   }
 
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
-      int soId, String qrResult) async {
+      int returnRequestId, String qrResult) async {
     try {
       var body = json.encode(
-          {"UserId": globalBloc.userId, "SoId": soId, "QrResult": qrResult});
+          {"UserId": globalBloc.userId, "ReturnRequestId": returnRequestId, "QrResult": qrResult});
 
       final response = await http.post("${_url}api/ReturnSalesDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -3134,6 +3135,37 @@ class ApiProvider {
       throw Exception('cflReturnRequest_FetchNextPage:Failed to load post(1)');
     }
   }
+
+  //-----------------------------
+  //CflReturnRequestDelivery
+  //-----------------------------
+  Future<CflReturnRequestDeliveryResponse> cflReturnRequestDelivery_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/CflReturnRequestDeliveryApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflReturnRequestDeliveryResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflReturnRequestDelivery_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflReturnRequestDelivery_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
 
   //-----------------------------
   //Warehouse
