@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_delivery_order_page.dart';
+import 'package:admart_app/pages/cfl/cfl_return_request_delivery_page.dart';
 import 'package:admart_app/pages/return_sales/return_sales_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -14,8 +14,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_delivery_order_response.dart'
-    as cflDeliveryOrder;
+import 'package:admart_app/models/cfl_return_request_delivery_response.dart'
+    as cflReturnRequestDelivery;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -34,12 +34,16 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
+  final _returnRequestIdController = TextEditingController();
+  final _returnRequestNoController = TextEditingController();
+  final _seriesNameReqNoController = TextEditingController();
   final _doIdController = TextEditingController();
   final _doNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
 
@@ -76,12 +80,16 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
   @override
   void dispose() {
+    _returnRequestIdController?.dispose();
+    _returnRequestNoController?.dispose();
+    _seriesNameReqNoController?.dispose();
     _doIdController?.dispose();
     _doNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _refNoController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
 
@@ -94,17 +102,22 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.id = _id;
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.returnRequestNo = _returnRequestNoController.text;
+    data.seriesNameReqNo = _seriesNameReqNoController.text;
+    //data.doId = int.parse(_doIdController.text);
     data.doNo = _doNoController.text;
     data.transDate = transDate;
     data.customerCode = _customerCodeController.text;
     data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "DO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "Return Request Date harus di isi");
       return;
-    } else if (["", null].contains(data.doNo)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(context: context, message: "Return Request harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -267,8 +280,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_doNoController.text)) {
-      ValidateDialogWidget(context: context, message: "DO No harus di isi");
+    if (["", null].contains(_returnRequestNoController.text)) {
+      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -285,15 +298,15 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       }
 
       bloc.emitEvent(ReturnSalesDetailEventScan(
-          doId: int.parse(_doIdController.text),
-          doNo: _doNoController.text,
+          returnRequestId: int.parse(_returnRequestIdController.text),
+          returnRequestNo: _returnRequestNoController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
       //         ReturnSalesDetailEventScan(
-      //             doId: int.parse(_doIdController.text),
+      //             returnRequestId: int.parse(_returnRequestIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -467,8 +480,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _doIdController.text = data.doId.toString();
-      _doNoController.text = data.doNo;
+      _returnRequestIdController.text = data.returnRequestId.toString();
+      _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -549,21 +562,23 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflDeliveryOrder.Data> dor = Navigator.push(
+                      Future<cflReturnRequestDelivery.Data> req = Navigator.push(
                           context,
-                          MaterialPageRoute<cflDeliveryOrder.Data>(
+                          MaterialPageRoute<cflReturnRequestDelivery.Data>(
                               builder: (BuildContext context) =>
-                                  CflDeliveryOrderPage()));
+                                  CflReturnRequestDeliveryPage()));
 
-                      dor.then((cflDeliveryOrder.Data dor) {
-                        if (dor != null) {
-                          _doIdController.text = dor.id.toString();
-                          _doNoController.text =
-                              dor.seriesName + '-' + dor.transNo;
-                          _customerCodeController.text = dor.customerCode;
-                          _customerNameController.text = dor.customerName;
-                          _branchIdController.text = dor.branchId.toString();
-                          _branchNameController.text = dor.branchName;
+                      req.then((cflReturnRequestDelivery.Data req) {
+                        if (req != null) {
+                          _returnRequestIdController.text = req.id.toString();
+                          _returnRequestNoController.text =
+                              req.seriesName + '-' + req.transNo;
+                          _seriesNameReqNoController.text = req.seriesName;
+                          _customerCodeController.text = req.customerCode;
+                          _customerNameController.text = req.customerName;
+                          _refNoController.text = req.refNo;
+                          _branchIdController.text = req.branchId.toString();
+                          _branchNameController.text = req.branchName;
                         }
                       });
                     }
@@ -584,13 +599,13 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Delivery No.",
+                                "Return Request No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_doNoController.text),
+                                title: Text(_returnRequestNoController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[

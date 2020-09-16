@@ -37,10 +37,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
   final _soIdController = TextEditingController();
   final _soNoController = TextEditingController();
+  final _seriesNameSoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
@@ -78,10 +80,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   void dispose() {
     _soIdController?.dispose();
     _soNoController?.dispose();
+    _seriesNameSoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _refNoController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
 
@@ -94,10 +98,13 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.id = _id;
+    data.soId = int.parse(_soIdController.text);
     data.soNo = _soNoController.text;
     data.transDate = transDate;
+    data.seriesNameSo = _seriesNameSoController.text;
     data.customerCode = _customerCodeController.text;
     data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -560,8 +567,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                           _soIdController.text = so.id.toString();
                           _soNoController.text =
                               so.seriesName + '-' + so.transNo;
+                          _seriesNameSoController.text = so.seriesName;
                           _customerCodeController.text = so.customerCode;
                           _customerNameController.text = so.customerName;
+                          _refNoController.text = so.refNo;
                           _branchIdController.text = so.branchId.toString();
                           _branchNameController.text = so.branchName;
                         }

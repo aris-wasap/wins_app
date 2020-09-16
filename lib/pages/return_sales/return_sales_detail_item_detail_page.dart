@@ -35,6 +35,7 @@ class _ReturnSalesDetailItemDetailPageState
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
+  final _qtyReqController = TextEditingController();
   final _qtyDoController = TextEditingController();
   final _qtyController = TextEditingController();
   final _whsCodeController = TextEditingController();
@@ -142,6 +143,7 @@ class _ReturnSalesDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
+    _qtyReqController.text = data.reqQty.toString();
     _qtyDoController.text = data.doQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
@@ -204,10 +206,10 @@ class _ReturnSalesDetailItemDetailPageState
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
-                  controller: _qtyDoController,
+                  controller: _qtyReqController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "Open DO Qty",
+                      labelText: "Req Qty",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(

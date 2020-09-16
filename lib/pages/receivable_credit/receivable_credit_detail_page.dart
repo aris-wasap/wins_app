@@ -40,6 +40,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
 
@@ -82,6 +83,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _refNoController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
 
@@ -101,10 +103,10 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "DO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -562,6 +564,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
                               req.seriesName + '-' + req.transNo;
                           _customerCodeController.text = req.customerCode;
                           _customerNameController.text = req.customerName;
+                          _refNoController.text = req.refNo;
                           _branchIdController.text = req.branchId.toString();
                           _branchNameController.text = req.branchName;
                         }

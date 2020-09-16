@@ -7,8 +7,8 @@ class ReturnSalesDetailEvent extends BlocEvent {
     this.id,
     this.data,
     this.item,
-    this.doId,
-    this.doNo,
+    this.returnRequestId,
+    this.returnRequestNo,
     this.itemIndex,
     this.qrResult,
   });
@@ -16,8 +16,8 @@ class ReturnSalesDetailEvent extends BlocEvent {
   final int id;
   final Data data;
   final Item item;
-  final int doId;
-  final String doNo;
+  final int returnRequestId;
+  final String returnRequestNo;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,13 +37,13 @@ class ReturnSalesDetailEventGetId extends ReturnSalesDetailEvent {
 class ReturnSalesDetailEventScan extends ReturnSalesDetailEvent {
   ReturnSalesDetailEventScan({
     @required Data data,
-    @required int doId,
-    @required String doNo,
+    @required int returnRequestId,
+    @required String returnRequestNo,
     @required String qrResult,
   }) : super(
           data: data,
-          doId: doId,
-          doNo: doNo,
+          returnRequestId: returnRequestId,
+          returnRequestNo: returnRequestNo,
           qrResult: qrResult,
         );
 }

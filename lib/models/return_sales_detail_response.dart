@@ -40,6 +40,15 @@ class ReturnSalesDetailResponse {
 
 @JsonSerializable()
 class Data {
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestNo')
+  String returnRequestNo;
+
+  @JsonKey(name: 'SeriesNameReqNo')
+  String seriesNameReqNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -95,6 +104,9 @@ class Data {
   List<Item> items;
 
   Data({
+    this.returnRequestId = 0,
+    this.returnRequestNo,
+    this.seriesNameReqNo,
     this.doId: 0,
     this.doNo,
     this.seriesNameDo,
@@ -122,6 +134,12 @@ class Data {
 
 @JsonSerializable()
 class Item {
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestLineNo')
+  int returnRequestLineNo;
+
   @JsonKey(name: 'DoId')
   int doId;
 
@@ -142,6 +160,9 @@ class Item {
 
   @JsonKey(name: 'ItemName')
   String itemName;
+
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
 
   @JsonKey(name: 'DoQty')
   double doQty;
@@ -168,6 +189,8 @@ class Item {
   String batchNo;
 
   Item({
+    this.returnRequestId,
+    this.returnRequestLineNo,
     this.doId: 0,
     this.doLineNo: 0,
     this.id: 0,
@@ -175,6 +198,7 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
+    this.reqQty,
     this.doQty: 0,
     this.qty: 0,
     this.uom,

@@ -27,6 +27,9 @@ Map<String, dynamic> _$ReturnSalesDetailResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestNo: json['ReturnRequestNo'] as String,
+    seriesNameReqNo: json['SeriesNameReqNo'] as String,
     doId: json['DoId'] as int,
     doNo: json['DoNo'] as String,
     seriesNameDo: json['SeriesNameDo'] as String,
@@ -54,6 +57,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestNo': instance.returnRequestNo,
+      'SeriesNameReqNo': instance.seriesNameReqNo,
       'Id': instance.id,
       'DoId': instance.doId,
       'DoNo': instance.doNo,
@@ -76,6 +82,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestLineNo: json['ReturnRequestLineNo'] as int,
     doId: json['DoId'] as int,
     doLineNo: json['DoLineNo'] as int,
     id: json['Id'] as int,
@@ -83,6 +91,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
+    reqQty: (json['ReqQty'] as num)?.toDouble(),
     doQty: (json['DoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
@@ -95,6 +104,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestLineNo': instance.returnRequestLineNo,
       'DoId': instance.doId,
       'DoLineNo': instance.doLineNo,
       'Id': instance.id,
@@ -102,6 +113,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
+      'ReqQty': instance.reqQty,
       'DoQty': instance.doQty,
       'Qty': instance.qty,
       'Uom': instance.uom,

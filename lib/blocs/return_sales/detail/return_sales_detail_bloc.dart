@@ -60,8 +60,8 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is ReturnSalesDetailEventScan) {
-      var doId = event.doId;
-      var doNo = event.doNo;
+      var returnRequestId = event.returnRequestId;
+      var returnRequestNo = event.returnRequestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +71,7 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         ReturnSalesDetailScanResponse response =
-            await _repository.returnSalesDetail_Scan(doId, qrResult);
+            await _repository.returnSalesDetail_Scan(returnRequestId, qrResult);
         if (response == null) {
           yield ReturnSalesDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,13 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReturnSalesDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Delivery Order No. : ${doNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.doId == 0) {
+              if (response.data.returnRequestId == 0) {
                 yield ReturnSalesDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Delivery Order No. : ${doNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {

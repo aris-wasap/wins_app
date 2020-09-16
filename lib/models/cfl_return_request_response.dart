@@ -57,6 +57,9 @@ class Data {
   @JsonKey(name: 'CustomerName')
   String customerName;
 
+  @JsonKey(name: 'RefNo')
+  String refNo;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
@@ -73,6 +76,7 @@ class Data {
     this.status,
     this.customerCode,
     this.customerName,
+    this.refNo,
     this.seriesName,
     this.branchId,
     this.branchName,

@@ -1047,10 +1047,10 @@ class ApiProvider {
   }
 
   Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
-      int soId, String qrResult) async {
+      int returnRequestId, String qrResult) async {
     try {
       var body = json.encode(
-          {"UserId": globalBloc.userId, "SoId": soId, "QrResult": qrResult});
+          {"UserId": globalBloc.userId, "ReturnRequestId": returnRequestId, "QrResult": qrResult});
 
       final response = await http.post("${_url}api/ReceivableCreditDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);

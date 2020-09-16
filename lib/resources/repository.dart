@@ -313,8 +313,8 @@ class Repository {
       apiProvider.receivableCreditDetail_Add(data);
 
   Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
-          int doId, String qrResult) =>
-      apiProvider.receivableCreditDetail_Scan(doId, qrResult);
+          int returnRequestId, String qrResult) =>
+      apiProvider.receivableCreditDetail_Scan(returnRequestId, qrResult);
 
   //-----------------------------
   //IssueProductionList
