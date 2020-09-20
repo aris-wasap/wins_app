@@ -39,8 +39,9 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _poNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
-  final _customerCodeController = TextEditingController();
-  final _customerNameController = TextEditingController();
+  final _vendorCodeController = TextEditingController();
+  final _vendorNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
@@ -82,8 +83,9 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _poNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    _customerCodeController?.dispose();
-    _customerNameController?.dispose();
+    _vendorCodeController?.dispose();
+    _vendorNameController?.dispose();
+    _refNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
@@ -97,12 +99,15 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = _id;
+    data.poId = int.parse(_poIdController.text);
     data.poNo = _poNoController.text;
     data.transDate = transDate;
-    data.customerCode = _customerCodeController.text;
-    data.customerName = _customerNameController.text;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
     data.seriesName = _seriesNameController.text;
     data.seriesNamePo = _seriesNamePoController.text;
+    data.refNo = _refNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -111,8 +116,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     } else if (["", null].contains(data.poNo)) {
       ValidateDialogWidget(context: context, message: "PO No harus di isi");
       return;
-    } else if (["", null].contains(data.customerCode)) {
-      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -220,7 +225,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.sapReceiptOrderId == 0) {
       return AppBar(
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
@@ -283,7 +288,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -392,7 +397,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapReceiptOrderId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -479,8 +484,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       } else {
         _transDateController.text = null;
       }
-      _customerCodeController.text = data.customerCode;
-      _customerNameController.text = data.customerName;
+      _vendorCodeController.text = data.vendorCode;
+      _vendorNameController.text = data.vendorName;
       _seriesNamePoController.text = data.seriesNamePo;
       _seriesNameController.text = data.seriesName;
       _branchIdController.text = data.branchId.toString();
@@ -581,11 +586,12 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           _poIdController.text = po.id.toString();
                           _poNoController.text =
                               po.seriesName + '-' + po.transNo;
-                          _customerCodeController.text = po.customerCode;
-                          _customerNameController.text = po.customerName;
+                          _vendorCodeController.text = po.vendorCode;
+                          _vendorNameController.text = po.vendorName;
+                          _refNoController.text = po.refNo;
                           _branchIdController.text = po.branchId.toString();
                           _branchNameController.text = po.branchName;
-                          // _seriesNamePoController.text = po.seriesName;
+                          _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -663,11 +669,11 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_customerNameController.text),
+                                title: Text(_vendorNameController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_customerCodeController.text),
+                                    Text(_vendorCodeController.text),
                                   ],
                                 ),
                               )
@@ -768,7 +774,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapReceiptOrderId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

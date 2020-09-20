@@ -55,11 +55,11 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'VendorCode')
+  String vendorCode;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'VendorName')
+  String vendorName;
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
@@ -82,6 +82,15 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReceiptOrderId')
+  int sapReceiptOrderId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -91,8 +100,8 @@ class Data {
     this.id: 0,
     this.transNo,
     this.transDate,
-    this.customerCode,
-    this.customerName,
+    this.vendorCode,
+    this.vendorName,
     this.contactPerson,
     this.refNo,
     this.address,
@@ -100,6 +109,9 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReceiptOrderId=0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -154,6 +166,12 @@ class Item {
 
   @JsonKey(name: 'Micron')
   double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
 
   @JsonKey(name: 'UnitPriceTc')
   double unitPriceTc;
@@ -222,6 +240,9 @@ class Item {
     this.isBatch,
     this.priceMode,
     this.batchNo,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

@@ -179,8 +179,8 @@ class _CflPurchaseOrderPageState extends State<CflPurchaseOrderPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("${data[index].branchName ?? ''}"),
-                    Text("${data[index].customerCode ?? ''}"),
-                    Text("${data[index].customerName ?? ''}"),
+                    Text("${data[index].vendorCode ?? ''}"),
+                    Text("${data[index].vendorName ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

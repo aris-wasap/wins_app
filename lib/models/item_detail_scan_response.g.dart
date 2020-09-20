@@ -31,6 +31,12 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     itemName: json['ItemName'] as String,
     distNumber: json['DistNumber'] as String,
     totalStock: (json['TotalStock'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    itemType: json['ItemType'] as String,
+    micron: (json['Micron'] as num)?.toDouble(),
+    uom: json['Uom'] as String,
     details: (json['Details'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -43,6 +49,12 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ItemName': instance.itemName,
       'DistNumber': instance.distNumber,
       'TotalStock': instance.totalStock,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ItemType': instance.itemType,
+      'Uom': instance.uom,
       'Details': instance.details,
     };
 
@@ -54,6 +66,12 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     stock: (json['Stock'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    itemType: json['ItemType'] as String,
+    micron: (json['Micron'] as num)?.toDouble(),
+    uom: json['Uom'] as String,
   );
 }
 
@@ -64,4 +82,10 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'Stock': instance.stock,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ItemType': instance.itemType,
+      'Uom': instance.uom,
     };
