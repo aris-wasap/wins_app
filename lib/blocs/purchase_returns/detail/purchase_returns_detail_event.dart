@@ -7,8 +7,8 @@ class PurchaseReturnsDetailEvent extends BlocEvent {
     this.id,
     this.data,
     this.item,
-    this.grpoId,
-    this.grpoNo,
+    this.returnRequestId,
+    this.returnRequestNo,
     this.itemIndex,
     this.qrResult,
   });
@@ -16,8 +16,8 @@ class PurchaseReturnsDetailEvent extends BlocEvent {
   final int id;
   final Data data;
   final Item item;
-  final int grpoId;
-  final String grpoNo;
+  final int returnRequestId;
+  final String returnRequestNo;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,13 +37,13 @@ class PurchaseReturnsDetailEventGetId extends PurchaseReturnsDetailEvent {
 class PurchaseReturnsDetailEventScan extends PurchaseReturnsDetailEvent {
   PurchaseReturnsDetailEventScan({
     @required Data data,
-    @required int grpoId,
-    @required String grpoNo,
+    @required int returnRequestId,
+    @required String returnRequestNo,
     @required String qrResult,
   }) : super(
           data: data,
-          grpoId: grpoId,
-          grpoNo: grpoNo,
+          returnRequestId: returnRequestId,
+          returnRequestNo: returnRequestNo,
           qrResult: qrResult,
         );
 }

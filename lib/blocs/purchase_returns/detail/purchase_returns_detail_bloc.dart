@@ -60,8 +60,8 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is PurchaseReturnsDetailEventScan) {
-      var grpoId = event.grpoId;
-      var grpoNo = event.grpoNo;
+      var returnRequestId = event.returnRequestId;
+      var returnRequestNo = event.returnRequestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +71,7 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         PurchaseReturnsDetailScanResponse response =
-            await _repository.purchaseReturnsDetail_Scan(grpoId, qrResult);
+            await _repository.purchaseReturnsDetail_Scan(returnRequestId, qrResult);
         if (response == null) {
           yield PurchaseReturnsDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,13 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield PurchaseReturnsDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan dan GRPO ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.grpoId == 0) {
+              if (response.data.returnRequestId == 0) {
                 yield PurchaseReturnsDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan dan GRPO ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {

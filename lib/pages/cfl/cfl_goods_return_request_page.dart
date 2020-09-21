@@ -2,22 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/purchase_returns/list/purchase_returns_list_bloc.dart';
-import 'package:admart_app/blocs/purchase_returns/list/purchase_returns_list_event.dart';
-import 'package:admart_app/blocs/purchase_returns/list/purchase_returns_list_state.dart';
-import 'package:admart_app/pages/purchase_returns/purchase_returns_detail_page.dart';
+import 'package:admart_app/blocs/cfl_goods_return_request/cfl_goods_return_request_bloc.dart';
+import 'package:admart_app/blocs/cfl_goods_return_request/cfl_goods_return_request_event.dart';
+import 'package:admart_app/blocs/cfl_goods_return_request/cfl_goods_return_request_state.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class PurchaseReturnsListPage extends StatefulWidget {
+class CflGoodsReturnRequestPage extends StatefulWidget {
   @override
-  _PurchaseReturnsListPageState createState() =>
-      _PurchaseReturnsListPageState();
+  _CflGoodsReturnRequestPageState createState() => _CflGoodsReturnRequestPageState();
 }
 
-class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
-  PurchaseReturnsListBloc bloc = PurchaseReturnsListBloc();
+class _CflGoodsReturnRequestPageState extends State<CflGoodsReturnRequestPage> {
+  CflGoodsReturnRequestBloc bloc = CflGoodsReturnRequestBloc();
+
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,9 +27,8 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(PurchaseReturnsListEvent(
-        event: PurchaseReturnsListEventType.firstPage,
+      bloc.emitEvent(CflGoodsReturnRequestEvent(
+        event: CflGoodsReturnRequestEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -40,8 +37,8 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(PurchaseReturnsListEvent(
-        event: PurchaseReturnsListEventType.nextPage,
+      bloc.emitEvent(CflGoodsReturnRequestEvent(
+        event: CflGoodsReturnRequestEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,13 +48,12 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(PurchaseReturnsListEvent(
-        event: PurchaseReturnsListEventType.firstPage,
-      ));
-    });
+    bloc.emitEvent(CflGoodsReturnRequestEvent(
+      event: CflGoodsReturnRequestEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -70,20 +66,20 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflGoodsReturnRequestState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Goods Return",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Return Request",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
-              color: Colors.orange[500],
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -92,8 +88,8 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(PurchaseReturnsListEvent(
-                  event: PurchaseReturnsListEventType.deactivedSearch,
+                bloc.emitEvent(CflGoodsReturnRequestEvent(
+                  event: CflGoodsReturnRequestEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -101,16 +97,11 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Return"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradientAppBar,
-          ),
-        ),
-        //ackgroundColor: Colors.blue[500],
+        title: Text("Choose Return Request"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: bgBlue,
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -118,22 +109,11 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(PurchaseReturnsListEvent(
-                event: PurchaseReturnsListEventType.activedSearch,
+              bloc.emitEvent(CflGoodsReturnRequestEvent(
+                event: CflGoodsReturnRequestEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.purchaseReturns_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return PurchaseReturnsDetailPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -141,21 +121,21 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(PurchaseReturnsListEvent(
-      event: PurchaseReturnsListEventType.refresh,
+    bloc.emitEvent(CflGoodsReturnRequestEvent(
+      event: CflGoodsReturnRequestEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<PurchaseReturnsListState>(
+    return BlocEventStateBuilder<CflGoodsReturnRequestState>(
         bloc: bloc,
-        builder: (BuildContext context, PurchaseReturnsListState state) {
+        builder: (BuildContext context, CflGoodsReturnRequestState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
@@ -163,7 +143,7 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
                     gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -171,9 +151,7 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflGoodsReturnRequestState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -188,44 +166,26 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
             ),
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Depo : ${data[index].branchName}"),
-                    Text(
-                        "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
-                    Text("Status : ${data[index].status}"),
-                    Text("User : ${data[index].createdUser}"),
+                    Text("${data[index].branchName ?? ''}"),
+                    Text("${data[index].vendorCode ?? ''}"),
+                    Text("${data[index].vendorName ?? ''}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          PurchaseReturnsDetailPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),

@@ -41,6 +41,16 @@ class PurchaseReturnsDetailResponse {
 
 @JsonSerializable()
 class Data {
+
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestNo')
+  String returnRequestNo;
+
+  @JsonKey(name: 'SeriesNameReqNo')
+  String seriesNameReqNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -83,10 +93,22 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReturnId')
+  int sapReturnId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
   Data({
+    this.returnRequestId = 0,
+    this.returnRequestNo,
+    this.seriesNameReqNo,
     this.grpoId: 0,
     this.grpoNo,
     this.id: 0,
@@ -101,6 +123,9 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReturnId:0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -111,6 +136,13 @@ class Data {
 
 @JsonSerializable()
 class Item {
+
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestLineNo')
+  int returnRequestLineNo;
+
   @JsonKey(name: 'GrpoId')
   int grpoId;
 
@@ -138,6 +170,9 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
+
   @JsonKey(name: 'GrpoQty')
   double grpoQty;
 
@@ -163,6 +198,8 @@ class Item {
   String batchNo;
 
   Item({
+    this.returnRequestId,
+    this.returnRequestLineNo,
     this.grpoId: 0,
     this.grpoLineNo: 0,
     this.webId,
@@ -172,6 +209,7 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
+    this.reqQty: 0,
     this.grpoQty: 0,
     this.qty: 0,
     this.uom,

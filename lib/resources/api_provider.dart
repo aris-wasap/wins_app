@@ -4,6 +4,7 @@ import 'package:admart_app/models/cfl_batch_location_response.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart';
 import 'package:admart_app/models/cfl_branch_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
+import 'package:admart_app/models/cfl_goods_return_request_response.dart';
 import 'package:admart_app/models/cfl_item_batch_response.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
@@ -2454,11 +2455,11 @@ class ApiProvider {
   }
 
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
-      int grpoId, String qrResult) async {
+      int returnRequestId, String qrResult) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
-        "GrpoId": grpoId,
+        "ReturnRequestId": returnRequestId,
         "QrResult": qrResult
       });
 
@@ -3163,6 +3164,36 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflReturnRequestDelivery_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflGoodsReturnRequest
+  //-----------------------------
+  Future<CflGoodsReturnRequestResponse> cflGoodsReturnRequest_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/CflGoodsReturnRequestApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflGoodsReturnRequestResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflGoodsReturnRequest_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflGoodsReturnRequest_FetchNextPage:Failed to load post(1)');
     }
   }
 

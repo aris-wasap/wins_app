@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_purchase_delivery_page.dart';
-import 'package:admart_app/pages/cfl/cfl_purchase_order_page.dart';
+import 'package:admart_app/pages/cfl/cfl_goods_return_request_page.dart';
 import 'package:admart_app/pages/purchase_returns/purchase_returns_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -15,8 +14,8 @@ import 'package:admart_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_purchase_delivery_response.dart'
-    as cflPurchaseDelivery;
+import 'package:admart_app/models/cfl_goods_return_request_response.dart'
+    as cflGoodsReturnRequest;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -36,12 +35,13 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
-  final _grpoIdController = TextEditingController();
-  final _grpoNoController = TextEditingController();
+  final _returnRequestIdController = TextEditingController();
+  final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _vendorCodeController = TextEditingController();
   final _vendorNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
@@ -79,12 +79,13 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
 
   @override
   void dispose() {
-    _grpoIdController?.dispose();
-    _grpoNoController?.dispose();
+    _returnRequestIdController?.dispose();
+    _returnRequestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _vendorCodeController?.dispose();
     _vendorNameController?.dispose();
+    _refNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
@@ -98,23 +99,26 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.grpoNo = _grpoNoController.text;
+    data.id = _id;
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.returnRequestNo = _returnRequestNoController.text;
     data.transDate = transDate;
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
+    data.refNo = _refNoController.text;
     data.seriesName = _seriesNameController.text;
     data.seriesNameGrpo = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "GRPO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "Goods Return Request Date harus di isi");
       return;
-    } else if (["", null].contains(data.grpoNo)) {
-      ValidateDialogWidget(context: context, message: "GRPO No harus di isi");
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
-      return;
+      return; 
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -221,9 +225,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.sapReturnId == 0) {
       return AppBar(
-        title: Text("Create Receipt"),
+        title: Text("Create Return"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -244,7 +248,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Receipt From Purchase Order"),
+        title: Text("Goods Return "),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -273,8 +277,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
-    if (["", null].contains(_grpoNoController.text)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+    if (["", null].contains(_returnRequestNoController.text)) {
+      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -284,21 +288,21 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
 
       bloc.emitEvent(PurchaseReturnsDetailEventScan(
-          grpoId: int.parse(_grpoIdController.text),
-          grpoNo: _grpoNoController.text,
+          returnRequestId: int.parse(_returnRequestIdController.text),
+          returnRequestNo: _returnRequestNoController.text,
           qrResult: qrResult,
           data: data));
 
       // bloc
       //     .eventHandler(
       //         PurchaseReturnsDetailEventScan(
-      //             grpoId: int.parse(_grpoIdController.text),
+      //             returnRequestId: int.parse(_returnRequestIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -393,7 +397,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapReturnId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -472,8 +476,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _grpoIdController.text = data.grpoId.toString();
-      _grpoNoController.text = data.grpoNo;
+      _returnRequestIdController.text = data.returnRequestId.toString();
+      _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -517,8 +521,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                     controller: _transNoController,
                     enabled: false,
                     decoration: InputDecoration(
-                        hintText: "Receipt No.",
-                        labelText: "Receipt No.",
+                        hintText: "Goods Return No.",
+                        labelText: "Goods Return No.",
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
@@ -537,8 +541,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             controller: _transDateController,
                             enabled: false,
                             decoration: InputDecoration(
-                                hintText: "Receipt Date",
-                                labelText: "Receipt Date",
+                                hintText: "Goods Return Date",
+                                labelText: "Goods Return Date",
                                 contentPadding: new EdgeInsets.symmetric(
                                     vertical: 15.0, horizontal: 10.0),
                                 disabledBorder: OutlineInputBorder(
@@ -571,23 +575,23 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflPurchaseDelivery.Data> po = Navigator.push(
+                      Future<cflGoodsReturnRequest.Data> req = Navigator.push(
                           context,
-                          MaterialPageRoute<cflPurchaseDelivery.Data>(
+                          MaterialPageRoute<cflGoodsReturnRequest.Data>(
                               builder: (BuildContext context) =>
-                                  CflPurchaseDeliveryPage()));
+                                  CflGoodsReturnRequestPage()));
 
-                      po.then((cflPurchaseDelivery.Data po) {
-                        if (po != null) {
-                          _grpoIdController.text = po.id.toString();
-                          _grpoNoController.text =
-                              po.seriesName + '-' + po.transNo;
-                          _vendorCodeController.text = po.vendorCode;
-                          _vendorNameController.text = po.vendorName;
-                          _branchIdController.text = po.branchId.toString();
-                          _branchNameController.text = po.branchName;
-
-                          // _seriesNamePoController.text = po.seriesName;
+                      req.then((cflGoodsReturnRequest.Data req) {
+                        if (req != null) {
+                          _returnRequestIdController.text = req.id.toString();
+                          _returnRequestNoController.text =
+                              req.seriesName + '-' + req.transNo;
+                          _vendorCodeController.text = req.vendorCode;
+                          _vendorNameController.text = req.vendorName;
+                          _refNoController.text = req.refNo;
+                          _branchIdController.text = req.branchId.toString();
+                          _branchNameController.text = req.branchName;
+                          _seriesNamePoController.text = req.seriesName;
                         }
                       });
                     }
@@ -608,13 +612,13 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Receipt Purchase Order No.",
+                                "Goods Return Request No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_grpoNoController.text),
+                                title: Text(_returnRequestNoController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -770,7 +774,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapReturnId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
