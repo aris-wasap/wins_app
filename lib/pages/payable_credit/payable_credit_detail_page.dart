@@ -111,7 +111,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, message: "Return Request Date harus di isi");
+          context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
       ValidateDialogWidget(

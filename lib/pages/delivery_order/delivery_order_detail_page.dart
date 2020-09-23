@@ -11,6 +11,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/delivery_order_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,7 +35,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _soIdController = TextEditingController();
   final _soNoController = TextEditingController();
   final _seriesNameSoController = TextEditingController();
@@ -78,6 +79,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _soIdController?.dispose();
     _soNoController?.dispose();
     _seriesNameSoController?.dispose();
@@ -97,7 +99,45 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.soNo = _soNoController.text;
+    data.transDate = transDate;
+    data.customerCode = _customerCodeController.text;
+    data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(context: context, message: "Delivery Order Date harus di isi");
+      return;
+    } else if (["", null].contains(data.soNo)) {
+      ValidateDialogWidget(context: context, message: "Sales Order No harus di isi");
+      return;
+    } else if (["", null].contains(data.customerCode)) {
+      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
     data.id = _id;
+    data.soId = int.parse(_soIdController.text);
+    data.seriesNameSo = _seriesNameSoController.text;
+   
+    bloc.emitEvent(DeliveryOrderDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
     data.soId = int.parse(_soIdController.text);
     data.soNo = _soNoController.text;
     data.transDate = transDate;
@@ -126,7 +166,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       return;
     }
 
-    bloc.emitEvent(DeliveryOrderDetailEventAdd(
+    bloc.emitEvent(DeliveryOrderDetailEventPost(
       data: data,
     ));
   }
@@ -222,9 +262,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapDeliveryId == 0) {
+    if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Delivery"),
+        title: Text("Draft Delivery Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -234,12 +274,50 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.save, color: Colors.yellowAccent,),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapDeliveryId== 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Delivery Order",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -474,6 +552,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _soIdController.text = data.soId.toString();
       _soNoController.text = data.soNo;
       transDate = data.transDate;
