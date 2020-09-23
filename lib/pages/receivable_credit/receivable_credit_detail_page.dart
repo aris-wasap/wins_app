@@ -11,6 +11,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/receivable_credit_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -33,7 +34,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -77,6 +78,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
@@ -95,7 +97,6 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.id = _id;
     data.returnRequestNo = _returnRequestNoController.text;
     data.transDate = transDate;
     data.customerCode = _customerCodeController.text;
@@ -121,7 +122,45 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
       return;
     }
 
+    data.id = _id;
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+
     bloc.emitEvent(ReceivableCreditDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.returnRequestNo = _returnRequestNoController.text;
+    data.transDate = transDate;
+    data.customerCode = _customerCodeController.text;
+    data.customerName = _customerNameController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
+      return;
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
+      return;
+    } else if (["", null].contains(data.customerCode)) {
+      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(ReceivableCreditDetailEventPost(
       data: data,
     ));
   }
@@ -217,24 +256,62 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapReceivableCreditId == 0) {
+    if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Return"),
-        backgroundColor: Colors.blue[500],
+        title: Text("Draft Return"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: Colors.orange[500],
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.save, color: Colors.yellowAccent,),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReceivableCreditId== 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Return",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -469,6 +546,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
