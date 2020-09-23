@@ -83,6 +83,15 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReturnId')
+  int sapReturnId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -101,6 +110,9 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReturnId:0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -138,8 +150,8 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
-  @JsonKey(name: 'ReturnRequestQty')
-  double returnRequestQty;
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
 
   @JsonKey(name: 'Qty')
   double qty;
@@ -172,7 +184,7 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
-    this.returnRequestQty: 0,
+    this.reqQty: 0,
     this.qty: 0,
     this.uom,
     this.whsCode,

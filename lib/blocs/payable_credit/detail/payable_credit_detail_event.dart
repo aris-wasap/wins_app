@@ -82,6 +82,14 @@ class PayableCreditDetailEventAdd extends PayableCreditDetailEvent {
         );
 }
 
+class PayableCreditDetailEventPost extends PayableCreditDetailEvent {
+  PayableCreditDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class PayableCreditDetailEventCancel extends PayableCreditDetailEvent {
   PayableCreditDetailEventCancel({
     @required int id,

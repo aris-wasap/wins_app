@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_purchase_delivery_page.dart';
+import 'package:admart_app/pages/cfl/cfl_payable_return_request_page.dart';
 import 'package:admart_app/pages/cfl/cfl_purchase_order_page.dart';
 import 'package:admart_app/pages/payable_credit/payable_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +12,12 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/payable_credit_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_purchase_delivery_response.dart'
-    as cflPurchaseDelivery;
+import 'package:admart_app/models/cfl_payable_return_request_response.dart'
+    as cflPayableReturnRequest;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -36,13 +37,15 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
+  final _idTxController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _vendorCodeController = TextEditingController();
   final _vendorNameController = TextEditingController();
-  final _seriesNamePoController = TextEditingController();
+  final _refNoController = TextEditingController();
+  final _seriesNameReturnRequestController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
@@ -79,13 +82,15 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _vendorCodeController?.dispose();
     _vendorNameController?.dispose();
-    _seriesNamePoController?.dispose();
+    _refNoController?.dispose();
+    _seriesNameReturnRequestController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
@@ -102,15 +107,15 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     data.transDate = transDate;
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
-    data.seriesName = _seriesNameController.text;
-    data.seriesNameReturnRequest = _seriesNamePoController.text;
     data.items = state.data.items;
-
+    
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Return Request Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -125,7 +130,53 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       return;
     }
 
+    data.id = _id;
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.refNo = _refNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReturnRequest = _seriesNameReturnRequestController.text;
+    
     bloc.emitEvent(PayableCreditDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.returnRequestNo = _returnRequestNoController.text;
+    data.transDate = transDate;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
+    data.refNo = _refNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReturnRequest = _seriesNameReturnRequestController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Return Request Date harus di isi");
+      return;
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
+      return;
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(PayableCreditDetailEventPost(
       data: data,
     ));
   }
@@ -223,7 +274,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Payable Credit Memo"),
+        title: Text("Draft Return"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -233,12 +284,50 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.save, color: Colors.yellowAccent,),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Return",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -274,7 +363,8 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_returnRequestNoController.text)) {
-      ValidateDialogWidget(context: context, message: "SO No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -284,7 +374,9 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -380,20 +472,26 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
+                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite,
-                ),
-                child: Stack(children: <Widget>[
-                  SingleChildScrollView(
-                    padding: EdgeInsets.all(0.0),
-                    child: _buildForm(),
+                // decoration: BoxDecoration(
+                //   gradient: bgGradientPageWhite,
+                // ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 3.0, left: 3.0),
+                  child: Card(
+                    child: Stack(children: <Widget>[
+                      SingleChildScrollView(
+                        padding: EdgeInsets.all(0.0),
+                        child: _buildForm(),
+                      ),
+                      _showCircularProgress(),
+                    ]),
                   ),
-                  _showCircularProgress(),
-                ]),
+                ),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapReturnId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -472,6 +570,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -482,7 +581,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       }
       _vendorCodeController.text = data.vendorCode;
       _vendorNameController.text = data.vendorName;
-      _seriesNamePoController.text = data.seriesNameReturnRequest;
+      _seriesNameReturnRequestController.text = data.seriesNameReturnRequest;
       _seriesNameController.text = data.seriesName;
       _branchIdController.text = data.branchId.toString();
       _branchNameController.text = data.branchName;
@@ -517,8 +616,8 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                     controller: _transNoController,
                     enabled: false,
                     decoration: InputDecoration(
-                        hintText: "Receipt No.",
-                        labelText: "Receipt No.",
+                        hintText: "Return No.",
+                        labelText: "Return No.",
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
@@ -537,8 +636,8 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                             controller: _transDateController,
                             enabled: false,
                             decoration: InputDecoration(
-                                hintText: "Receipt Date",
-                                labelText: "Receipt Date",
+                                hintText: "Return Date",
+                                labelText: "Return Date",
                                 contentPadding: new EdgeInsets.symmetric(
                                     vertical: 15.0, horizontal: 10.0),
                                 disabledBorder: OutlineInputBorder(
@@ -571,23 +670,24 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflPurchaseDelivery.Data> po = Navigator.push(
+                      Future<cflPayableReturnRequest.Data> req = Navigator.push(
                           context,
-                          MaterialPageRoute<cflPurchaseDelivery.Data>(
+                          MaterialPageRoute<cflPayableReturnRequest.Data>(
                               builder: (BuildContext context) =>
-                                  CflPurchaseDeliveryPage()));
+                                  CflPayableReturnRequestPage()));
 
-                      po.then((cflPurchaseDelivery.Data po) {
-                        if (po != null) {
-                          _returnRequestIdController.text = po.id.toString();
+                      req.then((cflPayableReturnRequest.Data req) {
+                        if (req != null) {
+                          _returnRequestIdController.text = req.id.toString();
                           _returnRequestNoController.text =
-                              po.seriesName + '-' + po.transNo;
-                          _vendorCodeController.text = po.vendorCode;
-                          _vendorNameController.text = po.vendorName;
-                          _branchIdController.text = po.branchId.toString();
-                          _branchNameController.text = po.branchName;
-
-                          // _seriesNamePoController.text = po.seriesName;
+                              req.seriesName + '-' + req.transNo;
+                          _vendorCodeController.text = req.vendorCode;
+                          _vendorNameController.text = req.vendorName;
+                          _refNoController.text = req.refNo;
+                          _branchIdController.text = req.branchId.toString();
+                          _branchNameController.text = req.branchName;
+                          _seriesNameReturnRequestController.text =
+                              req.seriesName;
                         }
                       });
                     }
@@ -608,7 +708,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Receipt Purchase Order No.",
+                                "Return Request No.",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
@@ -720,8 +820,8 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                           child: Text("Item Empty"),
                         )),
           Container(
-            height: 5,
-            color: Colors.grey,
+            height: 75,
+            color: Colors.transparent,
           ),
         ]);
   }
@@ -770,7 +870,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

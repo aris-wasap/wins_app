@@ -163,7 +163,43 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is PayableCreditDetailEventCancel) {
+    }
+    else if (event is PayableCreditDetailEventPost) {
+      yield PayableCreditDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        PayableCreditDetailResponse response =
+            await _repository.payableCreditDetail_Post(event.data);
+        if (response == null) {
+          yield PayableCreditDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield PayableCreditDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield PayableCreditDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<payableCreditDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield PayableCreditDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+     else if (event is PayableCreditDetailEventCancel) {
       yield PayableCreditDetailState.busy(
         data: currentState.data,
       );

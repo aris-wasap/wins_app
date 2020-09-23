@@ -11,6 +11,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,7 +35,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -42,7 +43,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _vendorCodeController = TextEditingController();
   final _vendorNameController = TextEditingController();
   final _refNoController = TextEditingController();
-  final _seriesNamePoController = TextEditingController();
+  final _seriesNameGrpoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
@@ -79,6 +80,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
@@ -86,7 +88,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     _vendorCodeController?.dispose();
     _vendorNameController?.dispose();
     _refNoController?.dispose();
-    _seriesNamePoController?.dispose();
+    _seriesNameGrpoController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
@@ -99,15 +101,10 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.id = _id;
-    data.returnRequestId = int.parse(_returnRequestIdController.text);
     data.returnRequestNo = _returnRequestNoController.text;
     data.transDate = transDate;
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
-    data.refNo = _refNoController.text;
-    data.seriesName = _seriesNameController.text;
-    data.seriesNameGrpo = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -129,7 +126,51 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       return;
     }
 
+    data.id = _id;
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.refNo = _refNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameGrpo = _seriesNameGrpoController.text;
+
     bloc.emitEvent(PurchaseReturnsDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.returnRequestId = int.parse(_returnRequestIdController.text);
+    data.returnRequestNo = _returnRequestNoController.text;
+    data.transDate = transDate;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
+    data.refNo = _refNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameGrpo = _seriesNameGrpoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(context: context, message: "Goods Return Request Date harus di isi");
+      return;
+    } else if (["", null].contains(data.returnRequestNo)) {
+      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
+      return;
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
+      return; 
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(PurchaseReturnsDetailEventPost(
       data: data,
     ));
   }
@@ -225,9 +266,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapReturnId == 0) {
+    if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Return"),
+        title: Text("Draft Return"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -237,12 +278,50 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.save, color: Colors.yellowAccent,),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Return",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -476,6 +555,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -486,7 +566,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       }
       _vendorCodeController.text = data.vendorCode;
       _vendorNameController.text = data.vendorName;
-      _seriesNamePoController.text = data.seriesNameGrpo;
+      _seriesNameGrpoController.text = data.seriesNameGrpo;
       _seriesNameController.text = data.seriesName;
       _branchIdController.text = data.branchId.toString();
       _branchNameController.text = data.branchName;
@@ -591,7 +671,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                           _refNoController.text = req.refNo;
                           _branchIdController.text = req.branchId.toString();
                           _branchNameController.text = req.branchName;
-                          _seriesNamePoController.text = req.seriesName;
+                          _seriesNameGrpoController.text = req.seriesName;
                         }
                       });
                     }
@@ -724,8 +804,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                           child: Text("Item Empty"),
                         )),
           Container(
-            height: 5,
-            color: Colors.grey,
+            height: 75,
+            color: Colors.transparent,
           ),
         ]);
   }

@@ -4,6 +4,7 @@ import 'package:admart_app/models/cfl_branch_response.dart';
 import 'package:admart_app/models/cfl_db_warehouse_model.dart';
 import 'package:admart_app/models/cfl_goods_return_request_response.dart';
 import 'package:admart_app/models/cfl_item_batch_response.dart';
+import 'package:admart_app/models/cfl_payable_return_request_response.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
@@ -596,6 +597,10 @@ class Repository {
           purchaseReturnsDetail.Data data) =>
       apiProvider.purchaseReturnsDetail_Add(data);
 
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Post(
+          purchaseReturnsDetail.Data data) =>
+      apiProvider.purchaseReturnsDetail_Post(data);
+
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
           int grpoId, String qrResult) =>
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
@@ -620,6 +625,10 @@ class Repository {
   Future<PayableCreditDetailResponse> payableCreditDetail_Add(
           payableCreditDetail.Data data) =>
       apiProvider.payableCreditDetail_Add(data);
+
+  Future<PayableCreditDetailResponse> payableCreditDetail_Post(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Post(data);
 
   Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
           int grpoId, String qrResult) =>
@@ -758,6 +767,14 @@ class Repository {
   Future<CflGoodsReturnRequestResponse> cflGoodsReturnRequest_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflGoodsReturnRequest_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflPayableReturnRequest
+  //-----------------------------
+  Future<CflPayableReturnRequestResponse> cflPayableReturnRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflPayableReturnRequest_FetchNextPage(rowStart, searchQuery);
+
 
   //-----------------------------s
   //Warehouse

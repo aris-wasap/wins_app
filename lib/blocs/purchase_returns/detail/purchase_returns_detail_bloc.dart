@@ -163,7 +163,42 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is PurchaseReturnsDetailEventCancel) {
+    } else if (event is PurchaseReturnsDetailEventPost) {
+      yield PurchaseReturnsDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        PurchaseReturnsDetailResponse response =
+            await _repository.purchaseReturnsDetail_Post(event.data);
+        if (response == null) {
+          yield PurchaseReturnsDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield PurchaseReturnsDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield PurchaseReturnsDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<purchaseReturnsDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield PurchaseReturnsDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+    else if (event is PurchaseReturnsDetailEventCancel) {
       yield PurchaseReturnsDetailState.busy(
         data: currentState.data,
       );
