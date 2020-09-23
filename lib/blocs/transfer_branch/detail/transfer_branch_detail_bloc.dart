@@ -156,13 +156,51 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
             );
           }
         }
-      } catch (e) {
+      }
+       catch (e) {
         yield TransferBranchDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
         );
       }
-    } else if (event is TransferBranchDetailEventCancel) {
+    }
+    else if (event is TransferBranchDetailEventPost) {
+      yield TransferBranchDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        TransferBranchDetailResponse response =
+            await _repository.transferBranchDetail_Post(event.data);
+        if (response == null) {
+          yield TransferBranchDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield TransferBranchDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield TransferBranchDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<transferBranchDetail.Item>()),
+            );
+          }
+        }
+      }
+       catch (e) {
+        yield TransferBranchDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+     else if (event is TransferBranchDetailEventCancel) {
       yield TransferBranchDetailState.busy(
         data: currentState.data,
       );

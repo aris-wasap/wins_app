@@ -78,6 +78,14 @@ class TransferBranchDetailEventAdd extends TransferBranchDetailEvent {
         );
 }
 
+class TransferBranchDetailEventPost extends TransferBranchDetailEvent {
+  TransferBranchDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class TransferBranchDetailEventCancel extends TransferBranchDetailEvent {
   TransferBranchDetailEventCancel({
     @required int id,

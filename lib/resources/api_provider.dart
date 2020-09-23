@@ -811,6 +811,30 @@ class ApiProvider {
     }
   }
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
+      deliveryOrderDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/DeliveryOrderDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(deliveryOrderDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_Post:Failed to post DeliveryOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
       int soId, String qrResult) async {
     try {
@@ -926,6 +950,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('returnSalesDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Post(
+      returnSalesDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReturnSalesDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(returnSalesDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('returnSalesDetail_Post:Failed to post ReturnSales(2)');
+      }
+    } catch (e) {
+      throw Exception('returnSalesDetail_Post:Failed to load post(1)');
     }
   }
 
@@ -1045,6 +1092,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('receivableCreditDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Post(
+      receivableCreditDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceivableCreditDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receivableCreditDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receivableCreditDetail_Post:Failed to post ReceivableCredit(2)');
+      }
+    } catch (e) {
+      throw Exception('receivableCreditDetail_Post:Failed to load post(1)');
     }
   }
 
@@ -1712,6 +1782,30 @@ class ApiProvider {
     }
   }
 
+  Future<TransferBranchDetailResponse> transferBranchDetail_Post(
+      transferBranchDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/TransferBranchDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferBranchDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferBranchDetail_Post:Failed to post TransferBranch(2)');
+      }
+    } catch (e) {
+      throw Exception('transferBranchDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
       String qrResult) async {
     try {
@@ -1830,6 +1924,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('requestIssueDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_Post(
+      requestIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/RequestIssueDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(requestIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('requestIssueDetail_Post:Failed to post RequestIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('requestIssueDetail_Post:Failed to load post(1)');
     }
   }
 
@@ -1956,6 +2073,30 @@ class ApiProvider {
     }
   }
 
+  Future<ReceiptBranchDetailResponse> receiptBranchDetail_Post(
+      receiptBranchDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceiptBranchDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptBranchDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'receiptBranchDetail_Post:Failed to post ReceiptBranch(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptBranchDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<ReceiptBranchDetailScanResponse> receiptBranchDetail_Scan(
       int issueId, String qrResult) async {
     try {
@@ -2078,6 +2219,29 @@ class ApiProvider {
     }
   }
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
+      receiptIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceiptIssueDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptIssueDetail_Post:Failed to post ReceiptIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptIssueDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
       int issueId, String qrResult) async {
     try {
@@ -2197,6 +2361,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('receiptOrderDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptOrderDetailResponse> receiptOrderDetail_Post(
+      receiptOrderDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceiptOrderDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptOrderDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptOrderDetail_Post:Failed to post ReceiptOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptOrderDetail_Post:Failed to load post(1)');
     }
   }
 
@@ -2474,7 +2661,7 @@ class ApiProvider {
         return compute(purchaseReturnsDetailResponseFromJson, response.body);
       } else {
         throw Exception(
-            'purchaseReturnsDetail_Post:Failed to add PurchaseReturns(2)');
+            'purchaseReturnsDetail_Post:Failed to post PurchaseReturns(2)');
       }
     } catch (e) {
       throw Exception('purchaseReturnsDetail_Post:Failed to load post(1)');

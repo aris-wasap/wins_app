@@ -82,6 +82,14 @@ class ReturnSalesDetailEventAdd extends ReturnSalesDetailEvent {
         );
 }
 
+class ReturnSalesDetailEventPost extends ReturnSalesDetailEvent {
+  ReturnSalesDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class ReturnSalesDetailEventCancel extends ReturnSalesDetailEvent {
   ReturnSalesDetailEventCancel({
     @required int id,

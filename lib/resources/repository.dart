@@ -264,6 +264,10 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Add(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Post(data);
+
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.deliveryOrderDetail_Scan(soId, qrResult);
@@ -289,6 +293,10 @@ class Repository {
           returnSalesDetail.Data data) =>
       apiProvider.returnSalesDetail_Add(data);
 
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Post(
+          returnSalesDetail.Data data) =>
+      apiProvider.returnSalesDetail_Post(data);
+
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
           int doId, String qrResult) =>
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
@@ -313,6 +321,10 @@ class Repository {
   Future<ReceivableCreditDetailResponse> receivableCreditDetail_Add(
           receivableCreditDetail.Data data) =>
       apiProvider.receivableCreditDetail_Add(data);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Post(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Post(data);
 
   Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
           int returnRequestId, String qrResult) =>
@@ -447,6 +459,10 @@ class Repository {
           transferBranchDetail.Data data) =>
       apiProvider.transferBranchDetail_Add(data);
 
+  Future<TransferBranchDetailResponse> transferBranchDetail_Post(
+          transferBranchDetail.Data data) =>
+      apiProvider.transferBranchDetail_Post(data);
+
   Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
           String qrResult) =>
       apiProvider.transferBranchDetail_Scan(qrResult);
@@ -471,6 +487,10 @@ class Repository {
   Future<RequestIssueDetailResponse> requestIssueDetail_Add(
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Add(data);
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_Post(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Post(data);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           String qrResult) =>
@@ -497,6 +517,10 @@ class Repository {
           receiptBranchDetail.Data data) =>
       apiProvider.receiptBranchDetail_Add(data);
 
+  Future<ReceiptBranchDetailResponse> receiptBranchDetail_Post(
+          receiptBranchDetail.Data data) =>
+      apiProvider.receiptBranchDetail_Post(data);
+
   Future<ReceiptBranchDetailScanResponse> receiptBranchDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptBranchDetail_Scan(soId, qrResult);
@@ -522,6 +546,10 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Add(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
+          receiptIssueDetail.Data data) =>
+      apiProvider.receiptIssueDetail_Post(data);
+
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);
@@ -546,6 +574,10 @@ class Repository {
   Future<ReceiptOrderDetailResponse> receiptOrderDetail_Add(
           receiptOrderDetail.Data data) =>
       apiProvider.receiptOrderDetail_Add(data);
+
+  Future<ReceiptOrderDetailResponse> receiptOrderDetail_Post(
+          receiptOrderDetail.Data data) =>
+      apiProvider.receiptOrderDetail_Post(data);
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
           int poId, String qrResult) =>

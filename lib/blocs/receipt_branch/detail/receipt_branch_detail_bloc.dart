@@ -163,6 +163,40 @@ class ReceiptBranchDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    }else if (event is ReceiptBranchDetailEventPost) {
+      yield ReceiptBranchDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptBranchDetailResponse response =
+            await _repository.receiptBranchDetail_Post(event.data);
+        if (response == null) {
+          yield ReceiptBranchDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptBranchDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceiptBranchDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<receiptBranchDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptBranchDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is ReceiptBranchDetailEventCancel) {
       yield ReceiptBranchDetailState.busy(
         data: currentState.data,

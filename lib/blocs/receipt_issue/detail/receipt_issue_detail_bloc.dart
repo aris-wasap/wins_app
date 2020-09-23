@@ -87,13 +87,13 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptIssueDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan Issue No. ${issueNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak ditemukan dari Issue No. ${issueNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.issueId == 0) {
                 yield ReceiptIssueDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan Issue No. ${issueNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak ditemukan dari  Issue No. ${issueNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -137,6 +137,40 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
         var _repository = Repository();
         ReceiptIssueDetailResponse response =
             await _repository.receiptIssueDetail_Add(event.data);
+        if (response == null) {
+          yield ReceiptIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceiptIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<receiptIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }else if (event is ReceiptIssueDetailEventPost) {
+      yield ReceiptIssueDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptIssueDetailResponse response =
+            await _repository.receiptIssueDetail_Post(event.data);
         if (response == null) {
           yield ReceiptIssueDetailState.failure(
             errorMessage: 'Response null',

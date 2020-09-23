@@ -78,6 +78,14 @@ class RequestIssueDetailEventAdd extends RequestIssueDetailEvent {
         );
 }
 
+class RequestIssueDetailEventPost extends RequestIssueDetailEvent {
+  RequestIssueDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class RequestIssueDetailEventCancel extends RequestIssueDetailEvent {
   RequestIssueDetailEventCancel({
     @required int id,

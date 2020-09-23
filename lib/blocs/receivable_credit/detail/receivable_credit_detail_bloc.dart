@@ -163,6 +163,41 @@ class ReceivableCreditDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    }
+    else if (event is ReceivableCreditDetailEventPost) {
+      yield ReceivableCreditDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceivableCreditDetailResponse response =
+            await _repository.receivableCreditDetail_Post(event.data);
+        if (response == null) {
+          yield ReceivableCreditDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceivableCreditDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceivableCreditDetailState.success( 
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<receivableCreditDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceivableCreditDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is ReceivableCreditDetailEventCancel) {
       yield ReceivableCreditDetailState.busy(
         data: currentState.data,

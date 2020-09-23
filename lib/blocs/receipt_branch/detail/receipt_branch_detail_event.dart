@@ -82,6 +82,14 @@ class ReceiptBranchDetailEventAdd extends ReceiptBranchDetailEvent {
         );
 }
 
+class ReceiptBranchDetailEventPost extends ReceiptBranchDetailEvent {
+  ReceiptBranchDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class ReceiptBranchDetailEventCancel extends ReceiptBranchDetailEvent {
   ReceiptBranchDetailEventCancel({
     @required int id,

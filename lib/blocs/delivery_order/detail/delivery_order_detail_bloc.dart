@@ -163,6 +163,40 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    }else if (event is DeliveryOrderDetailEventPost) {
+      yield DeliveryOrderDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        DeliveryOrderDetailResponse response =
+            await _repository.deliveryOrderDetail_Post(event.data);
+        if (response == null) {
+          yield DeliveryOrderDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield DeliveryOrderDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield DeliveryOrderDetailState.success( 
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<deliveryOrderDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield DeliveryOrderDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is DeliveryOrderDetailEventCancel) {
       yield DeliveryOrderDetailState.busy(
         data: currentState.data,

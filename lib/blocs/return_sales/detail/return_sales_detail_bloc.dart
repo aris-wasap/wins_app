@@ -163,7 +163,43 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is ReturnSalesDetailEventCancel) {
+    }
+    else if (event is ReturnSalesDetailEventPost) {
+      yield ReturnSalesDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReturnSalesDetailResponse response =
+            await _repository.returnSalesDetail_Post(event.data);
+        if (response == null) {
+          yield ReturnSalesDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReturnSalesDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReturnSalesDetailState.success( 
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<returnSalesDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReturnSalesDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+     else if (event is ReturnSalesDetailEventCancel) {
       yield ReturnSalesDetailState.busy(
         data: currentState.data,
       );
