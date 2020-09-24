@@ -11,6 +11,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/receipt_supplier_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,13 +35,14 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _poIdController = TextEditingController();
   final _poNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
-  final _customerCodeController = TextEditingController();
-  final _customerNameController = TextEditingController();
+  final _vendorCodeController = TextEditingController();
+  final _vendorNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
@@ -78,12 +80,14 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _poIdController?.dispose();
     _poNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    _customerCodeController?.dispose();
-    _customerNameController?.dispose();
+    _vendorCodeController?.dispose();
+    _vendorNameController?.dispose();
+    _refNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
@@ -99,20 +103,21 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.poNo = _poNoController.text;
     data.transDate = transDate;
-    data.customerCode = _customerCodeController.text;
-    data.customerName = _customerNameController.text;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
+    data.refNo = _refNoController.text;
     data.seriesName = _seriesNameController.text;
     data.seriesNamePo = _seriesNamePoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "PO Date harus di isi");
+      ValidateDialogWidget(context: context, message: "Receipt Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, message: "PO No harus di isi");
+      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
       return;
-    } else if (["", null].contains(data.customerCode)) {
-      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -124,7 +129,50 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       return;
     }
 
+    data.id = _id;
+    data.poId = int.parse(_poIdController.text);
+    data.seriesName = _seriesNameController.text;
+    data.seriesNamePo = _seriesNamePoController.text;
+
     bloc.emitEvent(ReceiptSupplierDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.poId = int.parse(_poIdController.text);
+    data.poNo = _poNoController.text;
+    data.transDate = transDate;
+    data.vendorCode = _vendorCodeController.text;
+    data.vendorName = _vendorNameController.text;
+    data.refNo = _refNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNamePo = _seriesNamePoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(context: context, message: "Receipt Date harus di isi");
+      return;
+    } else if (["", null].contains(data.poNo)) {
+      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      return;
+    } else if (["", null].contains(data.vendorCode)) {
+      ValidateDialogWidget(context: context, message: "Vendor harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(ReceiptSupplierDetailEventPost(
       data: data,
     ));
   }
@@ -222,7 +270,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Receipt"),
+        title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -232,12 +280,50 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(Icons.save, color: Colors.yellowAccent,),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReceiptSupplierId == 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Receipt",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -273,7 +359,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_poNoController.text)) {
-      ValidateDialogWidget(context: context, message: "PO No harus di isi");
+      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -392,7 +478,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapReceiptSupplierId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -471,6 +557,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
       transDate = data.transDate;
@@ -479,8 +566,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       } else {
         _transDateController.text = null;
       }
-      _customerCodeController.text = data.customerCode;
-      _customerNameController.text = data.customerName;
+      _vendorCodeController.text = data.vendorCode;
+      _vendorNameController.text = data.vendorName;
       _seriesNamePoController.text = data.seriesNamePo;
       _seriesNameController.text = data.seriesName;
       _branchIdController.text = data.branchId.toString();
@@ -581,10 +668,12 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                           _poIdController.text = po.id.toString();
                           _poNoController.text =
                               po.seriesName + '-' + po.transNo;
-                          _customerCodeController.text = po.customerCode;
-                          _customerNameController.text = po.customerName;
+                          _vendorCodeController.text = po.vendorCode;
+                          _vendorNameController.text = po.vendorName;
+                          _refNoController.text = po.refNo;
                           _branchIdController.text = po.branchId.toString();
                           _branchNameController.text = po.branchName;
+                          _seriesNamePoController.text = po.seriesName;
                         }
                       });
                     }
@@ -662,11 +751,11 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_customerNameController.text),
+                                title: Text(_vendorNameController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_customerCodeController.text),
+                                    Text(_vendorCodeController.text),
                                   ],
                                 ),
                               )
@@ -769,7 +858,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapReceiptSupplierId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

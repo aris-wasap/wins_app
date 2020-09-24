@@ -2513,6 +2513,32 @@ class ApiProvider {
     }
   }
 
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Post(
+      receiptSupplierDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/ReceiptSupplierDetailApi/Post",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptSupplierDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'receiptSupplierDetail_Post:Failed to post ReceiptSupplier(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptSupplierDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
       int poId, String qrResult) async {
     try {

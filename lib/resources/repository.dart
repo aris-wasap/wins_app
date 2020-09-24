@@ -604,6 +604,10 @@ class Repository {
           receiptSupplierDetail.Data data) =>
       apiProvider.receiptSupplierDetail_Add(data);
 
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Post(
+          receiptSupplierDetail.Data data) =>
+      apiProvider.receiptSupplierDetail_Post(data);
+
   Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
           int poId, String qrResult) =>
       apiProvider.receiptSupplierDetail_Scan(poId, qrResult);

@@ -76,6 +76,17 @@ class _ReceiptSupplierDetailItemDetailPageState
       return;
     }
 
+    if (_whsCodeController.text == null || _whsCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Warehouse terlebih dahulu");
+      return;
+    }
+    if (_binCodeController.text == null || _binCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Bin Location terlebih dahulu");
+      return;
+    }
+
     bloc.emitEvent(ReceiptSupplierDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
     ));

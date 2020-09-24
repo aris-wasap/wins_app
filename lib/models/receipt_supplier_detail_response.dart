@@ -56,11 +56,11 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'VendorCode')
+  String vendorCode;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'VendorName')
+  String vendorName;
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
@@ -83,6 +83,15 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReceiptSupplierId')
+  int sapReceiptSupplierId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -92,8 +101,8 @@ class Data {
     this.id: 0,
     this.transNo,
     this.transDate,
-    this.customerCode,
-    this.customerName,
+    this.vendorCode,
+    this.vendorName,
     this.contactPerson,
     this.refNo,
     this.address,
@@ -101,6 +110,9 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReceiptSupplierId: 0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 

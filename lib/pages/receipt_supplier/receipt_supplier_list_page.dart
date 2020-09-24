@@ -195,12 +195,12 @@ class _ReceiptSupplierListPageState extends State<ReceiptSupplierListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].branchName}"),
+                    Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
                     Text("Status : ${data[index].status}"),
