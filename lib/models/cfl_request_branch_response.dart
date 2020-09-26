@@ -1,20 +1,20 @@
 // To parse this JSON data, do
 //
-//     final cflTransferBranchResponse = cflTransferBranchResponseFromJson(jsonString);
+//     final cflRequestBranchResponse = cflRequestBranchResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-part 'cfl_transfer_branch_response.g.dart';
+part 'cfl_request_branch_response.g.dart';
 
-CflTransferBranchResponse cflTransferBranchResponseFromJson(String str) {
+CflRequestBranchResponse cflRequestBranchResponseFromJson(String str) {
   final jsonData = json.decode(str);
-  return CflTransferBranchResponse.fromJson(jsonData);
+  return CflRequestBranchResponse.fromJson(jsonData);
 }
 
 @JsonSerializable()
-class CflTransferBranchResponse {
+class CflRequestBranchResponse {
   @JsonKey(name: 'Error')
   bool error;
 
@@ -24,17 +24,17 @@ class CflTransferBranchResponse {
   @JsonKey(name: 'Data')
   List<Data> data;
 
-  CflTransferBranchResponse({
+  CflRequestBranchResponse({
     this.error,
     this.errorMessage,
     this.data,
   });
 
-  factory CflTransferBranchResponse.fromJson(Map<String, dynamic> json) {
-    return _$CflTransferBranchResponseFromJson(json);
+  factory CflRequestBranchResponse.fromJson(Map<String, dynamic> json) {
+    return _$CflRequestBranchResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$CflTransferBranchResponseToJson(this);
+  Map<String, dynamic> toJson() => _$CflRequestBranchResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -51,8 +51,26 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
+  @JsonKey(name: 'CustomerCode')
+  String customerCode;
+
+  @JsonKey(name: 'CustomerName')
+  String customerName;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
+
+  @JsonKey(name: 'FromWhsCode')
+  String fromWhsCode;
+
+  @JsonKey(name: 'FromWhsName')
+  String fromWhsName;
+
+  @JsonKey(name: 'ToWhsCode')
+  String toWhsCode;
+
+  @JsonKey(name: 'ToWhsName')
+  String toWhsName;
 
   @JsonKey(name: 'BranchId')
   int branchId;
@@ -71,7 +89,13 @@ class Data {
     this.transNo,
     this.transDate,
     this.status,
+    this.customerCode,
+    this.customerName,
     this.seriesName,
+    this.fromWhsCode,
+    this.fromWhsName,
+    this.toWhsCode,
+    this.toWhsName,
     this.branchId,
     this.branchName,
     this.toBranchId,

@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_bloc.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_branch/cfl_transfer_branch_state.dart';
+import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_bloc.dart';
+import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_event.dart';
+import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_state.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class CflTransferBranchPage extends StatefulWidget {
+class CflRequestBranchPage extends StatefulWidget {
   @override
-  _CflTransferBranchPageState createState() => _CflTransferBranchPageState();
+  _CflRequestBranchPageState createState() => _CflRequestBranchPageState();
 }
 
-class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
-  CflTransferBranchBloc bloc = CflTransferBranchBloc();
+class _CflRequestBranchPageState extends State<CflRequestBranchPage> {
+  CflRequestBranchBloc bloc = CflRequestBranchBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -27,8 +27,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      bloc.emitEvent(CflTransferBranchEvent(
-        event: CflTransferBranchEventType.firstPage,
+      bloc.emitEvent(CflRequestBranchEvent(
+        event: CflRequestBranchEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -37,8 +37,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(CflTransferBranchEvent(
-        event: CflTransferBranchEventType.nextPage,
+      bloc.emitEvent(CflRequestBranchEvent(
+        event: CflRequestBranchEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -48,8 +48,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
   void initState() {
     super.initState();
 
-    bloc.emitEvent(CflTransferBranchEvent(
-      event: CflTransferBranchEventType.firstPage,
+    bloc.emitEvent(CflRequestBranchEvent(
+      event: CflRequestBranchEventType.firstPage,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -66,15 +66,14 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar(CflTransferBranchState state) {
+  PreferredSizeWidget _appBar(CflRequestBranchState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Transfer Detail",
-            hintStyle: TextStyle(color: Colors.white),
-          ),
+              hintText: "Search Transfer Request",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
@@ -88,8 +87,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(CflTransferBranchEvent(
-                  event: CflTransferBranchEventType.deactivedSearch,
+                bloc.emitEvent(CflRequestBranchEvent(
+                  event: CflRequestBranchEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -97,7 +96,7 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
       );
     } else {
       return AppBar(
-        title: Text("Choose Transfer No."),
+        title: Text("Choose Transfer Request"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -109,8 +108,8 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(CflTransferBranchEvent(
-                event: CflTransferBranchEventType.activedSearch,
+              bloc.emitEvent(CflRequestBranchEvent(
+                event: CflRequestBranchEventType.activedSearch,
               ));
             },
           ),
@@ -121,17 +120,17 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(CflTransferBranchEvent(
-      event: CflTransferBranchEventType.refresh,
+    bloc.emitEvent(CflRequestBranchEvent(
+      event: CflRequestBranchEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<CflTransferBranchState>(
+    return BlocEventStateBuilder<CflRequestBranchState>(
         bloc: bloc,
-        builder: (BuildContext context, CflTransferBranchState state) {
+        builder: (BuildContext context, CflRequestBranchState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -139,7 +138,6 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
-                  decoration: BoxDecoration(gradient: bgGradientPageWhite),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
                 ),
@@ -149,7 +147,7 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
         });
   }
 
-  Widget buildList(CflTransferBranchState state) {
+  Widget buildList(CflRequestBranchState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -160,19 +158,20 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return (Container(
-            decoration: BoxDecoration(
-              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-            ),
-            margin: const EdgeInsets.all(0),
-            // decoration:
-            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
-                subtitle: Column(
+          return Card(
+            child: (Container(
+              decoration: BoxDecoration(
+                gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+              ),
+              //margin: const EdgeInsets.only(top: 8),
+              // decoration:
+              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: ListTile(
+                  title: Text(
+                      "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}  "),
+                  subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -180,13 +179,14 @@ class _CflTransferBranchPageState extends State<CflTransferBranchPage> {
                     Text("To : ${data[index].toBranchName ?? ''}"),
                   ],
                 ),
-                leading: Icon(Icons.keyboard_arrow_left),
-                onTap: () {
-                  Navigator.pop(context, data[index]);
-                },
+                  leading: Icon(Icons.keyboard_arrow_left),
+                  onTap: () {
+                    Navigator.pop(context, data[index]);
+                  },
+                ),
               ),
-            ),
-          ));
+            )),
+          );
         }
 
         if (isFailure) {

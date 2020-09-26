@@ -40,6 +40,7 @@ class _TransferBranchDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
+  final _reqQtyController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
 
@@ -53,6 +54,7 @@ class _TransferBranchDetailItemDetailPageState
 
   @override
   void dispose() {
+    _reqQtyController?.dispose();
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
@@ -141,6 +143,22 @@ class _TransferBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _batchNumberController.text = data.batchNo;
+    _reqQtyController.text = NumberFormat("###,###.##")
+            .format(double.parse(data.reqQty.toString()));
+
+    if (_data.reqQty != 0) {
+      if (_reqQtyController.text == "") {
+        _reqQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.reqQty.toString()));
+      } else {
+        if (_data.reqQty ==
+            double.parse(
+                _reqQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _reqQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.reqQty.toString()));
+        }
+      }
+    }
 
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
@@ -293,8 +311,8 @@ class _TransferBranchDetailItemDetailPageState
                                 if (bin != null) {
                                   _getState().data.binAbs = bin.absEntry;
                                   _getState().data.binCode = bin.binCode;
-                                  _getState().data.qty =
-                                      double.parse(bin.availableQty.toString());
+                                  // _getState().data.qty =
+                                  //     double.parse(bin.availableQty.toString());
                                 }
                               });
                             });
@@ -337,7 +355,17 @@ class _TransferBranchDetailItemDetailPageState
                           ),
                         ),
                       ),
-
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      TextFormField(
+                        controller: _reqQtyController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Request Quantity",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
@@ -384,6 +412,7 @@ class _TransferBranchDetailItemDetailPageState
                                       borderRadius:
                                           new BorderRadius.circular(10.0))),
                             ),
+
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextFormField(
                         controller: _uomController,

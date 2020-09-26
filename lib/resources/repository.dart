@@ -10,6 +10,7 @@ import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_request_branch_response.dart';
 import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
 import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
@@ -315,7 +316,8 @@ class Repository {
   //-----------------------------
   //ReceivableCreditDetail
   //-----------------------------
-  Future<ReceivableCreditDetailResponse> receivableCreditDetail_GetById(int id) =>
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_GetById(
+          int id) =>
       apiProvider.receivableCreditDetail_GetById(id);
 
   Future<ReceivableCreditDetailResponse> receivableCreditDetail_Add(
@@ -464,8 +466,8 @@ class Repository {
       apiProvider.transferBranchDetail_Post(data);
 
   Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
-          String qrResult) =>
-      apiProvider.transferBranchDetail_Scan(qrResult);
+          int requestId, String qrResult) =>
+      apiProvider.transferBranchDetail_Scan(requestId, qrResult);
 
   //-----------------------------
   //RequestIssueList
@@ -729,6 +731,13 @@ class Repository {
       apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
+  //CflRequestBranch
+  //-----------------------------
+  Future<CflRequestBranchResponse> cflRequestBranch_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflRequestBranch_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
   //CflTransferBranch
   //-----------------------------
   Future<CflTransferBranchResponse> cflTransferBranch_FetchNextPage(
@@ -793,9 +802,11 @@ class Repository {
 //-----------------------------
   //CflReturnRequestDelivery
   //-----------------------------
-  Future<CflReturnRequestDeliveryResponse> cflReturnRequestDelivery_FetchNextPage(
-          int rowStart, String searchQuery) =>
-      apiProvider.cflReturnRequestDelivery_FetchNextPage(rowStart, searchQuery);
+  Future<CflReturnRequestDeliveryResponse>
+      cflReturnRequestDelivery_FetchNextPage(
+              int rowStart, String searchQuery) =>
+          apiProvider.cflReturnRequestDelivery_FetchNextPage(
+              rowStart, searchQuery);
 
 //-----------------------------
   //CflGoodsReturnRequest
@@ -810,7 +821,6 @@ class Repository {
   Future<CflPayableReturnRequestResponse> cflPayableReturnRequest_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPayableReturnRequest_FetchNextPage(rowStart, searchQuery);
-
 
   //-----------------------------s
   //Warehouse

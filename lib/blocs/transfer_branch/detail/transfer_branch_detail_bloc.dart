@@ -61,6 +61,8 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is TransferBranchDetailEventScan) {
+      var requestId = event.requestId;
+      var requestNo = event.requestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -70,7 +72,7 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         TransferBranchDetailScanResponse response =
-            await _repository.transferBranchDetail_Scan(qrResult);
+            await _repository.transferBranchDetail_Scan( requestId,qrResult);
         if (response == null) {
           yield TransferBranchDetailState.failure(
             errorMessage: 'Response null',
@@ -86,13 +88,14 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferBranchDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data == null) {
                 yield TransferBranchDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (2)',
+                
                   data: event.data,
                 );
               } else {

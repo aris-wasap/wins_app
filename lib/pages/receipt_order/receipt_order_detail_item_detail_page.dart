@@ -147,6 +147,7 @@ class _ReceiptOrderDetailItemDetailPageState
     _isAssetController.text = data.isAsset;
     _isBatchController.text = data.isBatch;
     _qtyPoController.text = data.poQty.toString();
+    
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")

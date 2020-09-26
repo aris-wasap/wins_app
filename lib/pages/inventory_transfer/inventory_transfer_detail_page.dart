@@ -89,9 +89,9 @@ class _InventoryTransferDetailPageState
 
   @override
   void dispose() {
-    // _requestIdController?.dispose();
-    // _requestNoController?.dispose();
-    // _requestDateController?.dispose();
+    _requestIdController?.dispose();
+    _requestNoController?.dispose();
+    //_requestDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _requestNoController?.dispose();

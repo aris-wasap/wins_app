@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cfl_transfer_branch_response.dart';
+part of 'cfl_request_branch_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CflTransferBranchResponse _$CflTransferBranchResponseFromJson(
+CflRequestBranchResponse _$CflRequestBranchResponseFromJson(
     Map<String, dynamic> json) {
-  return CflTransferBranchResponse(
+  return CflRequestBranchResponse(
     error: json['Error'] as bool,
     errorMessage: json['ErrorMessage'] as String,
     data: (json['Data'] as List)
@@ -18,8 +18,8 @@ CflTransferBranchResponse _$CflTransferBranchResponseFromJson(
   );
 }
 
-Map<String, dynamic> _$CflTransferBranchResponseToJson(
-        CflTransferBranchResponse instance) =>
+Map<String, dynamic> _$CflRequestBranchResponseToJson(
+        CflRequestBranchResponse instance) =>
     <String, dynamic>{
       'Error': instance.error,
       'ErrorMessage': instance.errorMessage,
@@ -34,7 +34,13 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['TransDate'] as String),
     status: json['Status'] as String,
+    customerCode: json['CustomerCode'] as String,
+    customerName: json['CustomerName'] as String,
     seriesName: json['SeriesName'] as String,
+    fromWhsCode: json['FromWhsCode'] as String,
+    fromWhsName: json['FromWhsName'] as String,
+    toWhsCode: json['ToWhsCode'] as String,
+    toWhsName: json['ToWhsName'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
     toBranchId: json['ToBranchId'] as int,
@@ -47,7 +53,13 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,
+      'CustomerCode': instance.customerCode,
+      'CustomerName': instance.customerName,
       'SeriesName': instance.seriesName,
+      'FromWhsCode': instance.fromWhsCode,
+      'FromWhsName': instance.fromWhsName,
+      'ToWhsCode': instance.toWhsCode,
+      'ToWhsName': instance.toWhsName,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
       'ToBranchId': instance.toBranchId,

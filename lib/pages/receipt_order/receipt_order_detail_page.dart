@@ -107,12 +107,14 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     data.vendorName = _vendorNameController.text;
     data.refNo = _refNoController.text;
     data.items = state.data.items;
-   
+
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -137,7 +139,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     ));
   }
 
-void _submit() {
+  void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.id = int.parse(_idTxController.text);
@@ -152,10 +154,12 @@ void _submit() {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -174,6 +178,7 @@ void _submit() {
       data: data,
     ));
   }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => ReceiptOrderDetailPage(0));
@@ -277,7 +282,10 @@ void _submit() {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -286,7 +294,8 @@ void _submit() {
           )
         ],
       );
-    } else if (_getState().data.sapReceiptOrderId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReceiptOrderId == 0 &&
+        _getState().data.id > 0) {
       return AppBar(
         title: Text(
           "Create Receipt",
@@ -366,7 +375,9 @@ void _submit() {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -581,21 +592,6 @@ void _submit() {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // TextFormField(
-                //   controller: _seriesNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //     hintText: "Series No.",
-                //     labelText: "Series No.",
-                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                //     border: new OutlineInputBorder(
-                //       borderRadius: new BorderRadius.circular(10.0)
-                //     )
-                //   )
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 5)
-                // ),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,
