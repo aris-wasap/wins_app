@@ -194,15 +194,15 @@ class _ReceiptBranchListPageState extends State<ReceiptBranchListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].branchName}"),
                     Text(
                         "Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
                     Text("From : ${data[index].fromBranchName}"),
+                    Text("To : ${data[index].branchName}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

@@ -10,6 +10,7 @@ import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/receipt_branch_detail_response.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,9 +35,10 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _issueIdController = TextEditingController();
   final _issueNoController = TextEditingController();
+  final _seriesNameIssueController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _transNoController = TextEditingController();
   final _docNumController = TextEditingController();
@@ -79,8 +81,10 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _issueIdController?.dispose();
     _issueNoController?.dispose();
+    _seriesNameIssueController?.dispose();
     _seriesNameController?.dispose();
     _transNoController?.dispose();
     _docNumController?.dispose();
@@ -98,6 +102,43 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.issueNo = _issueNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameIssue = _seriesNameIssueController.text;
+    data.transDate = transDate;
+    data.fromBranchName = _fromBranchNameController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Issue Date harus di isi");
+      return;
+    } else if (["", null].contains(data.issueNo)) {
+      ValidateDialogWidget(context: context, message: "Issue No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    data.id = _id;
+    data.issueId = int.parse(_issueIdController.text);
+    data.fromBranchId = int.parse(_fromBranchIdController.text);
+
+    bloc.emitEvent(ReceiptBranchDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
     data.issueId = int.parse(_issueIdController.text);
     data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
@@ -123,7 +164,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
       return;
     }
 
-    bloc.emitEvent(ReceiptBranchDetailEventAdd(
+    bloc.emitEvent(ReceiptBranchDetailEventPost(
       data: data,
     ));
   }
@@ -221,7 +262,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Receipt From Branch"),
+        title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -231,12 +272,54 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReceiptBranchId== 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Transfer",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -283,7 +366,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
         // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -398,7 +481,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                   ),
                 ),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapReceiptBranchId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -479,6 +562,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _issueIdController.text = data.issueId.toString();
       _seriesNameController.text = data.seriesName;
       _issueNoController.text = data.issueNo;
@@ -589,6 +673,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                               gi.seriesName + '-' + gi.transNo;
                           _fromBranchIdController.text = gi.branchId.toString();
                           _fromBranchNameController.text = gi.branchName;
+                          _seriesNameIssueController.text = gi.seriesName;
                         }
                       });
                     }
@@ -750,7 +835,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapReceiptBranchId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

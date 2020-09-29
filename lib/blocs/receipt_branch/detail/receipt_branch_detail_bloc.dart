@@ -87,13 +87,13 @@ class ReceiptBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptBranchDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan Issue No. ${issueNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.issueId == 0) {
                 yield ReceiptBranchDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan Issue No. ${issueNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (2)',
                   data: event.data,
                 );
               } else {

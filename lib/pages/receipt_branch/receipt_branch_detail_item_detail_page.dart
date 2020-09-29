@@ -74,6 +74,16 @@ class _ReceiptBranchDetailItemDetailPageState
   }
 
   void _done() {
+    if (_whsCodeController.text == "" || _whsCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Warehouse");
+      return;
+    } else if (_binCodeController.text == "" ||
+        _binCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Bin Location");
+      return;
+    }
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
@@ -377,7 +387,8 @@ class _ReceiptBranchDetailItemDetailPageState
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              autofocus: true,
+                              //autofocus: true,
+                              enabled: false,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
