@@ -74,8 +74,9 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
       );
       try {
         var _repository = Repository();
-        InventoryTransferDetailScanResponse response = await _repository
-            .inventoryTransferDetail_Scan(requestId, whsCodeFrom, absEntryFrom, binCodeFrom ,qrResult);
+        InventoryTransferDetailScanResponse response =
+            await _repository.inventoryTransferDetail_Scan(
+                requestId, whsCodeFrom, absEntryFrom, binCodeFrom, qrResult);
         if (response == null) {
           yield InventoryTransferDetailState.failure(
             errorMessage: 'Response null',
@@ -91,7 +92,8 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield InventoryTransferDetailState.failure(
-                errorMessage:'${qrResult} tidak di temukan di gudang ${whsCodeFrom}-bin ${binCodeFrom} dan inventory transfer request ${requestNo} ', 
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan di gudang ${whsCodeFrom}-bin ${binCodeFrom} dan inventory transfer request ${requestNo} ',
                 data: event.data,
               );
             } else {
@@ -168,7 +170,41 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is InventoryTransferDetailEventCancel) {
+    } else if (event is InventoryTransferDetailEventPost) {
+      yield InventoryTransferDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        InventoryTransferDetailResponse response =
+            await _repository.inventoryTransferDetail_Post(event.data);
+        if (response == null) {
+          yield InventoryTransferDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield InventoryTransferDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield InventoryTransferDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<inventoryTransferDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield InventoryTransferDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }else if (event is InventoryTransferDetailEventCancel) {
       yield InventoryTransferDetailState.busy(
         data: currentState.data,
       );

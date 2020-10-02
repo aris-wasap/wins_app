@@ -37,15 +37,22 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
+    fromBranchId: json['FromBranchId'] as int,
+    fromBranchName: json['FromBranchName'] as String,
     fromWhsCode: json['FromWhsCode'] as String,
     fromWhsName: json['FromWhsName'] as String,
     fromAbsEntry: json['FromAbsEntry'] as int,
     fromBinCode: json['FromBinCode'] as String,
+    toBranchId: json['ToBranchId'] as int,
+    toBranchName: json['ToBranchName'] as String,
     toWhsCode: json['ToWhsCode'] as String,
     toWhsName: json['ToWhsName'] as String,
     toAbsEntry: json['ToAbsEntry'] as int,
     toBinCode: json['ToBinCode'] as String,
     totalQty: (json['TotalQty'] as num)?.toDouble(),
+    sapInventoryTransferId: json['SapInventoryTransferId'] as int,
+    createdUser: json['CreatedUser'] as int,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -62,15 +69,22 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'RequestNo': instance.requestNo,
       'SeriesNameReq': instance.seriesNameReq,
       'TransDate': instance.transDate?.toIso8601String(),
+      'FromBranchId': instance.fromBranchId,
+      'FromBranchName': instance.fromBranchName,
       'FromWhsCode': instance.fromWhsCode,
       'FromWhsName': instance.fromWhsName,
       'FromAbsEntry': instance.fromAbsEntry,
       'FromBinCode': instance.fromBinCode,
+      'ToBranchId': instance.toBranchId,
+      'ToBranchName': instance.toBranchName,
       'ToWhsCode': instance.toWhsCode,
       'ToWhsName': instance.toWhsName,
       'ToAbsEntry': instance.toAbsEntry,
       'ToBinCode': instance.toBinCode,
       'TotalQty': instance.totalQty,
+      'SapInventoryTransferId': instance.sapInventoryTransferId,
+      'CreatedUser': instance.createdUser,
+      'Status': instance.status,
       'Items': instance.items,
     };
 

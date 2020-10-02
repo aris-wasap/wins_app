@@ -29,6 +29,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     issueId: json['IssueId'] as int,
     issueNo: json['IssueNo'] as String,
+    seriesNameIssue: json['SeriesNameIssue'] as String,
     seriesName: json['SeriesName'] as String,
     id: json['Id'] as int,
     transNo: json['TransNo'] as String,
@@ -53,6 +54,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'IssueId': instance.issueId,
       'IssueNo': instance.issueNo,
+      'SeriesNameIssue': instance.seriesNameIssue,
       'SeriesName': instance.seriesName,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),

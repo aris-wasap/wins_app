@@ -87,13 +87,13 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptOrderDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptOrderDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (2)',
                   data: event.data,
                 );
               } else {

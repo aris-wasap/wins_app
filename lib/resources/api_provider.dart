@@ -3008,6 +3008,32 @@ class ApiProvider {
     }
   }
 
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
+      inventoryTransferDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/Post",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(inventoryTransferDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_Post:Failed to post InventoryTransfer(2)');
+      }
+    } catch (e) {
+      throw Exception('inventoryTransferDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
       int requestId,
       String whsCodeFrom,

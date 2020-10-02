@@ -38,6 +38,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _idTxController = TextEditingController();
   final _poIdController = TextEditingController();
   final _poNoController = TextEditingController();
+  final _sapReceiptOrderNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _vendorCodeController = TextEditingController();
@@ -83,6 +84,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _idTxController?.dispose();
     _poIdController?.dispose();
     _poNoController?.dispose();
+    _sapReceiptOrderNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _vendorCodeController?.dispose();
@@ -174,7 +176,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       return;
     }
 
-    bloc.emitEvent(ReceiptOrderDetailEventAdd(
+    bloc.emitEvent(ReceiptOrderDetailEventPost(
       data: data,
     ));
   }
@@ -568,6 +570,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       _idTxController.text = data.id.toString();
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
+      _sapReceiptOrderNoController.text = data.sapReceiptOrderNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -593,7 +596,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReceiptOrderNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Receipt No.",

@@ -694,6 +694,10 @@ class Repository {
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Add(data);
 
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Post(data);
+
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
           int requestId,
           String whsCodeFrom,

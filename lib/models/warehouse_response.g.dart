@@ -26,12 +26,16 @@ Map<String, dynamic> _$WarehouseResponseToJson(WarehouseResponse instance) =>
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    branchId: json['BranchId'] as int,
+    branchName: json['BranchName'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'BranchId': instance.branchId,
+      'BranchName': instance.branchName,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
     };

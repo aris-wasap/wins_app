@@ -96,6 +96,14 @@ class InventoryTransferDetailEventAdd extends InventoryTransferDetailEvent {
         );
 }
 
+class InventoryTransferDetailEventPost extends InventoryTransferDetailEvent {
+  InventoryTransferDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class InventoryTransferDetailEventCancel extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventCancel({
     @required int id,

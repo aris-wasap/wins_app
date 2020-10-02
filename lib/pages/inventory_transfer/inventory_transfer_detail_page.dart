@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:admart_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:admart_app/pages/cfl/cfl_transfer_request_page.dart';
+import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:admart_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -13,6 +14,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/inventory_transfer_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -24,6 +26,9 @@ import 'package:admart_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
 import 'package:admart_app/models/cfl_transfer_request_response.dart'
     as cflTransferRequest;
+import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
+import 'package:admart_app/models/cfl_binlocation_response.dart'
+    as cflBinLocation;
 
 class InventoryTransferDetailPage extends StatefulWidget {
   InventoryTransferDetailPage(this._id);
@@ -41,8 +46,7 @@ class _InventoryTransferDetailPageState
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
-  // final _requestDateController = TextEditingController();
+  final _idTxController = TextEditingController();
   final _transNoController = TextEditingController();
   final _requestNoController = TextEditingController();
   final _requestIdController = TextEditingController();
@@ -51,6 +55,8 @@ class _InventoryTransferDetailPageState
   final _fromWhsNameController = TextEditingController();
   final _fromAbsEntryController = TextEditingController();
   final _fromBinCodeController = TextEditingController();
+  final _toBranchIdController = TextEditingController();
+  final _toBranchNameController = TextEditingController();
   final _toWhsCodeController = TextEditingController();
   final _toWhsNameController = TextEditingController();
   final _toAbsEntryController = TextEditingController();
@@ -89,15 +95,17 @@ class _InventoryTransferDetailPageState
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _requestIdController?.dispose();
     _requestNoController?.dispose();
-    //_requestDateController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _requestNoController?.dispose();
     _requestIdController?.dispose();
     _fromWhsCodeController?.dispose();
     _fromWhsNameController?.dispose();
+    _toBranchIdController?.dispose();
+    _toBranchNameController?.dispose();
     _toWhsCodeController?.dispose();
     _toWhsNameController?.dispose();
     _toAbsEntryController?.dispose();
@@ -115,10 +123,67 @@ class _InventoryTransferDetailPageState
     data.transDate = transDate;
     data.fromWhsCode = _fromWhsCodeController.text;
     data.fromWhsName = _fromWhsNameController.text;
-    data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
     data.fromBinCode = _fromBinCodeController.text;
+    data.toBranchName = _toBranchNameController.text;
     data.toWhsCode = _toWhsCodeController.text;
     data.toWhsName = _toWhsNameController.text;
+    data.toBinCode = _toBinCodeController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Date harus di isi");
+      return;
+    }
+    else if ([null, ""].contains(data.fromWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "From Warehouse harus di isi");
+      return;
+    } else if ([null, ""].contains(data.fromBinCode)) {
+      ValidateDialogWidget(
+          context: context, message: "From Bin Location harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "To Warehouse harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toBinCode)) {
+      ValidateDialogWidget(
+          context: context, message: "To Bin Location harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+    data.id = _id;
+    data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
+    data.toAbsEntry = int.parse(_toAbsEntryController.text);
+    data.toBranchId = int.parse(_toBranchIdController.text);
+
+    bloc.emitEvent(InventoryTransferDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.requestNo = _requestNoController.text;
+    data.transDate = transDate;
+    data.fromWhsCode = _fromWhsCodeController.text;
+    data.fromWhsName = _fromWhsNameController.text;
+    data.fromBinCode = _fromBinCodeController.text;
+    data.toBranchId = int.parse(_toBranchIdController.text);
+    data.toBranchName = _toBranchNameController.text;
+    data.toWhsCode = _toWhsCodeController.text;
+    data.toWhsName = _toWhsNameController.text;
+    data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
     data.toAbsEntry = int.parse(_toAbsEntryController.text);
     data.toBinCode = _toBinCodeController.text;
     data.items = state.data.items;
@@ -151,7 +216,7 @@ class _InventoryTransferDetailPageState
       return;
     }
 
-    bloc.emitEvent(InventoryTransferDetailEventAdd(
+    bloc.emitEvent(InventoryTransferDetailEventPost(
       data: data,
     ));
   }
@@ -249,7 +314,7 @@ class _InventoryTransferDetailPageState
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Inventory Transfer"),
+        title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -259,12 +324,55 @@ class _InventoryTransferDetailPageState
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-              icon: Icon(Icons.check),
-              onPressed: () {
-                _create();
-              },
-              textColor: Colors.white,
-              label: Text("Submit"))
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
+            onPressed: () {
+              _create();
+            },
+            textColor: Colors.white,
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapInventoryTransferId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Transfer",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          )
         ],
       );
     } else {
@@ -325,7 +433,9 @@ class _InventoryTransferDetailPageState
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -443,7 +553,7 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapInventoryTransferId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -522,6 +632,7 @@ class _InventoryTransferDetailPageState
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
       transDate = data.transDate;
@@ -530,7 +641,6 @@ class _InventoryTransferDetailPageState
       } else {
         _transDateController.text = null;
       }
-
       _fromWhsCodeController.text = data.fromWhsCode;
       _fromWhsNameController.text = data.fromWhsName;
       _fromAbsEntryController.text = data.fromAbsEntry.toString();
@@ -539,6 +649,8 @@ class _InventoryTransferDetailPageState
       _toWhsNameController.text = data.toWhsName;
       _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
+      _toBranchIdController.text = data.toBranchId.toString();
+      _toBranchNameController.text =data.toBranchName;
     }
 
     return Column(
@@ -659,34 +771,39 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
+                //FromWarehouse
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute<
-                                      cflDbWarehouse.CflDbWarehouseModel>(
-                                  builder: (BuildContext context) =>
-                                      CflDbWarehousePage()));
+                    if (data.sapInventoryTransferId == 0) {
+                      setState(() {
+                        Future<cflWarehouse.Data> whs = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflWarehouse.Data>(
+                                builder: (BuildContext context) =>
+                                    CflWarehousePage(globalBloc.branchId)));
 
-                      warehouse
-                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                        if (warehouse != null) {
-                          _fromWhsCodeController.text = warehouse.whsCode;
-                          _fromWhsNameController.text = warehouse.whsName;
-                        }
+                        whs.then((cflWarehouse.Data whs) {
+                          if (whs != null) {
+                            _fromWhsCodeController.text = whs.whsCode;
+                            _fromWhsNameController.text = whs.whsName;
+                            _fromAbsEntryController.text = "";
+                            _fromBinCodeController.text = "";
+                            // _getState().data.fromBranchId = whs.branchId;
+                            // _getState().data.fromBranchName = whs.branchName;
+                            // _getState().data.fromWhsCode = whs.whsCode;
+                            // _getState().data.fromWhsName = whs.whsName;
+                          }
+                        });
                       });
                     }
                   },
                   child: Container(
-                    height: 100,
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: (data.id == 0)
+                            color: (data.sapInventoryTransferId == 0)
                                 ? Colors.blue
                                 : Colors.grey[400]),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -714,7 +831,7 @@ class _InventoryTransferDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
+                        (data.sapInventoryTransferId == 0)
                             ? Icon(
                                 Icons.keyboard_arrow_right,
                               )
@@ -723,23 +840,28 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
+                //FromBinLocation
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflBinLocation.Data> bin = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflBinLocation.Data>(
-                              builder: (BuildContext context) =>
-                                  CflBinLocationPage(
-                                      _fromWhsCodeController.text)));
+                    if (data.sapInventoryTransferId == 0) {
+                      setState(() {
+                        Future<cflBinLocation.Data> bin = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflBinLocation.Data>(
+                                builder: (BuildContext context) =>
+                                    CflBinLocationPage(
+                                        _fromWhsCodeController.text)));
 
-                      bin.then((cflBinLocation.Data bin) {
-                        if (bin != null) {
-                          _fromAbsEntryController.text =
-                              bin.absEntry.toString();
-                          _fromBinCodeController.text = bin.binCode;
-                        }
+                        bin.then((cflBinLocation.Data bin) {
+                          if (bin != null) {
+                            _fromAbsEntryController.text =
+                                bin.absEntry.toString();
+                            _fromBinCodeController.text = bin.binCode;
+                            //_getState().data.fromAbsEntry = bin.absEntry;
+                            //_getState().data.fromBinCode = bin.binCode;
+                          }
+                        });
                       });
                     }
                   },
@@ -748,7 +870,7 @@ class _InventoryTransferDetailPageState
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: (data.id == 0)
+                            color: (data.sapInventoryTransferId == 0)
                                 ? Colors.blue
                                 : Colors.grey[400]),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -770,7 +892,7 @@ class _InventoryTransferDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
+                        (data.sapInventoryTransferId == 0)
                             ? Icon(
                                 Icons.keyboard_arrow_right,
                               )
@@ -779,24 +901,32 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
+                //ToWarehouse
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute<
-                                      cflDbWarehouse.CflDbWarehouseModel>(
-                                  builder: (BuildContext context) =>
-                                      CflDbWarehousePage()));
+                    if (data.sapInventoryTransferId == 0) {
+                      setState(() {
+                        Future<cflWarehouse.Data> whs = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflWarehouse.Data>(
+                                builder: (BuildContext context) =>
+                                    CflWarehousePage(globalBloc.branchId)));
 
-                      warehouse
-                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                        if (warehouse != null) {
-                          _toWhsCodeController.text = warehouse.whsCode;
-                          _toWhsNameController.text = warehouse.whsName;
-                        }
+                        whs.then((cflWarehouse.Data whs) {
+                          if (whs != null) {
+                            _toBranchIdController.text = whs.branchId.toString();
+                            _toBranchNameController.text = whs.branchName;
+                            _toWhsCodeController.text = whs.whsCode;
+                            _toWhsNameController.text = whs.whsName;
+                            _toAbsEntryController.text = "";
+                            _toBinCodeController.text = "";
+                            // _getState().data.toBranchId = whs.branchId;
+                            // _getState().data.toBranchName = whs.branchName;
+                            // _getState().data.toWhsCode = whs.whsCode;
+                            // _getState().data.toWhsName = whs.whsName;
+                          }
+                        });
                       });
                     }
                   },
@@ -804,11 +934,11 @@ class _InventoryTransferDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color:
-                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
+                        border: Border.all(
+                            color: (data.sapInventoryTransferId == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -833,7 +963,7 @@ class _InventoryTransferDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
+                        (data.sapInventoryTransferId == 0)
                             ? Icon(
                                 Icons.keyboard_arrow_right,
                               )
@@ -842,22 +972,28 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
+                //ToBinLocation
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflBinLocation.Data> bin = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflBinLocation.Data>(
-                              builder: (BuildContext context) =>
-                                  CflBinLocationPage(
-                                      _toWhsCodeController.text)));
+                    if (data.sapInventoryTransferId == 0) {
+                      setState(() {
+                        Future<cflBinLocation.Data> bin = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflBinLocation.Data>(
+                                builder: (BuildContext context) =>
+                                    CflBinLocationPage(
+                                        _toWhsCodeController.text)));
 
-                      bin.then((cflBinLocation.Data bin) {
-                        if (bin != null) {
-                          _toAbsEntryController.text = bin.absEntry.toString();
-                          _toBinCodeController.text = bin.binCode;
-                        }
+                        bin.then((cflBinLocation.Data bin) {
+                          if (bin != null) {
+                            _toAbsEntryController.text =
+                                bin.absEntry.toString();
+                            _toBinCodeController.text = bin.binCode;
+                            // _getState().data.toAbsEntry = bin.absEntry;
+                            // _getState().data.toBinCode = bin.binCode;
+                          }
+                        });
                       });
                     }
                   },
@@ -866,7 +1002,7 @@ class _InventoryTransferDetailPageState
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: (data.id == 0)
+                            color: (data.sapInventoryTransferId == 0)
                                 ? Colors.blue
                                 : Colors.grey[400]),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -888,7 +1024,7 @@ class _InventoryTransferDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
+                        (data.sapInventoryTransferId == 0)
                             ? Icon(
                                 Icons.keyboard_arrow_right,
                               )
@@ -897,6 +1033,246 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<
+                //                       cflDbWarehouse.CflDbWarehouseModel>(
+                //                   builder: (BuildContext context) =>
+                //                       CflDbWarehousePage()));
+
+                //       warehouse
+                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                //         if (warehouse != null) {
+                //           _fromWhsCodeController.text = warehouse.whsCode;
+                //           _fromWhsNameController.text = warehouse.whsName;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     height: 100,
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "From Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_fromWhsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_fromWhsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflBinLocation.Data> bin = Navigator.push(
+                //           context,
+                //           MaterialPageRoute<cflBinLocation.Data>(
+                //               builder: (BuildContext context) =>
+                //                   CflBinLocationPage(
+                //                       _fromWhsCodeController.text)));
+
+                //       bin.then((cflBinLocation.Data bin) {
+                //         if (bin != null) {
+                //           _fromAbsEntryController.text =
+                //               bin.absEntry.toString();
+                //           _fromBinCodeController.text = bin.binCode;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "From Bin Location",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_fromBinCodeController.text),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<
+                //                       cflDbWarehouse.CflDbWarehouseModel>(
+                //                   builder: (BuildContext context) =>
+                //                       CflDbWarehousePage()));
+
+                //       warehouse
+                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                //         if (warehouse != null) {
+                //           _toBranchIdController.text = warehouse.branchId.toString();
+                //           _toBranchNameController.text = warehouse.branchName;
+                //           _toWhsCodeController.text = warehouse.whsCode;
+                //           _toWhsNameController.text = warehouse.whsName;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                //     ),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "To Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_toWhsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_toWhsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflBinLocation.Data> bin = Navigator.push(
+                //           context,
+                //           MaterialPageRoute<cflBinLocation.Data>(
+                //               builder: (BuildContext context) =>
+                //                   CflBinLocationPage(
+                //                       _toWhsCodeController.text)));
+
+                //       bin.then((cflBinLocation.Data bin) {
+                //         if (bin != null) {
+                //           _toAbsEntryController.text = bin.absEntry.toString();
+                //           _toBinCodeController.text = bin.binCode;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "To Bin Location",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_toBinCodeController.text),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -990,7 +1366,7 @@ class _InventoryTransferDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapInventoryTransferId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

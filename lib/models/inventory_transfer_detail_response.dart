@@ -66,6 +66,12 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
+  @JsonKey(name: 'FromBranchId')
+  int fromBranchId;
+
+  @JsonKey(name: 'FromBranchName')
+  String fromBranchName;
+
   @JsonKey(name: 'FromWhsCode')
   String fromWhsCode;
 
@@ -77,6 +83,12 @@ class Data {
 
   @JsonKey(name: 'FromBinCode')
   String fromBinCode;
+
+  @JsonKey(name: 'ToBranchId')
+  int toBranchId;
+
+  @JsonKey(name: 'ToBranchName')
+  String toBranchName;
 
   @JsonKey(name: 'ToWhsCode')
   String toWhsCode;
@@ -93,6 +105,15 @@ class Data {
   @JsonKey(name: 'TotalQty')
   double totalQty;
 
+  @JsonKey(name: 'SapInventoryTransferId')
+  int sapInventoryTransferId;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -105,15 +126,22 @@ class Data {
     this.requestNo,
     this.seriesNameReq,
     this.transDate,
+    this.fromBranchId,
+    this.fromBranchName,
     this.fromWhsCode,
     this.fromWhsName,
     this.fromAbsEntry,
     this.fromBinCode,
+    this.toBranchId,
+    this.toBranchName,
     this.toWhsCode,
     this.toWhsName,
     this.toAbsEntry,
     this.toBinCode,
     this.totalQty,
+    this.sapInventoryTransferId: 0,
+    this.createdUser,
+    this.status,
     this.items,
   });
 

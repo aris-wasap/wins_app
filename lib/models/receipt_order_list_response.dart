@@ -45,6 +45,9 @@ class Data {
   @JsonKey(name: 'UserId')
   int userId;
 
+  @JsonKey(name: 'SapReceiptOrderNo')
+  String sapReceiptOrderNo;
+
   @JsonKey(name: 'TransNo')
   String transNo;
 
@@ -76,6 +79,7 @@ class Data {
   Data({
     this.id,
     this.userId,
+    this.sapReceiptOrderNo,
     this.transNo,
     this.transDate,
     this.vendorCode,

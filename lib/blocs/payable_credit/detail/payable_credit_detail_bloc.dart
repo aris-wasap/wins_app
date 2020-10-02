@@ -87,13 +87,13 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield PayableCreditDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan GRPO ${returnRequestNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  GRPO ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.returnRequestId == 0) {
                 yield PayableCreditDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan GRPO ${returnRequestNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  GRPO ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {
