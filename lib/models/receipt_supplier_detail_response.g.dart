@@ -44,6 +44,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
     sapReceiptSupplierId: json['SapReceiptSupplierId'] as int,
+    sapReceiptSupplierNo: json['SapReceiptSupplierNo'] as String,
     createdUser: json['CreatedUser'] as int,
     status: json['Status'] as String,
     items: (json['Items'] as List)
@@ -69,6 +70,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
       'SapReceiptSupplierId': instance.sapReceiptSupplierId,
+      'SapReceiptSupplierNo': instance.sapReceiptSupplierNo,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
       'Items': instance.items,

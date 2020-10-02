@@ -36,6 +36,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapReceiptSupplierNoController = TextEditingController();
   final _poIdController = TextEditingController();
   final _poNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -81,6 +82,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReceiptSupplierNoController?.dispose();
     _poIdController?.dispose();
     _poNoController?.dispose();
     _transNoController?.dispose();
@@ -369,7 +371,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -558,6 +560,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReceiptSupplierNoController.text = data.sapReceiptSupplierNo;
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
       transDate = data.transDate;
@@ -600,7 +603,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                 //   padding: EdgeInsets.only(top: 5)
                 // ),
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReceiptSupplierNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Receipt No.",
