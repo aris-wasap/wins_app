@@ -9,7 +9,8 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'receivable_credit_detail_response.g.dart';
 
-ReceivableCreditDetailResponse receivableCreditDetailResponseFromJson(String str) {
+ReceivableCreditDetailResponse receivableCreditDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return ReceivableCreditDetailResponse.fromJson(jsonData);
 }
@@ -85,6 +86,9 @@ class Data {
   @JsonKey(name: 'SapReceivableCreditId')
   int sapReceivableCreditId;
 
+  @JsonKey(name: 'SapReceivableCreditNo')
+  String sapReceivableCreditNo;
+
   @JsonKey(name: 'CreatedUser')
   int createdUser;
 
@@ -109,7 +113,8 @@ class Data {
     this.address,
     this.branchId,
     this.branchName,
-    this.sapReceivableCreditId:0,
+    this.sapReceivableCreditId: 0,
+    this.sapReceivableCreditNo,
     this.createdUser,
     this.status,
     this.items,
@@ -183,7 +188,6 @@ class Item {
     this.binAbs,
     this.binCode,
     this.batchNo,
-
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

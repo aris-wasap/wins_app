@@ -36,6 +36,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapDeliveryNoController = TextEditingController();
   final _soIdController = TextEditingController();
   final _soNoController = TextEditingController();
   final _seriesNameSoController = TextEditingController();
@@ -80,6 +81,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapDeliveryNoController?.dispose();
     _soIdController?.dispose();
     _soNoController?.dispose();
     _seriesNameSoController?.dispose();
@@ -553,6 +555,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapDeliveryNoController.text = data.sapDeliveryNo;
       _soIdController.text = data.soId.toString();
       _soNoController.text = data.soNo;
       transDate = data.transDate;
@@ -578,7 +581,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapDeliveryNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Delivery No.",

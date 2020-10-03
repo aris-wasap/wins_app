@@ -299,7 +299,7 @@ class _PurchaseReturnsDetailItemDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "To Warehouse",
+                                "From Warehouse",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
@@ -365,7 +365,7 @@ class _PurchaseReturnsDetailItemDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "To Bin Location",
+                                "From Bin Location",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),

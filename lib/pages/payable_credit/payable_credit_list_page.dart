@@ -194,9 +194,12 @@ class _PayableCreditListPageState extends State<PayableCreditListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-                subtitle: Column(
+                title: data[index].status == 'Draft'
+                    ? Text(
+                        "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
+                    : Text(
+                        "No. ${data[index].sapReturnNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+               subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

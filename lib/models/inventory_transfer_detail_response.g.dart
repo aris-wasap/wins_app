@@ -51,6 +51,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     toBinCode: json['ToBinCode'] as String,
     totalQty: (json['TotalQty'] as num)?.toDouble(),
     sapInventoryTransferId: json['SapInventoryTransferId'] as int,
+    sapInventoryTransferNo: json['SapInventoryTransferNo'] as String,
     createdUser: json['CreatedUser'] as int,
     status: json['Status'] as String,
     items: (json['Items'] as List)
@@ -83,6 +84,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ToBinCode': instance.toBinCode,
       'TotalQty': instance.totalQty,
       'SapInventoryTransferId': instance.sapInventoryTransferId,
+      'SapInventoryTransferNo': instance.sapInventoryTransferNo,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
       'Items': instance.items,

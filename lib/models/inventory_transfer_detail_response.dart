@@ -108,6 +108,9 @@ class Data {
   @JsonKey(name: 'SapInventoryTransferId')
   int sapInventoryTransferId;
 
+  @JsonKey(name: 'SapInventoryTransferNo')
+  String sapInventoryTransferNo;
+
   @JsonKey(name: 'CreatedUser')
   int createdUser;
 
@@ -140,6 +143,7 @@ class Data {
     this.toBinCode,
     this.totalQty,
     this.sapInventoryTransferId: 0,
+    this.sapInventoryTransferNo,
     this.createdUser,
     this.status,
     this.items,

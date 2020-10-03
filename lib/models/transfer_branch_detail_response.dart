@@ -76,6 +76,9 @@ class Data {
   @JsonKey(name: 'SapTransferBranchId')
   int sapTransferBranchId;
 
+  @JsonKey(name: 'SapTransferBranchNo')
+  String sapTransferBranchNo;
+
   @JsonKey(name: 'CreatedUser')
   int createdUser;
 
@@ -98,6 +101,7 @@ class Data {
     this.toBranchId,
     this.toBranchName,
     this.sapTransferBranchId: 0,
+    this.sapTransferBranchNo,
     this.createdUser,
     this.status,
     this.items,
@@ -110,13 +114,12 @@ class Data {
 
 @JsonSerializable()
 class Item {
-
   @JsonKey(name: 'RequestId')
   int requestId;
 
   @JsonKey(name: 'RequestLineNo')
   int requestLineNo;
-  
+
   @JsonKey(name: 'Id')
   int id;
 

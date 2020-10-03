@@ -94,6 +94,9 @@ class Data {
   @JsonKey(name: 'SapReturnId')
   int sapReturnId;
 
+  @JsonKey(name: 'SapReturnNo')
+  String sapReturnNo;
+
   @JsonKey(name: 'CreatedUser')
   int createdUser;
 
@@ -121,7 +124,8 @@ class Data {
     this.address,
     this.branchId,
     this.branchName,
-    this.sapReturnId:0,
+    this.sapReturnId: 0,
+    this.sapReturnNo,
     this.createdUser,
     this.status,
     this.items,
@@ -207,7 +211,6 @@ class Item {
     this.binAbs,
     this.binCode,
     this.batchNo,
-
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

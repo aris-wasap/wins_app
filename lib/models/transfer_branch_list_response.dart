@@ -45,6 +45,9 @@ class Data {
   @JsonKey(name: 'UserId')
   int userId;
 
+  @JsonKey(name: 'SapTransferBranchNo')
+  String sapTransferBranchNo;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
 

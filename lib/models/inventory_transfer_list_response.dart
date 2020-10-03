@@ -64,12 +64,16 @@ class Data {
   @JsonKey(name: 'ToWhsName')
   String toWhsName;
 
+  @JsonKey(name: 'SapInventoryTransferNo')
+  String sapInventoryTransferNo;
+
   @JsonKey(name: 'CreatedUser')
   String createdUser;
 
   Data({
     this.id,
     this.userId,
+    this.sapInventoryTransferNo,
     this.transNo,
     this.seriesName,
     this.transDate,

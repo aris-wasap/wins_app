@@ -47,6 +47,7 @@ class _InventoryTransferDetailPageState
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapInventoryTransferNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _requestNoController = TextEditingController();
   final _requestIdController = TextEditingController();
@@ -96,6 +97,7 @@ class _InventoryTransferDetailPageState
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapInventoryTransferNoController?.dispose();
     _requestIdController?.dispose();
     _requestNoController?.dispose();
     _transNoController?.dispose();
@@ -664,7 +666,7 @@ class _InventoryTransferDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapInventoryTransferNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Transfer No.",

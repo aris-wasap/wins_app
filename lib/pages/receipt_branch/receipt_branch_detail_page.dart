@@ -36,6 +36,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapReceiptBranchNoController = TextEditingController();
   final _issueIdController = TextEditingController();
   final _issueNoController = TextEditingController();
   final _seriesNameIssueController = TextEditingController();
@@ -82,6 +83,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReceiptBranchNoController?.dispose();
     _issueIdController?.dispose();
     _issueNoController?.dispose();
     _seriesNameIssueController?.dispose();
@@ -589,7 +591,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
+                  controller: _sapReceiptBranchNoController,
                   enabled: false,
                   decoration: InputDecoration(
                       hintText: "Receipt No.",

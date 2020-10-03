@@ -30,6 +30,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     id: json['Id'] as int,
     userId: json['UserId'] as int,
+    sapInventoryTransferNo: json['SapInventoryTransferNo'] as String,
     transNo: json['TransNo'] as String,
     seriesName: json['SeriesName'] as String,
     transDate: json['TransDate'] == null
@@ -55,5 +56,6 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'FromWhsName': instance.fromWhsName,
       'ToWhsCode': instance.toWhsCode,
       'ToWhsName': instance.toWhsName,
+      'SapInventoryTransferNo': instance.sapInventoryTransferNo,
       'CreatedUser': instance.createdUser,
     };

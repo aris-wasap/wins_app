@@ -41,6 +41,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     toBranchId: json['ToBranchId'] as int,
     toBranchName: json['ToBranchName'] as String,
     sapTransferBranchId: json['SapTransferBranchId'] as int,
+    sapTransferBranchNo: json['SapTransferBranchNo'] as String,
     createdUser: json['CreatedUser'] as int,
     status: json['Status'] as String,
     items: (json['Items'] as List)
@@ -63,6 +64,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ToBranchId': instance.toBranchId,
       'ToBranchName': instance.toBranchName,
       'SapTransferBranchId': instance.sapTransferBranchId,
+      'SapTransferBranchNo': instance.sapTransferBranchNo,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
       'Items': instance.items,

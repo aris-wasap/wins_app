@@ -60,7 +60,25 @@ class Data {
   String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
+
+  @JsonKey(name: 'SapRequestIssueId')
+  int sapRequestIssueId;
+
+  @JsonKey(name: 'SapRequestIssueNo')
+  String sapRequestIssueNo;
+
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;  
 
   @JsonKey(name: 'Items')
   List<Item> items;
@@ -76,6 +94,12 @@ class Data {
     this.id: 0,
     this.transNo,
     this.transDate,
+    this.sapRequestIssueId: 0,
+    this.sapRequestIssueNo,
+    this.branchId,
+    this.branchName,
+    this.createdUser,
+    this.status,
     this.items,
   });
 

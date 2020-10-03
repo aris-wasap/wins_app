@@ -31,21 +31,27 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     id: json['Id'] as int,
     seriesName: json['SeriesName'] as String,
     userId: json['UserId'] as int,
+    sapRequestIssueNo: json['SapRequestIssueNo'] as String,
     transNo: json['TransNo'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
     status: json['Status'] as String,
     createdUser: json['CreatedUser'] as String,
+    branchId: json['BranchId'] as int,
+    branchName: json['BranchName'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'UserId': instance.userId,
+      'SapRequestIssueNo': instance.sapRequestIssueNo,
       'SeriesName': instance.seriesName,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,
       'CreatedUser': instance.createdUser,
+      'BranchId': instance.branchId,
+      'BranchName': instance.branchName,
     };

@@ -3129,7 +3129,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3254,7 +3255,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3283,7 +3285,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3313,7 +3316,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3342,7 +3346,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3372,7 +3377,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3433,7 +3439,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3464,7 +3471,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3495,7 +3503,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3526,7 +3535,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(
@@ -3557,7 +3567,8 @@ class ApiProvider {
         "userId": globalBloc.userId,
         "rowStart": rowStart,
         "pageSize": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
       });
 
       final response = await http.post(

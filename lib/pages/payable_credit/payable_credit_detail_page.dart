@@ -38,6 +38,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   ScrollController _scrollController;
 
   final _idTxController = TextEditingController();
+  final _sapReturnNoController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -83,6 +84,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReturnNoController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
@@ -108,7 +110,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
     data.items = state.data.items;
-    
+
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
           context: context, message: "Return Date harus di isi");
@@ -135,7 +137,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     data.refNo = _refNoController.text;
     data.seriesName = _seriesNameController.text;
     data.seriesNameReturnRequest = _seriesNameReturnRequestController.text;
-    
+
     bloc.emitEvent(PayableCreditDetailEventAdd(
       data: data,
     ));
@@ -284,7 +286,10 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -571,6 +576,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReturnNoController.text = data.sapReturnNo;
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -613,7 +619,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                 //   padding: EdgeInsets.only(top: 5)
                 // ),
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReturnNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Return No.",
@@ -870,7 +876,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+        if (_getState().data.sapReturnId == 0 ) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

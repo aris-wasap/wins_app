@@ -36,6 +36,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapReturnNoController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -81,6 +82,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReturnNoController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
@@ -108,14 +110,16 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Goods Return Request Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Goods Return Request Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Goods Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
-      return; 
+      return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -152,14 +156,16 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Goods Return Request Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Goods Return Request Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Goods Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
-      return; 
+      return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -278,7 +284,10 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -357,7 +366,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_returnRequestNoController.text)) {
-      ValidateDialogWidget(context: context, message: "Goods Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Goods Return Request No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -367,7 +377,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -556,6 +568,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReturnNoController.text = data.sapReturnNo;
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -582,23 +595,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // TextFormField(
-                //   controller: _seriesNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //     hintText: "Series No.",
-                //     labelText: "Series No.",
-                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                //     border: new OutlineInputBorder(
-                //       borderRadius: new BorderRadius.circular(10.0)
-                //     )
-                //   )
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 5)
-                // ),
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReturnNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Goods Return No.",
@@ -618,30 +616,22 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
-                            controller: _transDateController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Goods Return Date",
-                                labelText: "Goods Return Date",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[400]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))
-                            // decoration: InputDecoration(
-                            //   labelText: "DO Date",
-                            //   disabledBorder: UnderlineInputBorder(
-                            //     borderSide: data.id == 0
-                            //         ? BorderSide(color: Colors.blue)
-                            //         : BorderSide(color: Colors.grey),
-                            //   ),
-                            // ),
-                            ),
+                          controller: _transDateController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Goods Return Date",
+                              labelText: "Goods Return Date",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: (data.id == 0)
+                                          ? Colors.blue
+                                          : Colors.grey[400]),
+                                  borderRadius: new BorderRadius.circular(
+                                    10.0,
+                                  ))),
+                        ),
                       ),
                       (data.id == 0)
                           ? Icon(
