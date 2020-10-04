@@ -202,6 +202,7 @@ class _DeliveryOrderListPageState extends State<DeliveryOrderListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("SO No. : ${data[index].soNo}"),
                     Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Customer : ${data[index].customerCode} - ${data[index].customerName}"),

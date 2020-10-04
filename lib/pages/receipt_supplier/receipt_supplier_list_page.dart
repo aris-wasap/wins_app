@@ -203,6 +203,7 @@ class _ReceiptSupplierListPageState extends State<ReceiptSupplierListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("PO No. : ${data[index].poNo}"),
                     Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
