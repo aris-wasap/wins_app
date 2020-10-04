@@ -200,6 +200,7 @@ class _ReceivableCreditListPageState extends State<ReceivableCreditListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Request No. : ${data[index].returnRequestNo}"),
                     Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Customer : ${data[index].customerCode} - ${data[index].customerName}"),
