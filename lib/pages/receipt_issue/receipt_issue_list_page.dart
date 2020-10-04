@@ -76,18 +76,16 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Receipt",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Receipt",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -104,18 +102,17 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
       return AppBar(
         title: Text("List Receipt"),
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
         //backgroundColor: appBarBgColors,
         bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -181,86 +178,87 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
     final isFailure = state.isFailure;
 
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(),
-        controller: _scrollController,
-        itemCount: data.length + 1,
-        itemBuilder: (contex, index) {
-    if (index < data.length) {
-      return (Container(
-        decoration: BoxDecoration(
-                gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-              ),
-        margin: const EdgeInsets.all(3),
-        // decoration:
-        //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: data[index].status == 'Draft'
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      controller: _scrollController,
+      itemCount: data.length + 1,
+      itemBuilder: (contex, index) {
+        if (index < data.length) {
+          return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
+            margin: const EdgeInsets.all(3),
+            // decoration:
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: data[index].status == 'Draft'
                     ? Text(
                         "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
                     : Text(
                         "No. ${data[index].sapReceiptIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-               subtitle: Column(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
-                Text("User : ${data[index].createdUser}"),
-              ],
-            ),
-            leading: ClipOval(
-              child: Image.network(
-                globalBloc.getUrl() +
-                    "api/UserApi/GetImage?id=${data[index].userId}",
-                width: 50.0,
-                height: 50.0,
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        "Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
+                    Text("User : ${data[index].createdUser}"),
+                  ],
+                ),
+                leading: ClipOval(
+                  child: Image.network(
+                    globalBloc.getUrl() +
+                        "api/UserApi/GetImage?id=${data[index].userId}",
+                    width: 50.0,
+                    height: 50.0,
+                  ),
+                ),
+
+                trailing: Icon(Icons.keyboard_arrow_right),
+                //color: Colors.white, size: 30.0),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          ReceiptIssueDetailPage(data[index].id),
+                    ),
+                  );
+                },
               ),
             ),
+          ));
+        }
 
-            trailing: Icon(Icons.keyboard_arrow_right),
-            //color: Colors.white, size: 30.0),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      ReceiptIssueDetailPage(data[index].id),
-                ),
-              );
-            },
+        if (isFailure) {
+          return ListTile(
+            title: Text(
+              'Error while loading data...',
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+            ),
+            isThreeLine: false,
+            leading: CircleAvatar(
+              child: Text(':('),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
+
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Center(
+            child: Opacity(
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+              ),
+              opacity: isBusy ? 1 : 0,
+            ),
           ),
-        ),
-      ));
-    }
-
-    if (isFailure) {
-      return ListTile(
-        title: Text(
-          'Error while loading data...',
-          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-        ),
-        isThreeLine: false,
-        leading: CircleAvatar(
-          child: Text(':('),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.redAccent,
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Center(
-        child: Opacity(
-          child: CircularProgressIndicator(
-            strokeWidth: 2.0,
-          ),
-          opacity: isBusy ? 1 : 0,
-        ),
-      ),
+        );
+      },
     );
-        },
-      );
   }
 }

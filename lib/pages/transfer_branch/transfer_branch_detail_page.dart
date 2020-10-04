@@ -39,6 +39,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapTransferBranchNoController = TextEditingController();
   final _requestNoController = TextEditingController();
   final _requestIdController = TextEditingController();
   final _issueIdController = TextEditingController();
@@ -89,6 +90,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapTransferBranchNoController?.dispose();
     _requestIdController?.dispose();
     _requestNoController?.dispose();
     _seriesNameReqNoController?.dispose();
@@ -584,6 +586,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapTransferBranchNoController.text = data.sapTransferBranchNo.toString();
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
       _seriesNameController.text = data.seriesName;
@@ -610,7 +613,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
+                  controller: _sapTransferBranchNoController,
                   enabled: false,
                   decoration: InputDecoration(
                       hintText: "Transfer No.",

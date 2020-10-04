@@ -34,7 +34,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
+  final _sapRequestIssueNoController = TextEditingController();
   final _issueIdController = TextEditingController();
   final _issueNoController = TextEditingController();
   final _seriesNameController = TextEditingController();
@@ -77,6 +78,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
+    _sapRequestIssueNoController?.dispose();
     _issueIdController?.dispose();
     _issueNoController?.dispose();
     _seriesNameController?.dispose();
@@ -119,6 +122,38 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     }
 
     bloc.emitEvent(RequestIssueDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.issueId = int.parse(_issueIdController.text);
+    data.issueNo = _issueNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.docNum = _docNumController.text;
+    data.transDate = transDate;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Issue Date harus di isi");
+      return;
+    } else if (["", null].contains(data.issueNo)) {
+      ValidateDialogWidget(context: context, message: "Issue No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(RequestIssueDetailEventPost(
       data: data,
     ));
   }
@@ -492,7 +527,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapRequestIssueNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Request No.",

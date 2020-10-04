@@ -10,6 +10,7 @@ import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/receipt_issue_detail_response.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,7 +35,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
+  final _sapReceiptIssueNoController = TextEditingController();
   final _issueIdController = TextEditingController();
   final _issueNoController = TextEditingController();
   final _seriesNameController = TextEditingController();
@@ -77,6 +79,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
+    _sapReceiptIssueNoController?.dispose();
     _issueIdController?.dispose();
     _issueNoController?.dispose();
     _seriesNameController?.dispose();
@@ -94,6 +98,41 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.issueNo = _issueNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.docNum = _docNumController.text;
+    data.transDate = transDate;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Issue Date harus di isi");
+      return;
+    } else if (["", null].contains(data.issueNo)) {
+      ValidateDialogWidget(context: context, message: "Issue No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    data.id = _id;
+    data.issueId = int.parse(_issueIdController.text);
+    
+    bloc.emitEvent(ReceiptIssueDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
     data.issueId = int.parse(_issueIdController.text);
     data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
@@ -118,7 +157,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       return;
     }
 
-    bloc.emitEvent(ReceiptIssueDetailEventAdd(
+    bloc.emitEvent(ReceiptIssueDetailEventPost(
       data: data,
     ));
   }
@@ -216,7 +255,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Receipt From Issue"),
+        title: Text("Draft Receipt From Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -226,12 +265,54 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapReceiptIssueId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Receipt From Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -472,6 +553,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
+      _sapReceiptIssueNoController.text = data.sapReceiptIssueNo;
       _issueIdController.text = data.issueId.toString();
       _seriesNameController.text = data.seriesName;
       _issueNoController.text = data.issueNo;
@@ -495,7 +578,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReceiptIssueNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Receipt No.",
@@ -697,10 +780,12 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(

@@ -203,6 +203,7 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Request No. : ${data[index].returnRequestNo}"),
                     Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),

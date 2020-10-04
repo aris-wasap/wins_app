@@ -24,10 +24,12 @@ class ReceivableCreditDetailPage extends StatefulWidget {
   ReceivableCreditDetailPage(this._id);
   final int _id;
   @override
-  _ReceivableCreditDetailPageState createState() => _ReceivableCreditDetailPageState(_id);
+  _ReceivableCreditDetailPageState createState() =>
+      _ReceivableCreditDetailPageState(_id);
 }
 
-class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage> {
+class _ReceivableCreditDetailPageState
+    extends State<ReceivableCreditDetailPage> {
   _ReceivableCreditDetailPageState(this._id);
 
   ReceivableCreditDetailBloc bloc = ReceivableCreditDetailBloc();
@@ -35,6 +37,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapReceivableCreditNoController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -79,6 +82,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReceivableCreditNoController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _transNoController?.dispose();
@@ -104,10 +108,12 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -142,10 +148,12 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -268,7 +276,10 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -277,7 +288,8 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
           )
         ],
       );
-    } else if (_getState().data.sapReceivableCreditId== 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReceivableCreditId == 0 &&
+        _getState().data.id > 0) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -358,7 +370,9 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -547,6 +561,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReceivableCreditNoController.text = data.sapReceivableCreditNo;
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -572,7 +587,7 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReceivableCreditNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Return No.",
@@ -801,7 +816,6 @@ class _ReceivableCreditDetailPageState extends State<ReceivableCreditDetailPage>
             children: <Widget>[
               Text(data[index].itemCode),
               Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
               // Text(data[index].whsCode ?? ''),
             ],
           ),

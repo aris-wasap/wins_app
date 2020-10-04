@@ -136,8 +136,7 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, message: "Transfer Date harus di isi");
       return;
-    }
-    else if ([null, ""].contains(data.fromWhsCode)) {
+    } else if ([null, ""].contains(data.fromWhsCode)) {
       ValidateDialogWidget(
           context: context, message: "From Warehouse harus di isi");
       return;
@@ -635,6 +634,7 @@ class _InventoryTransferDetailPageState
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapInventoryTransferNoController.text = data.sapInventoryTransferNo;
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
       transDate = data.transDate;
@@ -652,7 +652,7 @@ class _InventoryTransferDetailPageState
       _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
       _toBranchIdController.text = data.toBranchId.toString();
-      _toBranchNameController.text =data.toBranchName;
+      _toBranchNameController.text = data.toBranchName;
     }
 
     return Column(
@@ -917,7 +917,8 @@ class _InventoryTransferDetailPageState
 
                         whs.then((cflWarehouse.Data whs) {
                           if (whs != null) {
-                            _toBranchIdController.text = whs.branchId.toString();
+                            _toBranchIdController.text =
+                                whs.branchId.toString();
                             _toBranchNameController.text = whs.branchName;
                             _toWhsCodeController.text = whs.whsCode;
                             _toWhsNameController.text = whs.whsName;
@@ -1341,9 +1342,11 @@ class _InventoryTransferDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+              // Text(data[index].whsCode ?? ''),
             ],
           ),
           trailing: IconButton(

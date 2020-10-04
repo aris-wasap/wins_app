@@ -113,10 +113,12 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Receipt Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Receipt Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -156,10 +158,12 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Receipt Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Receipt Date harus di isi");
       return;
     } else if (["", null].contains(data.poNo)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order No harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -282,7 +286,10 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -291,7 +298,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReceiptSupplierId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReceiptSupplierId == 0 &&
+        _getState().data.id > 0) {
       return AppBar(
         title: Text(
           "Create Receipt",
@@ -361,7 +369,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_poNoController.text)) {
-      ValidateDialogWidget(context: context, message: "Purchase Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Purchase Order No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -371,7 +380,9 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
       for (var item in _getState().data.items) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -831,12 +842,13 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text("Batch No : " + data[index].batchNo ?? ''),
               Text("Line : " + data[index].poLineNo.toString() ?? '0'),
-
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(

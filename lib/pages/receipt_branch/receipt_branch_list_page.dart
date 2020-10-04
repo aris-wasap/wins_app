@@ -202,10 +202,10 @@ class _ReceiptBranchListPageState extends State<ReceiptBranchListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        "Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
+                    Text("Issue No. : ${data[index].issueNo}"),
                     Text("From : ${data[index].fromBranchName}"),
                     Text("To : ${data[index].branchName}"),
+                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

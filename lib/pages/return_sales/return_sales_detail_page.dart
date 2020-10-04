@@ -35,6 +35,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
   final _idTxController = TextEditingController();
+  final _sapReturnNoController = TextEditingController();
   final _returnRequestIdController = TextEditingController();
   final _returnRequestNoController = TextEditingController();
   final _seriesNameReqNoController = TextEditingController();
@@ -82,6 +83,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
   @override
   void dispose() {
     _idTxController?.dispose();
+    _sapReturnNoController?.dispose();
     _returnRequestIdController?.dispose();
     _returnRequestNoController?.dispose();
     _seriesNameReqNoController?.dispose();
@@ -114,10 +116,12 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Return Request harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -134,14 +138,13 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
     data.id = _id;
     data.returnRequestId = int.parse(_returnRequestIdController.text);
-   
 
     bloc.emitEvent(ReturnSalesDetailEventAdd(
       data: data,
     ));
   }
 
-    void _submit() {
+  void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.id = int.parse(_idTxController.text);
@@ -157,10 +160,12 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Return Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Date harus di isi");
       return;
     } else if (["", null].contains(data.returnRequestNo)) {
-      ValidateDialogWidget(context: context, message: "Return Request harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -179,8 +184,6 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
       data: data,
     ));
   }
-
-  
 
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
@@ -285,7 +288,10 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -294,7 +300,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId== 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -364,7 +370,8 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
   Future _scanQR() async {
     if (["", null].contains(_returnRequestNoController.text)) {
-      ValidateDialogWidget(context: context, message: "Return Request No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Return Request No harus di isi");
       return;
     }
     var data = _getState().data;
@@ -375,7 +382,9 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -564,6 +573,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReturnNoController.text = data.sapReturnNo;
       _returnRequestIdController.text = data.returnRequestId.toString();
       _returnRequestNoController.text = data.returnRequestNo;
       transDate = data.transDate;
@@ -589,7 +599,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapReturnNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Return No.",
@@ -646,11 +656,12 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflReturnRequestDelivery.Data> req = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflReturnRequestDelivery.Data>(
-                              builder: (BuildContext context) =>
-                                  CflReturnRequestDeliveryPage()));
+                      Future<cflReturnRequestDelivery.Data> req =
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute<cflReturnRequestDelivery.Data>(
+                                  builder: (BuildContext context) =>
+                                      CflReturnRequestDeliveryPage()));
 
                       req.then((cflReturnRequestDelivery.Data req) {
                         if (req != null) {

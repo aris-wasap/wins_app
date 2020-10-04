@@ -286,7 +286,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReceiptBranchId== 0 &&
+    } else if (_getState().data.sapReceiptBranchId == 0 &&
         _getState().data.id > 0) {
       return AppBar(
         title: Text(
@@ -368,7 +368,9 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
         // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -565,6 +567,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
+      _sapReceiptBranchNoController.text = data.sapReceiptBranchNo;
       _issueIdController.text = data.issueId.toString();
       _seriesNameController.text = data.seriesName;
       _issueNoController.text = data.issueNo;
@@ -809,10 +812,13 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
+              Text("From Warehouse : ${data[index].fromWhsName}"),
+              Text("To Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(
