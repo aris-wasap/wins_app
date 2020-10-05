@@ -666,8 +666,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
                       req.then((cflReturnRequestDelivery.Data req) {
                         if (req != null) {
                           _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text =
-                              req.seriesName + '-' + req.transNo;
+                          _returnRequestNoController.text = req.transNo;
                           _seriesNameReqNoController.text = req.seriesName;
                           _customerCodeController.text = req.customerCode;
                           _customerNameController.text = req.customerName;

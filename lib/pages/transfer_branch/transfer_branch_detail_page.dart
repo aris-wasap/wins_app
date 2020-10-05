@@ -580,7 +580,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     var data = state.data;
     _branchIdController.text = globalBloc.branchId.toString();
     _transNoController.text = data.transNo;
-    
+
     //_branchNameController.text = globalBloc.branchName;
     //jika nama signature berbah di kasih tanda
 
@@ -798,7 +798,6 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                     ),
                   ),
                 ),
-                
               ],
             ),
           ),

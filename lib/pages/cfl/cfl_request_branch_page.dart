@@ -170,7 +170,7 @@ class _CflRequestBranchPageState extends State<CflRequestBranchPage> {
                 padding: const EdgeInsets.all(0),
                 child: ListTile(
                   title: Text(
-                      "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}  "),
+                      "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}  "),
                   subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

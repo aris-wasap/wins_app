@@ -175,7 +175,7 @@ class _CflGoodsIssuePageState extends State<CflGoodsIssuePage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Series ${data[index].seriesName} - No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {

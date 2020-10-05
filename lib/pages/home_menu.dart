@@ -145,7 +145,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     {
       "title": "A/R Credit Memo",
       "subtitle": "List Returns, Scan Item",
-      "icon": "assets/images/purchase_credit.png",
+      "icon": "assets/images/receivable_credit.png",
       "authDetail": "receivableCredit_Auth_Detail",
     },
 

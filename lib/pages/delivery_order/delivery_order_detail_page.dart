@@ -109,10 +109,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(context: context, message: "Delivery Order Date harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Delivery Order Date harus di isi");
       return;
     } else if (["", null].contains(data.soNo)) {
-      ValidateDialogWidget(context: context, message: "Sales Order No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Sales Order No harus di isi");
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
@@ -130,7 +132,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     data.id = _id;
     data.soId = int.parse(_soIdController.text);
     data.seriesNameSo = _seriesNameSoController.text;
-   
+
     bloc.emitEvent(DeliveryOrderDetailEventAdd(
       data: data,
     ));
@@ -276,7 +278,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.save, color: Colors.yellowAccent,),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
@@ -285,7 +290,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapDeliveryId== 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
       return AppBar(
         title: Text(
           "Create Delivery Order",
@@ -366,7 +371,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -647,8 +654,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       so.then((cflSalesOrder.Data so) {
                         if (so != null) {
                           _soIdController.text = so.id.toString();
-                          _soNoController.text =
-                              so.seriesName + '-' + so.transNo;
+                          _soNoController.text = so.transNo;
                           _seriesNameSoController.text = so.seriesName;
                           _customerCodeController.text = so.customerCode;
                           _customerNameController.text = so.customerName;

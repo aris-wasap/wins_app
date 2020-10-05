@@ -685,8 +685,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                       req.then((cflPayableReturnRequest.Data req) {
                         if (req != null) {
                           _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text =
-                              req.seriesName + '-' + req.transNo;
+                          _returnRequestNoController.text = req.transNo;
                           _vendorCodeController.text = req.vendorCode;
                           _vendorNameController.text = req.vendorName;
                           _refNoController.text = req.refNo;
@@ -878,7 +877,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0 ) {
+        if (_getState().data.sapReturnId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

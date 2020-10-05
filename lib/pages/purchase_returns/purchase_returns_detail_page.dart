@@ -654,8 +654,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                       req.then((cflGoodsReturnRequest.Data req) {
                         if (req != null) {
                           _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text =
-                              req.seriesName + '-' + req.transNo;
+                          _returnRequestNoController.text = req.transNo;
                           _vendorCodeController.text = req.vendorCode;
                           _vendorNameController.text = req.vendorName;
                           _refNoController.text = req.refNo;

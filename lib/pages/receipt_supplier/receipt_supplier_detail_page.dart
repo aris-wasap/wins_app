@@ -680,8 +680,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                       po.then((cflPurchaseSupplier.Data po) {
                         if (po != null) {
                           _poIdController.text = po.id.toString();
-                          _poNoController.text =
-                              po.seriesName + '-' + po.transNo;
+                          _poNoController.text = po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
                           _refNoController.text = po.refNo;
