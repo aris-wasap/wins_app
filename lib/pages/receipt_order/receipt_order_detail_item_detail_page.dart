@@ -272,6 +272,8 @@ class _ReceiptOrderDetailItemDetailPageState
                           if (whs != null) {
                             _getState().data.whsCode = whs.whsCode;
                             _getState().data.whsName = whs.whsName;
+                            _getState().data.binAbs = null;
+                            _getState().data.binCode = "";
                           }
                         });
                       });
@@ -319,28 +321,7 @@ class _ReceiptOrderDetailItemDetailPageState
                     ),
                   ),
                 ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _whsCodeController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "To Warehouse Code",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _whsNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "To Warehouse Name",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
+                
                 Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -401,38 +382,7 @@ class _ReceiptOrderDetailItemDetailPageState
                     ),
                   ),
                 ),
-                // LabelFieldWidget(
-                //   labelText: "Item Code",
-                //   valueText: "${data.itemCode}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Item Name",
-                //   valueText: "${data.itemName}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Open PO Qty",
-                //   valueText: "${NumberFormat("#,###.00").format(data.soQty)}",
-                // ),
-                // _data.id == 0
-                //     ? TextField(
-                //         controller: _qtyController,
-                //         keyboardType: TextInputType.number,
-                //         // onChanged: (text) {},
-                //         decoration: InputDecoration(
-                //           labelText: "Receipt Qty",
-                //           contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                //           enabledBorder: UnderlineInputBorder(
-                //               borderSide: BorderSide(color: Colors.blue)),
-                //         ))
-                //     : LabelFieldWidget(
-                //         labelText: "Receipt Qty",
-                //         valueText:
-                //             "${NumberFormat("#,###.00").format(data.qty)}",
-                //       ),
-                // LabelFieldWidget(
-                //   labelText: "UoM",
-                //   valueText: "${data.uom}",
-                // ),
+                
               ],
             ),
           ),

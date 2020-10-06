@@ -116,7 +116,11 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       return;
     } else if (["", null].contains(data.poNo)) {
       ValidateDialogWidget(
-          context: context, message: "Purchase Order No harus di isi");
+          context: context, message: "Purchase Order No. harus di isi");
+      return;
+    } else if (["", null].contains(data.refNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Reference No. harus di isi");
       return;
     } else if (["", null].contains(data.vendorCode)) {
       ValidateDialogWidget(context: context, message: "Vendor harus di isi");
@@ -570,6 +574,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       _idTxController.text = data.id.toString();
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
+      _refNoController.text = data.refNo;
       _sapReceiptOrderNoController.text = data.sapReceiptOrderNo;
       transDate = data.transDate;
       if (transDate != null) {
@@ -596,15 +601,17 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _sapReceiptOrderNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Receipt No.",
-                        labelText: "Receipt No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                  controller: _sapReceiptOrderNoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      hintText: "Receipt No.",
+                      labelText: "Receipt No.",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -619,18 +626,20 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                             controller: _transDateController,
                             enabled: false,
                             decoration: InputDecoration(
-                                hintText: "Receipt Date",
-                                labelText: "Receipt Date",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[400]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))
+                              hintText: "Receipt Date",
+                              labelText: "Receipt Date",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: (data.id == 0)
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                borderRadius: new BorderRadius.circular(
+                                  10.0,
+                                ),
+                              ),
+                            )
                             // decoration: InputDecoration(
                             //   labelText: "DO Date",
                             //   disabledBorder: UnderlineInputBorder(
@@ -665,7 +674,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           _poNoController.text = po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
-                          _refNoController.text = po.refNo;
+                          //_refNoController.text = po.refNo;
                           _branchIdController.text = po.branchId.toString();
                           _branchNameController.text = po.branchName;
                           _seriesNamePoController.text = po.seriesName;
@@ -758,6 +767,28 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                TextFormField(
+                  controller: _refNoController,
+                  autofocus: false,
+                  enabled: _transNoController.text == "" ? true : false,
+                  decoration: InputDecoration(
+                    hintText: 'Reference No.',
+                    labelText: "Reference No.",
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10.0)),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color:
+                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                      borderRadius: new BorderRadius.circular(
+                        10.0,
+                      ),
                     ),
                   ),
                 ),
