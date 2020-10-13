@@ -82,20 +82,20 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     //   "authDetail": "goodsReceipt_Auth_Detail",
     // },
 
-    // // Active
-    // {
-    //   "title": "Issue Change Product",
-    //   "subtitle": "List Issue, Scan Item",
-    //   "icon": "assets/images/request_issue.png",
-    //   "authDetail": "requestIssue_Auth_Detail",
-    // },
-    // // Active
-    // {
-    //   "title": "Receipt From Change Product",
-    //   "subtitle": "List Receipt, Scan Receipt",
-    //   "icon": "assets/images/receipt_issue.png",
-    //   "authDetail": "receiptIssue_Auth_Detail",
-    // },
+    // Active
+    {
+      "title": "Issue Change Product",
+      "subtitle": "List Issue, Scan Item",
+      "icon": "assets/images/request_issue.png",
+      "authDetail": "requestIssue_Auth_Detail",
+    },
+    // Active
+    {
+      "title": "Receipt From Change Product",
+      "subtitle": "List Receipt, Scan Receipt",
+      "icon": "assets/images/receipt_issue.png",
+      "authDetail": "receiptIssue_Auth_Detail",
+    },
     // Active
     {
       "title": "Receipt From Purchase Order",
@@ -243,28 +243,28 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
                               // Change Product
                               //else
-                              // if (subjectList[index]["authDetail"] ==
-                              //         "requestIssue_Auth_Detail" &&
-                              //     globalBloc.loginResponse.data
-                              //             .requestIssue_Auth_Detail ==
-                              //         'Y') {
-                              //   Navigator.push(context, MaterialPageRoute(
-                              //       builder: (BuildContext context) {
-                              //     return RequestIssueListPage();
-                              //   }));
-                              // } else if (subjectList[index]["authDetail"] ==
-                              //         "receiptIssue_Auth_Detail" &&
-                              //     globalBloc.loginResponse.data
-                              //             .receiptIssue_Auth_Detail ==
-                              //         'Y') {
-                              //   Navigator.push(context, MaterialPageRoute(
-                              //       builder: (BuildContext context) {
-                              //     return ReceiptIssueListPage();
-                              //   }));
-                              // }
+                              if (subjectList[index]["authDetail"] ==
+                                      "requestIssue_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .requestIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return RequestIssueListPage();
+                                }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "receiptIssue_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .receiptIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ReceiptIssueListPage();
+                                }));
+                              }
 
                               //Transfer To Branch
-                              if (subjectList[index]["authDetail"] ==
+                              else if (subjectList[index]["authDetail"] ==
                                       "transferBranch_Auth_Detail" &&
                                   globalBloc.loginResponse.data
                                           .transferBranch_Auth_Detail ==

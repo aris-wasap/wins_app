@@ -44,17 +44,17 @@ class Data {
   @JsonKey(name: 'Id')
   int id; 
 
-  @JsonKey(name: 'IssueId')
-  int issueId;
+  @JsonKey(name: 'RequestId')
+  int requestId;
 
-  @JsonKey(name: 'IssueNo')
-  String issueNo;  
+  @JsonKey(name: 'RequestNo')
+  String requestNo;  
 
   @JsonKey(name:'SeriesName')
   String seriesName;
 
-  @JsonKey(name: 'DocNum')
-  String docNum;
+  @JsonKey(name:'SeriesNameReqNo')
+  String seriesNameReqNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
@@ -87,10 +87,10 @@ class Data {
   
 
   Data({
-    this.issueId: 0, 
-    this.issueNo, 
+    this.requestId: 0, 
+    this.requestNo, 
     this.seriesName,
-    this.docNum,
+    this.seriesNameReqNo,
     this.id: 0,
     this.transNo,
     this.transDate,
@@ -111,11 +111,11 @@ class Data {
 @JsonSerializable()
 class Item { 
 
-  @JsonKey(name: 'IssueId')
-  int issueId;
+  @JsonKey(name: 'RequestId')
+  int requestId;
 
-  @JsonKey(name: 'IssueLineNo')
-  int issueLineNo;
+  @JsonKey(name: 'RequestLineNo')
+  int requestLineNo;
 
   @JsonKey(name: 'WebId')
   int webId;
@@ -138,14 +138,47 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName; 
 
-  @JsonKey(name: 'IssueQty')
-  double issueQty;
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
 
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
   @JsonKey(name: 'ItemCost')
   double itemCost;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
 
   @JsonKey(name: 'Uom')
   String uom;
@@ -168,8 +201,8 @@ class Item {
  
  
   Item({
-    this.issueId: 0,
-    this.issueLineNo: 0,
+    this.requestId: 0,
+    this.requestLineNo: 0,
     this.webId,
     this.webDetId,
     this.id: 0,
@@ -177,15 +210,26 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName, 
-    this.issueQty: 0,
+    this.reqQty: 0,
     this.qty: 0,
     this.itemCost:0,
     this.uom,
+    this.length,
+    this.width,
+    this.weight,
+    this.itemType,
+    this.type,
     this.whsCode,
     this.whsName,
     this.binAbs,
-    this.binCode,  
+    this.binCode,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
     this.batchNo,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

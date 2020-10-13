@@ -1,15 +1,15 @@
 import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_state.dart';
-import 'package:admart_app/models/cfl_transfer_request_response.dart';
+import 'package:admart_app/blocs/cfl_purchase_reference/cfl_purchase_reference_event.dart';
+import 'package:admart_app/blocs/cfl_purchase_reference/cfl_purchase_reference_state.dart';
+import 'package:admart_app/models/cfl_purchase_reference_response.dart';
 import 'package:admart_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
-    CflTransferRequestState> {
-  CflTransferRequestBloc()
+class CflPurchaseReferenceBloc extends BlocEventStateBase<
+    CflPurchaseReferenceEvent, CflPurchaseReferenceState> {
+  CflPurchaseReferenceBloc()
       : super(
-          initialState: CflTransferRequestState.noAction(),
+          initialState: CflPurchaseReferenceState.noAction(),
         );
 
   @override
@@ -18,30 +18,31 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
   }
 
   @override
-  Stream<CflTransferRequestState> eventHandler(CflTransferRequestEvent event,
-      CflTransferRequestState currentState) async* {
+  Stream<CflPurchaseReferenceState> eventHandler(
+      CflPurchaseReferenceEvent event,
+      CflPurchaseReferenceState currentState) async* {
     switch (event.event) {
-      case CflTransferRequestEventType.activedSearch:
-        yield CflTransferRequestState.success(
+      case CflPurchaseReferenceEventType.activedSearch:
+        yield CflPurchaseReferenceState.success(
           data: currentState.data,
           isActiveSearch: true,
           selectedRows: currentState.selectedRows,
         );
 
         break;
-      case CflTransferRequestEventType.deactivedSearch:
+      case CflPurchaseReferenceEventType.deactivedSearch:
         {
-          yield CflTransferRequestState.busy(
+          yield CflPurchaseReferenceState.busy(
             data: currentState.data,
             isActiveSearch: false,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response =
-                await _repository.cflTransferRequest_FetchNextPage(0, "", "");
+            CflPurchaseReferenceResponse response =
+                await _repository.cflPurchaseReference_FetchNextPage(0, "", 0);
             if (response == null) {
-              yield CflTransferRequestState.failure(
+              yield CflPurchaseReferenceState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: false,
@@ -50,14 +51,14 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferRequestState.failure(
+                yield CflPurchaseReferenceState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferRequestState.success(
+                yield CflPurchaseReferenceState.success(
                   data: response.data,
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
@@ -65,7 +66,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
               }
             }
           } catch (e) {
-            yield CflTransferRequestState.failure(
+            yield CflPurchaseReferenceState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: false,
@@ -74,20 +75,19 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           }
         }
         break;
-      case CflTransferRequestEventType.firstPage:
+      case CflPurchaseReferenceEventType.firstPage:
         {
-          yield CflTransferRequestState.busy(
+          yield CflPurchaseReferenceState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response =
-                await _repository.cflTransferRequest_FetchNextPage(
-                    0, event.searchQuery, event.transType);
+            CflPurchaseReferenceResponse response = await _repository
+                .cflPurchaseReference_FetchNextPage(0, event.searchQuery, event.poId);
             if (response == null) {
-              yield CflTransferRequestState.failure(
+              yield CflPurchaseReferenceState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -96,14 +96,14 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferRequestState.failure(
+                yield CflPurchaseReferenceState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferRequestState.success(
+                yield CflPurchaseReferenceState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -111,7 +111,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
               }
             }
           } catch (e) {
-            yield CflTransferRequestState.failure(
+            yield CflPurchaseReferenceState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -120,22 +120,20 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           }
         }
         break;
-      case CflTransferRequestEventType.nextPage:
+      case CflPurchaseReferenceEventType.nextPage:
         {
-          yield CflTransferRequestState.busy(
+          yield CflPurchaseReferenceState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response =
-                await _repository.cflTransferRequest_FetchNextPage(
-                    currentState.data.length,
-                    event.searchQuery,
-                    event.transType);
+            CflPurchaseReferenceResponse response =
+                await _repository.cflPurchaseReference_FetchNextPage(
+                    currentState.data.length, event.searchQuery, event.poId);
             if (response == null) {
-              yield CflTransferRequestState.failure(
+              yield CflPurchaseReferenceState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -144,7 +142,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferRequestState.failure(
+                yield CflPurchaseReferenceState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -153,7 +151,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
               } else {
                 var data = currentState.data;
                 data.addAll(response.data);
-                yield CflTransferRequestState.success(
+                yield CflPurchaseReferenceState.success(
                   data: data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -161,7 +159,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
               }
             }
           } catch (e) {
-            yield CflTransferRequestState.failure(
+            yield CflPurchaseReferenceState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -170,20 +168,20 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           }
         }
         break;
-      case CflTransferRequestEventType.refresh:
+      case CflPurchaseReferenceEventType.refresh:
         {
-          yield CflTransferRequestState.busy(
+          yield CflPurchaseReferenceState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response =
-                await _repository.cflTransferRequest_FetchNextPage(
-                    0, event.searchQuery, event.transType);
+            CflPurchaseReferenceResponse response =
+                await _repository.cflPurchaseReference_FetchNextPage(
+                    0, event.searchQuery, event.poId);
             if (response == null) {
-              yield CflTransferRequestState.failure(
+              yield CflPurchaseReferenceState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -192,14 +190,14 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferRequestState.failure(
+                yield CflPurchaseReferenceState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferRequestState.success(
+                yield CflPurchaseReferenceState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -207,7 +205,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
               }
             }
           } catch (e) {
-            yield CflTransferRequestState.failure(
+            yield CflPurchaseReferenceState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -216,14 +214,14 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           }
         }
         break;
-      case CflTransferRequestEventType.selectedRow:
+      case CflPurchaseReferenceEventType.selectedRow:
         {
           if (currentState.selectedRows.contains(event.selectedRow)) {
             currentState.selectedRows.remove(event.selectedRow);
           } else {
             currentState.selectedRows.add(event.selectedRow);
           }
-          yield CflTransferRequestState.success(
+          yield CflPurchaseReferenceState.success(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,

@@ -11,6 +11,7 @@ import 'package:admart_app/models/cfl_production_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
+import 'package:admart_app/models/cfl_purchase_reference_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
 import 'package:admart_app/models/cfl_request_branch_response.dart';
 import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
@@ -1979,7 +1980,7 @@ class ApiProvider {
     }
   }
 
-  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(int requestId,
       String qrResult) async {
     try {
       var body =
@@ -3155,7 +3156,7 @@ class ApiProvider {
   //CflTransferRequest
   //-----------------------------
   Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
-      int rowStart, String searchQuery) async {
+      int rowStart, String searchQuery, String transType) async {
     try {
       var body = json.encode({
         "userId": globalBloc.userId,
@@ -3163,6 +3164,7 @@ class ApiProvider {
         "pageSize": 10,
         "searchQuery": searchQuery,
         "branchId": globalBloc.branchId,
+        "transType": transType,
       });
 
       final response = await http.post(
@@ -3364,6 +3366,38 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflPurchaseOrder_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflPurchaseReference
+  //-----------------------------
+  Future<CflPurchaseReferenceResponse> cflPurchaseReference_FetchNextPage(
+      int rowStart, String searchQuery, int poId) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId,
+        "poId": poId,
+      });
+
+      final response = await http.post(
+          "${_url}api/CflPurchaseReferenceApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflPurchaseReferenceResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflPurchaseReference_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflPurchaseReference_FetchNextPage:Failed to load post(1)');
     }
   }
 

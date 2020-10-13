@@ -7,8 +7,8 @@ class RequestIssueDetailEvent extends BlocEvent {
     this.id,
     this.data,
     this.item,
-    this.issueId,
-    this.issueNo,
+    this.requestId,
+    this.requestNo,
     this.itemIndex,
     this.qrResult,
   });
@@ -16,8 +16,8 @@ class RequestIssueDetailEvent extends BlocEvent {
   final int id;
   final Data data;
   final Item item;
-  final int issueId;
-  final String issueNo;
+  final int requestId;
+  final String requestNo;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,9 +37,13 @@ class RequestIssueDetailEventGetId extends RequestIssueDetailEvent {
 class RequestIssueDetailEventScan extends RequestIssueDetailEvent {
   RequestIssueDetailEventScan({
     @required Data data,
+    @required int requestId,
+    @required String requestNo,
     @required String qrResult,
   }) : super(
           data: data,
+          requestId : requestId,
+          requestNo : requestNo,
           qrResult: qrResult,
         );
 }

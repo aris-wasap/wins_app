@@ -60,8 +60,8 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is RequestIssueDetailEventScan) {
-      var issueId = event.issueId;
-      var issueNo = event.issueNo;
+      var requestId = event.requestId;
+      var requestNo = event.requestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +71,7 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         RequestIssueDetailScanResponse response =
-            await _repository.requestIssueDetail_Scan(qrResult);
+            await _repository.requestIssueDetail_Scan(requestId,qrResult);
         if (response == null) {
           yield RequestIssueDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,13 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield RequestIssueDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.issueId == 0) {
+              if (response.data.requestId == 0) {
                 yield RequestIssueDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (2)',
                   data: event.data,
                 );
               } else {

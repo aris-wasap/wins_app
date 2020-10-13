@@ -1,21 +1,21 @@
 import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_transfer_request_response.dart'; 
+import 'package:admart_app/models/cfl_purchase_reference_response.dart'; 
 
-class CflTransferRequestEvent extends BlocEvent {
-  CflTransferRequestEvent({
+class CflPurchaseReferenceEvent extends BlocEvent {
+  CflPurchaseReferenceEvent({
     this.event, 
     this.searchQuery,
     this.selectedRow,
-    this.transType,
+    this.poId,
   });
 
-  final CflTransferRequestEventType event; 
+  final CflPurchaseReferenceEventType event; 
   final String searchQuery;
   final Data selectedRow;
-  final String transType;
+  final int poId;
 }
 
-enum CflTransferRequestEventType {
+enum CflPurchaseReferenceEventType {
   none,
   firstPage,
   nextPage,

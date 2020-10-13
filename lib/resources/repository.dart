@@ -9,6 +9,7 @@ import 'package:admart_app/models/cfl_production_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
+import 'package:admart_app/models/cfl_purchase_reference_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
 import 'package:admart_app/models/cfl_request_branch_response.dart';
 import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
@@ -494,9 +495,9 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
 
-  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(int requestId,
           String qrResult) =>
-      apiProvider.requestIssueDetail_Scan(qrResult);
+      apiProvider.requestIssueDetail_Scan(requestId,qrResult);
 
   //-----------------------------
   //ReceiptBranchList
@@ -731,8 +732,8 @@ class Repository {
   //CflTransferRequest
   //-----------------------------
   Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
-          int rowStart, String searchQuery) =>
-      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery);
+          int rowStart, String searchQuery, String transType) =>
+      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery, transType);
 
   //-----------------------------
   //CflRequestBranch
@@ -774,6 +775,13 @@ class Repository {
   Future<CflPurchaseOrderResponse> cflPurchaseOrder_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPurchaseOrder_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
+  //CflPurchaseReference
+  //-----------------------------
+  Future<CflPurchaseReferenceResponse> cflPurchaseReference_FetchNextPage(
+          int rowStart, String searchQuery, int poId) =>
+      apiProvider.cflPurchaseReference_FetchNextPage(rowStart, searchQuery, poId);
 
   //-----------------------------
   //CflPurchaseSupplier

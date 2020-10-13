@@ -125,7 +125,7 @@ class _RequestIssueDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtySoController.text = data.issueQty.toString();
+    _qtySoController.text = data.reqQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")

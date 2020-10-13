@@ -719,7 +719,7 @@ class _InventoryTransferDetailPageState
                           context,
                           MaterialPageRoute<cflTransferRequest.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferRequestPage()));
+                                  CflTransferRequestPage("InventoryTransfer")));
 
                       trq.then((cflTransferRequest.Data trq) {
                         if (trq != null) {

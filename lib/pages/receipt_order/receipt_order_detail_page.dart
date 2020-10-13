@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:admart_app/pages/cfl/cfl_purchase_order_page.dart';
+import 'package:admart_app/pages/cfl/cfl_purchase_reference_page.dart';
 import 'package:admart_app/pages/receipt_order/receipt_order_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -17,6 +18,8 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart'
     as cflPurchaseOrder;
+import 'package:admart_app/models/cfl_purchase_reference_response.dart'
+    as cflPurchaseReference;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -674,7 +677,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           _poNoController.text = po.transNo;
                           _vendorCodeController.text = po.vendorCode;
                           _vendorNameController.text = po.vendorName;
-                          //_refNoController.text = po.refNo;
+                          _refNoController.text = "";
                           _branchIdController.text = po.branchId.toString();
                           _branchNameController.text = po.branchName;
                           _seriesNamePoController.text = po.seriesName;
@@ -770,28 +773,94 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                  controller: _refNoController,
-                  autofocus: false,
-                  enabled: _transNoController.text == "" ? true : false,
-                  decoration: InputDecoration(
-                    hintText: 'Reference No.',
-                    labelText: "Reference No.",
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(10.0)),
-                    disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color:
-                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                      borderRadius: new BorderRadius.circular(
-                        10.0,
-                      ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (int.parse(_poIdController.text)> 0) {
+                      Future<cflPurchaseReference.Data> po = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflPurchaseReference.Data>(
+                              builder: (BuildContext context) =>
+                                  CflPurchaseReferencePage(int.parse(_poIdController.text))));
+
+                      po.then((cflPurchaseReference.Data po) {
+                        if (po != null) {
+                          //_poIdController.text = po.id.toString();
+                          //_poNoController.text = po.transNo;
+                          //_vendorCodeController.text = po.vendorCode;
+                          //_vendorNameController.text = po.vendorName;
+                          _refNoController.text = po.refNo;
+                          //_branchIdController.text = po.branchId.toString();
+                          //_branchNameController.text = po.branchName;
+                          //_seriesNamePoController.text = po.seriesName;
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Reference No.",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_refNoController.text),
+                                // subtitle: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   // children: <Widget>[
+                                //   //   Text(_branchNameController.text),
+                                //   // ],
+                                // ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
                     ),
                   ),
                 ),
+                //Padding(padding: EdgeInsets.only(top: 5)),
+                // TextFormField(
+                //   controller: _refNoController,
+                //   autofocus: false,
+                //   enabled: _transNoController.text == "" ? true : false,
+                //   decoration: InputDecoration(
+                //     hintText: 'Reference No.',
+                //     labelText: "Reference No.",
+                //     contentPadding: new EdgeInsets.symmetric(
+                //         vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //         borderRadius: new BorderRadius.circular(10.0)),
+                //     disabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: new BorderRadius.circular(
+                //         10.0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

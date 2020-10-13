@@ -2,28 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_bloc.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_state.dart';
+import 'package:admart_app/blocs/cfl_purchase_reference/cfl_purchase_reference_bloc.dart';
+import 'package:admart_app/blocs/cfl_purchase_reference/cfl_purchase_reference_event.dart';
+import 'package:admart_app/blocs/cfl_purchase_reference/cfl_purchase_reference_state.dart';
 import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
-class CflTransferRequestPage extends StatefulWidget {
-  CflTransferRequestPage(this.transType);
-  final String transType;
+class CflPurchaseReferencePage extends StatefulWidget {
+  CflPurchaseReferencePage(this.poId);
+  final int poId;
   @override
-  _CflTransferRequestPageState createState() =>
-      _CflTransferRequestPageState(transType);
+  _CflPurchaseReferencePageState createState() =>
+      _CflPurchaseReferencePageState(poId);
 }
 
-class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
-  _CflTransferRequestPageState(this.transType);
-  CflTransferRequestBloc bloc = CflTransferRequestBloc();
+class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
+  _CflPurchaseReferencePageState(this.poId);
+  CflPurchaseReferenceBloc bloc = CflPurchaseReferenceBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final String transType;
-
+  final int poId;
   static const offsetVisibleThreshold = 50;
 
   final TextEditingController _searchQueryController = TextEditingController();
@@ -32,10 +31,10 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      bloc.emitEvent(CflTransferRequestEvent(
-        event: CflTransferRequestEventType.firstPage,
+      bloc.emitEvent(CflPurchaseReferenceEvent(
+        event: CflPurchaseReferenceEventType.firstPage,
         searchQuery: _searchQueryController.text,
-        transType: transType,
+        poId: poId,
       ));
     });
   }
@@ -43,10 +42,10 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(CflTransferRequestEvent(
-        event: CflTransferRequestEventType.nextPage,
+      bloc.emitEvent(CflPurchaseReferenceEvent(
+        event: CflPurchaseReferenceEventType.nextPage,
         searchQuery: _searchQueryController.text,
-        transType: transType,
+        poId: poId,
       ));
     }
   }
@@ -55,9 +54,9 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
   void initState() {
     super.initState();
 
-    bloc.emitEvent(CflTransferRequestEvent(
-      event: CflTransferRequestEventType.firstPage,
-      transType: transType,
+    bloc.emitEvent(CflPurchaseReferenceEvent(
+      event: CflPurchaseReferenceEventType.firstPage,
+      poId: poId,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -74,16 +73,17 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar(CflTransferRequestState state) {
+  PreferredSizeWidget _appBar(CflPurchaseReferenceState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Transfer Request",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Purchase Reference",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
               color: bgOrange,
@@ -95,17 +95,16 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(CflTransferRequestEvent(
-                  event: CflTransferRequestEventType.deactivedSearch,
-                  searchQuery: _searchQueryController.text,
-                  transType: transType,
-                ));
+                bloc.emitEvent(CflPurchaseReferenceEvent(
+                    event: CflPurchaseReferenceEventType.deactivedSearch,
+                    searchQuery: _searchQueryController.text,
+                    poId: poId));
               }),
         ],
       );
     } else {
       return AppBar(
-        title: Text("Choose Transfer Request"),
+        title: Text("Choose Purchase Reference"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -117,9 +116,9 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(CflTransferRequestEvent(
-                event: CflTransferRequestEventType.activedSearch,
-                transType: transType,
+              bloc.emitEvent(CflPurchaseReferenceEvent(
+                event: CflPurchaseReferenceEventType.activedSearch,
+                poId: poId,
               ));
             },
           ),
@@ -130,18 +129,17 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(CflTransferRequestEvent(
-      event: CflTransferRequestEventType.refresh,
+    bloc.emitEvent(CflPurchaseReferenceEvent(
+      event: CflPurchaseReferenceEventType.refresh,
       searchQuery: _searchQueryController.text,
-      transType: transType,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<CflTransferRequestState>(
+    return BlocEventStateBuilder<CflPurchaseReferenceState>(
         bloc: bloc,
-        builder: (BuildContext context, CflTransferRequestState state) {
+        builder: (BuildContext context, CflPurchaseReferenceState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -149,6 +147,9 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
+                  decoration: BoxDecoration(
+                    gradient: bgGradientPageWhite,
+                  ),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
                 ),
@@ -158,7 +159,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
         });
   }
 
-  Widget buildList(CflTransferRequestState state) {
+  Widget buildList(CflPurchaseReferenceState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -169,37 +170,35 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return Card(
-            child: (Container(
-              decoration: BoxDecoration(
-                gradient:
-                    index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
-              ),
-              //margin: const EdgeInsets.only(top: 8),
-              // decoration:
-              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: ListTile(
-                  title: Text("No. ${data[index].transNo} "),
-                  subtitle: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                          "${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
-                      Text("${data[index].customerCode ?? ''}"),
-                      Text("${data[index].customerName ?? ''}"),
-                    ],
-                  ),
-                  leading: Icon(Icons.keyboard_arrow_left),
-                  onTap: () {
-                    Navigator.pop(context, data[index]);
-                  },
+          return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
+            margin: const EdgeInsets.all(0),
+            // decoration:
+            //     BoxDecoration(breference: Breference(bottom: BreferenceSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(
+                    "Ref No. ${data[index].refNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("${data[index].transNo ?? ''}"),
+                    Text("${data[index].branchName ?? ''}"),
+                    Text("${data[index].vendorCode ?? ''}"),
+                    Text("${data[index].vendorName ?? ''}"),
+                  ],
                 ),
+                leading: Icon(Icons.keyboard_arrow_left),
+                onTap: () {
+                  Navigator.pop(context, data[index]);
+                },
               ),
-            )),
-          );
+            ),
+          ));
         }
 
         if (isFailure) {
