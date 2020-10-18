@@ -195,7 +195,7 @@ class _InventoryTransferDetailItemDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-FlatButton(
+                FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {}

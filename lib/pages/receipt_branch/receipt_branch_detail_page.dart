@@ -287,10 +287,11 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
         ],
       );
     } else if (_getState().data.sapReceiptBranchId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        _getState().data.status == "Draft") {
       return AppBar(
         title: Text(
-          "Create Transfer",
+          "Create Receipt",
           style: GoogleFonts.openSans(
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
@@ -791,6 +792,9 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
           Container(
             height: 5,
             color: Colors.grey,
+          ),
+          SizedBox(
+            height: 65,
           ),
         ]);
   }

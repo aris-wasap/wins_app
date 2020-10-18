@@ -42,13 +42,18 @@ class _TransferBranchDetailItemDetailPageState
   final _binCodeController = TextEditingController();
   final _reqQtyController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _availableQtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = TransferBranchDetailItemDetailBloc(this._data);
   }
 
@@ -56,8 +61,10 @@ class _TransferBranchDetailItemDetailPageState
   void dispose() {
     _reqQtyController?.dispose();
     _qtyController?.dispose();
+    _availableQtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -143,8 +150,10 @@ class _TransferBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _batchNumberController.text = data.batchNo;
-    _reqQtyController.text = NumberFormat("###,###.##")
-            .format(double.parse(data.reqQty.toString()));
+    _reqQtyController.text =
+        NumberFormat("###,###.##").format(double.parse(data.reqQty.toString()));
+    _availableQtyController.text =
+        NumberFormat("###,###.##").format(double.parse(data.availableQty.toString()));
 
     if (_data.reqQty != 0) {
       if (_reqQtyController.text == "") {
@@ -173,6 +182,48 @@ class _TransferBranchDetailItemDetailPageState
       }
     }
 
+    if (_data.availableQty != 0) {
+      if (_availableQtyController.text == "") {
+        _availableQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.availableQty.toString()));
+      } else {
+        if (_data.availableQty ==
+            double.parse(
+                _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _availableQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.availableQty.toString()));
+        }
+      }
+    }
+
+    // if (_data.length != 0) {
+    //   if (_lengthController.text == "") {
+    //     _lengthController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.length.toString()));
+    //   } else {
+    //     if (_data.length ==
+    //         double.parse(
+    //             _lengthController.text.replaceAll(new RegExp(','), ''))) {
+    //       _lengthController.text = NumberFormat("###,###.####")
+    //           .format(double.parse(data.length.toString()));
+    //     }
+    //   }
+    // }
+
+    // if (_data.width != 0) {
+    //   if (_widthController.text == "") {
+    //     _widthController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.width.toString()));
+    //   } else {
+    //     if (_data.width ==
+    //         double.parse(
+    //             _widthController.text.replaceAll(new RegExp(','), ''))) {
+    //       _widthController.text = NumberFormat("###,###.####")
+    //           .format(double.parse(data.width.toString()));
+    //     }
+    //   }
+    // }
+
     return Container(
       color: Colors.blue[100],
       child: Padding(
@@ -187,43 +238,96 @@ class _TransferBranchDetailItemDetailPageState
                   decoration: BoxDecoration(
                     gradient: bgGradientPageWhite,
                   ),
-                  padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      TextFormField(
-                        controller: _batchNumberController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            labelText: "Batch Number",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.id == 0) {}
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))
+                              // border: Border(
+                              //   bottom: BorderSide(
+                              //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                              //     width: 1.0,
+                              //   ),
+                              // ),
+                              ),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Batch Number",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_batchNumberController.text),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(_itemNameController.text),
+                                          // _itemTypeController.text == 'L'
+                                          //     ? Text(_widthController.text +
+                                          //         " X " +
+                                          //         _lengthController.text)
+                                          //     : Text(""),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      Padding(padding: EdgeInsets.only(top: 10)),
-                      TextFormField(
-                        controller: _itemCodeController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            labelText: "Item Code",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 10)),
-                      TextFormField(
-                        controller: _itemNameController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            labelText: "Item Name",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      ),
+                      // TextFormField(
+                      //   controller: _batchNumberController,
+                      //   enabled: false,
+                      //   decoration: InputDecoration(
+                      //       labelText: "Batch Number",
+                      //       contentPadding: new EdgeInsets.symmetric(
+                      //           vertical: 15.0, horizontal: 10.0),
+                      //       border: new OutlineInputBorder(
+                      //           borderRadius: new BorderRadius.circular(10.0))),
+                      // ),
+                      // Padding(padding: EdgeInsets.only(top: 10)),
+                      // TextFormField(
+                      //   controller: _itemCodeController,
+                      //   enabled: false,
+                      //   decoration: InputDecoration(
+                      //       labelText: "Item Code",
+                      //       contentPadding: new EdgeInsets.symmetric(
+                      //           vertical: 15.0, horizontal: 10.0),
+                      //       border: new OutlineInputBorder(
+                      //           borderRadius: new BorderRadius.circular(10.0))),
+                      // ),
+                      // Padding(padding: EdgeInsets.only(top: 10)),
+                      // TextFormField(
+                      //   controller: _itemNameController,
+                      //   enabled: false,
+                      //   decoration: InputDecoration(
+                      //       labelText: "Item Name",
+                      //       contentPadding: new EdgeInsets.symmetric(
+                      //           vertical: 15.0, horizontal: 10.0),
+                      //       border: new OutlineInputBorder(
+                      //           borderRadius: new BorderRadius.circular(10.0))),
+                      // ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       FlatButton(
                         autofocus: true,
@@ -242,6 +346,8 @@ class _TransferBranchDetailItemDetailPageState
                                 if (whs != null) {
                                   _getState().data.whsCode = whs.whsCode;
                                   _getState().data.whsName = whs.whsName;
+                                  _getState().data.binCode = "";
+                                 
                                 }
                               });
                             });
@@ -311,8 +417,8 @@ class _TransferBranchDetailItemDetailPageState
                                 if (bin != null) {
                                   _getState().data.binAbs = bin.absEntry;
                                   _getState().data.binCode = bin.binCode;
-                                  // _getState().data.qty =
-                                  //     double.parse(bin.availableQty.toString());
+                                  _getState().data.availableQty =
+                                      bin.availableQty;
                                 }
                               });
                             });
@@ -342,6 +448,16 @@ class _TransferBranchDetailItemDetailPageState
                                     ListTile(
                                       contentPadding: EdgeInsets.only(left: 5),
                                       title: Text(_binCodeController.text),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          _binCodeController.text != ""
+                                              ? Text("Stock Quantity : " +
+                                                  _availableQtyController.text)
+                                              : Text(""),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
@@ -370,6 +486,8 @@ class _TransferBranchDetailItemDetailPageState
                       _data.id == 0
                           ? TextField(
                               //autofocus: true,
+                              textInputAction: TextInputAction.done,
+                              focusNode: _focusNode,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
@@ -383,6 +501,7 @@ class _TransferBranchDetailItemDetailPageState
                                       TextSelection.collapsed(
                                           offset: newValue.length);
                                 });
+                                _focusNode.unfocus();
                               },
                               inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 4)

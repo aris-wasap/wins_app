@@ -141,6 +141,9 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'AvailableQty')
+  double availableQty;
+
   @JsonKey(name: 'Uom')
   String uom;
 
@@ -181,6 +184,7 @@ class Item {
     this.itemName,
     this.reqQty: 0,
     this.qty: 0,
+    this.availableQty: 0,
     this.uom,
     this.whsCode,
     this.whsName,

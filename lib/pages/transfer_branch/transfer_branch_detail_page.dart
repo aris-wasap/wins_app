@@ -586,7 +586,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
 
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
-      _sapTransferBranchNoController.text = data.sapTransferBranchNo.toString();
+      _sapTransferBranchNoController.text = data.sapTransferBranchNo;
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
       _seriesNameController.text = data.seriesName;
