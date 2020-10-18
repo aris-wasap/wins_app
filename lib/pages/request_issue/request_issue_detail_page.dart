@@ -570,7 +570,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     if (data.id != 0) {
       _idTxController.text = data.id.toString();
       _seriesNameController.text = data.seriesName;
-      _sapRequestIssueNoController.text = data.sapRequestIssueNo.toString();
+      _sapRequestIssueNoController.text = data.sapRequestIssueNo;
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
       transDate = data.transDate;
@@ -849,10 +849,12 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(

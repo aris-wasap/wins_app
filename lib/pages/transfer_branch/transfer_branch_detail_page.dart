@@ -841,6 +841,9 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -863,7 +866,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               Text("Warehouse : ${data[index].whsName}"),
             ],
           ),

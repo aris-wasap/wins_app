@@ -208,6 +208,33 @@ class Item {
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
   Item({
     this.id: 0,
     this.lineNo: 0,
@@ -221,6 +248,15 @@ class Item {
     this.toAbsEntry,
     this.toBinCode,
     this.batchNo,
+    this.length,
+    this.width,
+    this.weight,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
+    this.itemType,
+    this.isAsset,
+    this.isBatch,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

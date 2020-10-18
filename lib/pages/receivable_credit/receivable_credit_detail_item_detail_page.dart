@@ -35,7 +35,7 @@ class _ReceivableCreditDetailItemDetailPageState
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
-  final _qtyDoController = TextEditingController();
+  final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
   final _whsCodeController = TextEditingController();
   final _whsNameController = TextEditingController();
@@ -96,8 +96,8 @@ class _ReceivableCreditDetailItemDetailPageState
   Widget build(BuildContext context) {
     return BlocEventStateBuilder<ReceivableCreditDetailItemDetailState>(
         bloc: bloc,
-        builder:
-            (BuildContext context, ReceivableCreditDetailItemDetailState state) {
+        builder: (BuildContext context,
+            ReceivableCreditDetailItemDetailState state) {
           return SafeArea(
               child: Scaffold(
             key: _scaffoldKey,
@@ -142,7 +142,8 @@ class _ReceivableCreditDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyDoController.text = data.reqQty.toString();
+    _qtyReqController.text = data.reqQty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -152,6 +153,20 @@ class _ReceivableCreditDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.reqQty != 0) {
+      if (_qtyReqController.text == "") {
+        _qtyReqController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.reqQty.toString()));
+      } else {
+        if (_data.reqQty ==
+            double.parse(
+                _qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyReqController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.reqQty.toString()));
         }
       }
     }
@@ -204,10 +219,10 @@ class _ReceivableCreditDetailItemDetailPageState
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
-                  controller: _qtyDoController,
+                  controller: _qtyReqController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "Open DO Qty",
+                      labelText: "Request Qty",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -245,11 +260,6 @@ class _ReceivableCreditDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    // : LabelFieldWidget(
-                    //     labelText: "Return Qty",
-                    //     valueText:
-                    //         "${NumberFormat("#,###.00").format(data.qty)}",
-                    //   ),
                     : TextField(
                         controller: _qtyController,
                         enabled: false,

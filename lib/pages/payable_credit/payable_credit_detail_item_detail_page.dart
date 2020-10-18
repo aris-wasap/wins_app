@@ -39,7 +39,7 @@ class _PayableCreditDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-  final _qtyPoController = TextEditingController();
+  final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
 
@@ -141,7 +141,8 @@ class _PayableCreditDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyPoController.text = data.reqQty.toString();
+    _qtyReqController.text = data.reqQty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -151,6 +152,19 @@ class _PayableCreditDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.reqQty != 0) {
+      if (_qtyReqController.text == "") {
+        _qtyReqController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.reqQty.toString()));
+      } else {
+        if (_data.reqQty ==
+            double.parse(_qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyReqController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.reqQty.toString()));
         }
       }
     }
@@ -201,7 +215,7 @@ class _PayableCreditDetailItemDetailPageState
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
-                  controller: _qtyPoController,
+                  controller: _qtyReqController,
                   enabled: false,
                   decoration: InputDecoration(
                       labelText: "Request Qty",
@@ -242,13 +256,17 @@ class _PayableCreditDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Return Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Return Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 15)),
                 TextFormField(

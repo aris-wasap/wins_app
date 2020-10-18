@@ -32,19 +32,29 @@ class _InventoryTransferDetailItemDetailPageState
   final _uomController = TextEditingController();
   final _availableQtyController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = InventoryTransferDetailItemDetailBloc(this._data);
   }
 
   @override
   void dispose() {
+    //super.dispose();
     _qtyController?.dispose();
-
+    _itemCodeController?.dispose();
+    _itemNameController?.dispose();
+    _uomController?.dispose();
+    _availableQtyController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -111,6 +121,10 @@ class _InventoryTransferDetailItemDetailPageState
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
+    _batchNumberController.text = data.batchNo;
+    _lengthController.text = data.length.toString();
+    _widthController.text = data.width.toString();
+    _itemTypeController.text = data.itemType;
     _availableQtyController.text = data.availableQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
@@ -125,6 +139,48 @@ class _InventoryTransferDetailItemDetailPageState
       }
     }
 
+    if (_data.availableQty != 0) {
+      if (_availableQtyController.text == "") {
+        _availableQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.availableQty.toString()));
+      } else {
+        if (_data.availableQty ==
+            double.parse(
+                _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _availableQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.availableQty.toString()));
+        }
+      }
+    }
+
+    if (_data.length != 0) {
+      if (_lengthController.text == "") {
+        _lengthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length.toString()));
+      } else {
+        if (_data.length ==
+            double.parse(
+                _lengthController.text.replaceAll(new RegExp(','), ''))) {
+          _lengthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length.toString()));
+        }
+      }
+    }
+
+    if (_data.width != 0) {
+      if (_widthController.text == "") {
+        _widthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.width.toString()));
+      } else {
+        if (_data.width ==
+            double.parse(
+                _widthController.text.replaceAll(new RegExp(','), ''))) {
+          _widthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.width.toString()));
+        }
+      }
+    }
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,32 +190,83 @@ class _InventoryTransferDetailItemDetailPageState
             decoration: BoxDecoration(
               gradient: bgGradientPageWhite,
             ),
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _itemCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Code",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
+FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {}
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Batch Number",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_batchNumberController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_itemNameController.text),
+                                    _itemTypeController.text == 'L'
+                                        ? Text(_widthController.text +
+                                            " X " +
+                                            _lengthController.text)
+                                        : Text(""),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                // TextFormField(
+                //   controller: _itemCodeController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Code",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _itemNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Name",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _availableQtyController,
@@ -175,6 +282,8 @@ class _InventoryTransferDetailItemDetailPageState
                 _data.id == 0
                     ? TextField(
                         autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -187,9 +296,10 @@ class _InventoryTransferDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
-                          DecimalTextInputFormatter(decimalRange: 4)
+                          DecimalTextInputFormatter(decimalRange: 2),
                         ],
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
@@ -203,13 +313,17 @@ class _InventoryTransferDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(

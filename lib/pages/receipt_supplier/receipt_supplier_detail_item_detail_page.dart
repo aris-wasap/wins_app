@@ -152,6 +152,7 @@ class _ReceiptSupplierDetailItemDetailPageState
     _isBatchController.text = data.isBatch;
     _qtyPoController.text = data.poQty.toString();
     _qtyController.text = data.qty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -161,6 +162,20 @@ class _ReceiptSupplierDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.poQty != 0) {
+      if (_qtyPoController.text == "") {
+        _qtyPoController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.poQty.toString()));
+      } else {
+        if (_data.poQty ==
+            double.parse(
+                _qtyPoController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyPoController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.poQty.toString()));
         }
       }
     }
@@ -322,13 +337,17 @@ class _ReceiptSupplierDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Receipt Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Receipt Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 15)),
                 TextFormField(

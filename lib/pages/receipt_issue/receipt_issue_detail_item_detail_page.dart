@@ -36,7 +36,7 @@ class _ReceiptIssueDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-  final _qtySoController = TextEditingController();
+  final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
 
   @override
@@ -125,7 +125,7 @@ class _ReceiptIssueDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtySoController.text = data.issueQty.toString();
+    _qtyReqController.text = data.issueQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -135,6 +135,19 @@ class _ReceiptIssueDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.issueQty != 0) {
+      if (_qtyReqController.text == "") {
+        _qtyReqController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.issueQty.toString()));
+      } else {
+        if (_data.issueQty ==
+            double.parse(_qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyReqController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.issueQty.toString()));
         }
       }
     }
@@ -181,7 +194,7 @@ class _ReceiptIssueDetailItemDetailPageState
                       ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextField(
-                        controller: _qtySoController,
+                        controller: _qtyReqController,
                         enabled: false,
                         decoration: InputDecoration(
                             labelText: "Open Issue Qty",
@@ -226,13 +239,16 @@ class _ReceiptIssueDetailItemDetailPageState
                                     borderRadius:
                                         new BorderRadius.circular(10.0)),
                               ))
-                          : Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: LabelFieldWidget(
-                                labelText: "Receipt Qty",
-                                valueText:
-                                    "${NumberFormat("#,###.00").format(data.qty)}",
-                              ),
+                          : TextFormField(
+                              controller: _qtyController,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  labelText: "Receipt Qty",
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  border: new OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0))),
                             ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextFormField(

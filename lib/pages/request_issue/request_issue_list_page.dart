@@ -202,6 +202,9 @@ class _RequestIssueListPageState extends State<RequestIssueListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Request No. : ${data[index].requestNo}"),
+                    Text("From : ${data[index].branchName}"),
+                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

@@ -692,11 +692,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               Text('No. ' + "${data[index].woVisOrder}"),
               Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+              Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               Text(
-                  "Open Qty : ${NumberFormat("#,###.00").format(data[index].openQty)}"),
+                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}"),
               Text(
-                  "Planned Qty : ${NumberFormat("#,###.00").format(data[index].woQty)}"),
+                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}"),
               Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
             ],

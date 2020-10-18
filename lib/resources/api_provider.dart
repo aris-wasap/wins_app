@@ -1980,11 +1980,14 @@ class ApiProvider {
     }
   }
 
-  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(int requestId,
-      String qrResult) async {
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+      int requestId, String qrResult) async {
     try {
-      var body =
-          json.encode({"UserId": globalBloc.userId, "QrResult": qrResult});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "RequestId": requestId,
+        "QrResult": qrResult,
+      });
 
       final response = await http.post("${_url}api/RequestIssueDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -3397,7 +3400,8 @@ class ApiProvider {
             'cflPurchaseReference_FetchNextPage:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('cflPurchaseReference_FetchNextPage:Failed to load post(1)');
+      throw Exception(
+          'cflPurchaseReference_FetchNextPage:Failed to load post(1)');
     }
   }
 

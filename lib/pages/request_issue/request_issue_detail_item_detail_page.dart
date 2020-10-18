@@ -36,8 +36,11 @@ class _RequestIssueDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-  final _qtySoController = TextEditingController();
+  final _reqQtyController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _batchNumberController = TextEditingController();
+  final _isAssetController = TextEditingController();
+  final _isBatchController = TextEditingController();
 
   @override
   void initState() {
@@ -62,6 +65,16 @@ class _RequestIssueDetailItemDetailPageState
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
+      return;
+    }
+    if (_whsCodeController.text == null || _whsCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Warehouse terlebih dahulu");
+      return;
+    }
+    if (_binCodeController.text == null || _binCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Bin Location terlebih dahulu");
       return;
     }
     bloc.emitEvent(RequestIssueDetailItemDetailEventQty(
@@ -117,7 +130,7 @@ class _RequestIssueDetailItemDetailPageState
 
   Widget _buildForm() {
     var data = _getState().data;
-
+    _batchNumberController.text = data.batchNo;
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
@@ -125,7 +138,10 @@ class _RequestIssueDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtySoController.text = data.reqQty.toString();
+    _reqQtyController.text = data.reqQty.toString();
+    _isAssetController.text = data.isAsset;
+    _isBatchController.text = data.isBatch;
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -159,6 +175,17 @@ class _RequestIssueDetailItemDetailPageState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextFormField(
+                        controller: _batchNumberController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Batch Number",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      TextFormField(
                         controller: _itemCodeController,
                         enabled: false,
                         decoration: InputDecoration(
@@ -181,10 +208,10 @@ class _RequestIssueDetailItemDetailPageState
                       ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextField(
-                        controller: _qtySoController,
+                        controller: _reqQtyController,
                         enabled: false,
                         decoration: InputDecoration(
-                            labelText: "Open Issue Qty",
+                            labelText: "Issue Qty",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
@@ -193,8 +220,8 @@ class _RequestIssueDetailItemDetailPageState
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              //autofocus: true,
-                              enabled: false,
+                              autofocus: true,
+                              //enabled: false,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
@@ -250,7 +277,7 @@ class _RequestIssueDetailItemDetailPageState
                         controller: _whsCodeController,
                         enabled: false,
                         decoration: InputDecoration(
-                            labelText: "To Warehouse Code",
+                            labelText: "From Warehouse Code",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
@@ -261,7 +288,7 @@ class _RequestIssueDetailItemDetailPageState
                         controller: _whsNameController,
                         enabled: false,
                         decoration: InputDecoration(
-                            labelText: "To Warehouse Name",
+                            labelText: "From Warehouse Name",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
@@ -308,7 +335,7 @@ class _RequestIssueDetailItemDetailPageState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "To Bin Location",
+                                      "From Bin Location",
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 12.0),
                                     ),

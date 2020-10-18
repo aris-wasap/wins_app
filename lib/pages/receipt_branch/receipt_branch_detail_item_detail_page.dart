@@ -156,6 +156,7 @@ class _ReceiptBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _qtyIssueController.text = data.issueQty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.##")
@@ -165,6 +166,19 @@ class _ReceiptBranchDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.##")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.issueQty != 0) {
+      if (_qtyIssueController.text == "") {
+        _qtyIssueController.text = NumberFormat("###,###.##")
+            .format(double.parse(data.issueQty.toString()));
+      } else {
+        if (_data.issueQty ==
+            double.parse(_qtyIssueController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyIssueController.text = NumberFormat("###,###.##")
+              .format(double.parse(data.issueQty.toString()));
         }
       }
     }

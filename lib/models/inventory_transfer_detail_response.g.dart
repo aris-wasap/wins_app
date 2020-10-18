@@ -104,6 +104,19 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     toAbsEntry: json['ToAbsEntry'] as int,
     toBinCode: json['ToBinCode'] as String,
     batchNo: json['BatchNo'] as String,
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    micron: (json['Micron'] as num)?.toDouble(),
+    manufacturingDate: json['ManufacturingDate'] == null
+        ? null
+        : DateTime.parse(json['ManufacturingDate'] as String),
+    expirationDate: json['ExpirationDate'] == null
+        ? null
+        : DateTime.parse(json['ExpirationDate'] as String),
+    itemType: json['ItemType'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
   )
     ..requestId = json['RequestId'] as int
     ..requestLineNo = json['RequestLineNo'] as int
@@ -130,4 +143,13 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ToAbsEntry': instance.toAbsEntry,
       'ToBinCode': instance.toBinCode,
       'BatchNo': instance.batchNo,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
+      'ExpirationDate': instance.expirationDate?.toIso8601String(),
+      'ItemType': instance.itemType,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
     };

@@ -614,7 +614,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
-                
+
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -776,12 +776,13 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (int.parse(_poIdController.text)> 0) {
+                    if (int.parse(_poIdController.text) > 0) {
                       Future<cflPurchaseReference.Data> po = Navigator.push(
                           context,
                           MaterialPageRoute<cflPurchaseReference.Data>(
                               builder: (BuildContext context) =>
-                                  CflPurchaseReferencePage(int.parse(_poIdController.text))));
+                                  CflPurchaseReferencePage(
+                                      int.parse(_poIdController.text))));
 
                       po.then((cflPurchaseReference.Data po) {
                         if (po != null) {
@@ -904,6 +905,9 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -926,7 +930,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

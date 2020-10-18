@@ -102,8 +102,8 @@ class _InventoryTransferDetailPageState
     _requestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    _requestNoController?.dispose();
-    _requestIdController?.dispose();
+    //_requestNoController?.dispose();
+    //_requestIdController?.dispose();
     _fromWhsCodeController?.dispose();
     _fromWhsNameController?.dispose();
     _toBranchIdController?.dispose();
@@ -1345,7 +1345,7 @@ class _InventoryTransferDetailPageState
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),

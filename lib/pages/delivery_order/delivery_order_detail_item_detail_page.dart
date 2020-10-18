@@ -157,6 +157,20 @@ class _DeliveryOrderDetailItemDetailPageState
       }
     }
 
+    if (_data.soQty != 0) {
+      if (_qtySoController.text == "") {
+        _qtySoController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.soQty.toString()));
+      } else {
+        if (_data.qty ==
+            double.parse(
+                _qtySoController.text.replaceAll(new RegExp(','), ''))) {
+          _qtySoController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.soQty.toString()));
+        }
+      }
+    }
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,13 +260,17 @@ class _DeliveryOrderDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Delivery Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Delivery Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
@@ -386,7 +404,7 @@ class _DeliveryOrderDetailItemDetailPageState
                     ),
                   ),
                 ),
-                
+
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",

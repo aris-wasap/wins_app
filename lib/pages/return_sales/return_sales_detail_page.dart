@@ -830,7 +830,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

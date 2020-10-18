@@ -98,12 +98,26 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     reqQty: (json['ReqQty'] as num)?.toDouble(),
     grpoQty: (json['GrpoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    itemType: json['ItemType'] as String,
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
+    priceMode: json['PriceMode'] as String,
     batchNo: json['BatchNo'] as String,
+    micron: (json['Micron'] as num)?.toDouble(),
+    manufacturingDate: json['ManufacturingDate'] == null
+        ? null
+        : DateTime.parse(json['ManufacturingDate'] as String),
+    expirationDate: json['ExpirationDate'] == null
+        ? null
+        : DateTime.parse(json['ExpirationDate'] as String),
   );
 }
 
@@ -121,6 +135,16 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemName': instance.itemName,
       'ReqQty': instance.reqQty,
       'GrpoQty': instance.grpoQty,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
+      'ExpirationDate': instance.expirationDate?.toIso8601String(),
+      'ItemType': instance.itemType,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
+      'PriceMode': instance.priceMode,
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,

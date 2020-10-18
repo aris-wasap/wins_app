@@ -158,6 +158,20 @@ class _ReturnSalesDetailItemDetailPageState
       }
     }
 
+    if (_data.reqQty != 0) {
+      if (_qtyReqController.text == "") {
+        _qtyReqController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.reqQty.toString()));
+      } else {
+        if (_data.reqQty ==
+            double.parse(
+                _qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyReqController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.reqQty.toString()));
+        }
+      }
+    }
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,11 +261,6 @@ class _ReturnSalesDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    // : LabelFieldWidget(
-                    //     labelText: "Return Qty",
-                    //     valueText:
-                    //         "${NumberFormat("#,###.00").format(data.qty)}",
-                    //   ),
                     : TextField(
                         controller: _qtyController,
                         enabled: false,
