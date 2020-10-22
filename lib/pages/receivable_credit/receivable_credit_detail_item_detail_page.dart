@@ -41,14 +41,17 @@ class _ReceivableCreditDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-
   final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReceivableCreditDetailItemDetailBloc(this._data);
   }
 
@@ -59,7 +62,7 @@ class _ReceivableCreditDetailItemDetailPageState
     _binCodeController?.dispose();
     _whsCodeController?.dispose();
     _whsNameController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -233,6 +236,7 @@ class _ReceivableCreditDetailItemDetailPageState
                     ? TextField(
                         autofocus: true,
                         controller: _qtyController,
+                        focusNode: _focusNode,
                         onEditingComplete: () {
                           setState(() {
                             String newValue = NumberFormat("###,###.####")
@@ -244,6 +248,7 @@ class _ReceivableCreditDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)

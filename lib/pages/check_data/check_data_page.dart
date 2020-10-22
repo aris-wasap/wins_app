@@ -466,7 +466,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                  "Qty : ${NumberFormat("#,###.00").format(data[index].stock)} " + "${data[index].uom}"),
+                  "Qty : ${NumberFormat("#,###.##").format(data[index].stock)} " + "${data[index].uom}"),
               Text(
                   "Manufacture Date : ${data[index].mnfDate}".substring(0, 29)),
               Text("Receive Date : ${data[index].inDate}".substring(0, 25)),

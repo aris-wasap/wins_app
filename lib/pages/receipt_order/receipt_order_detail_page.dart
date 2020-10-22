@@ -930,7 +930,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" + " ${data[index].uom}"),
+              
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

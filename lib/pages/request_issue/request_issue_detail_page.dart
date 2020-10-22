@@ -50,8 +50,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
-  final _branchIdController = TextEditingController();
-  final _branchNameController = TextEditingController();
+  final _fromBranchIdController = TextEditingController();
+  final _fromBranchNameController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -97,8 +97,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
-    _branchIdController?.dispose();
-    _branchNameController?.dispose();
+    _fromBranchIdController?.dispose();
+    _fromBranchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -135,7 +135,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     data.requestId = int.parse(_requestIdController.text);
     data.seriesName = _seriesNameController.text;
     data.seriesNameReqNo = _seriesNameReqNoController.text;
-    
+
     bloc.emitEvent(RequestIssueDetailEventAdd(
       data: data,
     ));
@@ -155,7 +155,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       ValidateDialogWidget(
           context: context, message: "Issue Date harus di isi");
       return;
-    }else if (["", null].contains(data.requestNo)) {
+    } else if (["", null].contains(data.requestNo)) {
       ValidateDialogWidget(
           context: context, message: "Transfer Request No harus di isi");
       return;
@@ -267,7 +267,13 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Draft Receipt"),
+        title: Text(
+          "Draft Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -285,7 +291,15 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Save"),
+            label: Text(
+              "Save",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -293,7 +307,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         _getState().data.id > 0) {
       return AppBar(
         title: Text(
-          "Create Receipt",
+          "Create Issue",
           style: GoogleFonts.openSans(
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
@@ -330,7 +344,13 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Request From Issue"),
+        title: Text(
+          "Request Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -344,8 +364,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                   onPressed: () {
                     _newTrans();
                   },
-                  icon: Icon(Icons.add),
-                )
+                  icon: Icon(Icons.add))
               : Container(),
         ],
       );
@@ -573,6 +592,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       _sapRequestIssueNoController.text = data.sapRequestIssueNo;
       _requestIdController.text = data.requestId.toString();
       _requestNoController.text = data.requestNo;
+      _fromBranchNameController.text = data.branchName;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -659,6 +679,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                         if (trq != null) {
                           _requestIdController.text = trq.id.toString();
                           _requestNoController.text = trq.transNo;
+                          _fromBranchNameController.text = trq.fromBranchName;
                         }
                       });
                     }
@@ -686,6 +707,12 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_requestNoController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_fromBranchNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -830,6 +857,9 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -852,7 +882,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

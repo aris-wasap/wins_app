@@ -41,12 +41,16 @@ class _RequestIssueDetailItemDetailPageState
   final _batchNumberController = TextEditingController();
   final _isAssetController = TextEditingController();
   final _isBatchController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = RequestIssueDetailItemDetailBloc(this._data);
   }
 
@@ -55,6 +59,7 @@ class _RequestIssueDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -155,6 +160,48 @@ class _RequestIssueDetailItemDetailPageState
       }
     }
 
+    if (_data.reqQty != 0) {
+      if (_reqQtyController.text == "") {
+        _reqQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.reqQty.toString()));
+      } else {
+        if (_data.reqQty ==
+            double.parse(
+                _reqQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _reqQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.reqQty.toString()));
+        }
+      }
+    }
+
+    if (_data.length != 0) {
+      if (_lengthController.text == "") {
+        _lengthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length.toString()));
+      } else {
+        if (_data.length ==
+            double.parse(
+                _lengthController.text.replaceAll(new RegExp(','), ''))) {
+          _lengthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length.toString()));
+        }
+      }
+    }
+
+    if (_data.width != 0) {
+      if (_widthController.text == "") {
+        _widthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.width.toString()));
+      } else {
+        if (_data.width ==
+            double.parse(
+                _widthController.text.replaceAll(new RegExp(','), ''))) {
+          _widthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.width.toString()));
+        }
+      }
+    }
+
     return Container(
       color: Colors.blue[100],
       child: Padding(
@@ -221,7 +268,8 @@ class _RequestIssueDetailItemDetailPageState
                       _data.id == 0
                           ? TextField(
                               autofocus: true,
-                              //enabled: false,
+                              textInputAction: TextInputAction.done,
+                              focusNode: _focusNode,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
@@ -235,6 +283,7 @@ class _RequestIssueDetailItemDetailPageState
                                       TextSelection.collapsed(
                                           offset: newValue.length);
                                 });
+                                _focusNode.unfocus();
                               },
                               inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 4)
@@ -253,13 +302,18 @@ class _RequestIssueDetailItemDetailPageState
                                     borderRadius:
                                         new BorderRadius.circular(10.0)),
                               ))
-                          : Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: LabelFieldWidget(
-                                labelText: "Request Qty",
-                                valueText:
-                                    "${NumberFormat("#,###.00").format(data.qty)}",
-                              ),
+                          : TextField(
+                              controller: _qtyController,
+                              enabled: false,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              decoration: InputDecoration(
+                                  labelText: "Request Qty",
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  border: new OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0))),
                             ),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       TextFormField(

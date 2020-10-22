@@ -38,12 +38,19 @@ class _ReceiptIssueDetailItemDetailPageState
   final _binCodeController = TextEditingController();
   final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _isAssetController = TextEditingController();
+  final _isBatchController = TextEditingController();
+  final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReceiptIssueDetailItemDetailBloc(this._data);
   }
 
@@ -52,6 +59,7 @@ class _ReceiptIssueDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -62,6 +70,16 @@ class _ReceiptIssueDetailItemDetailPageState
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
+      return;
+    }
+    if (_whsCodeController.text == null || _whsCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Warehouse terlebih dahulu");
+      return;
+    }
+    if (_binCodeController.text == null || _binCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Bin Location terlebih dahulu");
       return;
     }
     bloc.emitEvent(ReceiptIssueDetailItemDetailEventQty(
@@ -126,6 +144,10 @@ class _ReceiptIssueDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _qtyReqController.text = data.issueQty.toString();
+    // _lengthController.text = data.length.toString();
+    // _widthController.text = data.width.toString();
+    // _itemTypeController.text = data.itemType;
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -145,12 +167,41 @@ class _ReceiptIssueDetailItemDetailPageState
             .format(double.parse(data.issueQty.toString()));
       } else {
         if (_data.issueQty ==
-            double.parse(_qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+            double.parse(
+                _qtyReqController.text.replaceAll(new RegExp(','), ''))) {
           _qtyReqController.text = NumberFormat("###,###.####")
               .format(double.parse(data.issueQty.toString()));
         }
       }
     }
+
+    // if (_data.length != 0) {
+    //   if (_lengthController.text == "") {
+    //     _lengthController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.length.toString()));
+    //   } else {
+    //     if (_data.length ==
+    //         double.parse(
+    //             _lengthController.text.replaceAll(new RegExp(','), ''))) {
+    //       _lengthController.text = NumberFormat("###,###.####")
+    //           .format(double.parse(data.length.toString()));
+    //     }
+    //   }
+    // }
+
+    // if (_data.width != 0) {
+    //   if (_widthController.text == "") {
+    //     _widthController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.width.toString()));
+    //   } else {
+    //     if (_data.width ==
+    //         double.parse(
+    //             _widthController.text.replaceAll(new RegExp(','), ''))) {
+    //       _widthController.text = NumberFormat("###,###.####")
+    //           .format(double.parse(data.width.toString()));
+    //     }
+    //   }
+    // }
 
     return Container(
       color: Colors.blue[100],
@@ -208,6 +259,8 @@ class _ReceiptIssueDetailItemDetailPageState
                           ? TextField(
                               //autofocus: true,
                               enabled: false,
+                              textInputAction: TextInputAction.done,
+                              focusNode: _focusNode,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {
@@ -221,6 +274,7 @@ class _ReceiptIssueDetailItemDetailPageState
                                       TextSelection.collapsed(
                                           offset: newValue.length);
                                 });
+                                _focusNode.unfocus();
                               },
                               inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 4)

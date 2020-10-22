@@ -86,6 +86,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
+    mnfBatchNo: json['MnfBatchNo'] as String,
   );
 }
 
@@ -108,4 +109,5 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
+      'MnfBatchNo': instance.mnfBatchNo,
     };

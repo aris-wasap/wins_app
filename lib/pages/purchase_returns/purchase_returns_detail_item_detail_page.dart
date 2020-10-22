@@ -39,18 +39,19 @@ class _PurchaseReturnsDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-  final _qtyPoController = TextEditingController();
+  final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
   final _lengthController = TextEditingController();
   final _widthController = TextEditingController();
   final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = PurchaseReturnsDetailItemDetailBloc(this._data);
   }
 
@@ -59,7 +60,7 @@ class _PurchaseReturnsDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -144,7 +145,7 @@ class _PurchaseReturnsDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyPoController.text = data.reqQty.toString();
+    _qtyReqController.text = data.reqQty.toString();
     _batchNumberController.text = data.batchNo;
     _lengthController.text = data.length.toString();
     _widthController.text = data.width.toString();
@@ -164,14 +165,14 @@ class _PurchaseReturnsDetailItemDetailPageState
     }
 
     if (_data.reqQty != 0) {
-      if (_qtyPoController.text == "") {
-        _qtyPoController.text = NumberFormat("###,###.####")
+      if (_qtyReqController.text == "") {
+        _qtyReqController.text = NumberFormat("###,###.####")
             .format(double.parse(data.reqQty.toString()));
       } else {
         if (_data.qty ==
             double.parse(
-                _qtyPoController.text.replaceAll(new RegExp(','), ''))) {
-          _qtyPoController.text = NumberFormat("###,###.####")
+                _qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyReqController.text = NumberFormat("###,###.####")
               .format(double.parse(data.reqQty.toString()));
         }
       }
@@ -264,10 +265,11 @@ class _PurchaseReturnsDetailItemDetailPageState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(_itemNameController.text),
-                                    _itemTypeController.text == 'L' ?
-                                    Text(_lengthController.text +
-                                        " X " +
-                                        _widthController.text) : Text(""),
+                                    _itemTypeController.text == 'L'
+                                        ? Text(_widthController.text +
+                                            " X " +
+                                            _lengthController.text)
+                                        : Text(""),
                                   ],
                                 ),
                               )
@@ -302,7 +304,7 @@ class _PurchaseReturnsDetailItemDetailPageState
                 // ),
                 // Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
-                  controller: _qtyPoController,
+                  controller: _qtyReqController,
                   enabled: false,
                   decoration: InputDecoration(
                       labelText: "Open Qty",
@@ -315,6 +317,8 @@ class _PurchaseReturnsDetailItemDetailPageState
                 _data.id == 0
                     ? TextField(
                         //autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -327,6 +331,7 @@ class _PurchaseReturnsDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)

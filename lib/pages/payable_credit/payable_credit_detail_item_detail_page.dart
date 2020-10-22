@@ -42,12 +42,13 @@ class _PayableCreditDetailItemDetailPageState
   final _qtyReqController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = PayableCreditDetailItemDetailBloc(this._data);
   }
 
@@ -56,6 +57,7 @@ class _PayableCreditDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
 
     bloc?.dispose();
 
@@ -162,7 +164,8 @@ class _PayableCreditDetailItemDetailPageState
             .format(double.parse(data.reqQty.toString()));
       } else {
         if (_data.reqQty ==
-            double.parse(_qtyReqController.text.replaceAll(new RegExp(','), ''))) {
+            double.parse(
+                _qtyReqController.text.replaceAll(new RegExp(','), ''))) {
           _qtyReqController.text = NumberFormat("###,###.####")
               .format(double.parse(data.reqQty.toString()));
         }
@@ -228,6 +231,8 @@ class _PayableCreditDetailItemDetailPageState
                 _data.id == 0
                     ? TextField(
                         //autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -240,6 +245,7 @@ class _PayableCreditDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -401,7 +407,7 @@ class _PayableCreditDetailItemDetailPageState
                     ),
                   ),
                 ),
-                
+
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",

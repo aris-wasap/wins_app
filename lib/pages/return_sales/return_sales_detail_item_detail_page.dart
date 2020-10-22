@@ -42,14 +42,14 @@ class _ReturnSalesDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-
   final _batchNumberController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReturnSalesDetailItemDetailBloc(this._data);
   }
 
@@ -60,7 +60,7 @@ class _ReturnSalesDetailItemDetailPageState
     _binCodeController?.dispose();
     _whsCodeController?.dispose();
     _whsNameController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -234,6 +234,8 @@ class _ReturnSalesDetailItemDetailPageState
                     ? TextField(
                         autofocus: true,
                         controller: _qtyController,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         onEditingComplete: () {
                           setState(() {
                             String newValue = NumberFormat("###,###.####")
@@ -245,6 +247,7 @@ class _ReturnSalesDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)

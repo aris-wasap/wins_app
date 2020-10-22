@@ -808,6 +808,9 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -827,10 +830,11 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Item Code : ${data[index].itemCode}"),
+              Text("Item Code : çç"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

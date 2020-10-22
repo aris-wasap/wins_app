@@ -46,12 +46,16 @@ class _ReceiptBranchDetailItemDetailPageState
   final _qtyIssueController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReceiptBranchDetailItemDetailBloc(this._data);
   }
 
@@ -67,6 +71,7 @@ class _ReceiptBranchDetailItemDetailPageState
     _binAbsController?.dispose();
     _binCodeController?.dispose();
     _batchNumberController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -176,7 +181,8 @@ class _ReceiptBranchDetailItemDetailPageState
             .format(double.parse(data.issueQty.toString()));
       } else {
         if (_data.issueQty ==
-            double.parse(_qtyIssueController.text.replaceAll(new RegExp(','), ''))) {
+            double.parse(
+                _qtyIssueController.text.replaceAll(new RegExp(','), ''))) {
           _qtyIssueController.text = NumberFormat("###,###.##")
               .format(double.parse(data.issueQty.toString()));
         }

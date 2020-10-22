@@ -651,8 +651,8 @@ class _InventoryTransferDetailPageState
       _toWhsNameController.text = data.toWhsName;
       _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
-      _toBranchIdController.text = data.toBranchId.toString();
-      _toBranchNameController.text = data.toBranchName;
+      //_toBranchIdController.text = data.toBranchId.toString();
+      //_toBranchNameController.text = data.toBranchName;
     }
 
     return Column(
@@ -1345,7 +1345,8 @@ class _InventoryTransferDetailPageState
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),

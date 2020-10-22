@@ -123,7 +123,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
 
     data.id = _id;
     data.issueId = int.parse(_issueIdController.text);
-    
+
     bloc.emitEvent(ReceiptIssueDetailEventAdd(
       data: data,
     ));
@@ -761,6 +761,9 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -783,7 +786,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],
