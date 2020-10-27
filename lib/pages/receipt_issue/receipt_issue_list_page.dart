@@ -203,7 +203,8 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Issue No. : ${data[index].seriesNameIssue} - ${data[index].issueNo}"),
+                        "Issue No. : ${data[index].issueNo}"),
+                        Text("Depo : ${data[index].branchName}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

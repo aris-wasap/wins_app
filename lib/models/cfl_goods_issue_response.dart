@@ -46,11 +46,20 @@ class Data {
   @JsonKey(name: 'TransNo')
   String transNo;  
 
+  @JsonKey(name: 'RefNo')
+  String refNo;  
+
   @JsonKey(name: 'DocNum')
   String docNum;
 
   @JsonKey(name:'SeriesName')
   String seriesName;
+
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
 
   @JsonKey(name: 'TransDate')
   DateTime transDate;  
@@ -61,6 +70,8 @@ class Data {
   Data({ 
     this.id=0,
     this.seriesName,
+    this.branchId,
+    this.branchName,
     this.transNo,
     this.docNum, 
     this.transDate, 

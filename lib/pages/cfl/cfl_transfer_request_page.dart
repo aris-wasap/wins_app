@@ -169,37 +169,35 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return Card(
-            child: (Container(
-              decoration: BoxDecoration(
-                gradient:
-                    index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
-              ),
-              //margin: const EdgeInsets.only(top: 8),
-              // decoration:
-              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: ListTile(
-                  title: Text("No. ${data[index].transNo} "),
-                  subtitle: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                          "${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
-                      Text("${data[index].customerCode ?? ''}"),
-                      Text("${data[index].customerName ?? ''}"),
-                    ],
-                  ),
-                  leading: Icon(Icons.keyboard_arrow_left),
-                  onTap: () {
-                    Navigator.pop(context, data[index]);
-                  },
+          return (Container(
+            decoration: BoxDecoration(
+              gradient:
+                  index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+            ),
+            //margin: const EdgeInsets.only(top: 8),
+            // decoration:
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: ListTile(
+                title: Text("No. ${data[index].transNo} "),
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        "${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("${data[index].customerCode ?? ''}"),
+                    Text("${data[index].customerName ?? ''}"),
+                  ],
                 ),
+                leading: Icon(Icons.keyboard_arrow_left),
+                onTap: () {
+                  Navigator.pop(context, data[index]);
+                },
               ),
-            )),
-          );
+            ),
+          ));
         }
 
         if (isFailure) {

@@ -256,6 +256,7 @@ class _ReceiptSupplierDetailItemDetailPageState
                           _getState().data.uom = pi.uom;
                           _getState().data.length = pi.length;
                           _getState().data.width = pi.width;
+                          _getState().data.weight = pi.weight;
                           _getState().data.whsCode = pi.whsCode;
                           _getState().data.whsName = pi.whsName;
                           _getState().data.isAsset = pi.isAsset;

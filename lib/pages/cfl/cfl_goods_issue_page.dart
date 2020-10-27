@@ -176,7 +176,14 @@ class _CflGoodsIssuePageState extends State<CflGoodsIssuePage> {
               child: ListTile(
                 title: Text(
                     "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
-                
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Ref No. : ${data[index].refNo ?? ''}"),
+                    Text("Depo : ${data[index].branchName ?? ''}"),
+                  ],
+                ),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);

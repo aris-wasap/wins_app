@@ -30,20 +30,25 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     id: json['Id'] as int,
     seriesName: json['SeriesName'] as String,
+    branchId: json['BranchId'] as int,
+    branchName: json['BranchName'] as String,
     transNo: json['TransNo'] as String,
     docNum: json['DocNum'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
     status: json['Status'] as String,
-  );
+  )..refNo = json['RefNo'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'TransNo': instance.transNo,
+      'RefNo': instance.refNo,
       'DocNum': instance.docNum,
       'SeriesName': instance.seriesName,
+      'BranchId': instance.branchId,
+      'BranchName': instance.branchName,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,
     };

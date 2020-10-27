@@ -52,8 +52,8 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
-  @JsonKey(name: 'DocNum')
-  String docNum;
+  @JsonKey(name: 'RefNo')
+  String refNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
@@ -86,7 +86,7 @@ class Data {
     this.issueId: 0,
     this.issueNo,
     this.seriesName,
-    this.docNum,
+    this.refNo,
     this.id: 0,
     this.transNo,
     this.transDate,
@@ -139,8 +139,8 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
-  @JsonKey(name: 'ItemCost')
-  double itemCost;
+  @JsonKey(name: 'ItemCostTc')
+  double itemCostTc;
 
   @JsonKey(name: 'Uom')
   String uom;
@@ -163,6 +163,39 @@ class Item {
   @JsonKey(name: 'MnfBatchNo')
   String mnfBatchNo;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
+
   Item({
     this.issueId: 0,
     this.issueLineNo: 0,
@@ -175,7 +208,7 @@ class Item {
     this.itemName,
     this.issueQty: 0,
     this.qty: 0,
-    this.itemCost: 0,
+    this.itemCostTc: 0,
     this.uom,
     this.whsCode,
     this.whsName,
@@ -183,6 +216,18 @@ class Item {
     this.binCode,
     this.batchNo,
     this.mnfBatchNo,
+    this.width,
+    this.length,
+    this.weight,
+    this.micron,
+    this.expirationDate,
+    this.manufacturingDate,
+    this.itemType,
+    this.type,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
+
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

@@ -41,10 +41,11 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   final _issueNoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _transNoController = TextEditingController();
-  final _docNumController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _branchNameController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -85,7 +86,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     _issueNoController?.dispose();
     _seriesNameController?.dispose();
     _transNoController?.dispose();
-    _docNumController?.dispose();
+    _refNoController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
@@ -100,7 +101,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
-    data.docNum = _docNumController.text;
+    data.refNo = _refNoController.text;
     data.transDate = transDate;
     data.items = state.data.items;
 
@@ -136,7 +137,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     data.issueId = int.parse(_issueIdController.text);
     data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
-    data.docNum = _docNumController.text;
+    data.refNo = _refNoController.text;
     data.transDate = transDate;
     data.items = state.data.items;
 
@@ -359,7 +360,9 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
         // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -558,7 +561,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       _issueIdController.text = data.issueId.toString();
       _seriesNameController.text = data.seriesName;
       _issueNoController.text = data.issueNo;
-      _docNumController.text = data.docNum;
+      _refNoController.text = data.refNo;
+      _branchNameController.text = data.branchName;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -646,7 +650,8 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                           _issueIdController.text = gi.id.toString();
                           _issueNoController.text = gi.transNo;
                           _seriesNameController.text = gi.seriesName;
-                          _docNumController.text = gi.docNum;
+                          _refNoController.text = gi.refNo;
+                          _branchNameController.text = gi.branchName;
                         }
                       });
                     }
@@ -673,13 +678,14 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_docNumController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_issueNoController.text),
-                                //   ],
-                                // ),
+                                title: Text(_issueNoController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                    Text(_refNoController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -785,6 +791,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             children: <Widget>[
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
+              Text("Ref Batch No. : ${data[index].mnfBatchNo}"),
               Text(
                   "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
                       " ${data[index].uom}"),
