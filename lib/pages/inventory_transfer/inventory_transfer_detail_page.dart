@@ -102,8 +102,6 @@ class _InventoryTransferDetailPageState
     _requestNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
-    //_requestNoController?.dispose();
-    //_requestIdController?.dispose();
     _fromWhsCodeController?.dispose();
     _fromWhsNameController?.dispose();
     _toBranchIdController?.dispose();
@@ -162,9 +160,16 @@ class _InventoryTransferDetailPageState
       return;
     }
     data.id = _id;
+
     data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
     data.toAbsEntry = int.parse(_toAbsEntryController.text);
     data.toBranchId = int.parse(_toBranchIdController.text);
+
+    if (_requestIdController.text == "" || _requestIdController.text == null) {
+      data.requestId = 0;
+    } else {
+      data.requestId = int.parse(_requestIdController.text);
+    }
 
     bloc.emitEvent(InventoryTransferDetailEventAdd(
       data: data,
@@ -193,13 +198,7 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, message: "Transfer Date harus di isi");
       return;
-    }
-    // else if (["", null].contains(data.requestNo)) {
-    //   ValidateDialogWidget(
-    //       context: context, message: "Production Order No harus di isi");
-    //   return;
-    // }
-    else if ([null, ""].contains(data.fromWhsCode)) {
+    } else if ([null, ""].contains(data.fromWhsCode)) {
       ValidateDialogWidget(
           context: context, message: "From Warehouse harus di isi");
       return;
@@ -651,8 +650,8 @@ class _InventoryTransferDetailPageState
       _toWhsNameController.text = data.toWhsName;
       _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
-      //_toBranchIdController.text = data.toBranchId.toString();
-      //_toBranchNameController.text = data.toBranchName;
+      _toBranchIdController.text = data.toBranchId.toString();
+      _toBranchNameController.text = data.toBranchName;
     }
 
     return Column(
@@ -731,6 +730,9 @@ class _InventoryTransferDetailPageState
                           _fromBinCodeController.text = "";
                           _toWhsCodeController.text = trq.toWhsCode;
                           _toWhsNameController.text = trq.toWhsName;
+                          _toBranchIdController.text =
+                              trq.toBranchId.toString();
+                          _toBranchNameController.text = trq.toBranchName;
                           _toAbsEntryController.text = "";
                           _toBinCodeController.text = "";
                         }
