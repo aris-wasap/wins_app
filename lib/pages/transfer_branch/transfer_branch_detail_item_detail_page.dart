@@ -150,10 +150,10 @@ class _TransferBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _batchNumberController.text = data.batchNo;
-    _reqQtyController.text =
-        NumberFormat("###,###.##").format(double.parse(data.reqQty.toString()));
-    _availableQtyController.text =
-        NumberFormat("###,###.##").format(double.parse(data.availableQty.toString()));
+    // _reqQtyController.text =
+    //     NumberFormat("###,###.##").format(double.parse(data.reqQty.toString()));
+    // _availableQtyController.text =
+    //     NumberFormat("###,###.##").format(double.parse(data.availableQty.toString()));
 
     if (_data.reqQty != 0) {
       if (_reqQtyController.text == "") {
@@ -182,19 +182,19 @@ class _TransferBranchDetailItemDetailPageState
       }
     }
 
-    if (_data.availableQty != 0) {
-      if (_availableQtyController.text == "") {
-        _availableQtyController.text = NumberFormat("###,###.####")
-            .format(double.parse(data.availableQty.toString()));
-      } else {
-        if (_data.availableQty ==
-            double.parse(
-                _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
-          _availableQtyController.text = NumberFormat("###,###.####")
-              .format(double.parse(data.availableQty.toString()));
-        }
-      }
-    }
+    // if (_data.availableQty != 0) {
+    //   if (_availableQtyController.text == "") {
+    //     _availableQtyController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.availableQty.toString()));
+    //   } else {
+    //     if (_data.availableQty ==
+    //         double.parse(
+    //             _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
+    //       _availableQtyController.text = NumberFormat("###,###.####")
+    //           .format(double.parse(data.availableQty.toString()));
+    //     }
+    //   }
+    // }
 
     // if (_data.length != 0) {
     //   if (_lengthController.text == "") {
