@@ -82,6 +82,14 @@ class ReceiptOrderDetailEventAdd extends ReceiptOrderDetailEvent {
         );
 }
 
+class ReceiptOrderDetailEventPost extends ReceiptOrderDetailEvent {
+  ReceiptOrderDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class ReceiptOrderDetailEventCancel extends ReceiptOrderDetailEvent {
   ReceiptOrderDetailEventCancel({
     @required int id,

@@ -5,21 +5,23 @@ import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_e
 import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_state.dart';
 import 'package:admart_app/pages/cfl/cfl_branch_page.dart';
 import 'package:admart_app/pages/cfl/cfl_goods_issue_page.dart';
+import 'package:admart_app/pages/cfl/cfl_request_branch_page.dart';
 import 'package:admart_app/pages/transfer_branch/transfer_branch_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/transfer_branch_detail_response.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_goods_issue_response.dart'
-    as cflGoodsIssue;
 import 'package:admart_app/models/cfl_branch_response.dart' as cflBranch;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/widgets/set_colors.dart';
+import 'package:admart_app/models/cfl_request_branch_response.dart'
+    as cflRequestBranch;
 
 class TransferBranchDetailPage extends StatefulWidget {
   TransferBranchDetailPage(this._id);
@@ -36,10 +38,14 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
+  final _sapTransferBranchNoController = TextEditingController();
+  final _requestNoController = TextEditingController();
+  final _requestIdController = TextEditingController();
   final _issueIdController = TextEditingController();
   final _issueNoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _seriesNameReqNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _docNumController = TextEditingController();
   final _transDateController = TextEditingController();
@@ -83,6 +89,11 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
+    _sapTransferBranchNoController?.dispose();
+    _requestIdController?.dispose();
+    _requestNoController?.dispose();
+    _seriesNameReqNoController?.dispose();
     _issueIdController?.dispose();
     _issueNoController?.dispose();
     _seriesNameController?.dispose();
@@ -106,13 +117,21 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.seriesName = _seriesNameController.text;
     data.transDate = transDate;
-    data.toBranchId = int.parse(_toBranchIdController.text);
+    data.requestNo = _requestNoController.text;
     data.toBranchName = _toBranchNameController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
-          context: context, message: "Issue Date harus di isi");
+          context: context, message: "Transfer Date harus di isi");
+      return;
+    } else if (["", null].contains(data.requestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
+      return;
+    } else if (["", null].contains(data.toBranchName)) {
+      ValidateDialogWidget(
+          context: context, message: "To Branch Name harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -124,7 +143,48 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
       return;
     }
 
+    data.id = _id;
+    data.requestId = int.parse(_requestIdController.text);
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReqNo = _seriesNameReqNoController.text;
+    data.toBranchId = int.parse(_toBranchIdController.text);
+
     bloc.emitEvent(TransferBranchDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.requestId = int.parse(_requestIdController.text);
+    data.requestNo = _requestNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.transDate = transDate;
+    data.toBranchId = int.parse(_toBranchIdController.text);
+    data.toBranchName = _toBranchNameController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Date harus di isi");
+      return;
+    } else if (["", null].contains(data.requestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(TransferBranchDetailEventPost(
       data: data,
     ));
   }
@@ -222,7 +282,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Transfer"),
+        title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -232,12 +292,54 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapTransferBranchId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Transfer",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -252,7 +354,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.requestIssue_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.transferBranch_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
@@ -272,10 +374,11 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
-    // if (["", null].contains(_issueNoController.text)) {
-    //   ValidateDialogWidget(context: context, message: "Issue No harus di isi");
-    //   return;
-    // }
+    if (["", null].contains(_requestNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
+      return;
+    }
     var data = _getState().data;
 
     try {
@@ -284,13 +387,18 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
         // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
 
-      bloc.emitEvent(
-          TransferBranchDetailEventScan(qrResult: qrResult, data: data));
+      bloc.emitEvent(TransferBranchDetailEventScan(
+          requestId: int.parse(_requestIdController.text),
+          requestNo: _requestNoController.text,
+          qrResult: qrResult,
+          data: data));
 
       // bloc
       //     .eventHandler(
@@ -396,7 +504,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                   ),
                 ),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapTransferBranchId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -470,12 +578,17 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
     _branchIdController.text = globalBloc.branchId.toString();
-    _branchNameController.text = globalBloc.branchName;
+    _transNoController.text = data.transNo;
+
+    //_branchNameController.text = globalBloc.branchName;
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
+      _sapTransferBranchNoController.text = data.sapTransferBranchNo;
+      _requestIdController.text = data.requestId.toString();
+      _requestNoController.text = data.requestNo;
       _seriesNameController.text = data.seriesName;
       transDate = data.transDate;
       if (transDate != null) {
@@ -500,7 +613,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _transNoController,
+                  controller: _sapTransferBranchNoController,
                   enabled: false,
                   decoration: InputDecoration(
                       hintText: "Transfer No.",
@@ -511,16 +624,16 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                  controller: _branchNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Branch",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                // TextFormField(
+                //   controller: _branchNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Branch",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -563,6 +676,71 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                             )
                           : Container(width: 0, height: 0),
                     ],
+                  ),
+                ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflRequestBranch.Data> trq = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflRequestBranch.Data>(
+                              builder: (BuildContext context) =>
+                                  CflRequestBranchPage()));
+
+                      trq.then((cflRequestBranch.Data trq) {
+                        if (trq != null) {
+                          _requestIdController.text = trq.id.toString();
+                          _requestNoController.text = trq.transNo;
+                          _toBranchIdController.text =
+                              trq.toBranchId.toString();
+                          _toBranchNameController.text = trq.toBranchName;
+                          _branchIdController.text = trq.branchId.toString();
+                          _branchNameController.text = trq.branchName;
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Transfer Request No",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_requestNoController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_branchNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
                   ),
                 ),
                 //Padding(padding: EdgeInsets.only(top: 10)),
@@ -620,94 +798,6 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                     ),
                   ),
                 ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflGoodsIssue.Data> gi = Navigator.push(
-                //           context,
-                //           MaterialPageRoute<cflGoodsIssue.Data>(
-                //               builder: (BuildContext context) =>
-                //                   CflGoodsIssuePage()));
-
-                //       gi.then((cflGoodsIssue.Data gi) {
-                //         if (gi != null) {
-                //           _issueIdController.text = gi.id.toString();
-                //           _issueNoController.text = gi.transNo;
-                //           _seriesNameController.text = gi.seriesName;
-                //           _docNumController.text = gi.docNum;
-                //          }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color: (data.id == 0) ? Colors.blue : Colors.grey[400]
-                //       ),
-                //       borderRadius: BorderRadius.all(
-                //           Radius.circular(10)
-                //       )
-                //     ),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "Issue No.",
-                //                 style: TextStyle(color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_docNumController.text),
-                //                 // subtitle: Column(
-                //                 //   crossAxisAlignment: CrossAxisAlignment.start,
-                //                 //   children: <Widget>[
-                //                 //     Text(_issueNoController.text),
-                //                 //   ],
-                //                 // ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {}
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //         color: Colors.grey[400]
-                //       ),
-                //       borderRadius: BorderRadius.all(
-                //           Radius.circular(10)
-                //       )
-                //       // border: Border(
-                //       //   bottom: BorderSide(
-                //       //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                //       //     width: 1.0,
-                //       //   ),
-                //       // ),
-                //     ),
-
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -751,6 +841,9 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -773,7 +866,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
@@ -799,7 +892,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapTransferBranchId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

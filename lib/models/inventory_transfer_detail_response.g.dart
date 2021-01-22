@@ -37,15 +37,23 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
+    fromBranchId: json['FromBranchId'] as int,
+    fromBranchName: json['FromBranchName'] as String,
     fromWhsCode: json['FromWhsCode'] as String,
     fromWhsName: json['FromWhsName'] as String,
     fromAbsEntry: json['FromAbsEntry'] as int,
     fromBinCode: json['FromBinCode'] as String,
+    toBranchId: json['ToBranchId'] as int,
+    toBranchName: json['ToBranchName'] as String,
     toWhsCode: json['ToWhsCode'] as String,
     toWhsName: json['ToWhsName'] as String,
     toAbsEntry: json['ToAbsEntry'] as int,
     toBinCode: json['ToBinCode'] as String,
     totalQty: (json['TotalQty'] as num)?.toDouble(),
+    sapInventoryTransferId: json['SapInventoryTransferId'] as int,
+    sapInventoryTransferNo: json['SapInventoryTransferNo'] as String,
+    createdUser: json['CreatedUser'] as int,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -62,15 +70,23 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'RequestNo': instance.requestNo,
       'SeriesNameReq': instance.seriesNameReq,
       'TransDate': instance.transDate?.toIso8601String(),
+      'FromBranchId': instance.fromBranchId,
+      'FromBranchName': instance.fromBranchName,
       'FromWhsCode': instance.fromWhsCode,
       'FromWhsName': instance.fromWhsName,
       'FromAbsEntry': instance.fromAbsEntry,
       'FromBinCode': instance.fromBinCode,
+      'ToBranchId': instance.toBranchId,
+      'ToBranchName': instance.toBranchName,
       'ToWhsCode': instance.toWhsCode,
       'ToWhsName': instance.toWhsName,
       'ToAbsEntry': instance.toAbsEntry,
       'ToBinCode': instance.toBinCode,
       'TotalQty': instance.totalQty,
+      'SapInventoryTransferId': instance.sapInventoryTransferId,
+      'SapInventoryTransferNo': instance.sapInventoryTransferNo,
+      'CreatedUser': instance.createdUser,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
@@ -88,6 +104,19 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     toAbsEntry: json['ToAbsEntry'] as int,
     toBinCode: json['ToBinCode'] as String,
     batchNo: json['BatchNo'] as String,
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    micron: (json['Micron'] as num)?.toDouble(),
+    manufacturingDate: json['ManufacturingDate'] == null
+        ? null
+        : DateTime.parse(json['ManufacturingDate'] as String),
+    expirationDate: json['ExpirationDate'] == null
+        ? null
+        : DateTime.parse(json['ExpirationDate'] as String),
+    itemType: json['ItemType'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
   )
     ..requestId = json['RequestId'] as int
     ..requestLineNo = json['RequestLineNo'] as int
@@ -114,4 +143,13 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ToAbsEntry': instance.toAbsEntry,
       'ToBinCode': instance.toBinCode,
       'BatchNo': instance.batchNo,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
+      'ExpirationDate': instance.expirationDate?.toIso8601String(),
+      'ItemType': instance.itemType,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
     };

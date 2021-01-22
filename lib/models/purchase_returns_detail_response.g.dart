@@ -27,6 +27,9 @@ Map<String, dynamic> _$PurchaseReturnsDetailResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestNo: json['ReturnRequestNo'] as String,
+    seriesNameReqNo: json['SeriesNameReqNo'] as String,
     grpoId: json['GrpoId'] as int,
     grpoNo: json['GrpoNo'] as String,
     id: json['Id'] as int,
@@ -43,6 +46,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     seriesName: json['SeriesName'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
+    sapReturnId: json['SapReturnId'] as int,
+    sapReturnNo: json['SapReturnNo'] as String,
+    createdUser: json['CreatedUser'] as int,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -51,6 +58,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestNo': instance.returnRequestNo,
+      'SeriesNameReqNo': instance.seriesNameReqNo,
       'Id': instance.id,
       'GrpoId': instance.grpoId,
       'GrpoNo': instance.grpoNo,
@@ -65,11 +75,17 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SeriesName': instance.seriesName,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
+      'SapReturnId': instance.sapReturnId,
+      'SapReturnNo': instance.sapReturnNo,
+      'CreatedUser': instance.createdUser,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
+    returnRequestId: json['ReturnRequestId'] as int,
+    returnRequestLineNo: json['ReturnRequestLineNo'] as int,
     grpoId: json['GrpoId'] as int,
     grpoLineNo: json['GrpoLineNo'] as int,
     webId: json['WebId'] as int,
@@ -79,18 +95,35 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
+    reqQty: (json['ReqQty'] as num)?.toDouble(),
     grpoQty: (json['GrpoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    itemType: json['ItemType'] as String,
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
+    priceMode: json['PriceMode'] as String,
     batchNo: json['BatchNo'] as String,
+    micron: (json['Micron'] as num)?.toDouble(),
+    manufacturingDate: json['ManufacturingDate'] == null
+        ? null
+        : DateTime.parse(json['ManufacturingDate'] as String),
+    expirationDate: json['ExpirationDate'] == null
+        ? null
+        : DateTime.parse(json['ExpirationDate'] as String),
   );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'ReturnRequestId': instance.returnRequestId,
+      'ReturnRequestLineNo': instance.returnRequestLineNo,
       'GrpoId': instance.grpoId,
       'GrpoLineNo': instance.grpoLineNo,
       'WebId': instance.webId,
@@ -100,7 +133,18 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
+      'ReqQty': instance.reqQty,
       'GrpoQty': instance.grpoQty,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
+      'ExpirationDate': instance.expirationDate?.toIso8601String(),
+      'ItemType': instance.itemType,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
+      'PriceMode': instance.priceMode,
       'Qty': instance.qty,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,

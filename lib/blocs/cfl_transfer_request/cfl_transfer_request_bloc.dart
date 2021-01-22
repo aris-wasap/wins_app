@@ -1,25 +1,25 @@
 import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
 import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_event.dart';
 import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_state.dart';
-import 'package:admart_app/models/cfl_transfer_request_response.dart'; 
+import 'package:admart_app/models/cfl_transfer_request_response.dart';
 import 'package:admart_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent, CflTransferRequestState> {
+class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
+    CflTransferRequestState> {
   CflTransferRequestBloc()
       : super(
           initialState: CflTransferRequestState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
   @override
-  Stream<CflTransferRequestState> eventHandler(
-      CflTransferRequestEvent event, CflTransferRequestState currentState) async* {
+  Stream<CflTransferRequestState> eventHandler(CflTransferRequestEvent event,
+      CflTransferRequestState currentState) async* {
     switch (event.event) {
       case CflTransferRequestEventType.activedSearch:
         yield CflTransferRequestState.success(
@@ -38,8 +38,8 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response = await _repository
-                .cflTransferRequest_FetchNextPage(0,  "");
+            CflTransferRequestResponse response =
+                await _repository.cflTransferRequest_FetchNextPage(0, "", "");
             if (response == null) {
               yield CflTransferRequestState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflTransferRequestState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
         }
         break;
       case CflTransferRequestEventType.firstPage:
-        { 
-
+        {
           yield CflTransferRequestState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -87,7 +85,7 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             var _repository = Repository();
             CflTransferRequestResponse response =
                 await _repository.cflTransferRequest_FetchNextPage(
-                    0,  event.searchQuery);
+                    0, event.searchQuery, event.transType);
             if (response == null) {
               yield CflTransferRequestState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +103,6 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflTransferRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +131,9 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
             var _repository = Repository();
             CflTransferRequestResponse response =
                 await _repository.cflTransferRequest_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery);
+                    currentState.data.length,
+                    event.searchQuery,
+                    event.transType);
             if (response == null) {
               yield CflTransferRequestState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +151,6 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflTransferRequestState.success(
@@ -182,9 +179,9 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
           );
           try {
             var _repository = Repository();
-            CflTransferRequestResponse response = await _repository.cflTransferRequest_FetchNextPage(
-               0, 
-                event.searchQuery);
+            CflTransferRequestResponse response =
+                await _repository.cflTransferRequest_FetchNextPage(
+                    0, event.searchQuery, event.transType);
             if (response == null) {
               yield CflTransferRequestState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +199,6 @@ class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflTransferRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

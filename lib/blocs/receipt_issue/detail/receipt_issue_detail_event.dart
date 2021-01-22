@@ -82,6 +82,14 @@ class ReceiptIssueDetailEventAdd extends ReceiptIssueDetailEvent {
         );
 }
 
+class ReceiptIssueDetailEventPost extends ReceiptIssueDetailEvent {
+  ReceiptIssueDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class ReceiptIssueDetailEventCancel extends ReceiptIssueDetailEvent {
   ReceiptIssueDetailEventCancel({
     @required int id,

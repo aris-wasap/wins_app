@@ -46,12 +46,16 @@ class _ReceiptBranchDetailItemDetailPageState
   final _qtyIssueController = TextEditingController();
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReceiptBranchDetailItemDetailBloc(this._data);
   }
 
@@ -67,6 +71,7 @@ class _ReceiptBranchDetailItemDetailPageState
     _binAbsController?.dispose();
     _binCodeController?.dispose();
     _batchNumberController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -74,6 +79,16 @@ class _ReceiptBranchDetailItemDetailPageState
   }
 
   void _done() {
+    if (_whsCodeController.text == "" || _whsCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Warehouse");
+      return;
+    } else if (_binCodeController.text == "" ||
+        _binCodeController.text == null) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan input Bin Location");
+      return;
+    }
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
@@ -146,6 +161,7 @@ class _ReceiptBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _qtyIssueController.text = data.issueQty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.##")
@@ -155,6 +171,20 @@ class _ReceiptBranchDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.##")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.issueQty != 0) {
+      if (_qtyIssueController.text == "") {
+        _qtyIssueController.text = NumberFormat("###,###.##")
+            .format(double.parse(data.issueQty.toString()));
+      } else {
+        if (_data.issueQty ==
+            double.parse(
+                _qtyIssueController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyIssueController.text = NumberFormat("###,###.##")
+              .format(double.parse(data.issueQty.toString()));
         }
       }
     }
@@ -377,7 +407,8 @@ class _ReceiptBranchDetailItemDetailPageState
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              autofocus: true,
+                              //autofocus: true,
+                              enabled: false,
                               controller: _qtyController,
                               onEditingComplete: () {
                                 setState(() {

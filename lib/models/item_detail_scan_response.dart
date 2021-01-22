@@ -52,6 +52,23 @@ class Data {
   @JsonKey(name: 'TotalStock')
   double totalStock;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+  @JsonKey(name: 'Uom')
+  String uom;
+
   @JsonKey(name: 'Details')
   List<Item> details;
 
@@ -60,6 +77,12 @@ class Data {
     this.itemName,
     this.distNumber,
     this.totalStock,
+    this.length,
+    this.width,
+    this.weight,
+    this.itemType,
+    this.micron,
+    this.uom,
     this.details
   });
 
@@ -88,6 +111,24 @@ class Item {
 
   @JsonKey(name: 'Stock')
   double stock;
+
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Uom')
+  String uom;
   
   Item({
     this.inDate,
@@ -95,7 +136,13 @@ class Item {
     this.expDate, 
     this.whsCode, 
     this.whsName, 
-    this.stock: 0
+    this.stock: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.itemType,
+    this.micron,
+    this.uom,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

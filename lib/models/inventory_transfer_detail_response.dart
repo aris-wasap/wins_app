@@ -66,6 +66,12 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
+  @JsonKey(name: 'FromBranchId')
+  int fromBranchId;
+
+  @JsonKey(name: 'FromBranchName')
+  String fromBranchName;
+
   @JsonKey(name: 'FromWhsCode')
   String fromWhsCode;
 
@@ -77,6 +83,12 @@ class Data {
 
   @JsonKey(name: 'FromBinCode')
   String fromBinCode;
+
+  @JsonKey(name: 'ToBranchId')
+  int toBranchId;
+
+  @JsonKey(name: 'ToBranchName')
+  String toBranchName;
 
   @JsonKey(name: 'ToWhsCode')
   String toWhsCode;
@@ -93,6 +105,18 @@ class Data {
   @JsonKey(name: 'TotalQty')
   double totalQty;
 
+  @JsonKey(name: 'SapInventoryTransferId')
+  int sapInventoryTransferId;
+
+  @JsonKey(name: 'SapInventoryTransferNo')
+  String sapInventoryTransferNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -105,15 +129,23 @@ class Data {
     this.requestNo,
     this.seriesNameReq,
     this.transDate,
+    this.fromBranchId,
+    this.fromBranchName,
     this.fromWhsCode,
     this.fromWhsName,
     this.fromAbsEntry,
     this.fromBinCode,
+    this.toBranchId,
+    this.toBranchName,
     this.toWhsCode,
     this.toWhsName,
     this.toAbsEntry,
     this.toBinCode,
     this.totalQty,
+    this.sapInventoryTransferId: 0,
+    this.sapInventoryTransferNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -176,6 +208,33 @@ class Item {
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
   Item({
     this.id: 0,
     this.lineNo: 0,
@@ -189,6 +248,15 @@ class Item {
     this.toAbsEntry,
     this.toBinCode,
     this.batchNo,
+    this.length,
+    this.width,
+    this.weight,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
+    this.itemType,
+    this.isAsset,
+    this.isBatch,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

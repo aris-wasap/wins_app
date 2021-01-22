@@ -87,13 +87,13 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptOrderDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptOrderDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -163,7 +163,42 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is ReceiptOrderDetailEventCancel) {
+    }
+    else if (event is ReceiptOrderDetailEventPost) {
+      yield ReceiptOrderDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptOrderDetailResponse response =
+            await _repository.receiptOrderDetail_Post(event.data);
+        if (response == null) {
+          yield ReceiptOrderDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptOrderDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceiptOrderDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<receiptOrderDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptOrderDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }  else if (event is ReceiptOrderDetailEventCancel) {
       yield ReceiptOrderDetailState.busy(
         data: currentState.data,
       );

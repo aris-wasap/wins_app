@@ -40,53 +40,72 @@ class ReceiptIssueDetailResponse {
 
 @JsonSerializable()
 class Data {
-  
   @JsonKey(name: 'Id')
-  int id; 
+  int id;
 
   @JsonKey(name: 'IssueId')
   int issueId;
 
   @JsonKey(name: 'IssueNo')
-  String issueNo;  
+  String issueNo;
 
-  @JsonKey(name:'SeriesName')
+  @JsonKey(name: 'SeriesName')
   String seriesName;
 
-  @JsonKey(name: 'DocNum')
-  String docNum;
+  @JsonKey(name: 'RefNo')
+  String refNo;
 
   @JsonKey(name: 'TransNo')
   String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
+
+  @JsonKey(name: 'SapReceiptIssueId')
+  int sapReceiptIssueId;
+
+  @JsonKey(name: 'SapReceiptIssueNo')
+  String sapReceiptIssueNo;
+
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
 
   @JsonKey(name: 'Items')
   List<Item> items;
 
-  
-  
-
   Data({
-    this.issueId: 0, 
-    this.issueNo, 
+    this.issueId: 0,
+    this.issueNo,
     this.seriesName,
-    this.docNum,
+    this.refNo,
     this.id: 0,
     this.transNo,
     this.transDate,
+    this.sapReceiptIssueId: 0,
+    this.sapReceiptIssueNo,
+    this.branchId,
+    this.branchName,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item { 
-
+class Item {
   @JsonKey(name: 'IssueId')
   int issueId;
 
@@ -112,7 +131,7 @@ class Item {
   String itemCode;
 
   @JsonKey(name: 'ItemName')
-  String itemName; 
+  String itemName;
 
   @JsonKey(name: 'IssueQty')
   double issueQty;
@@ -120,8 +139,8 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
-  @JsonKey(name: 'ItemCost')
-  double itemCost;
+  @JsonKey(name: 'ItemCostTc')
+  double itemCostTc;
 
   @JsonKey(name: 'Uom')
   String uom;
@@ -139,10 +158,44 @@ class Item {
   String binCode;
 
   @JsonKey(name: 'BatchNo')
-  String batchNo; 
-  
- 
- 
+  String batchNo;
+
+  @JsonKey(name: 'MnfBatchNo')
+  String mnfBatchNo;
+
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
+
   Item({
     this.issueId: 0,
     this.issueLineNo: 0,
@@ -152,20 +205,32 @@ class Item {
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
-    this.itemName, 
+    this.itemName,
     this.issueQty: 0,
     this.qty: 0,
-    this.itemCost:0,
+    this.itemCostTc: 0,
     this.uom,
     this.whsCode,
     this.whsName,
     this.binAbs,
-    this.binCode,  
+    this.binCode,
     this.batchNo,
+    this.mnfBatchNo,
+    this.width,
+    this.length,
+    this.weight,
+    this.micron,
+    this.expirationDate,
+    this.manufacturingDate,
+    this.itemType,
+    this.type,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
+
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 

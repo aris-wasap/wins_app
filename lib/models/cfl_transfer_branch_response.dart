@@ -60,6 +60,12 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'ToBranchId')
+  int toBranchId;
+
+  @JsonKey(name: 'ToBranchName')
+  String toBranchName;
+
   Data({
     this.id = 0,
     this.transNo,
@@ -68,6 +74,8 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.toBranchId,
+    this.toBranchName,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

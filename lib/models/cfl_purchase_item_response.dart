@@ -93,6 +93,21 @@ class Data {
   @JsonKey(name: 'IsBatch')
   String isBatch;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   Data({
     this.id = 0,
     this.transNo,
@@ -112,6 +127,11 @@ class Data {
     this.isAsset,
     this.isBatch,
     this.uom,
+    this.length,
+    this.micron,
+    this.weight,
+    this.width,
+    this.itemType,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

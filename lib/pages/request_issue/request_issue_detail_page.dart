@@ -4,17 +4,22 @@ import 'package:admart_app/blocs/request_issue/detail/request_issue_detail_bloc.
 import 'package:admart_app/blocs/request_issue/detail/request_issue_detail_event.dart';
 import 'package:admart_app/blocs/request_issue/detail/request_issue_detail_state.dart';
 import 'package:admart_app/pages/cfl/cfl_goods_issue_page.dart';
+
+import 'package:admart_app/pages/cfl/cfl_transfer_request_page.dart';
 import 'package:admart_app/pages/request_issue/request_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/request_issue_detail_response.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart'
     as cflGoodsIssue;
+import 'package:admart_app/models/cfl_transfer_request_response.dart'
+    as cflTransferRequest;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:admart_app/widgets/set_colors.dart';
@@ -34,15 +39,19 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
-  final _issueIdController = TextEditingController();
-  final _issueNoController = TextEditingController();
+  final _idTxController = TextEditingController();
+  final _sapRequestIssueNoController = TextEditingController();
+  final _requestIdController = TextEditingController();
+  final _requestNoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _seriesNameReqNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _docNumController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _fromBranchIdController = TextEditingController();
+  final _fromBranchNameController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -77,14 +86,19 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
 
   @override
   void dispose() {
-    _issueIdController?.dispose();
-    _issueNoController?.dispose();
+    _idTxController?.dispose();
+    _sapRequestIssueNoController?.dispose();
+    _requestIdController?.dispose();
+    _requestNoController?.dispose();
     _seriesNameController?.dispose();
+    _seriesNameReqNoController?.dispose();
     _transNoController?.dispose();
     _docNumController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _fromBranchIdController?.dispose();
+    _fromBranchNameController?.dispose();
 
     bloc?.dispose();
 
@@ -94,19 +108,18 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.issueId = int.parse(_issueIdController.text);
-    data.issueNo = _issueNoController.text;
     data.seriesName = _seriesNameController.text;
-    data.docNum = _docNumController.text;
     data.transDate = transDate;
+    data.requestNo = _requestNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
           context: context, message: "Issue Date harus di isi");
       return;
-    } else if (["", null].contains(data.issueNo)) {
-      ValidateDialogWidget(context: context, message: "Issue No harus di isi");
+    } else if (["", null].contains(data.requestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -118,7 +131,45 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       return;
     }
 
+    data.id = _id;
+    data.requestId = int.parse(_requestIdController.text);
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReqNo = _seriesNameReqNoController.text;
+
     bloc.emitEvent(RequestIssueDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.requestId = int.parse(_requestIdController.text);
+    data.requestNo = _requestNoController.text;
+    data.seriesName = _seriesNameController.text;
+    data.transDate = transDate;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Issue Date harus di isi");
+      return;
+    } else if (["", null].contains(data.requestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(RequestIssueDetailEventPost(
       data: data,
     ));
   }
@@ -216,7 +267,13 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Request From Issue"),
+        title: Text(
+          "Draft Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -226,18 +283,74 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text(
+              "Save",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          )
+        ],
+      );
+    } else if (_getState().data.sapRequestIssueId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
     } else {
       return AppBar(
-        title: Text("Request From Issue"),
+        title: Text(
+          "Request Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -251,8 +364,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                   onPressed: () {
                     _newTrans();
                   },
-                  icon: Icon(Icons.add),
-                )
+                  icon: Icon(Icons.add))
               : Container(),
         ],
       );
@@ -266,10 +378,11 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
-    // if (["", null].contains(_issueNoController.text)) {
-    //   ValidateDialogWidget(context: context, message: "Issue No harus di isi");
-    //   return;
-    // }
+    if (["", null].contains(_requestNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Request No harus di isi");
+      return;
+    }
     var data = _getState().data;
 
     try {
@@ -278,18 +391,23 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
 
-      bloc.emitEvent(
-          RequestIssueDetailEventScan(qrResult: qrResult, data: data));
+      bloc.emitEvent(RequestIssueDetailEventScan(
+          requestId: int.parse(_requestIdController.text),
+          requestNo: _requestNoController.text,
+          qrResult: qrResult,
+          data: data));
 
       // bloc
       //     .eventHandler(
       //         RequestIssueDetailEventScan(
-      //             issueId: int.parse(_issueIdController.text),
+      //             issueId: int.parse(_requestIdController.text),
       //             qrResult: qrResult,
       //             data: data),
       //         _getState())
@@ -390,7 +508,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                   ),
                 ),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapRequestIssueId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -469,10 +587,12 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
-      _issueIdController.text = data.issueId.toString();
+      _idTxController.text = data.id.toString();
       _seriesNameController.text = data.seriesName;
-      _issueNoController.text = data.issueNo;
-      _docNumController.text = data.docNum;
+      _sapRequestIssueNoController.text = data.sapRequestIssueNo;
+      _requestIdController.text = data.requestId.toString();
+      _requestNoController.text = data.requestNo;
+      _fromBranchNameController.text = data.branchName;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -492,7 +612,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapRequestIssueNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Request No.",
@@ -545,6 +665,67 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                     ],
                   ),
                 ),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflTransferRequest.Data> trq = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflTransferRequest.Data>(
+                              builder: (BuildContext context) =>
+                                  CflTransferRequestPage("RequestIssue")));
+
+                      trq.then((cflTransferRequest.Data trq) {
+                        if (trq != null) {
+                          _requestIdController.text = trq.id.toString();
+                          _requestNoController.text = trq.transNo;
+                          _fromBranchNameController.text = trq.fromBranchName;
+                        }
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Transfer Request No",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_requestNoController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_fromBranchNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
+                      ],
+                    ),
+                  ),
+                ),
                 // FlatButton(
                 //   padding: EdgeInsets.only(top: 5),
                 //   onPressed: () {
@@ -557,8 +738,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
 
                 //       gi.then((cflGoodsIssue.Data gi) {
                 //         if (gi != null) {
-                //           _issueIdController.text = gi.id.toString();
-                //           _issueNoController.text = gi.transNo;
+                //           _requestIdController.text = gi.id.toString();
+                //           _requestNoController.text = gi.transNo;
                 //           _seriesNameController.text = gi.seriesName;
                 //           _docNumController.text = gi.docNum;
                 //          }
@@ -592,7 +773,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                 //                 // subtitle: Column(
                 //                 //   crossAxisAlignment: CrossAxisAlignment.start,
                 //                 //   children: <Widget>[
-                //                 //     Text(_issueNoController.text),
+                //                 //     Text(_requestNoController.text),
                 //                 //   ],
                 //                 // ),
                 //               )
@@ -676,6 +857,9 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -695,10 +879,13 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(
@@ -723,7 +910,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapRequestIssueId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

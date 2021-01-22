@@ -43,6 +43,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     address: json['Address'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
+    sapDeliveryId: json['SapDeliveryId'] as int,
+    sapDeliveryNo: json['SapDeliveryNo'] as String,
+    createdUser: json['CreatedUser'] as int,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -65,6 +69,10 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Address': instance.address,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
+      'SapDeliveryId': instance.sapDeliveryId,
+      'SapDeliveryNo': instance.sapDeliveryNo,
+      'CreatedUser': instance.createdUser,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
@@ -79,13 +87,23 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     itemName: json['ItemName'] as String,
     soQty: (json['SoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    type: json['Type'] as String,
+    unitPriceTc: (json['UnitPriceTc'] as num)?.toDouble(),
+    priceTc: (json['PriceTc'] as num)?.toDouble(),
+    itemType: json['ItemType'] as String,
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
+    isAsset: json['IsAsset'] as String,
+    isBatch: json['IsBatch'] as String,
+    priceMode: json['PriceMode'] as String,
     batchNo: json['BatchNo'] as String,
-  );
+  )..micron = (json['Micron'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -98,10 +116,21 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemName': instance.itemName,
       'SoQty': instance.soQty,
       'Qty': instance.qty,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'Type': instance.type,
+      'UnitPriceTc': instance.unitPriceTc,
+      'PriceTc': instance.priceTc,
+      'ItemType': instance.itemType,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
+      'IsAsset': instance.isAsset,
+      'IsBatch': instance.isBatch,
+      'PriceMode': instance.priceMode,
       'BatchNo': instance.batchNo,
     };

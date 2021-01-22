@@ -49,6 +49,9 @@ class Data {
   @JsonKey(name: 'IssueNo')
   String issueNo;
 
+  @JsonKey(name: 'SeriesNameIssue')
+  String seriesNameIssue;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
@@ -70,12 +73,25 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReceiptBranchId')
+  int sapReceiptBranchId;
+
+  @JsonKey(name: 'SapReceiptBranchNo')
+  String sapReceiptBranchNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
   Data({
     this.issueId: 0,
     this.issueNo,
+    this.seriesNameIssue,
     this.seriesName,
     this.id: 0,
     this.transNo,
@@ -84,6 +100,10 @@ class Data {
     this.branchName,
     this.fromBranchId,
     this.fromBranchName,
+    this.sapReceiptBranchId: 0,
+    this.sapReceiptBranchNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 

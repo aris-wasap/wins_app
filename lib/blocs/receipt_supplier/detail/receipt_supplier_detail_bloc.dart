@@ -87,13 +87,13 @@ class ReceiptSupplierDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptSupplierDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dan PO ${poNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptSupplierDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan PO ${poNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dan PO ${poNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -163,7 +163,42 @@ class ReceiptSupplierDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is ReceiptSupplierDetailEventCancel) {
+    } 
+    else if (event is ReceiptSupplierDetailEventPost) {
+      yield ReceiptSupplierDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptSupplierDetailResponse response =
+            await _repository.receiptSupplierDetail_Post(event.data);
+        if (response == null) {
+          yield ReceiptSupplierDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptSupplierDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceiptSupplierDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<receiptSupplierDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptSupplierDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }else if (event is ReceiptSupplierDetailEventCancel) {
       yield ReceiptSupplierDetailState.busy(
         data: currentState.data,
       );

@@ -87,13 +87,13 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield DeliveryOrderDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (1)',
+                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.soId == 0) {
                 yield DeliveryOrderDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan SO ${soNo} (2)',
+                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -137,6 +137,40 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
         var _repository = Repository();
         DeliveryOrderDetailResponse response =
             await _repository.deliveryOrderDetail_Add(event.data);
+        if (response == null) {
+          yield DeliveryOrderDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield DeliveryOrderDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield DeliveryOrderDetailState.success( 
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<deliveryOrderDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield DeliveryOrderDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }else if (event is DeliveryOrderDetailEventPost) {
+      yield DeliveryOrderDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        DeliveryOrderDetailResponse response =
+            await _repository.deliveryOrderDetail_Post(event.data);
         if (response == null) {
           yield DeliveryOrderDetailState.failure(
             errorMessage: 'Response null',
