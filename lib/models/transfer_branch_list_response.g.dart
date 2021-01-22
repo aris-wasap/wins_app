@@ -37,21 +37,24 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['TransDate'] as String),
     status: json['Status'] as String,
     createdUser: json['CreatedUser'] as String,
+    requestNo: json['RequestNo'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
     toBranchId: json['ToBranchId'] as int,
     toBranchName: json['ToBranchName'] as String,
-  );
+  )..sapTransferBranchNo = json['SapTransferBranchNo'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'UserId': instance.userId,
+      'SapTransferBranchNo': instance.sapTransferBranchNo,
       'SeriesName': instance.seriesName,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'Status': instance.status,
       'CreatedUser': instance.createdUser,
+      'RequestNo': instance.requestNo,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
       'ToBranchId': instance.toBranchId,

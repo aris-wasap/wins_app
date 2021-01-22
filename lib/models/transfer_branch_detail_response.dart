@@ -40,6 +40,15 @@ class TransferBranchDetailResponse {
 
 @JsonSerializable()
 class Data {
+  @JsonKey(name: 'RequestId')
+  int requestId;
+
+  @JsonKey(name: 'RequestNo')
+  String requestNo;
+
+  @JsonKey(name: 'SeriesNameReqNo')
+  String seriesNameReqNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -64,10 +73,25 @@ class Data {
   @JsonKey(name: 'ToBranchName')
   String toBranchName;
 
+  @JsonKey(name: 'SapTransferBranchId')
+  int sapTransferBranchId;
+
+  @JsonKey(name: 'SapTransferBranchNo')
+  String sapTransferBranchNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
   Data({
+    this.requestId = 0,
+    this.requestNo,
+    this.seriesNameReqNo,
     this.id: 0,
     this.seriesName,
     this.transNo,
@@ -76,6 +100,10 @@ class Data {
     this.branchName,
     this.toBranchId,
     this.toBranchName,
+    this.sapTransferBranchId: 0,
+    this.sapTransferBranchNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -86,6 +114,12 @@ class Data {
 
 @JsonSerializable()
 class Item {
+  @JsonKey(name: 'RequestId')
+  int requestId;
+
+  @JsonKey(name: 'RequestLineNo')
+  int requestLineNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -101,8 +135,14 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
+
   @JsonKey(name: 'Qty')
   double qty;
+
+  @JsonKey(name: 'AvailableQty')
+  double availableQty;
 
   @JsonKey(name: 'Uom')
   String uom;
@@ -135,12 +175,16 @@ class Item {
   String batchNo;
 
   Item({
+    this.requestId,
+    this.requestLineNo,
     this.id: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
+    this.reqQty: 0,
     this.qty: 0,
+    this.availableQty: 0,
     this.uom,
     this.whsCode,
     this.whsName,

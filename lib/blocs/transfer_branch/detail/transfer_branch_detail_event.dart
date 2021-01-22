@@ -9,6 +9,8 @@ class TransferBranchDetailEvent extends BlocEvent {
     this.item,
     this.issueId,
     this.issueNo,
+    this.requestId,
+    this.requestNo,
     this.itemIndex,
     this.qrResult,
   });
@@ -18,6 +20,8 @@ class TransferBranchDetailEvent extends BlocEvent {
   final Item item;
   final int issueId;
   final String issueNo;
+  final int requestId;
+  final String requestNo;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,9 +41,13 @@ class TransferBranchDetailEventGetId extends TransferBranchDetailEvent {
 class TransferBranchDetailEventScan extends TransferBranchDetailEvent {
   TransferBranchDetailEventScan({
     @required Data data,
+    @required int requestId,
+    @required String requestNo,
     @required String qrResult,
   }) : super(
           data: data,
+          requestId: requestId,
+          requestNo: requestNo,
           qrResult: qrResult,
         );
 }
@@ -72,6 +80,14 @@ class TransferBranchDetailEventItemRemove extends TransferBranchDetailEvent {
 
 class TransferBranchDetailEventAdd extends TransferBranchDetailEvent {
   TransferBranchDetailEventAdd({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
+class TransferBranchDetailEventPost extends TransferBranchDetailEvent {
+  TransferBranchDetailEventPost({
     @required Data data,
   }) : super(
           data: data,

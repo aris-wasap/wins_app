@@ -11,6 +11,7 @@ import 'package:admart_app/blocs/global_bloc.dart';
 import 'package:admart_app/models/delivery_order_detail_response.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -34,13 +35,16 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
+  final _sapDeliveryNoController = TextEditingController();
   final _soIdController = TextEditingController();
   final _soNoController = TextEditingController();
+  final _seriesNameSoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
@@ -76,12 +80,16 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
+    _sapDeliveryNoController?.dispose();
     _soIdController?.dispose();
     _soNoController?.dispose();
+    _seriesNameSoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _customerCodeController?.dispose();
     _customerNameController?.dispose();
+    _refNoController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
 
@@ -97,6 +105,50 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     data.transDate = transDate;
     data.customerCode = _customerCodeController.text;
     data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Delivery Order Date harus di isi");
+      return;
+    } else if (["", null].contains(data.soNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Sales Order No harus di isi");
+      return;
+    } else if (["", null].contains(data.customerCode)) {
+      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    data.id = _id;
+    data.soId = int.parse(_soIdController.text);
+    data.seriesNameSo = _seriesNameSoController.text;
+
+    bloc.emitEvent(DeliveryOrderDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.soId = int.parse(_soIdController.text);
+    data.soNo = _soNoController.text;
+    data.transDate = transDate;
+    data.seriesNameSo = _seriesNameSoController.text;
+    data.customerCode = _customerCodeController.text;
+    data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -118,7 +170,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       return;
     }
 
-    bloc.emitEvent(DeliveryOrderDetailEventAdd(
+    bloc.emitEvent(DeliveryOrderDetailEventPost(
       data: data,
     ));
   }
@@ -216,7 +268,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Delivery"),
+        title: Text("Draft Delivery Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -226,12 +278,53 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
               _create();
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Delivery Order",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              _submit();
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -278,7 +371,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Item sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -387,7 +482,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              floatingActionButton: _getState().data.sapDeliveryId == 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -466,6 +561,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
+      _sapDeliveryNoController.text = data.sapDeliveryNo;
       _soIdController.text = data.soId.toString();
       _soNoController.text = data.soNo;
       transDate = data.transDate;
@@ -491,7 +588,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                    controller: _transNoController,
+                    controller: _sapDeliveryNoController,
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Delivery No.",
@@ -557,10 +654,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       so.then((cflSalesOrder.Data so) {
                         if (so != null) {
                           _soIdController.text = so.id.toString();
-                          _soNoController.text =
-                              so.seriesName + '-' + so.transNo;
+                          _soNoController.text = so.transNo;
+                          _seriesNameSoController.text = so.seriesName;
                           _customerCodeController.text = so.customerCode;
                           _customerNameController.text = so.customerName;
+                          _refNoController.text = so.refNo;
                           _branchIdController.text = so.branchId.toString();
                           _branchNameController.text = so.branchName;
                         }
@@ -698,6 +796,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
   }
 
@@ -717,10 +818,13 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}"),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
+              Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(
@@ -745,7 +849,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapDeliveryId == 0) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

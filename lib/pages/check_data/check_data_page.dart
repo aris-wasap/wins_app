@@ -22,6 +22,11 @@ class _CheckDataPageState extends State<CheckDataPage> {
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _batchController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _typeController = TextEditingController();
+  final _uomController = TextEditingController();
   final _stockController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
@@ -36,6 +41,11 @@ class _CheckDataPageState extends State<CheckDataPage> {
     _itemCodeController?.dispose();
     _itemNameController?.dispose();
     _batchController?.dispose();
+    _lengthController?.dispose();
+    _widthController?.dispose();
+    _weightController?.dispose();
+    _typeController?.dispose();
+    _uomController?.dispose();
     _stockController?.dispose();
 
     bloc?.dispose();
@@ -222,6 +232,11 @@ class _CheckDataPageState extends State<CheckDataPage> {
       _itemCodeController.text = data.itemCode;
       _itemNameController.text = data.itemName;
       _batchController.text = data.distNumber;
+      _lengthController.text = data.length.toString();
+      _widthController.text = data.width.toString();
+      _weightController.text = data.weight.toString();
+      _typeController.text = data.itemType;
+      _uomController.text = data.uom;
       _stockController.text = data.totalStock.toString();
     }
 
@@ -310,6 +325,62 @@ class _CheckDataPageState extends State<CheckDataPage> {
                         padding: EdgeInsets.only(top: 5),
                       ),
                       TextFormField(
+                          controller: _widthController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Width",
+                              labelText: "Width",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _lengthController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Length",
+                              labelText: "Length",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _weightController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Weight",
+                              labelText: "Weight",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _typeController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Type",
+                              labelText: "Type",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
                           controller: _stockController,
                           enabled: false,
                           decoration: InputDecoration(
@@ -319,7 +390,21 @@ class _CheckDataPageState extends State<CheckDataPage> {
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(10.0))))
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _uomController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Uom",
+                              labelText: "Uom",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
                     ],
                   ),
                 ),
@@ -381,7 +466,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                  "Qty : ${NumberFormat("#,###.00").format(data[index].stock)}"),
+                  "Qty : ${NumberFormat("#,###.##").format(data[index].stock)} " + "${data[index].uom}"),
               Text(
                   "Manufacture Date : ${data[index].mnfDate}".substring(0, 29)),
               Text("Receive Date : ${data[index].inDate}".substring(0, 25)),

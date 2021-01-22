@@ -12,7 +12,8 @@ class CflPurchaseItemPage extends StatefulWidget {
   CflPurchaseItemPage(this.poId);
   final int poId;
   @override
-  _CflPurchaseItemPageState createState() => _CflPurchaseItemPageState(this.poId);
+  _CflPurchaseItemPageState createState() =>
+      _CflPurchaseItemPageState(this.poId);
 }
 
 class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
@@ -31,10 +32,9 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       bloc.emitEvent(CflPurchaseItemEvent(
-        event: CflPurchaseItemEventType.firstPage,
-        searchQuery: _searchQueryController.text,
-        poId: poId
-      ));
+          event: CflPurchaseItemEventType.firstPage,
+          searchQuery: _searchQueryController.text,
+          poId: poId));
     });
   }
 
@@ -42,10 +42,9 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
       bloc.emitEvent(CflPurchaseItemEvent(
-        event: CflPurchaseItemEventType.nextPage,
-        searchQuery: _searchQueryController.text,
-        poId: poId
-      ));
+          event: CflPurchaseItemEventType.nextPage,
+          searchQuery: _searchQueryController.text,
+          poId: poId));
     }
   }
 
@@ -54,9 +53,7 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
     super.initState();
 
     bloc.emitEvent(CflPurchaseItemEvent(
-      event: CflPurchaseItemEventType.firstPage,
-      poId: poId
-    ));
+        event: CflPurchaseItemEventType.firstPage, poId: poId));
 
     _scrollController = ScrollController()..addListener(_onScroll);
 
@@ -84,22 +81,20 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
                 bloc.emitEvent(CflPurchaseItemEvent(
-                  event: CflPurchaseItemEventType.deactivedSearch,
-                  searchQuery: _searchQueryController.text,
-                  poId: poId
-                ));
+                    event: CflPurchaseItemEventType.deactivedSearch,
+                    searchQuery: _searchQueryController.text,
+                    poId: poId));
               }),
         ],
       );
@@ -108,20 +103,17 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
         title: Text("Choose Purchase Item"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               bloc.emitEvent(CflPurchaseItemEvent(
-                event: CflPurchaseItemEventType.activedSearch,
-                poId: poId
-              ));
+                  event: CflPurchaseItemEventType.activedSearch, poId: poId));
             },
           ),
         ],
@@ -173,25 +165,27 @@ class _CflPurchaseItemPageState extends State<CflPurchaseItemPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(bitem: Bitem(bottom: BitemSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "${data[index].itemCode} - ${data[index].itemName}"),
+                title:
+                    Text("${data[index].itemCode} - ${data[index].itemName}"),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ 
-                    Text("Line No.  : ${data[index].lineNum??0}"),
-                    Text("Qty : ${data[index].quantity??0}"),
-                    Text("Uom : ${data[index].uom??''}"),
-                    Text("Price : ${data[index].unitPriceTc??0.0}"),
+                  children: <Widget>[
+                    Text("Line No.  : ${data[index].lineNum ?? 0}"),
+                    Text(
+                        "Quantity : ${NumberFormat("#,###.##").format(data[index].quantity)}" +
+                            " ${data[index].uom}"),
+                    Text(
+                        "Price :  ${NumberFormat("#,###.##").format(data[index].unitPriceTc)}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

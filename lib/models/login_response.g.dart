@@ -93,37 +93,44 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         json['InventoryTransfer_WhsNameFrom'] as String,
     inventoryTransfer_WhsCodeTo: json['InventoryTransfer_WhsCodeTo'] as String,
     inventoryTransfer_WhsNameTo: json['InventoryTransfer_WhsNameTo'] as String,
-  )
-    ..issueProduction_Auth_Detail =
-        json['IssueProduction_Auth_Detail'] as String
-    ..issueProduction_Auth_Add = json['IssueProduction_Auth_Add'] as String
-    ..issueProduction_WhsCode = json['IssueProduction_WhsCode'] as String
-    ..issueProduction_WhsName = json['IssueProduction_WhsName'] as String
-    ..goodsIssue_Auth_Detail = json['GoodsIssue_Auth_Detail'] as String
-    ..goodsIssue_Auth_Add = json['GoodsIssue_Auth_Add'] as String
-    ..goodsIssue_WhsCode = json['GoodsIssue_WhsCode'] as String
-    ..goodsIssue_WhsName = json['GoodsIssue_WhsName'] as String
-    ..goodsReceipt_Auth_Detail = json['GoodsReceipt_Auth_Detail'] as String
-    ..goodsReceipt_Auth_Add = json['GoodsReceipt_Auth_Add'] as String
-    ..goodsReceipt_WhsCode = json['GoodsReceipt_WhsCode'] as String
-    ..goodsReceipt_WhsName = json['GoodsReceipt_WhsName'] as String
-    ..transferBranch_Auth_Detail = json['TransferBranch_Auth_Detail'] as String
-    ..transferBranch_Auth_Add = json['TransferBranch_Auth_Add'] as String
-    ..transferBranch_WhsCode = json['TransferBranch_WhsCode'] as String
-    ..transferBranch_WhsName = json['TransferBranch_WhsName'] as String
-    ..receiptBranch_Auth_Detail = json['ReceiptBranch_Auth_Detail'] as String
-    ..receiptBranch_Auth_Add = json['ReceiptBranch_Auth_Add'] as String
-    ..receiptBranch_WhsCode = json['ReceiptBranch_WhsCode'] as String
-    ..receiptBranch_WhsName = json['ReceiptBranch_WhsName'] as String
-    ..requestIssue_Auth_Detail = json['RequestIssue_Auth_Detail'] as String
-    ..requestIssue_Auth_Add = json['RequestIssue_Auth_Add'] as String
-    ..requestIssue_WhsCode = json['RequestIssue_WhsCode'] as String
-    ..requestIssue_WhsName = json['RequestIssue_WhsName'] as String
-    ..purchaseReturns_Auth_Detail =
-        json['PurchaseReturns_Auth_Detail'] as String
-    ..purchaseReturns_Auth_Add = json['PurchaseReturns_Auth_Add'] as String
-    ..purchaseReturns_WhsCode = json['PurchaseReturns_WhsCode'] as String
-    ..purchaseReturns_WhsName = json['PurchaseReturns_WhsName'] as String;
+    purchaseReturns_Auth_Add: json['PurchaseReturns_Auth_Add'] as String,
+    purchaseReturns_Auth_Detail: json['PurchaseReturns_Auth_Detail'] as String,
+    purchaseReturns_WhsCode: json['PurchaseReturns_WhsCode'] as String,
+    purchaseReturns_WhsName: json['PurchaseReturns_WhsName'] as String,
+    payableCredit_Auth_Add: json['PayableCredit_Auth_Add'] as String,
+    payableCredit_Auth_Detail: json['PayableCredit_Auth_Detail'] as String,
+    payableCredit_WhsCode: json['PayableCredit_WhsCode'] as String,
+    payableCredit_WhsName: json['PayableCredit_WhsName'] as String,
+    transferBranch_Auth_Add: json['TransferBranch_Auth_Add'] as String,
+    transferBranch_Auth_Detail: json['TransferBranch_Auth_Detail'] as String,
+    transferBranch_WhsCode: json['TransferBranch_WhsCode'] as String,
+    transferBranch_WhsName: json['TransferBranch_WhsName'] as String,
+    receiptBranch_Auth_Add: json['ReceiptBranch_Auth_Add'] as String,
+    receiptBranch_Auth_Detail: json['ReceiptBranch_Auth_Detail'] as String,
+    receiptBranch_WhsCode: json['ReceiptBranch_WhsCode'] as String,
+    receiptBranch_WhsName: json['ReceiptBranch_WhsName'] as String,
+    goodsIssue_Auth_Add: json['GoodsIssue_Auth_Add'] as String,
+    goodsIssue_Auth_Detail: json['GoodsIssue_Auth_Detail'] as String,
+    goodsIssue_WhsCode: json['GoodsIssue_WhsCode'] as String,
+    goodsIssue_WhsName: json['GoodsIssue_WhsName'] as String,
+    goodsReceipt_Auth_Add: json['GoodsReceipt_Auth_Add'] as String,
+    goodsReceipt_Auth_Detail: json['GoodsReceipt_Auth_Detail'] as String,
+    goodsReceipt_WhsCode: json['GoodsReceipt_WhsCode'] as String,
+    goodsReceipt_WhsName: json['GoodsReceipt_WhsName'] as String,
+    issueProduction_Auth_Add: json['IssueProduction_Auth_Add'] as String,
+    issueProduction_Auth_Detail: json['IssueProduction_Auth_Detail'] as String,
+    issueProduction_WhsCode: json['IssueProduction_WhsCode'] as String,
+    issueProduction_WhsName: json['IssueProduction_WhsName'] as String,
+    requestIssue_Auth_Add: json['RequestIssue_Auth_Add'] as String,
+    requestIssue_Auth_Detail: json['RequestIssue_Auth_Detail'] as String,
+    requestIssue_WhsCode: json['RequestIssue_WhsCode'] as String,
+    requestIssue_WhsName: json['RequestIssue_WhsName'] as String,
+    receivableCredit_Auth_Add: json['ReceivableCredit_Auth_Add'] as String,
+    receivableCredit_Auth_Detail:
+        json['ReceivableCredit_Auth_Detail'] as String,
+    receivableCredit_WhsCode: json['ReceivableCredit_WhsCode'] as String,
+    receivableCredit_WhsName: json['ReceivableCredit_WhsName'] as String,
+  );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -204,10 +211,18 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'PurchaseReturns_Auth_Add': instance.purchaseReturns_Auth_Add,
       'PurchaseReturns_WhsCode': instance.purchaseReturns_WhsCode,
       'PurchaseReturns_WhsName': instance.purchaseReturns_WhsName,
+      'PayableCredit_Auth_Detail': instance.payableCredit_Auth_Detail,
+      'PayableCredit_Auth_Add': instance.payableCredit_Auth_Add,
+      'PayableCredit_WhsCode': instance.payableCredit_WhsCode,
+      'PayableCredit_WhsName': instance.payableCredit_WhsName,
       'ReturnSales_Auth_Detail': instance.returnSales_Auth_Detail,
       'ReturnSales_Auth_Add': instance.returnSales_Auth_Add,
       'ReturnSales_WhsCode': instance.returnSales_WhsCode,
       'ReturnSales_WhsName': instance.returnSales_WhsName,
+      'ReceivableCredit_Auth_Detail': instance.receivableCredit_Auth_Detail,
+      'ReceivableCredit_Auth_Add': instance.receivableCredit_Auth_Add,
+      'ReceivableCredit_WhsCode': instance.receivableCredit_WhsCode,
+      'ReceivableCredit_WhsName': instance.receivableCredit_WhsName,
       'InventoryTransfer_Auth_Detail': instance.inventoryTransfer_Auth_Detail,
       'InventoryTransfer_Auth_Add': instance.inventoryTransfer_Auth_Add,
       'InventoryTransfer_WhsCodeFrom': instance.inventoryTransfer_WhsCodeFrom,

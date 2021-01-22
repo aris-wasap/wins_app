@@ -41,6 +41,12 @@ class WarehouseResponse {
 @JsonSerializable()
 class Data {  
 
+  @JsonKey(name: 'BranchId')
+  int branchId;  
+
+  @JsonKey(name: 'BranchName')
+  String branchName;  
+
   @JsonKey(name: 'WhsCode')
   String whsCode;   
 
@@ -48,6 +54,8 @@ class Data {
   String whsName;  
 
   Data({  
+    this.branchId,
+    this.branchName,
     this.whsCode, 
     this.whsName, 
   });

@@ -55,11 +55,11 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'VendorCode')
+  String vendorCode;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'VendorName')
+  String vendorName;
 
   @JsonKey(name: 'ContactPerson')
   String contactPerson;
@@ -82,6 +82,18 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReceiptOrderId')
+  int sapReceiptOrderId;
+
+  @JsonKey(name: 'SapReceiptOrderNo')
+  String sapReceiptOrderNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -91,8 +103,8 @@ class Data {
     this.id: 0,
     this.transNo,
     this.transDate,
-    this.customerCode,
-    this.customerName,
+    this.vendorCode,
+    this.vendorName,
     this.contactPerson,
     this.refNo,
     this.address,
@@ -100,6 +112,10 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReceiptOrderId=0,
+    this.sapReceiptOrderNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -143,8 +159,38 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'UnitPriceTc')
+  double unitPriceTc;
+
+  @JsonKey(name: 'PriceTc')
+  double priceTc;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   @JsonKey(name: 'Uom')
   String uom;
+
+  @JsonKey(name: 'Type')
+  String type;
 
   @JsonKey(name: 'WhsCode')
   String whsCode;
@@ -157,6 +203,15 @@ class Item {
 
   @JsonKey(name: 'BinCode')
   String binCode;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
 
   @JsonKey(name: 'BatchNo')
   String batchNo;
@@ -173,12 +228,25 @@ class Item {
     this.itemName,
     this.poQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.unitPriceTc,
+    this.priceTc,
+    this.itemType,
     this.uom,
+    this.type,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
     this.batchNo,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

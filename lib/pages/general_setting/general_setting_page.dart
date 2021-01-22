@@ -46,19 +46,19 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   Card(
                     child: Column(
                       children: <Widget>[
-                        ListTile(
-                        leading: Icon(
-                          Icons.file_download,
-                          color: Colors.blue,
-                        ),
-                        title: Text('Sync'),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return DownloadPage();
-                          }));
-                        },
-                      ),
+                      //   ListTile(
+                      //   leading: Icon(
+                      //     Icons.file_download,
+                      //     color: Colors.blue,
+                      //   ),
+                      //   title: Text('Sync'),
+                      //   onTap: () {
+                      //     Navigator.push(context, MaterialPageRoute(
+                      //         builder: (BuildContext context) {
+                      //       return DownloadPage();
+                      //     }));
+                      //   },
+                      // ),
                       Divider(
                         height: 2.0,
                       ),

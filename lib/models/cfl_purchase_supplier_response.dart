@@ -51,11 +51,14 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
-  @JsonKey(name: 'CustomerCode')
-  String customerCode;
+  @JsonKey(name: 'VendorCode')
+  String vendorCode;
 
-  @JsonKey(name: 'CustomerName')
-  String customerName;
+  @JsonKey(name: 'VendorName')
+  String vendorName;
+
+  @JsonKey(name: 'RefNo')
+  String refNo;
 
   @JsonKey(name: 'SeriesName')
   String seriesName;
@@ -71,8 +74,8 @@ class Data {
     this.transNo,
     this.transDate,
     this.status,
-    this.customerCode,
-    this.customerName,
+    this.vendorCode,
+    this.vendorName,
     this.seriesName,
     this.branchId,
     this.branchName,

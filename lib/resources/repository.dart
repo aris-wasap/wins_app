@@ -2,12 +2,18 @@ import 'package:admart_app/models/cfl_batch_location_response.dart';
 import 'package:admart_app/models/cfl_binlocation_response.dart';
 import 'package:admart_app/models/cfl_branch_response.dart';
 import 'package:admart_app/models/cfl_db_warehouse_model.dart';
+import 'package:admart_app/models/cfl_goods_return_request_response.dart';
 import 'package:admart_app/models/cfl_item_batch_response.dart';
+import 'package:admart_app/models/cfl_payable_return_request_response.dart';
 import 'package:admart_app/models/cfl_production_order_response.dart';
 import 'package:admart_app/models/cfl_purchase_delivery_response.dart';
 import 'package:admart_app/models/cfl_purchase_item_response.dart';
 import 'package:admart_app/models/cfl_purchase_order_response.dart';
+import 'package:admart_app/models/cfl_purchase_reference_response.dart';
 import 'package:admart_app/models/cfl_purchase_supplier_response.dart';
+import 'package:admart_app/models/cfl_request_branch_response.dart';
+import 'package:admart_app/models/cfl_return_request_delivery_response.dart';
+import 'package:admart_app/models/cfl_return_request_response.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart';
 import 'package:admart_app/models/cfl_delivery_order_response.dart';
 import 'package:admart_app/models/cfl_goods_issue_response.dart';
@@ -32,6 +38,9 @@ import 'package:admart_app/models/issue_production_detail_response.dart';
 import 'package:admart_app/models/issue_production_detail_scan_response.dart';
 import 'package:admart_app/models/issue_production_list_response.dart';
 import 'package:admart_app/models/login_response.dart';
+import 'package:admart_app/models/payable_credit_detail_response.dart';
+import 'package:admart_app/models/payable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/payable_credit_list_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_response.dart';
 import 'package:admart_app/models/purchase_returns_detail_scan_response.dart';
 import 'package:admart_app/models/purchase_returns_list_response.dart';
@@ -42,6 +51,9 @@ import 'package:admart_app/models/receipt_branch_detail_response.dart'
     as receiptBranchDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart'
     as receiptIssueDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart';
+import 'package:admart_app/models/receivable_credit_detail_scan_response.dart';
+import 'package:admart_app/models/receivable_credit_list_response.dart';
 import 'package:admart_app/models/request_issue_detail_response.dart'
     as requestIssueDetail;
 import 'package:admart_app/models/receipt_issue_detail_response.dart';
@@ -96,8 +108,12 @@ import 'package:admart_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
 import 'package:admart_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
+import 'package:admart_app/models/receivable_credit_detail_response.dart'
+    as receivableCreditDetail;
 import 'package:admart_app/models/purchase_returns_detail_response.dart'
     as purchaseReturnsDetail;
+import 'package:admart_app/models/payable_credit_detail_response.dart'
+    as payableCreditDetail;
 import 'package:admart_app/models/receipt_production_detail_response.dart'
     as receiptProductionDetail;
 import 'package:admart_app/models/issue_production_detail_response.dart'
@@ -250,6 +266,10 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Add(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Post(data);
+
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.deliveryOrderDetail_Scan(soId, qrResult);
@@ -275,9 +295,43 @@ class Repository {
           returnSalesDetail.Data data) =>
       apiProvider.returnSalesDetail_Add(data);
 
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Post(
+          returnSalesDetail.Data data) =>
+      apiProvider.returnSalesDetail_Post(data);
+
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
           int doId, String qrResult) =>
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
+
+  //-----------------------------
+  //ReceivableCreditList
+  //-----------------------------
+  Future<ReceivableCreditListResponse> receivableCreditList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.receivableCreditList_FetchNextPage(lastId, searchQuery);
+
+  Future<ReceivableCreditListResponse> receivableCreditList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.receivableCreditList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //ReceivableCreditDetail
+  //-----------------------------
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_GetById(
+          int id) =>
+      apiProvider.receivableCreditDetail_GetById(id);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Add(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Add(data);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Post(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Post(data);
+
+  Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
+          int returnRequestId, String qrResult) =>
+      apiProvider.receivableCreditDetail_Scan(returnRequestId, qrResult);
 
   //-----------------------------
   //IssueProductionList
@@ -408,9 +462,13 @@ class Repository {
           transferBranchDetail.Data data) =>
       apiProvider.transferBranchDetail_Add(data);
 
+  Future<TransferBranchDetailResponse> transferBranchDetail_Post(
+          transferBranchDetail.Data data) =>
+      apiProvider.transferBranchDetail_Post(data);
+
   Future<TransferBranchDetailScanResponse> transferBranchDetail_Scan(
-          String qrResult) =>
-      apiProvider.transferBranchDetail_Scan(qrResult);
+          int requestId, String qrResult) =>
+      apiProvider.transferBranchDetail_Scan(requestId, qrResult);
 
   //-----------------------------
   //RequestIssueList
@@ -433,9 +491,13 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Add(data);
 
-  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+  Future<RequestIssueDetailResponse> requestIssueDetail_Post(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Post(data);
+
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(int requestId,
           String qrResult) =>
-      apiProvider.requestIssueDetail_Scan(qrResult);
+      apiProvider.requestIssueDetail_Scan(requestId,qrResult);
 
   //-----------------------------
   //ReceiptBranchList
@@ -457,6 +519,10 @@ class Repository {
   Future<ReceiptBranchDetailResponse> receiptBranchDetail_Add(
           receiptBranchDetail.Data data) =>
       apiProvider.receiptBranchDetail_Add(data);
+
+  Future<ReceiptBranchDetailResponse> receiptBranchDetail_Post(
+          receiptBranchDetail.Data data) =>
+      apiProvider.receiptBranchDetail_Post(data);
 
   Future<ReceiptBranchDetailScanResponse> receiptBranchDetail_Scan(
           int soId, String qrResult) =>
@@ -483,6 +549,10 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Add(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
+          receiptIssueDetail.Data data) =>
+      apiProvider.receiptIssueDetail_Post(data);
+
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);
@@ -507,6 +577,10 @@ class Repository {
   Future<ReceiptOrderDetailResponse> receiptOrderDetail_Add(
           receiptOrderDetail.Data data) =>
       apiProvider.receiptOrderDetail_Add(data);
+
+  Future<ReceiptOrderDetailResponse> receiptOrderDetail_Post(
+          receiptOrderDetail.Data data) =>
+      apiProvider.receiptOrderDetail_Post(data);
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
           int poId, String qrResult) =>
@@ -533,6 +607,10 @@ class Repository {
           receiptSupplierDetail.Data data) =>
       apiProvider.receiptSupplierDetail_Add(data);
 
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Post(
+          receiptSupplierDetail.Data data) =>
+      apiProvider.receiptSupplierDetail_Post(data);
+
   Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
           int poId, String qrResult) =>
       apiProvider.receiptSupplierDetail_Scan(poId, qrResult);
@@ -558,9 +636,42 @@ class Repository {
           purchaseReturnsDetail.Data data) =>
       apiProvider.purchaseReturnsDetail_Add(data);
 
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Post(
+          purchaseReturnsDetail.Data data) =>
+      apiProvider.purchaseReturnsDetail_Post(data);
+
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
           int grpoId, String qrResult) =>
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
+
+  //-----------------------------
+  //PayableCreditList
+  //-----------------------------
+  Future<PayableCreditListResponse> payableCreditList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.payableCreditList_FetchNextPage(lastId, searchQuery);
+
+  Future<PayableCreditListResponse> payableCreditList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.payableCreditList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //PayableCreditDetail
+  //-----------------------------
+  Future<PayableCreditDetailResponse> payableCreditDetail_GetById(int id) =>
+      apiProvider.payableCreditDetail_GetById(id);
+
+  Future<PayableCreditDetailResponse> payableCreditDetail_Add(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Add(data);
+
+  Future<PayableCreditDetailResponse> payableCreditDetail_Post(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Post(data);
+
+  Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
+          int grpoId, String qrResult) =>
+      apiProvider.payableCreditDetail_Scan(grpoId, qrResult);
 
   //-----------------------------
   //InventoryTransferList
@@ -583,6 +694,10 @@ class Repository {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Add(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Add(data);
+
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Post(data);
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
           int requestId,
@@ -617,8 +732,15 @@ class Repository {
   //CflTransferRequest
   //-----------------------------
   Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
+          int rowStart, String searchQuery, String transType) =>
+      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery, transType);
+
+  //-----------------------------
+  //CflRequestBranch
+  //-----------------------------
+  Future<CflRequestBranchResponse> cflRequestBranch_FetchNextPage(
           int rowStart, String searchQuery) =>
-      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery);
+      apiProvider.cflRequestBranch_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
   //CflTransferBranch
@@ -655,6 +777,13 @@ class Repository {
       apiProvider.cflPurchaseOrder_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
+  //CflPurchaseReference
+  //-----------------------------
+  Future<CflPurchaseReferenceResponse> cflPurchaseReference_FetchNextPage(
+          int rowStart, String searchQuery, int poId) =>
+      apiProvider.cflPurchaseReference_FetchNextPage(rowStart, searchQuery, poId);
+
+  //-----------------------------
   //CflPurchaseSupplier
   //-----------------------------
   Future<CflPurchaseSupplierResponse> cflPurchaseSupplier_FetchNextPage(
@@ -674,6 +803,36 @@ class Repository {
   Future<CflPurchaseDeliveryResponse> cflPurchaseDelivery_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPurchaseDelivery_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflReturnRequest
+  //-----------------------------
+  Future<CflReturnRequestResponse> cflReturnRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflReturnRequest_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflReturnRequestDelivery
+  //-----------------------------
+  Future<CflReturnRequestDeliveryResponse>
+      cflReturnRequestDelivery_FetchNextPage(
+              int rowStart, String searchQuery) =>
+          apiProvider.cflReturnRequestDelivery_FetchNextPage(
+              rowStart, searchQuery);
+
+//-----------------------------
+  //CflGoodsReturnRequest
+  //-----------------------------
+  Future<CflGoodsReturnRequestResponse> cflGoodsReturnRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflGoodsReturnRequest_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflPayableReturnRequest
+  //-----------------------------
+  Future<CflPayableReturnRequestResponse> cflPayableReturnRequest_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflPayableReturnRequest_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------s
   //Warehouse

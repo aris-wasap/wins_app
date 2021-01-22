@@ -45,6 +45,9 @@ class Data {
   @JsonKey(name: 'UserId')
   int userId;
 
+  @JsonKey(name: 'SapTransferBranchNo')
+  String sapTransferBranchNo;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
@@ -59,6 +62,9 @@ class Data {
 
   @JsonKey(name: 'CreatedUser')
   String createdUser;
+
+  @JsonKey(name: 'RequestNo')
+  String requestNo;
 
   @JsonKey(name: 'BranchId')
   int branchId;
@@ -80,6 +86,7 @@ class Data {
     this.transDate,
     this.status,
     this.createdUser,
+    this.requestNo,
     this.branchId,
     this.branchName,
     this.toBranchId,

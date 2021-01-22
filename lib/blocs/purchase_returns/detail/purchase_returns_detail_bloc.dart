@@ -60,8 +60,8 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is PurchaseReturnsDetailEventScan) {
-      var grpoId = event.grpoId;
-      var grpoNo = event.grpoNo;
+      var returnRequestId = event.returnRequestId;
+      var returnRequestNo = event.returnRequestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +71,7 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         PurchaseReturnsDetailScanResponse response =
-            await _repository.purchaseReturnsDetail_Scan(grpoId, qrResult);
+            await _repository.purchaseReturnsDetail_Scan(returnRequestId, qrResult);
         if (response == null) {
           yield PurchaseReturnsDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,13 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield PurchaseReturnsDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan Return Request No. ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.grpoId == 0) {
+              if (response.data.returnRequestId == 0) {
                 yield PurchaseReturnsDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan GRPO ${grpoNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan Return Request No. ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -163,7 +163,42 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is PurchaseReturnsDetailEventCancel) {
+    } else if (event is PurchaseReturnsDetailEventPost) {
+      yield PurchaseReturnsDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        PurchaseReturnsDetailResponse response =
+            await _repository.purchaseReturnsDetail_Post(event.data);
+        if (response == null) {
+          yield PurchaseReturnsDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield PurchaseReturnsDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield PurchaseReturnsDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<purchaseReturnsDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield PurchaseReturnsDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+    else if (event is PurchaseReturnsDetailEventCancel) {
       yield PurchaseReturnsDetailState.busy(
         data: currentState.data,
       );

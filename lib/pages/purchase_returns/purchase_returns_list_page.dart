@@ -77,7 +77,7 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Receipt",
+              hintText: "Search Goods Return",
               hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: Colors.orange[500],
@@ -101,7 +101,7 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt"),
+        title: Text("List Return"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
@@ -194,13 +194,17 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: data[index].status == 'Draft'
+                    ? Text(
+                        "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
+                    : Text(
+                        "No. ${data[index].sapReturnNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].branchName}"),
+                    Text("Request No. : ${data[index].returnRequestNo}"),
+                    Text("Depo : ${data[index].branchName}"),
                     Text(
                         "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
                     Text("Status : ${data[index].status}"),

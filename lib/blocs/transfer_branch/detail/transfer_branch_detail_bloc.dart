@@ -61,6 +61,8 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
         }
       }
     } else if (event is TransferBranchDetailEventScan) {
+      var requestId = event.requestId;
+      var requestNo = event.requestNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -70,7 +72,7 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         TransferBranchDetailScanResponse response =
-            await _repository.transferBranchDetail_Scan(qrResult);
+            await _repository.transferBranchDetail_Scan( requestId,qrResult);
         if (response == null) {
           yield TransferBranchDetailState.failure(
             errorMessage: 'Response null',
@@ -86,13 +88,14 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferBranchDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data == null) {
                 yield TransferBranchDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (2)',
+                
                   data: event.data,
                 );
               } else {
@@ -156,13 +159,51 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
             );
           }
         }
-      } catch (e) {
+      }
+       catch (e) {
         yield TransferBranchDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
         );
       }
-    } else if (event is TransferBranchDetailEventCancel) {
+    }
+    else if (event is TransferBranchDetailEventPost) {
+      yield TransferBranchDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        TransferBranchDetailResponse response =
+            await _repository.transferBranchDetail_Post(event.data);
+        if (response == null) {
+          yield TransferBranchDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield TransferBranchDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield TransferBranchDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<transferBranchDetail.Item>()),
+            );
+          }
+        }
+      }
+       catch (e) {
+        yield TransferBranchDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+     else if (event is TransferBranchDetailEventCancel) {
       yield TransferBranchDetailState.busy(
         data: currentState.data,
       );

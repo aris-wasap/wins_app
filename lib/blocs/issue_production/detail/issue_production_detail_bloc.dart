@@ -87,13 +87,13 @@ class IssueProductionDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield IssueProductionDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan dan WO ${woNo} (1)',
+                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.woId == 0) {
                 yield IssueProductionDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan dan WO ${woNo} (2)',
+                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (2)',
                   data: event.data,
                 );
               } else {

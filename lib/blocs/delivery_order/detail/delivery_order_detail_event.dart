@@ -82,6 +82,14 @@ class DeliveryOrderDetailEventAdd extends DeliveryOrderDetailEvent {
         );
 }
 
+class DeliveryOrderDetailEventPost extends DeliveryOrderDetailEvent {
+  DeliveryOrderDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class DeliveryOrderDetailEventCancel extends DeliveryOrderDetailEvent {
   DeliveryOrderDetailEventCancel({
     @required int id,

@@ -82,6 +82,18 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapDeliveryId')
+  int sapDeliveryId;
+
+  @JsonKey(name: 'SapDeliveryNo')
+  String sapDeliveryNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -100,6 +112,10 @@ class Data {
     this.address,
     this.branchId,
     this.branchName,
+    this.sapDeliveryId:0,
+    this.sapDeliveryNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -137,6 +153,30 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'UnitPriceTc')
+  double unitPriceTc;
+
+  @JsonKey(name: 'PriceTc')
+  double priceTc;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   @JsonKey(name: 'Uom')
   String uom;
 
@@ -152,6 +192,15 @@ class Item {
   @JsonKey(name: 'BinCode')
   String binCode;
 
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
+
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
@@ -165,11 +214,21 @@ class Item {
     this.itemName,
     this.soQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.type,
+    this.unitPriceTc,
+    this.priceTc,
+    this.itemType,
     this.uom,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
     this.batchNo,
   });
 

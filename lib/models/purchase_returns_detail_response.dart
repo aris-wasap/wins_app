@@ -41,6 +41,16 @@ class PurchaseReturnsDetailResponse {
 
 @JsonSerializable()
 class Data {
+
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestNo')
+  String returnRequestNo;
+
+  @JsonKey(name: 'SeriesNameReqNo')
+  String seriesNameReqNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -83,10 +93,25 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'SapReturnId')
+  int sapReturnId;
+
+  @JsonKey(name: 'SapReturnNo')
+  String sapReturnNo;
+
+  @JsonKey(name: 'CreatedUser')
+  int createdUser;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
   Data({
+    this.returnRequestId = 0,
+    this.returnRequestNo,
+    this.seriesNameReqNo,
     this.grpoId: 0,
     this.grpoNo,
     this.id: 0,
@@ -101,6 +126,10 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
+    this.sapReturnId:0,
+    this.sapReturnNo,
+    this.createdUser,
+    this.status,
     this.items,
   });
 
@@ -111,6 +140,13 @@ class Data {
 
 @JsonSerializable()
 class Item {
+
+  @JsonKey(name: 'ReturnRequestId')
+  int returnRequestId;
+
+  @JsonKey(name: 'ReturnRequestLineNo')
+  int returnRequestLineNo;
+
   @JsonKey(name: 'GrpoId')
   int grpoId;
 
@@ -138,8 +174,41 @@ class Item {
   @JsonKey(name: 'ItemName')
   String itemName;
 
+  @JsonKey(name: 'ReqQty')
+  double reqQty;
+
   @JsonKey(name: 'GrpoQty')
   double grpoQty;
+
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'IsAsset')
+  String isAsset;
+
+  @JsonKey(name: 'IsBatch')
+  String isBatch;
+
+  @JsonKey(name: 'PriceMode')
+  String priceMode;
 
   @JsonKey(name: 'Qty')
   double qty;
@@ -163,6 +232,8 @@ class Item {
   String batchNo;
 
   Item({
+    this.returnRequestId,
+    this.returnRequestLineNo,
     this.grpoId: 0,
     this.grpoLineNo: 0,
     this.webId,
@@ -172,14 +243,25 @@ class Item {
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
+    this.reqQty: 0,
     this.grpoQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.itemType,
     this.uom,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode,
+    this.isAsset,
+    this.isBatch,
+    this.priceMode,
     this.batchNo,
+    this.micron,
+    this.manufacturingDate,
+    this.expirationDate,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

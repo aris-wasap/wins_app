@@ -49,12 +49,17 @@ class _ReceiptSupplierDetailItemDetailPageState
   final _qtyController = TextEditingController();
   final _isAssetController = TextEditingController();
   final _isBatchController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _unitPriceTcController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = ReceiptSupplierDetailItemDetailBloc(this._data);
   }
 
@@ -63,6 +68,7 @@ class _ReceiptSupplierDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -70,9 +76,20 @@ class _ReceiptSupplierDetailItemDetailPageState
   }
 
   void _done() {
-    if (_qtyController.text == "0" || _qtyController.text == "") {
+    if (_qtyController.text == "0.0" || _qtyController.text == "") {
       ValidateDialogWidget(
-          context: context, message: "Qty harus lebih besar dari 0");
+          context: context, message: "Receipt Qty harus lebih besar dari 0");
+      return;
+    }
+
+    if (_whsCodeController.text == null || _whsCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Warehouse terlebih dahulu");
+      return;
+    }
+    if (_binCodeController.text == null || _binCodeController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Pilih Bin Location terlebih dahulu");
       return;
     }
 
@@ -139,8 +156,21 @@ class _ReceiptSupplierDetailItemDetailPageState
     _binCodeController.text = data.binCode;
     _isAssetController.text = data.isAsset;
     _isBatchController.text = data.isBatch;
-    _qtyPoController.text = data.poQty.toString();
-    _qtyController.text = data.qty.toString();
+
+    if (_data.unitPriceTc != 0) {
+      if (_unitPriceTcController.text == "") {
+        _unitPriceTcController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.unitPriceTc.toString()));
+      } else {
+        if (_data.unitPriceTc ==
+            double.parse(
+                _unitPriceTcController.text.replaceAll(new RegExp(','), ''))) {
+          _unitPriceTcController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.unitPriceTc.toString()));
+        }
+      }
+    }
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -150,6 +180,20 @@ class _ReceiptSupplierDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.poQty != 0) {
+      if (_qtyPoController.text == "") {
+        _qtyPoController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.poQty.toString()));
+      } else {
+        if (_data.poQty ==
+            double.parse(
+                _qtyPoController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyPoController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.poQty.toString()));
         }
       }
     }
@@ -205,9 +249,14 @@ class _ReceiptSupplierDetailItemDetailPageState
                           _getState().data.poLineNo = pi.lineNum;
                           _getState().data.itemCode = pi.itemCode;
                           _getState().data.itemName = pi.itemName;
+                          _getState().data.itemType = pi.itemType;
                           _getState().data.poQty = pi.quantity;
-                          _getState().data.qty = pi.quantity;
+                          _getState().data.unitPriceTc = pi.unitPriceTc;
+                          //_getState().data.qty = pi.quantity;
                           _getState().data.uom = pi.uom;
+                          _getState().data.length = pi.length;
+                          _getState().data.width = pi.width;
+                          _getState().data.weight = pi.weight;
                           _getState().data.whsCode = pi.whsCode;
                           _getState().data.whsName = pi.whsName;
                           _getState().data.isAsset = pi.isAsset;
@@ -239,12 +288,12 @@ class _ReceiptSupplierDetailItemDetailPageState
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_itemCodeController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: <Widget>[
-                                //     Text(_poNoController.text),
-                                //   ],
-                                // ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_itemNameController.text),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -257,17 +306,6 @@ class _ReceiptSupplierDetailItemDetailPageState
                       ],
                     ),
                   ),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
@@ -283,6 +321,9 @@ class _ReceiptSupplierDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
+                        autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -295,6 +336,7 @@ class _ReceiptSupplierDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -311,13 +353,17 @@ class _ReceiptSupplierDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Receipt Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Receipt Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 15)),
                 TextFormField(

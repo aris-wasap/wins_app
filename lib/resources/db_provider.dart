@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
- 
+
 import 'package:admart_app/models/cfl_db_warehouse_model.dart';
 import 'package:admart_app/models/warehouse_response.dart';
 import 'package:path/path.dart';
@@ -26,12 +26,12 @@ class DbProvider {
     String path = join(documentsDirectory.path, "admart.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-          
       await db.execute("CREATE TABLE Warehouse ("
           "WhsCode TEXT PRIMARY KEY,"
-          "WhsName TEXT " 
+          "WhsName TEXT, "
+          "BranchId INTEGER, "
+          "BranchName TEXT "
           ")");
- 
     });
   }
 
@@ -50,7 +50,9 @@ class DbProvider {
         var warehouse = warehouses[i];
         await db.insert('Warehouse', {
           'WhsCode': warehouse.whsCode,
-          'WhsName': warehouse.whsName ?? "", 
+          'WhsName': warehouse.whsName ?? "",
+          'BranchId': warehouse.branchId ?? 0,
+          'BranchName': warehouse.branchName ?? ""
         });
       }
     }
@@ -58,16 +60,14 @@ class DbProvider {
 
     return true;
   }
- 
+
   //-----------------------------
   //All
   //-----------------------------
   // Future all_CopyApiToDb() async {
-  //   await warehouse_CopyToDb(); 
+  //   await warehouse_CopyToDb();
   // }
 
-  
-     
   Future<List<CflDbWarehouseModel>> cflDbWarehouse_FetchNextPage(
       String lastId, String searchQuery) async {
     final db = await database;
@@ -86,18 +86,19 @@ class DbProvider {
         searchQuery = searchQuery.replaceAll("'", "''");
         where += " AND ( ";
         where += "  IFNULL(T0.WhsCode,'') LIKE '%${searchQuery}%' OR  ";
-        where += "  IFNULL(T0.WhsName,'') LIKE '%${searchQuery}%'   "; 
+        where += "  IFNULL(T0.WhsName,'') LIKE '%${searchQuery}%'   ";
         where += " ) ";
       }
     }
 
-    ssql =
-        'SELECT * FROM Warehouse T0 ${where}  ORDER BY T0.WhsCode LIMIT 15 ';
+    ssql = 'SELECT * FROM Warehouse T0 ${where}  ORDER BY T0.WhsCode LIMIT 15 ';
     List<Map> mapRawQuery = await db.rawQuery(ssql);
     List<CflDbWarehouseModel> list = new List<CflDbWarehouseModel>.from(
         mapRawQuery.map((x) => new CflDbWarehouseModel(
               whsCode: x["WhsCode"],
-              whsName: x["WhsName"]??"", 
+              whsName: x["WhsName"] ?? "",
+              branchId: x["BranchId"],
+              branchName: x["BranchName"],
             )));
 
     return list;
@@ -124,7 +125,7 @@ class DbProvider {
         searchQuery = searchQuery.replaceAll("'", "''");
         where += " AND ( ";
         where += "  IFNULL(T0.WhsCode,'') LIKE '%${searchQuery}%' OR  ";
-        where += "  IFNULL(T0.WhsName,'') LIKE '%${searchQuery}%'    "; 
+        where += "  IFNULL(T0.WhsName,'') LIKE '%${searchQuery}%'    ";
         where += " ) ";
       }
     }
@@ -133,11 +134,11 @@ class DbProvider {
     List<Map> mapRawQuery = await db.rawQuery(ssql);
     List<CflDbWarehouseModel> list = new List<CflDbWarehouseModel>.from(
         mapRawQuery.map((x) => new CflDbWarehouseModel(
-              whsCode: x["WhsCode"],
-              whsName: x["WhsName"], 
-            )));
+            whsCode: x["WhsCode"],
+            whsName: x["WhsName"],
+            branchId: x["BranchId"],
+            branchName: x["BranchName"])));
 
     return list;
   }
-
 }

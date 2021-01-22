@@ -9,15 +9,20 @@ import 'package:intl/intl.dart';
 import 'package:admart_app/widgets/set_colors.dart';
 
 class CflTransferRequestPage extends StatefulWidget {
+  CflTransferRequestPage(this.transType);
+  final String transType;
   @override
-  _CflTransferRequestPageState createState() => _CflTransferRequestPageState();
+  _CflTransferRequestPageState createState() =>
+      _CflTransferRequestPageState(transType);
 }
 
 class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
+  _CflTransferRequestPageState(this.transType);
   CflTransferRequestBloc bloc = CflTransferRequestBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final String transType;
 
   static const offsetVisibleThreshold = 50;
 
@@ -30,6 +35,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
       bloc.emitEvent(CflTransferRequestEvent(
         event: CflTransferRequestEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        transType: transType,
       ));
     });
   }
@@ -40,6 +46,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
       bloc.emitEvent(CflTransferRequestEvent(
         event: CflTransferRequestEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        transType: transType,
       ));
     }
   }
@@ -50,6 +57,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
 
     bloc.emitEvent(CflTransferRequestEvent(
       event: CflTransferRequestEventType.firstPage,
+      transType: transType,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -72,7 +80,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Production Order",
+              hintText: "Search Transfer Request",
               hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgBlue,
@@ -90,6 +98,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
                 bloc.emitEvent(CflTransferRequestEvent(
                   event: CflTransferRequestEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
+                  transType: transType,
                 ));
               }),
         ],
@@ -110,6 +119,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
             onPressed: () {
               bloc.emitEvent(CflTransferRequestEvent(
                 event: CflTransferRequestEventType.activedSearch,
+                transType: transType,
               ));
             },
           ),
@@ -123,6 +133,7 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
     bloc.emitEvent(CflTransferRequestEvent(
       event: CflTransferRequestEventType.refresh,
       searchQuery: _searchQueryController.text,
+      transType: transType,
     ));
   }
 
@@ -158,36 +169,35 @@ class _CflTransferRequestPageState extends State<CflTransferRequestPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return Card(
-            child: (Container(
-              decoration: BoxDecoration(
-                gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
-              ),
-              //margin: const EdgeInsets.only(top: 8),
-              // decoration:
-              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: ListTile(
-                  title: Text(
-                      "No. ${data[index].transNo} "),
-                  subtitle: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
-                      Text("${data[index].customerCode ?? ''}"),
-                      Text("${data[index].customerName ?? ''}"),
-                    ],
-                  ),
-                  leading: Icon(Icons.keyboard_arrow_left),
-                  onTap: () {
-                    Navigator.pop(context, data[index]);
-                  },
+          return (Container(
+            decoration: BoxDecoration(
+              gradient:
+                  index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+            ),
+            //margin: const EdgeInsets.only(top: 8),
+            // decoration:
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: ListTile(
+                title: Text("No. ${data[index].transNo} "),
+                subtitle: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        "${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("${data[index].customerCode ?? ''}"),
+                    Text("${data[index].customerName ?? ''}"),
+                  ],
                 ),
+                leading: Icon(Icons.keyboard_arrow_left),
+                onTap: () {
+                  Navigator.pop(context, data[index]);
+                },
               ),
-            )),
-          );
+            ),
+          ));
         }
 
         if (isFailure) {

@@ -1,4 +1,6 @@
+import 'package:admart_app/pages/payable_credit/payable_credit_list_page.dart';
 import 'package:admart_app/pages/receipt_branch/receipt_branch_list_page.dart';
+import 'package:admart_app/pages/receivable_credit/receivable_credit_list_page.dart';
 import 'package:admart_app/pages/transfer_branch/transfer_branch_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,20 +82,20 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
     //   "authDetail": "goodsReceipt_Auth_Detail",
     // },
 
-    // // Active
-    // {
-    //   "title": "Issue Change Product",
-    //   "subtitle": "List Issue, Scan Item",
-    //   "icon": "assets/images/request_issue.png",
-    //   "authDetail": "requestIssue_Auth_Detail",
-    // },
-    // // Active
-    // {
-    //   "title": "Receipt From Change Product",
-    //   "subtitle": "List Receipt, Scan Receipt",
-    //   "icon": "assets/images/receipt_issue.png",
-    //   "authDetail": "receiptIssue_Auth_Detail",
-    // },
+    // Active
+    {
+      "title": "Issue Change Product",
+      "subtitle": "List Issue, Scan Item",
+      "icon": "assets/images/request_issue.png",
+      "authDetail": "requestIssue_Auth_Detail",
+    },
+    // Active
+    {
+      "title": "Receipt From Change Product",
+      "subtitle": "List Receipt, Scan Receipt",
+      "icon": "assets/images/receipt_issue.png",
+      "authDetail": "receiptIssue_Auth_Detail",
+    },
     // Active
     {
       "title": "Receipt From Purchase Order",
@@ -118,6 +120,14 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
     // Active
     {
+      "title": "A/P Credit Memo",
+      "subtitle": "List Returns, Scan Item",
+      "icon": "assets/images/purchase_credit.png",
+      "authDetail": "payableCredit_Auth_Detail",
+    },
+
+    // Active
+    {
       "title": "Delivery Order",
       "subtitle": "List Delivery, Scan Item",
       "icon": "assets/images/delivery.png",
@@ -129,6 +139,14 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "subtitle": "List Return, Scan Item",
       "icon": "assets/images/return.png",
       "authDetail": "returnSales_Auth_Detail",
+    },
+
+    // Active
+    {
+      "title": "A/R Credit Memo",
+      "subtitle": "List Returns, Scan Item",
+      "icon": "assets/images/receivable_credit.png",
+      "authDetail": "receivableCredit_Auth_Detail",
     },
 
     // //InActive
@@ -225,28 +243,28 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
 
                               // Change Product
                               //else
-                              // if (subjectList[index]["authDetail"] ==
-                              //         "requestIssue_Auth_Detail" &&
-                              //     globalBloc.loginResponse.data
-                              //             .requestIssue_Auth_Detail ==
-                              //         'Y') {
-                              //   Navigator.push(context, MaterialPageRoute(
-                              //       builder: (BuildContext context) {
-                              //     return RequestIssueListPage();
-                              //   }));
-                              // } else if (subjectList[index]["authDetail"] ==
-                              //         "receiptIssue_Auth_Detail" &&
-                              //     globalBloc.loginResponse.data
-                              //             .receiptIssue_Auth_Detail ==
-                              //         'Y') {
-                              //   Navigator.push(context, MaterialPageRoute(
-                              //       builder: (BuildContext context) {
-                              //     return ReceiptIssueListPage();
-                              //   }));
-                              // }
+                              if (subjectList[index]["authDetail"] ==
+                                      "requestIssue_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .requestIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return RequestIssueListPage();
+                                }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "receiptIssue_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .receiptIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ReceiptIssueListPage();
+                                }));
+                              }
 
                               //Transfer To Branch
-                              if (subjectList[index]["authDetail"] ==
+                              else if (subjectList[index]["authDetail"] ==
                                       "transferBranch_Auth_Detail" &&
                                   globalBloc.loginResponse.data
                                           .transferBranch_Auth_Detail ==
@@ -298,6 +316,16 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                   return ReturnSalesListPage();
                                 }));
                               }
+                              else if (subjectList[index]["authDetail"] ==
+                                      "receivableCredit_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .receivableCredit_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return ReceivableCreditListPage();
+                                }));
+                              }
 
                               //A/P Purchase
                               else if (subjectList[index]["authDetail"] ==
@@ -326,6 +354,16 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return PurchaseReturnsListPage();
+                                }));
+                              }
+                              else if (subjectList[index]["authDetail"] ==
+                                      "payableCredit_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .payableCredit_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return PayableCreditListPage();
                                 }));
                               }
                             },

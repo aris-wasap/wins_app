@@ -6,11 +6,13 @@ class CflTransferRequestEvent extends BlocEvent {
     this.event, 
     this.searchQuery,
     this.selectedRow,
+    this.transType,
   });
 
   final CflTransferRequestEventType event; 
   final String searchQuery;
   final Data selectedRow;
+  final String transType;
 }
 
 enum CflTransferRequestEventType {
