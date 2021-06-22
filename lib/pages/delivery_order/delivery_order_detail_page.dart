@@ -652,16 +652,18 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                                   CflSalesOrderPage()));
 
                       so.then((cflSalesOrder.Data so) {
-                        if (so != null) {
-                          _soIdController.text = so.id.toString();
-                          _soNoController.text = so.transNo;
-                          _seriesNameSoController.text = so.seriesName;
-                          _customerCodeController.text = so.customerCode;
-                          _customerNameController.text = so.customerName;
-                          _refNoController.text = so.refNo;
-                          _branchIdController.text = so.branchId.toString();
-                          _branchNameController.text = so.branchName;
-                        }
+                        setState(() {
+                          if (so != null) {
+                            _soIdController.text = so.id.toString();
+                            _soNoController.text = so.transNo;
+                            _seriesNameSoController.text = so.seriesName;
+                            _customerCodeController.text = so.customerCode;
+                            _customerNameController.text = so.customerName;
+                            _refNoController.text = so.refNo;
+                            _branchIdController.text = so.branchId.toString();
+                            _branchNameController.text = so.branchName;
+                          }
+                        });
                       });
                     }
                   },

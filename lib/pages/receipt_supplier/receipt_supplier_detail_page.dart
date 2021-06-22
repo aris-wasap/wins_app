@@ -678,16 +678,18 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                                   CflPurchaseSupplierPage()));
 
                       po.then((cflPurchaseSupplier.Data po) {
-                        if (po != null) {
-                          _poIdController.text = po.id.toString();
-                          _poNoController.text = po.transNo;
-                          _vendorCodeController.text = po.vendorCode;
-                          _vendorNameController.text = po.vendorName;
-                          _refNoController.text = po.refNo;
-                          _branchIdController.text = po.branchId.toString();
-                          _branchNameController.text = po.branchName;
-                          _seriesNamePoController.text = po.seriesName;
-                        }
+                        setState(() {
+                          if (po != null) {
+                            _poIdController.text = po.id.toString();
+                            _poNoController.text = po.transNo;
+                            _vendorCodeController.text = po.vendorCode;
+                            _vendorNameController.text = po.vendorName;
+                            _refNoController.text = po.refNo;
+                            _branchIdController.text = po.branchId.toString();
+                            _branchNameController.text = po.branchName;
+                            _seriesNamePoController.text = po.seriesName;
+                          }
+                        });
                       });
                     }
                   },

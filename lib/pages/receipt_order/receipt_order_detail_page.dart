@@ -672,16 +672,18 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                                   CflPurchaseOrderPage()));
 
                       po.then((cflPurchaseOrder.Data po) {
-                        if (po != null) {
-                          _poIdController.text = po.id.toString();
-                          _poNoController.text = po.transNo;
-                          _vendorCodeController.text = po.vendorCode;
-                          _vendorNameController.text = po.vendorName;
-                          _refNoController.text = "";
-                          _branchIdController.text = po.branchId.toString();
-                          _branchNameController.text = po.branchName;
-                          _seriesNamePoController.text = po.seriesName;
-                        }
+                        setState(() {
+                          if (po != null) {
+                            _poIdController.text = po.id.toString();
+                            _poNoController.text = po.transNo;
+                            _vendorCodeController.text = po.vendorCode;
+                            _vendorNameController.text = po.vendorName;
+                            _refNoController.text = "";
+                            _branchIdController.text = po.branchId.toString();
+                            _branchNameController.text = po.branchName;
+                            _seriesNamePoController.text = po.seriesName;
+                          }
+                        });
                       });
                     }
                   },
@@ -785,16 +787,18 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                                       int.parse(_poIdController.text))));
 
                       po.then((cflPurchaseReference.Data po) {
-                        if (po != null) {
-                          //_poIdController.text = po.id.toString();
-                          //_poNoController.text = po.transNo;
-                          //_vendorCodeController.text = po.vendorCode;
-                          //_vendorNameController.text = po.vendorName;
-                          _refNoController.text = po.refNo;
-                          //_branchIdController.text = po.branchId.toString();
-                          //_branchNameController.text = po.branchName;
-                          //_seriesNamePoController.text = po.seriesName;
-                        }
+                        setState(() {
+                          if (po != null) {
+                            //_poIdController.text = po.id.toString();
+                            //_poNoController.text = po.transNo;
+                            //_vendorCodeController.text = po.vendorCode;
+                            //_vendorNameController.text = po.vendorName;
+                            _refNoController.text = po.refNo;
+                            //_branchIdController.text = po.branchId.toString();
+                            //_branchNameController.text = po.branchName;
+                            //_seriesNamePoController.text = po.seriesName;
+                          }
+                        });
                       });
                     }
                   },
@@ -930,8 +934,9 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" + " ${data[index].uom}"),
-              
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
+
               // Text(data[index].whsCode ?? ''),
               Text("Warehouse : ${data[index].whsName}"),
             ],

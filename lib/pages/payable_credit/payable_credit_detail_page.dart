@@ -683,17 +683,19 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                                   CflPayableReturnRequestPage()));
 
                       req.then((cflPayableReturnRequest.Data req) {
-                        if (req != null) {
-                          _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text = req.transNo;
-                          _vendorCodeController.text = req.vendorCode;
-                          _vendorNameController.text = req.vendorName;
-                          _refNoController.text = req.refNo;
-                          _branchIdController.text = req.branchId.toString();
-                          _branchNameController.text = req.branchName;
-                          _seriesNameReturnRequestController.text =
-                              req.seriesName;
-                        }
+                        setState(() {
+                          if (req != null) {
+                            _returnRequestIdController.text = req.id.toString();
+                            _returnRequestNoController.text = req.transNo;
+                            _vendorCodeController.text = req.vendorCode;
+                            _vendorNameController.text = req.vendorName;
+                            _refNoController.text = req.refNo;
+                            _branchIdController.text = req.branchId.toString();
+                            _branchNameController.text = req.branchName;
+                            _seriesNameReturnRequestController.text =
+                                req.seriesName;
+                          }
+                        });
                       });
                     }
                   },

@@ -721,21 +721,23 @@ class _InventoryTransferDetailPageState
                                   CflTransferRequestPage("InventoryTransfer")));
 
                       trq.then((cflTransferRequest.Data trq) {
-                        if (trq != null) {
-                          _requestIdController.text = trq.id.toString();
-                          _requestNoController.text = trq.transNo;
-                          _fromWhsCodeController.text = trq.fromWhsCode;
-                          _fromWhsNameController.text = trq.fromWhsName;
-                          _fromAbsEntryController.text = "";
-                          _fromBinCodeController.text = "";
-                          _toWhsCodeController.text = trq.toWhsCode;
-                          _toWhsNameController.text = trq.toWhsName;
-                          _toBranchIdController.text =
-                              trq.toBranchId.toString();
-                          _toBranchNameController.text = trq.toBranchName;
-                          _toAbsEntryController.text = "";
-                          _toBinCodeController.text = "";
-                        }
+                        setState(() {
+                          if (trq != null) {
+                            _requestIdController.text = trq.id.toString();
+                            _requestNoController.text = trq.transNo;
+                            _fromWhsCodeController.text = trq.fromWhsCode;
+                            _fromWhsNameController.text = trq.fromWhsName;
+                            _fromAbsEntryController.text = "";
+                            _fromBinCodeController.text = "";
+                            _toWhsCodeController.text = trq.toWhsCode;
+                            _toWhsNameController.text = trq.toWhsName;
+                            _toBranchIdController.text =
+                                trq.toBranchId.toString();
+                            _toBranchNameController.text = trq.toBranchName;
+                            _toAbsEntryController.text = "";
+                            _toBinCodeController.text = "";
+                          }
+                        });
                       });
                     }
                   },
@@ -780,14 +782,14 @@ class _InventoryTransferDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.sapInventoryTransferId == 0) {
-                      setState(() {
-                        Future<cflWarehouse.Data> whs = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflWarehouse.Data>(
-                                builder: (BuildContext context) =>
-                                    CflWarehousePage(globalBloc.branchId)));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                        whs.then((cflWarehouse.Data whs) {
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
                           if (whs != null) {
                             _fromWhsCodeController.text = whs.whsCode;
                             _fromWhsNameController.text = whs.whsName;
@@ -849,15 +851,15 @@ class _InventoryTransferDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.sapInventoryTransferId == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _fromWhsCodeController.text)));
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(
+                                      _fromWhsCodeController.text)));
 
-                        bin.then((cflBinLocation.Data bin) {
+                      bin.then((cflBinLocation.Data bin) {
+                        setState(() {
                           if (bin != null) {
                             _fromAbsEntryController.text =
                                 bin.absEntry.toString();
@@ -910,14 +912,14 @@ class _InventoryTransferDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.sapInventoryTransferId == 0) {
-                      setState(() {
-                        Future<cflWarehouse.Data> whs = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflWarehouse.Data>(
-                                builder: (BuildContext context) =>
-                                    CflWarehousePage(globalBloc.branchId)));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                        whs.then((cflWarehouse.Data whs) {
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
                           if (whs != null) {
                             _toBranchIdController.text =
                                 whs.branchId.toString();
@@ -982,15 +984,15 @@ class _InventoryTransferDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.sapInventoryTransferId == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _toWhsCodeController.text)));
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(
+                                      _toWhsCodeController.text)));
 
-                        bin.then((cflBinLocation.Data bin) {
+                      bin.then((cflBinLocation.Data bin) {
+                        setState(() {
                           if (bin != null) {
                             _toAbsEntryController.text =
                                 bin.absEntry.toString();

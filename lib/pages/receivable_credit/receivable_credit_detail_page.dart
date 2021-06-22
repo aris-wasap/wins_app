@@ -651,15 +651,17 @@ class _ReceivableCreditDetailPageState
                                   CflReturnRequestPage()));
 
                       req.then((cflReturnRequest.Data req) {
-                        if (req != null) {
-                          _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text = req.transNo;
-                          _customerCodeController.text = req.customerCode;
-                          _customerNameController.text = req.customerName;
-                          _refNoController.text = req.refNo;
-                          _branchIdController.text = req.branchId.toString();
-                          _branchNameController.text = req.branchName;
-                        }
+                        setState(() {
+                          if (req != null) {
+                            _returnRequestIdController.text = req.id.toString();
+                            _returnRequestNoController.text = req.transNo;
+                            _customerCodeController.text = req.customerCode;
+                            _customerNameController.text = req.customerName;
+                            _refNoController.text = req.refNo;
+                            _branchIdController.text = req.branchId.toString();
+                            _branchNameController.text = req.branchName;
+                          }
+                        });
                       });
                     }
                   },

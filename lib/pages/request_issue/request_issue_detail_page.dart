@@ -676,11 +676,13 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                                   CflTransferRequestPage("RequestIssue")));
 
                       trq.then((cflTransferRequest.Data trq) {
-                        if (trq != null) {
-                          _requestIdController.text = trq.id.toString();
-                          _requestNoController.text = trq.transNo;
-                          _fromBranchNameController.text = trq.fromBranchName;
-                        }
+                        setState(() {
+                          if (trq != null) {
+                            _requestIdController.text = trq.id.toString();
+                            _requestNoController.text = trq.transNo;
+                            _fromBranchNameController.text = trq.fromBranchName;
+                          }
+                        });
                       });
                     }
                   },

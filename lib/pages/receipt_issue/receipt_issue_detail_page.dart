@@ -646,13 +646,15 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                                   CflGoodsIssuePage()));
 
                       gi.then((cflGoodsIssue.Data gi) {
-                        if (gi != null) {
-                          _issueIdController.text = gi.id.toString();
-                          _issueNoController.text = gi.transNo;
-                          _seriesNameController.text = gi.seriesName;
-                          _refNoController.text = gi.refNo;
-                          _branchNameController.text = gi.branchName;
-                        }
+                        setState(() {
+                          if (gi != null) {
+                            _issueIdController.text = gi.id.toString();
+                            _issueNoController.text = gi.transNo;
+                            _seriesNameController.text = gi.seriesName;
+                            _refNoController.text = gi.refNo;
+                            _branchNameController.text = gi.branchName;
+                          }
+                        });
                       });
                     }
                   },

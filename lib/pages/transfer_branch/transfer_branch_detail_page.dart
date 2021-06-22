@@ -689,15 +689,17 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                                   CflRequestBranchPage()));
 
                       trq.then((cflRequestBranch.Data trq) {
-                        if (trq != null) {
-                          _requestIdController.text = trq.id.toString();
-                          _requestNoController.text = trq.transNo;
-                          _toBranchIdController.text =
-                              trq.toBranchId.toString();
-                          _toBranchNameController.text = trq.toBranchName;
-                          _branchIdController.text = trq.branchId.toString();
-                          _branchNameController.text = trq.branchName;
-                        }
+                        setState(() {
+                          if (trq != null) {
+                            _requestIdController.text = trq.id.toString();
+                            _requestNoController.text = trq.transNo;
+                            _toBranchIdController.text =
+                                trq.toBranchId.toString();
+                            _toBranchNameController.text = trq.toBranchName;
+                            _branchIdController.text = trq.branchId.toString();
+                            _branchNameController.text = trq.branchName;
+                          }
+                        });
                       });
                     }
                   },
@@ -755,10 +757,13 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                                   CflBranchPage(globalBloc.branchId)));
 
                       brn.then((cflBranch.Data brn) {
-                        if (brn != null) {
-                          _toBranchIdController.text = brn.branchId.toString();
-                          _toBranchNameController.text = brn.branchName;
-                        }
+                        setState(() {
+                          if (brn != null) {
+                            _toBranchIdController.text =
+                                brn.branchId.toString();
+                            _toBranchNameController.text = brn.branchName;
+                          }
+                        });
                       });
                     }
                   },

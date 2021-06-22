@@ -652,16 +652,18 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                                   CflGoodsReturnRequestPage()));
 
                       req.then((cflGoodsReturnRequest.Data req) {
-                        if (req != null) {
-                          _returnRequestIdController.text = req.id.toString();
-                          _returnRequestNoController.text = req.transNo;
-                          _vendorCodeController.text = req.vendorCode;
-                          _vendorNameController.text = req.vendorName;
-                          _refNoController.text = req.refNo;
-                          _branchIdController.text = req.branchId.toString();
-                          _branchNameController.text = req.branchName;
-                          _seriesNameGrpoController.text = req.seriesName;
-                        }
+                        setState(() {
+                          if (req != null) {
+                            _returnRequestIdController.text = req.id.toString();
+                            _returnRequestNoController.text = req.transNo;
+                            _vendorCodeController.text = req.vendorCode;
+                            _vendorNameController.text = req.vendorName;
+                            _refNoController.text = req.refNo;
+                            _branchIdController.text = req.branchId.toString();
+                            _branchNameController.text = req.branchName;
+                            _seriesNameGrpoController.text = req.seriesName;
+                          }
+                        });
                       });
                     }
                   },

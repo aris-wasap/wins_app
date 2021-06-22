@@ -673,13 +673,16 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                                   CflTransferBranchPage()));
 
                       gi.then((cflTransferBranch.Data gi) {
-                        if (gi != null) {
-                          _issueIdController.text = gi.id.toString();
-                          _issueNoController.text = gi.transNo;
-                          _fromBranchIdController.text = gi.branchId.toString();
-                          _fromBranchNameController.text = gi.branchName;
-                          _seriesNameIssueController.text = gi.seriesName;
-                        }
+                        setState(() {
+                          if (gi != null) {
+                            _issueIdController.text = gi.id.toString();
+                            _issueNoController.text = gi.transNo;
+                            _fromBranchIdController.text =
+                                gi.branchId.toString();
+                            _fromBranchNameController.text = gi.branchName;
+                            _seriesNameIssueController.text = gi.seriesName;
+                          }
+                        });
                       });
                     }
                   },
