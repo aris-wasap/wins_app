@@ -17,8 +17,7 @@ class InventoryTransferListPage extends StatefulWidget {
       _InventoryTransferListPageState();
 }
 
-class _InventoryTransferListPageState
-    extends State<InventoryTransferListPage> {
+class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
   InventoryTransferListBloc bloc = InventoryTransferListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -79,18 +78,16 @@ class _InventoryTransferListPageState
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Inventory Transfer",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Inventory Transfer",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -108,17 +105,16 @@ class _InventoryTransferListPageState
         title: Text("Inventory Transfer"),
         //backgroundColor: bgBlue,
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
-        bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
           ),
-          preferredSize: Size.fromHeight(5.0)
         ),
+        bottom: PreferredSize(
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -191,23 +187,23 @@ class _InventoryTransferListPageState
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: data[index].status == 'Draft'
-                    ? Text(
-                        "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
-                    : Text(
-                        "No. ${data[index].sapInventoryTransferNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-              subtitle: Column(
+                title: Text(
+                    "Scan No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(
+                        "IT No. : ${data[index].sapInventoryTransferNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+
                     Text(
                         "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
                     Text("User : ${data[index].createdUser}"),

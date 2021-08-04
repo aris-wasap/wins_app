@@ -326,7 +326,7 @@ class _ReceiptOrderDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
-                        _focusNode.unfocus();
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -371,14 +371,14 @@ class _ReceiptOrderDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflWarehouse.Data> whs = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflWarehouse.Data>(
-                                builder: (BuildContext context) =>
-                                    CflWarehousePage(globalBloc.branchId)));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                        whs.then((cflWarehouse.Data whs) {
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
                           if (whs != null) {
                             _getState().data.whsCode = whs.whsCode;
                             _getState().data.whsName = whs.whsName;
@@ -436,15 +436,15 @@ class _ReceiptOrderDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _getState().data.whsCode)));
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(
+                                      _getState().data.whsCode)));
 
-                        bin.then((cflBinLocation.Data bin) {
+                      bin.then((cflBinLocation.Data bin) {
+                        setState(() {
                           if (bin != null) {
                             // _binAbsController.text = bin.absEntry.toString();
                             // _binCodeController.text =  bin.binCode;

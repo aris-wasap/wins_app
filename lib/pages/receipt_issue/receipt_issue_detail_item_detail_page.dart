@@ -342,15 +342,15 @@ class _ReceiptIssueDetailItemDetailPageState
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
                           if (data.id == 0) {
-                            setState(() {
-                              Future<cflBinLocation.Data> bin = Navigator.push(
-                                  context,
-                                  MaterialPageRoute<cflBinLocation.Data>(
-                                      builder: (BuildContext context) =>
-                                          CflBinLocationPage(
-                                              _whsCodeController.text)));
+                            Future<cflBinLocation.Data> bin = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflBinLocation.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflBinLocationPage(
+                                            _whsCodeController.text)));
 
-                              bin.then((cflBinLocation.Data bin) {
+                            bin.then((cflBinLocation.Data bin) {
+                              setState(() {
                                 if (bin != null) {
                                   // _binAbsController.text = bin.absEntry.toString();
                                   // _binCodeController.text =  bin.binCode;

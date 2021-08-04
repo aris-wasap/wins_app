@@ -245,23 +245,25 @@ class _ReceiptSupplierDetailItemDetailPageState
                                       int.parse(_poIdController.text))));
 
                       pi.then((cflPurchaseItem.Data pi) {
-                        if (pi != null) {
-                          _getState().data.poLineNo = pi.lineNum;
-                          _getState().data.itemCode = pi.itemCode;
-                          _getState().data.itemName = pi.itemName;
-                          _getState().data.itemType = pi.itemType;
-                          _getState().data.poQty = pi.quantity;
-                          _getState().data.unitPriceTc = pi.unitPriceTc;
-                          //_getState().data.qty = pi.quantity;
-                          _getState().data.uom = pi.uom;
-                          _getState().data.length = pi.length;
-                          _getState().data.width = pi.width;
-                          _getState().data.weight = pi.weight;
-                          _getState().data.whsCode = pi.whsCode;
-                          _getState().data.whsName = pi.whsName;
-                          _getState().data.isAsset = pi.isAsset;
-                          _getState().data.isBatch = pi.isBatch;
-                        }
+                        setState(() {
+                          if (pi != null) {
+                            _getState().data.poLineNo = pi.lineNum;
+                            _getState().data.itemCode = pi.itemCode;
+                            _getState().data.itemName = pi.itemName;
+                            _getState().data.itemType = pi.itemType;
+                            _qtyPoController.text = pi.quantity.toString();
+                            _getState().data.unitPriceTc = pi.unitPriceTc;
+                            //_getState().data.qty = pi.quantity;
+                            _getState().data.uom = pi.uom;
+                            _getState().data.length = pi.length;
+                            _getState().data.width = pi.width;
+                            _getState().data.weight = pi.weight;
+                            _getState().data.whsCode = pi.whsCode;
+                            _getState().data.whsName = pi.whsName;
+                            _getState().data.isAsset = pi.isAsset;
+                            _getState().data.isBatch = pi.isBatch;
+                          }
+                        });
                       });
                     }
                   },
@@ -392,17 +394,19 @@ class _ReceiptSupplierDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflWarehouse.Data> whs = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflWarehouse.Data>(
-                                builder: (BuildContext context) =>
-                                    CflWarehousePage(globalBloc.branchId)));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                        whs.then((cflWarehouse.Data whs) {
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
                           if (whs != null) {
                             _getState().data.whsCode = whs.whsCode;
                             _getState().data.whsName = whs.whsName;
+                            _getState().data.binAbs = 0;
+                            _getState().data.binCode = "";
                           }
                         });
                       });
@@ -455,15 +459,14 @@ class _ReceiptSupplierDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _whsCodeController.text)));
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(_whsCodeController.text)));
 
-                        bin.then((cflBinLocation.Data bin) {
+                      bin.then((cflBinLocation.Data bin) {
+                        setState(() {
                           if (bin != null) {
                             _getState().data.binAbs = bin.absEntry;
                             _getState().data.binCode = bin.binCode;

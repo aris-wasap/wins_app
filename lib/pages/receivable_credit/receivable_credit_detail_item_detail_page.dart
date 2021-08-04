@@ -291,14 +291,14 @@ class _ReceivableCreditDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflWarehouse.Data> whs = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflWarehouse.Data>(
-                                builder: (BuildContext context) =>
-                                    CflWarehousePage(globalBloc.branchId)));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                        whs.then((cflWarehouse.Data whs) {
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
                           if (whs != null) {
                             _getState().data.whsCode = whs.whsCode;
                             _getState().data.whsName = whs.whsName;
@@ -354,15 +354,15 @@ class _ReceivableCreditDetailItemDetailPageState
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _getState().data.whsCode)));
+                      Future<cflBinLocation.Data> bin = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflBinLocation.Data>(
+                              builder: (BuildContext context) =>
+                                  CflBinLocationPage(
+                                      _getState().data.whsCode)));
 
-                        bin.then((cflBinLocation.Data bin) {
+                      bin.then((cflBinLocation.Data bin) {
+                        setState(() {
                           if (bin != null) {
                             _getState().data.binAbs = bin.absEntry;
                             _getState().data.binCode = bin.binCode;

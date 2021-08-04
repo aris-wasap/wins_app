@@ -185,6 +185,72 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
     ));
   }
 
+  showAlertDialogCreate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogSubmit(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _submit();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => ReturnSalesDetailPage(0));
@@ -293,7 +359,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
               color: Colors.yellowAccent,
             ),
             onPressed: () {
-              _create();
+              showAlertDialogCreate(context);
             },
             textColor: Colors.white,
             label: Text("Save"),
@@ -323,7 +389,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
               color: Colors.greenAccent,
             ),
             onPressed: () {
-              _submit();
+              showAlertDialogSubmit(context);
             },
             textColor: Colors.white,
             label: Text(

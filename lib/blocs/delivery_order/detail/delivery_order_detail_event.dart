@@ -3,15 +3,15 @@ import 'package:admart_app/models/delivery_order_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class DeliveryOrderDetailEvent extends BlocEvent {
-  DeliveryOrderDetailEvent({
-    this.id,
-    this.data,
-    this.item,
-    this.soId,
-    this.soNo,
-    this.itemIndex,
-    this.qrResult,
-  });
+  DeliveryOrderDetailEvent(
+      {this.id,
+      this.data,
+      this.item,
+      this.soId,
+      this.soNo,
+      this.itemIndex,
+      this.qrResult,
+      this.whsCode});
 
   final int id;
   final Data data;
@@ -20,6 +20,7 @@ class DeliveryOrderDetailEvent extends BlocEvent {
   final String soNo;
   final int itemIndex;
   final String qrResult;
+  final String whsCode;
 }
 
 class DeliveryOrderDetailEventNormal extends DeliveryOrderDetailEvent {
@@ -35,17 +36,18 @@ class DeliveryOrderDetailEventGetId extends DeliveryOrderDetailEvent {
 }
 
 class DeliveryOrderDetailEventScan extends DeliveryOrderDetailEvent {
-  DeliveryOrderDetailEventScan({
-    @required Data data,
-    @required int soId,
-    @required String soNo,
-    @required String qrResult,
-  }) : super(
-          data: data,
-          soId: soId,
-          soNo: soNo,
-          qrResult: qrResult,
-        );
+  DeliveryOrderDetailEventScan(
+      {@required Data data,
+      @required int soId,
+      @required String soNo,
+      @required String qrResult,
+      @required String whsCode})
+      : super(
+            data: data,
+            soId: soId,
+            soNo: soNo,
+            qrResult: qrResult,
+            whsCode: whsCode);
 }
 
 class DeliveryOrderDetailEventItemAdd extends DeliveryOrderDetailEvent {

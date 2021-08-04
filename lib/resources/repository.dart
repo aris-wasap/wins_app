@@ -271,8 +271,8 @@ class Repository {
       apiProvider.deliveryOrderDetail_Post(data);
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
-          int soId, String qrResult) =>
-      apiProvider.deliveryOrderDetail_Scan(soId, qrResult);
+          int soId, String qrResult, String whsCode) =>
+      apiProvider.deliveryOrderDetail_Scan(soId, qrResult, whsCode);
 
   //-----------------------------
   //ReturnSalesList
@@ -495,9 +495,9 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
 
-  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(int requestId,
-          String qrResult) =>
-      apiProvider.requestIssueDetail_Scan(requestId,qrResult);
+  Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
+          int requestId, String qrResult) =>
+      apiProvider.requestIssueDetail_Scan(requestId, qrResult);
 
   //-----------------------------
   //ReceiptBranchList
@@ -733,7 +733,8 @@ class Repository {
   //-----------------------------
   Future<CflTransferRequestResponse> cflTransferRequest_FetchNextPage(
           int rowStart, String searchQuery, String transType) =>
-      apiProvider.cflTransferRequest_FetchNextPage(rowStart, searchQuery, transType);
+      apiProvider.cflTransferRequest_FetchNextPage(
+          rowStart, searchQuery, transType);
 
   //-----------------------------
   //CflRequestBranch
@@ -781,7 +782,8 @@ class Repository {
   //-----------------------------
   Future<CflPurchaseReferenceResponse> cflPurchaseReference_FetchNextPage(
           int rowStart, String searchQuery, int poId) =>
-      apiProvider.cflPurchaseReference_FetchNextPage(rowStart, searchQuery, poId);
+      apiProvider.cflPurchaseReference_FetchNextPage(
+          rowStart, searchQuery, poId);
 
   //-----------------------------
   //CflPurchaseSupplier

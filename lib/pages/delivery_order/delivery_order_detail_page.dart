@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:admart_app/pages/cfl/cfl_sales_order_page.dart';
+import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:admart_app/pages/delivery_order/delivery_order_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
@@ -17,6 +18,8 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:admart_app/models/cfl_sales_order_response.dart'
     as cflSalesOrder;
+
+import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:admart_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -47,6 +50,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _whsCodeController = TextEditingController();
+  final _whsNameController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -92,6 +97,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _refNoController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
+    _whsCodeController?.dispose();
+    _whsNameController?.dispose();
 
     bloc?.dispose();
 
@@ -107,6 +114,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     data.customerName = _customerNameController.text;
     data.refNo = _refNoController.text;
     data.items = state.data.items;
+    data.whsCode = _whsCodeController.text;
+    data.whsName = _whsNameController.text;
 
     if ([null].contains(data.transDate)) {
       ValidateDialogWidget(
@@ -118,6 +127,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       return;
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
+      return;
+    } else if (["", null].contains(data.whsCode)) {
+      ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
       return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
@@ -160,6 +172,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
       return;
+    } else if (["", null].contains(data.whsCode)) {
+      ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
+      return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -173,6 +188,72 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     bloc.emitEvent(DeliveryOrderDetailEventPost(
       data: data,
     ));
+  }
+
+  showAlertDialogCreate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogSubmit(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _submit();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _newTrans() {
@@ -283,7 +364,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               color: Colors.yellowAccent,
             ),
             onPressed: () {
-              _create();
+              showAlertDialogCreate(context);
             },
             textColor: Colors.white,
             label: Text("Save"),
@@ -313,7 +394,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               color: Colors.greenAccent,
             ),
             onPressed: () {
-              _submit();
+              showAlertDialogSubmit(context);
             },
             textColor: Colors.white,
             label: Text(
@@ -751,6 +832,69 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+                //Padding(padding: EdgeInsets.only(top: 10)),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
+
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
+                          if (whs != null) {
+                            _getState().data.whsCode = whs.whsCode;
+                            _getState().data.whsName = whs.whsName;
+                          }
+                        });
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "From Warehouse",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_whsCodeController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_whsNameController.text),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (data.id == 0)
+                            ? Icon(
+                                Icons.keyboard_arrow_right,
+                              )
+                            : Container(width: 0, height: 0),
                       ],
                     ),
                   ),

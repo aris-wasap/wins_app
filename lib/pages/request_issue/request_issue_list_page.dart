@@ -193,15 +193,14 @@ class _RequestIssueListPageState extends State<RequestIssueListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: data[index].status == 'Draft'
-                    ? Text(
-                        "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
-                    : Text(
-                        "No. ${data[index].sapRequestIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: Text(
+                    "Scan No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(
+                        "Receipt No. : ${data[index].sapRequestIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                     Text("Request No. : ${data[index].requestNo}"),
                     Text("From : ${data[index].branchName}"),
                     Text("Status : ${data[index].status}"),

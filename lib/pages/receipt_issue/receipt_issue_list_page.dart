@@ -193,18 +193,16 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: data[index].status == 'Draft'
-                    ? Text(
-                        "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}")
-                    : Text(
-                        "No. ${data[index].sapReceiptIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: Text(
+                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Issue No. : ${data[index].issueNo}"),
-                        Text("Depo : ${data[index].branchName}"),
+                        "Receipt No. : ${data[index].sapReceiptIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    Text("Issue No. : ${data[index].issueNo}"),
+                    Text("Depo : ${data[index].branchName}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

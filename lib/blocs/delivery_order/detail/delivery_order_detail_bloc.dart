@@ -63,6 +63,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
       var soId = event.soId;
       var soNo = event.soNo;
       var qrResult = event.qrResult;
+      var whsCode = event.whsCode;
       var newData = currentState.data;
 
       yield DeliveryOrderDetailState.busy(
@@ -71,7 +72,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         DeliveryOrderDetailScanResponse response =
-            await _repository.deliveryOrderDetail_Scan(soId, qrResult);
+            await _repository.deliveryOrderDetail_Scan(soId, qrResult, whsCode);
         if (response == null) {
           yield DeliveryOrderDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +88,15 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield DeliveryOrderDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (1)',
+                errorMessage:
+                    'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.soId == 0) {
                 yield DeliveryOrderDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (2)',
+                  errorMessage:
+                      'Batch Number ${qrResult} tidak di temukan dari Sales Order No. : ${soNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +114,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is DeliveryOrderDetailEventItemAdd) {
+    } else if (event is DeliveryOrderDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield DeliveryOrderDetailState.success(
@@ -150,7 +153,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            yield DeliveryOrderDetailState.success( 
+            yield DeliveryOrderDetailState.success(
               succesMessage: response.errorMessage,
               data: response.data ??
                   Data(items: List<deliveryOrderDetail.Item>()),
@@ -163,7 +166,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }else if (event is DeliveryOrderDetailEventPost) {
+    } else if (event is DeliveryOrderDetailEventPost) {
       yield DeliveryOrderDetailState.busy(
         data: event.data,
       );
@@ -184,7 +187,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            yield DeliveryOrderDetailState.success( 
+            yield DeliveryOrderDetailState.success(
               succesMessage: response.errorMessage,
               data: response.data ??
                   Data(items: List<deliveryOrderDetail.Item>()),

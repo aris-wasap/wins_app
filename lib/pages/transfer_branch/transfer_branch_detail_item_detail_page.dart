@@ -334,20 +334,18 @@ class _TransferBranchDetailItemDetailPageState
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
                           if (data.id == 0) {
-                            setState(() {
-                              Future<cflWarehouse.Data> whs = Navigator.push(
-                                  context,
-                                  MaterialPageRoute<cflWarehouse.Data>(
-                                      builder: (BuildContext context) =>
-                                          CflWarehousePage(
-                                              globalBloc.branchId)));
+                            Future<cflWarehouse.Data> whs = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflWarehouse.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflWarehousePage(globalBloc.branchId)));
 
-                              whs.then((cflWarehouse.Data whs) {
+                            whs.then((cflWarehouse.Data whs) {
+                              setState(() {
                                 if (whs != null) {
                                   _getState().data.whsCode = whs.whsCode;
                                   _getState().data.whsName = whs.whsName;
                                   _getState().data.binCode = "";
-                                 
                                 }
                               });
                             });
@@ -402,18 +400,17 @@ class _TransferBranchDetailItemDetailPageState
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
                           if (data.id == 0) {
-                            setState(() {
-                              Future<cflBatchLocation.Data> bin =
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute<cflBatchLocation.Data>(
-                                          builder: (BuildContext context) =>
-                                              CflBatchLocationPage(
-                                                  _whsCodeController.text,
-                                                  _batchNumberController.text,
-                                                  _itemCodeController.text)));
+                            Future<cflBatchLocation.Data> bin = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflBatchLocation.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflBatchLocationPage(
+                                            _whsCodeController.text,
+                                            _batchNumberController.text,
+                                            _itemCodeController.text)));
 
-                              bin.then((cflBatchLocation.Data bin) {
+                            bin.then((cflBatchLocation.Data bin) {
+                              setState(() {
                                 if (bin != null) {
                                   _getState().data.binAbs = bin.absEntry;
                                   _getState().data.binCode = bin.binCode;
