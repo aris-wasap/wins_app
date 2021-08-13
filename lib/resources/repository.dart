@@ -271,8 +271,8 @@ class Repository {
       apiProvider.deliveryOrderDetail_Post(data);
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
-          int soId, String qrResult, String whsCode) =>
-      apiProvider.deliveryOrderDetail_Scan(soId, qrResult, whsCode);
+          int soId, String qrResult) =>
+      apiProvider.deliveryOrderDetail_Scan(soId, qrResult);
 
   //-----------------------------
   //ReturnSalesList

@@ -210,14 +210,14 @@ class _PurchaseReturnsListPageState extends State<PurchaseReturnsListPage> {
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
+                // leading: ClipOval(
+                //   child: Image.network(
+                //     globalBloc.getUrl() +
+                //         "api/UserApi/GetImage?id=${data[index].userId}",
+                //     width: 50.0,
+                //     height: 50.0,
+                //   ),
+                // ),
 
                 trailing: Icon(Icons.keyboard_arrow_right),
                 //color: Colors.white, size: 30.0),

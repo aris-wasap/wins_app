@@ -128,9 +128,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
       return;
-    } else if (["", null].contains(data.whsCode)) {
-      ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
-      return;
+    //} 
+    //else if (["", null].contains(data.whsCode)) {
+    //   ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
+    //   return;
+    // 
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -172,9 +174,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     } else if (["", null].contains(data.customerCode)) {
       ValidateDialogWidget(context: context, message: "Customer harus di isi");
       return;
-    } else if (["", null].contains(data.whsCode)) {
-      ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
-      return;
+    // } else if (["", null].contains(data.whsCode)) {
+    //   ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
+    //   return;
     } else if ([null].contains(data.items)) {
       ValidateDialogWidget(
           context: context, message: "Item detail harus di isi");
@@ -678,6 +680,19 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)))),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                TextFormField(
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Scan No.",
+                        labelText: "Scan No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
+
+                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -837,68 +852,68 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   ),
                 ),
                 //Padding(padding: EdgeInsets.only(top: 10)),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflWarehouse.Data> whs = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflWarehouse.Data>(
-                              builder: (BuildContext context) =>
-                                  CflWarehousePage(globalBloc.branchId)));
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflWarehouse.Data> whs = Navigator.push(
+                //           context,
+                //           MaterialPageRoute<cflWarehouse.Data>(
+                //               builder: (BuildContext context) =>
+                //                   CflWarehousePage(globalBloc.branchId)));
 
-                      whs.then((cflWarehouse.Data whs) {
-                        setState(() {
-                          if (whs != null) {
-                            _getState().data.whsCode = whs.whsCode;
-                            _getState().data.whsName = whs.whsName;
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "From Warehouse",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_whsCodeController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_whsNameController.text),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
+                //       whs.then((cflWarehouse.Data whs) {
+                //         setState(() {
+                //           if (whs != null) {
+                //             _getState().data.whsCode = whs.whsCode;
+                //             _getState().data.whsName = whs.whsName;
+                //           }
+                //         });
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "From Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_whsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_whsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

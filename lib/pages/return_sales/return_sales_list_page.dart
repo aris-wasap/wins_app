@@ -184,6 +184,9 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -206,14 +209,14 @@ class _ReturnSalesListPageState extends State<ReturnSalesListPage> {
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
+                // leading: ClipOval(
+                //   child: Image.network(
+                //     globalBloc.getUrl() +
+                //         "api/UserApi/GetImage?id=${data[index].userId}",
+                //     width: 50.0,
+                //     height: 50.0,
+                //   ),
+                // ),
 
                 trailing: Icon(Icons.keyboard_arrow_right),
                 //color: Colors.white, size: 30.0),

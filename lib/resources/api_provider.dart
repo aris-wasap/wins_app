@@ -838,13 +838,12 @@ class ApiProvider {
   }
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
-      int soId, String qrResult, String whsCode) async {
+      int soId, String qrResult) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "SoId": soId,
-        "QrResult": qrResult,
-        "WhsCode": whsCode
+        "QrResult": qrResult
       });
 
       final response = await http.post("${_url}api/DeliveryOrderDetailApi/Scan",

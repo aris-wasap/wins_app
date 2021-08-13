@@ -40,14 +40,12 @@ class DeliveryOrderDetailEventScan extends DeliveryOrderDetailEvent {
       {@required Data data,
       @required int soId,
       @required String soNo,
-      @required String qrResult,
-      @required String whsCode})
+      @required String qrResult})
       : super(
             data: data,
             soId: soId,
             soNo: soNo,
-            qrResult: qrResult,
-            whsCode: whsCode);
+            qrResult: qrResult,);
 }
 
 class DeliveryOrderDetailEventItemAdd extends DeliveryOrderDetailEvent {

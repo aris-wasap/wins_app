@@ -72,7 +72,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         DeliveryOrderDetailScanResponse response =
-            await _repository.deliveryOrderDetail_Scan(soId, qrResult, whsCode);
+            await _repository.deliveryOrderDetail_Scan(soId, qrResult);
         if (response == null) {
           yield DeliveryOrderDetailState.failure(
             errorMessage: 'Response null',

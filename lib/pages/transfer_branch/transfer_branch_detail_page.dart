@@ -690,6 +690,18 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
                 Padding(padding: EdgeInsets.only(top: 5)),
+                TextFormField(
+                    controller: _transNoController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        hintText: "Scan No.",
+                        labelText: "Scan No.",
+                        contentPadding: new EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0)))),
+
+                Padding(padding: EdgeInsets.only(top: 5)),
                 // TextFormField(
                 //   controller: _branchNameController,
                 //   enabled: false,
