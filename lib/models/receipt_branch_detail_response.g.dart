@@ -81,6 +81,11 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     itemName: json['ItemName'] as String,
     issueQty: (json['IssueQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    type: json['Type'] as String,
+    itemType: json['ItemType'] as String,
     itemCost: (json['ItemCost'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     fromWhsCode: json['FromWhsCode'] as String,
@@ -92,7 +97,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
-  );
+  )..micron = (json['Micron'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -105,6 +110,12 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemName': instance.itemName,
       'IssueQty': instance.issueQty,
       'Qty': instance.qty,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'Type': instance.type,
+      'ItemType': instance.itemType,
       'ItemCost': instance.itemCost,
       'Uom': instance.uom,
       'FromWhsCode': instance.fromWhsCode,

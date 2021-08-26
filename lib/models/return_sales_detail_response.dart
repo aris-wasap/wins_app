@@ -174,6 +174,24 @@ class Item {
   @JsonKey(name: 'Qty')
   double qty;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
   @JsonKey(name: 'Uom')
   String uom;
 
@@ -205,6 +223,11 @@ class Item {
     this.reqQty,
     this.doQty: 0,
     this.qty: 0,
+    this.length,
+    this.width,
+    this.weight,
+    this.type,
+    this.itemType,
     this.uom,
     this.whsCode,
     this.whsName,

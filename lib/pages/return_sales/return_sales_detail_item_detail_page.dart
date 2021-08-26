@@ -43,6 +43,10 @@ class _ReturnSalesDetailItemDetailPageState
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
   final _batchNumberController = TextEditingController();
+  final _lengthController = TextEditingController();
+  final _widthController = TextEditingController();
+  final _itemTypeController = TextEditingController();
+
   FocusNode _focusNode;
 
   @override
@@ -145,6 +149,10 @@ class _ReturnSalesDetailItemDetailPageState
     _binCodeController.text = data.binCode;
     _qtyReqController.text = data.reqQty.toString();
     _qtyDoController.text = data.doQty.toString();
+    _lengthController.text = data.length.toString();
+    _widthController.text = data.width.toString();
+    _itemTypeController.text = data.itemType;
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
@@ -186,38 +194,89 @@ class _ReturnSalesDetailItemDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _batchNumberController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Batch Number",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {}
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Batch Number",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_batchNumberController.text),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(_itemNameController.text),
+                                    _itemTypeController.text == 'L'
+                                        ? Text(_widthController.text +
+                                            " X " +
+                                            _lengthController.text)
+                                        : Text(""),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Code",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                // TextFormField(
+                //   controller: _batchNumberController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Batch Number",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _itemCodeController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Code",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _itemNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Name",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _qtyReqController,

@@ -96,13 +96,18 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     reqQty: (json['ReqQty'] as num)?.toDouble(),
     doQty: (json['DoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    width: (json['Width'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    type: json['Type'] as String,
+    itemType: json['ItemType'] as String,
     uom: json['Uom'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
-  );
+  )..micron = (json['Micron'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -118,6 +123,12 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ReqQty': instance.reqQty,
       'DoQty': instance.doQty,
       'Qty': instance.qty,
+      'Length': instance.length,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'Type': instance.type,
+      'ItemType': instance.itemType,
       'Uom': instance.uom,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,

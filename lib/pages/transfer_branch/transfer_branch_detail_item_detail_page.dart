@@ -150,6 +150,9 @@ class _TransferBranchDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _batchNumberController.text = data.batchNo;
+    _lengthController.text = data.length.toString();
+    _widthController.text = data.width.toString();
+    _itemTypeController.text = data.itemType;
     // _reqQtyController.text =
     //     NumberFormat("###,###.##").format(double.parse(data.reqQty.toString()));
     // _availableQtyController.text =
@@ -281,11 +284,11 @@ class _TransferBranchDetailItemDetailPageState
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(_itemNameController.text),
-                                          // _itemTypeController.text == 'L'
-                                          //     ? Text(_widthController.text +
-                                          //         " X " +
-                                          //         _lengthController.text)
-                                          //     : Text(""),
+                                          _itemTypeController.text == 'L'
+                                              ? Text(_widthController.text +
+                                                  " X " +
+                                                  _lengthController.text)
+                                              : Text(""),
                                         ],
                                       ),
                                     )
