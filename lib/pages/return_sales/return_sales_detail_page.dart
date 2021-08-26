@@ -911,7 +911,7 @@ class _ReturnSalesDetailPageState extends State<ReturnSalesDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Item Code : çç"),
+              Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
                   "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
