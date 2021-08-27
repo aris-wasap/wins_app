@@ -180,6 +180,34 @@ class _ReturnSalesDetailItemDetailPageState
       }
     }
 
+     if (_data.length != 0) {
+      if (_lengthController.text == "") {
+        _lengthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length.toString()));
+      } else {
+        if (_data.length ==
+            double.parse(
+                _lengthController.text.replaceAll(new RegExp(','), ''))) {
+          _lengthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length.toString()));
+        }
+      }
+    }
+
+    if (_data.width != 0) {
+      if (_widthController.text == "") {
+        _widthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.width.toString()));
+      } else {
+        if (_data.width ==
+            double.parse(
+                _widthController.text.replaceAll(new RegExp(','), ''))) {
+          _widthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.width.toString()));
+        }
+      }
+    }
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

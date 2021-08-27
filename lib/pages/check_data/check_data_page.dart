@@ -23,6 +23,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
   final _itemNameController = TextEditingController();
   final _batchController = TextEditingController();
   final _lengthController = TextEditingController();
+  final _length2Controller = TextEditingController();
   final _widthController = TextEditingController();
   final _weightController = TextEditingController();
   final _typeController = TextEditingController();
@@ -42,6 +43,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
     _itemNameController?.dispose();
     _batchController?.dispose();
     _lengthController?.dispose();
+    _length2Controller?.dispose();
     _widthController?.dispose();
     _weightController?.dispose();
     _typeController?.dispose();
@@ -233,6 +235,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
       _itemNameController.text = data.itemName;
       _batchController.text = data.distNumber;
       _lengthController.text = data.length.toString();
+      _length2Controller.text = data.length2.toString();
       _widthController.text = data.width.toString();
       _weightController.text = data.weight.toString();
       _typeController.text = data.itemType;
@@ -344,6 +347,20 @@ class _CheckDataPageState extends State<CheckDataPage> {
                           decoration: InputDecoration(
                               hintText: "Length",
                               labelText: "Length",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                          controller: _length2Controller,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              hintText: "Length Label",
+                              labelText: "Length Label",
                               contentPadding: new EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 10.0),
                               border: new OutlineInputBorder(

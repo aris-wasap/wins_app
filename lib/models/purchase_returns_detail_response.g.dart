@@ -118,7 +118,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     expirationDate: json['ExpirationDate'] == null
         ? null
         : DateTime.parse(json['ExpirationDate'] as String),
-  );
+  )..length2 = (json['Length2'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -136,6 +136,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ReqQty': instance.reqQty,
       'GrpoQty': instance.grpoQty,
       'Length': instance.length,
+      'Length2': instance.length2,
       'Width': instance.width,
       'Weight': instance.weight,
       'Micron': instance.micron,

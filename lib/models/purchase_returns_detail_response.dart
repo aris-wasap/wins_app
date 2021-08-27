@@ -183,6 +183,9 @@ class Item {
   @JsonKey(name: 'Length')
   double length;
 
+  @JsonKey(name: 'Length2')
+  double length2;
+
   @JsonKey(name: 'Width')
   double width;
 

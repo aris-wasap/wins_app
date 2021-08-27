@@ -42,6 +42,7 @@ class _RequestIssueDetailItemDetailPageState
   final _isAssetController = TextEditingController();
   final _isBatchController = TextEditingController();
   final _lengthController = TextEditingController();
+  final _length2Controller = TextEditingController();
   final _widthController = TextEditingController();
   final _itemTypeController = TextEditingController();
   FocusNode _focusNode;
@@ -147,6 +148,7 @@ class _RequestIssueDetailItemDetailPageState
     _isAssetController.text = data.isAsset;
     _isBatchController.text = data.isBatch;
     _lengthController.text = data.length.toString();
+    _length2Controller.text = data.length2.toString();
     _widthController.text = data.width.toString();
     _itemTypeController.text = data.itemType;
     
@@ -187,6 +189,20 @@ class _RequestIssueDetailItemDetailPageState
                 _lengthController.text.replaceAll(new RegExp(','), ''))) {
           _lengthController.text = NumberFormat("###,###.####")
               .format(double.parse(data.length.toString()));
+        }
+      }
+    }
+
+    if (_data.length2 != 0) {
+      if (_length2Controller.text == "") {
+        _length2Controller.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length2.toString()));
+      } else {
+        if (_data.length2 ==
+            double.parse(
+                _length2Controller.text.replaceAll(new RegExp(','), ''))) {
+          _length2Controller.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length2.toString()));
         }
       }
     }
@@ -263,7 +279,7 @@ class _RequestIssueDetailItemDetailPageState
                                     _itemTypeController.text == 'L'
                                         ? Text(_widthController.text +
                                             " X " +
-                                            _lengthController.text)
+                                            _length2Controller.text)
                                         : Text(""),
                                   ],
                                 ),

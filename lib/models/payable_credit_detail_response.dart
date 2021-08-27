@@ -163,6 +163,9 @@ class Item {
   @JsonKey(name: 'Length')
   double length;
 
+  @JsonKey(name: 'Length2')
+  double length2;
+
   @JsonKey(name: 'Width')
   double width;
 
@@ -209,6 +212,7 @@ class Item {
     this.reqQty: 0,
     this.qty: 0,
     this.length,
+    this.length2,
     this.width,
     this.weight,
     this.type,

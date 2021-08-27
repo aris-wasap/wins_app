@@ -89,6 +89,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     mnfBatchNo: json['MnfBatchNo'] as String,
     width: (json['Width'] as num)?.toDouble(),
     length: (json['Length'] as num)?.toDouble(),
+    length2: (json['Length2'] as num)?.toDouble(),
     weight: (json['Weight'] as num)?.toDouble(),
     micron: (json['Micron'] as num)?.toDouble(),
     expirationDate: json['ExpirationDate'] == null
@@ -126,6 +127,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'BatchNo': instance.batchNo,
       'MnfBatchNo': instance.mnfBatchNo,
       'Length': instance.length,
+      'Length2': instance.length2,
       'Width': instance.width,
       'Weight': instance.weight,
       'Micron': instance.micron,

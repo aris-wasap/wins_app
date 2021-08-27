@@ -166,6 +166,9 @@ class Item {
   @JsonKey(name: 'Length')
   double length;
 
+  @JsonKey(name: 'Length2')
+  double length2;
+
   @JsonKey(name: 'Width')
   double width;
 
@@ -218,6 +221,7 @@ class Item {
     this.mnfBatchNo,
     this.width,
     this.length,
+    this.length2,
     this.weight,
     this.micron,
     this.expirationDate,

@@ -47,6 +47,7 @@ class _ReceiptBranchDetailItemDetailPageState
   final _qtyController = TextEditingController();
   final _batchNumberController = TextEditingController();
   final _lengthController = TextEditingController();
+  final _length2Controller = TextEditingController();
   final _widthController = TextEditingController();
   final _itemTypeController = TextEditingController();
   FocusNode _focusNode;
@@ -162,6 +163,7 @@ class _ReceiptBranchDetailItemDetailPageState
     _binCodeController.text = data.binCode;
     _qtyIssueController.text = data.issueQty.toString();
     _lengthController.text = data.length.toString();
+    _length2Controller.text = data.length2.toString();
     _widthController.text = data.width.toString();
     _itemTypeController.text = data.itemType;
 
@@ -188,6 +190,48 @@ class _ReceiptBranchDetailItemDetailPageState
                 _qtyIssueController.text.replaceAll(new RegExp(','), ''))) {
           _qtyIssueController.text = NumberFormat("###,###.##")
               .format(double.parse(data.issueQty.toString()));
+        }
+      }
+    }
+
+     if (_data.length != 0) {
+      if (_lengthController.text == "") {
+        _lengthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length.toString()));
+      } else {
+        if (_data.length ==
+            double.parse(
+                _lengthController.text.replaceAll(new RegExp(','), ''))) {
+          _lengthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length.toString()));
+        }
+      }
+    }
+
+     if (_data.length2 != 0) {
+      if (_length2Controller.text == "") {
+        _length2Controller.text = NumberFormat("###,###.####")
+            .format(double.parse(data.length2.toString()));
+      } else {
+        if (_data.length2 ==
+            double.parse(
+                _length2Controller.text.replaceAll(new RegExp(','), ''))) {
+          _length2Controller.text = NumberFormat("###,###.####")
+              .format(double.parse(data.length2.toString()));
+        }
+      }
+    }
+
+    if (_data.width != 0) {
+      if (_widthController.text == "") {
+        _widthController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.width.toString()));
+      } else {
+        if (_data.width ==
+            double.parse(
+                _widthController.text.replaceAll(new RegExp(','), ''))) {
+          _widthController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.width.toString()));
         }
       }
     }
@@ -253,7 +297,7 @@ class _ReceiptBranchDetailItemDetailPageState
                                     _itemTypeController.text == 'L'
                                         ? Text(_widthController.text +
                                             " X " +
-                                            _lengthController.text)
+                                            _length2Controller.text)
                                         : Text(""),
                                   ],
                                 ),
