@@ -66,11 +66,23 @@ class Data {
   @JsonKey(name: 'FromWhsName')
   String fromWhsName;
 
+  @JsonKey(name: 'FromBinEntry')
+  int fromBinEntry;
+
+  @JsonKey(name: 'FromBinCode')
+  String fromBinCode;
+
   @JsonKey(name: 'ToWhsCode')
   String toWhsCode;
 
   @JsonKey(name: 'ToWhsName')
   String toWhsName;
+
+  @JsonKey(name: 'ToBinEntry')
+  int toBinEntry;
+
+  @JsonKey(name: 'ToBinCode')
+  String toBinCode;
 
   @JsonKey(name: 'FromBranchId')
   int fromBranchId;
@@ -94,8 +106,12 @@ class Data {
     this.seriesName,
     this.fromWhsCode,
     this.fromWhsName,
+    this.fromBinEntry,
+    this.fromBinCode,
     this.toWhsCode,
     this.toWhsName,
+    this.toBinEntry,
+    this.toBinCode,
     this.fromBranchId,
     this.fromBranchName,
     this.toBranchId,

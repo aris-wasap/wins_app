@@ -51,7 +51,20 @@ class Data {
   @JsonKey(name: 'WhsName')
   String whsName;
 
-  Data({this.branchId, this.branchName, this.whsCode, this.whsName});
+  @JsonKey(name: 'AbsEntry')
+  int absEntry;
+
+  @JsonKey(name: 'BinCode')
+  String binCode;
+
+  Data({
+    this.branchId,
+    this.branchName,
+    this.whsCode,
+    this.whsName,
+    this.absEntry,
+    this.binCode,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
