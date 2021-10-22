@@ -334,7 +334,7 @@ class _ReceivableCreditDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
-                        autofocus: true,
+                        autofocus: false,
                         controller: _qtyController,
                         focusNode: _focusNode,
                         onEditingComplete: () {

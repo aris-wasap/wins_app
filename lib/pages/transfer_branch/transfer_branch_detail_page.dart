@@ -449,16 +449,16 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
 
     try {
       String qrResult = await BarcodeScanner.scan();
-      for (var item in _getState().data.items) {
-        // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
-        if (("${item.batchNo}" == qrResult)) {
-          ValidateDialogWidget(
-              context: context,
-              message:
-                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
-          return;
-        }
-      }
+      // for (var item in _getState().data.items) {
+      //   // if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
+      //   if (("${item.batchNo}" == qrResult)) {
+      //     ValidateDialogWidget(
+      //         context: context,
+      //         message:
+      //             'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+      //     return;
+      //   }
+      // }
 
       bloc.emitEvent(TransferBranchDetailEventScan(
           requestId: int.parse(_requestIdController.text),

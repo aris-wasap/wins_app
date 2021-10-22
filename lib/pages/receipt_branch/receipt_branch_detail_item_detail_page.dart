@@ -369,6 +369,8 @@ class _ReceiptBranchDetailItemDetailPageState
                                 if (whs != null) {
                                   _getState().data.whsCode = whs.whsCode;
                                   _getState().data.whsName = whs.whsName;
+                                  _getState().data.binAbs = whs.absEntry;
+                                  _getState().data.binCode = whs.binCode;
                                 }
                               });
                             });

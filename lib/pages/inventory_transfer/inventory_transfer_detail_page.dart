@@ -806,15 +806,17 @@ class _InventoryTransferDetailPageState
                             _requestNoController.text = trq.transNo;
                             _fromWhsCodeController.text = trq.fromWhsCode;
                             _fromWhsNameController.text = trq.fromWhsName;
-                            _fromAbsEntryController.text = "";
-                            _fromBinCodeController.text = "";
+                            _fromAbsEntryController.text =
+                                trq.fromBinEntry.toString();
+                            _fromBinCodeController.text = trq.fromBinCode;
                             _toWhsCodeController.text = trq.toWhsCode;
                             _toWhsNameController.text = trq.toWhsName;
                             _toBranchIdController.text =
                                 trq.toBranchId.toString();
                             _toBranchNameController.text = trq.toBranchName;
-                            _toAbsEntryController.text = "";
-                            _toBinCodeController.text = "";
+                           _toAbsEntryController.text =
+                                trq.toBinEntry.toString();
+                            _toBinCodeController.text = trq.toBinCode;
                           }
                         });
                       });
@@ -872,8 +874,9 @@ class _InventoryTransferDetailPageState
                           if (whs != null) {
                             _fromWhsCodeController.text = whs.whsCode;
                             _fromWhsNameController.text = whs.whsName;
-                            _fromAbsEntryController.text = "";
-                            _fromBinCodeController.text = "";
+                            _fromAbsEntryController.text =
+                                whs.absEntry.toString();
+                            _fromBinCodeController.text = whs.binCode;
                             // _getState().data.fromBranchId = whs.branchId;
                             // _getState().data.fromBranchName = whs.branchName;
                             // _getState().data.fromWhsCode = whs.whsCode;
@@ -1005,8 +1008,9 @@ class _InventoryTransferDetailPageState
                             _toBranchNameController.text = whs.branchName;
                             _toWhsCodeController.text = whs.whsCode;
                             _toWhsNameController.text = whs.whsName;
-                            _toAbsEntryController.text = "";
-                            _toBinCodeController.text = "";
+                            _toAbsEntryController.text =
+                                whs.absEntry.toString();
+                            _toBinCodeController.text = whs.binCode;
                             // _getState().data.toBranchId = whs.branchId;
                             // _getState().data.toBranchName = whs.branchName;
                             // _getState().data.toWhsCode = whs.whsCode;

@@ -187,21 +187,21 @@ class _TransferBranchDetailItemDetailPageState
       }
     }
 
-    // if (_data.availableQty != 0) {
-    //   if (_availableQtyController.text == "") {
-    //     _availableQtyController.text = NumberFormat("###,###.####")
-    //         .format(double.parse(data.availableQty.toString()));
-    //   } else {
-    //     if (_data.availableQty ==
-    //         double.parse(
-    //             _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
-    //       _availableQtyController.text = NumberFormat("###,###.####")
-    //           .format(double.parse(data.availableQty.toString()));
-    //     }
-    //   }
-    // }
+    if (_data.availableQty != 0) {
+      if (_availableQtyController.text == "") {
+        _availableQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.availableQty.toString()));
+      } else {
+        if (_data.availableQty ==
+            double.parse(
+                _availableQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _availableQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.availableQty.toString()));
+        }
+      }
+    }
 
-     if (_data.length != 0) {
+    if (_data.length != 0) {
       if (_lengthController.text == "") {
         _lengthController.text = NumberFormat("###,###.####")
             .format(double.parse(data.length.toString()));
@@ -501,7 +501,7 @@ class _TransferBranchDetailItemDetailPageState
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              //autofocus: true,
+                              autofocus: true,
                               textInputAction: TextInputAction.done,
                               focusNode: _focusNode,
                               controller: _qtyController,
