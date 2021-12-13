@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/transfer_branch/list/transfer_branch_list_bloc.dart';
-import 'package:admart_app/blocs/transfer_branch/list/transfer_branch_list_event.dart';
-import 'package:admart_app/blocs/transfer_branch/list/transfer_branch_list_state.dart';
-import 'package:admart_app/pages/transfer_branch/transfer_branch_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/transfer_branch/list/transfer_branch_list_bloc.dart';
+import 'package:wins_app/blocs/transfer_branch/list/transfer_branch_list_event.dart';
+import 'package:wins_app/blocs/transfer_branch/list/transfer_branch_list_state.dart';
+import 'package:wins_app/pages/transfer_branch/transfer_branch_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class TransferBranchListPage extends StatefulWidget {
   @override

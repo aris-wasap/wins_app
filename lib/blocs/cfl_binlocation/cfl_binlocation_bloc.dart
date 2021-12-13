@@ -1,19 +1,19 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
-import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
+import 'package:wins_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
+import 'package:wins_app/models/cfl_binlocation_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinLocationState> {
+class CflBinLocationBloc
+    extends BlocEventStateBase<CflBinLocationEvent, CflBinLocationState> {
   CflBinLocationBloc()
       : super(
           initialState: CflBinLocationState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
           );
           try {
             var _repository = Repository();
-            CflBinLocationResponse response = await _repository
-                .cflBinLocation_FetchNextPage(0,  "","");
+            CflBinLocationResponse response =
+                await _repository.cflBinLocation_FetchNextPage(0, "", "");
             if (response == null) {
               yield CflBinLocationState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflBinLocationState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
         }
         break;
       case CflBinLocationEventType.firstPage:
-        { 
-
+        {
           yield CflBinLocationState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -87,7 +85,7 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
             var _repository = Repository();
             CflBinLocationResponse response =
                 await _repository.cflBinLocation_FetchNextPage(
-                    0,  event.searchQuery, event.whsCode);
+                    0, event.searchQuery, event.whsCode);
             if (response == null) {
               yield CflBinLocationState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +103,6 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflBinLocationState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +131,7 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
             var _repository = Repository();
             CflBinLocationResponse response =
                 await _repository.cflBinLocation_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery, event.whsCode);
+                    currentState.data.length, event.searchQuery, event.whsCode);
             if (response == null) {
               yield CflBinLocationState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +149,6 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflBinLocationState.success(
@@ -182,9 +177,9 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
           );
           try {
             var _repository = Repository();
-            CflBinLocationResponse response = await _repository.cflBinLocation_FetchNextPage(
-               0, 
-                event.searchQuery, event.whsCode);
+            CflBinLocationResponse response =
+                await _repository.cflBinLocation_FetchNextPage(
+                    0, event.searchQuery, event.whsCode);
             if (response == null) {
               yield CflBinLocationState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +197,6 @@ class CflBinLocationBloc extends BlocEventStateBase<CflBinLocationEvent, CflBinL
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflBinLocationState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

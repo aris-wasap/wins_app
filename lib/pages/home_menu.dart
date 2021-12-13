@@ -1,26 +1,26 @@
-import 'package:admart_app/pages/payable_credit/payable_credit_list_page.dart';
-import 'package:admart_app/pages/receipt_branch/receipt_branch_list_page.dart';
-import 'package:admart_app/pages/receivable_credit/receivable_credit_list_page.dart';
-import 'package:admart_app/pages/transfer_branch/transfer_branch_list_page.dart';
+import 'package:wins_app/pages/payable_credit/payable_credit_list_page.dart';
+import 'package:wins_app/pages/receipt_branch/receipt_branch_list_page.dart';
+import 'package:wins_app/pages/receivable_credit/receivable_credit_list_page.dart';
+import 'package:wins_app/pages/transfer_branch/transfer_branch_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-//import 'package:admart_app/pages/dashboard_menu.dart';
-import 'package:admart_app/pages/delivery_order/delivery_order_list_page.dart';
-import 'package:admart_app/pages/goods_issue/goods_issue_list_page.dart';
-import 'package:admart_app/pages/goods_receipt/goods_receipt_list_page.dart';
-import 'package:admart_app/pages/issue_production/issue_production_list_page.dart';
-import 'package:admart_app/pages/purchase_returns/purchase_returns_list_page.dart';
-import 'package:admart_app/pages/receipt_supplier/receipt_supplier_list_page.dart';
-import 'package:admart_app/pages/request_issue/request_issue_list_page.dart';
-import 'package:admart_app/pages/return_sales/return_sales_list_page.dart';
-import 'package:admart_app/pages/inventory_transfer/inventory_transfer_list_page.dart';
-//import 'package:admart_app/pages/option_card.dart';
-import 'package:admart_app/pages/receipt_issue/receipt_issue_list_page.dart';
-import 'package:admart_app/pages/receipt_order/receipt_order_list_page.dart';
-import 'package:admart_app/pages/receipt_production/receipt_production_list_page.dart';
-import 'package:admart_app/pages/transfer_production/transfer_production_list_page.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+//import 'package:wins_app/pages/dashboard_menu.dart';
+import 'package:wins_app/pages/delivery_order/delivery_order_list_page.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_list_page.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
+import 'package:wins_app/pages/issue_production/issue_production_list_page.dart';
+import 'package:wins_app/pages/purchase_returns/purchase_returns_list_page.dart';
+import 'package:wins_app/pages/receipt_supplier/receipt_supplier_list_page.dart';
+import 'package:wins_app/pages/request_issue/request_issue_list_page.dart';
+import 'package:wins_app/pages/return_sales/return_sales_list_page.dart';
+import 'package:wins_app/pages/inventory_transfer/inventory_transfer_list_page.dart';
+//import 'package:wins_app/pages/option_card.dart';
+import 'package:wins_app/pages/receipt_issue/receipt_issue_list_page.dart';
+import 'package:wins_app/pages/receipt_order/receipt_order_list_page.dart';
+import 'package:wins_app/pages/receipt_production/receipt_production_list_page.dart';
+import 'package:wins_app/pages/transfer_production/transfer_production_list_page.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class HomeMenuPage extends StatefulWidget {
   @override
@@ -60,21 +60,21 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "authDetail": "receiptBranch_Auth_Detail",
     },
 
-    //Admart - InActive
+    //Wins - InActive
     // {
     //   "title": "Transfer For Production Order",
     //   "subtitle": "List Inventory, Scan Item",
     //   "icon": "assets/images/transfer_production.png",
     //   "authDetail": "transferProduction_Auth_Detail",
     // },
-    //Admart - InActive
+    //Wins - InActive
     // {
     //   "title": "Issue For Production",
     //   "subtitle": "List Issue, Scan Item",
     //   "icon": "assets/images/goods_issue.png",
     //   "authDetail": "goodsIssue_Auth_Detail",
     // },
-    //Admart - InActive
+    //Wins - InActive
     // {
     //   "title": "Receipt From Production",
     //   "subtitle": "List Receipt, Scan Receipt",
@@ -209,7 +209,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                         child: Material(
                           child: InkWell(
                             onTap: () {
-                              //Admart - InActive - Production
+                              //Wins - InActive - Production
                               // if (subjectList[index]["authDetail"] ==
                               //         "transferProduction_Auth_Detail" &&
                               //     globalBloc.loginResponse.data
@@ -315,8 +315,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                     builder: (BuildContext context) {
                                   return ReturnSalesListPage();
                                 }));
-                              }
-                              else if (subjectList[index]["authDetail"] ==
+                              } else if (subjectList[index]["authDetail"] ==
                                       "receivableCredit_Auth_Detail" &&
                                   globalBloc.loginResponse.data
                                           .receivableCredit_Auth_Detail ==
@@ -355,8 +354,7 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                     builder: (BuildContext context) {
                                   return PurchaseReturnsListPage();
                                 }));
-                              }
-                              else if (subjectList[index]["authDetail"] ==
+                              } else if (subjectList[index]["authDetail"] ==
                                       "payableCredit_Auth_Detail" &&
                                   globalBloc.loginResponse.data
                                           .payableCredit_Auth_Detail ==

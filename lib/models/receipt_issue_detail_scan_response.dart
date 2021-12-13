@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/receipt_issue_detail_response.dart';
+import 'package:wins_app/models/receipt_issue_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'receipt_issue_detail_scan_response.g.dart';
 
-ReceiptIssueDetailScanResponse receiptIssueDetailScanResponseFromJson(String str) {
+ReceiptIssueDetailScanResponse receiptIssueDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return ReceiptIssueDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class ReceiptIssueDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   ReceiptIssueDetailScanResponse({
     this.error,
@@ -38,5 +39,3 @@ class ReceiptIssueDetailScanResponse {
 
   Map<String, dynamic> toJson() => _$ReceiptIssueDetailScanResponseToJson(this);
 }
-  
- 

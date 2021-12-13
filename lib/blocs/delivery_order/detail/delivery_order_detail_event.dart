@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/delivery_order_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/delivery_order_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class DeliveryOrderDetailEvent extends BlocEvent {
@@ -42,10 +42,11 @@ class DeliveryOrderDetailEventScan extends DeliveryOrderDetailEvent {
       @required String soNo,
       @required String qrResult})
       : super(
-            data: data,
-            soId: soId,
-            soNo: soNo,
-            qrResult: qrResult,);
+          data: data,
+          soId: soId,
+          soNo: soNo,
+          qrResult: qrResult,
+        );
 }
 
 class DeliveryOrderDetailEventItemAdd extends DeliveryOrderDetailEvent {

@@ -1,19 +1,19 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_return_request/cfl_return_request_event.dart';
-import 'package:admart_app/blocs/cfl_return_request/cfl_return_request_state.dart';
-import 'package:admart_app/models/cfl_return_request_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_return_request/cfl_return_request_event.dart';
+import 'package:wins_app/blocs/cfl_return_request/cfl_return_request_state.dart';
+import 'package:wins_app/models/cfl_return_request_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, CflReturnRequestState> {
+class CflReturnRequestBloc
+    extends BlocEventStateBase<CflReturnRequestEvent, CflReturnRequestState> {
   CflReturnRequestBloc()
       : super(
           initialState: CflReturnRequestState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflReturnRequestResponse response = await _repository
-                .cflReturnRequest_FetchNextPage(0,  "");
+            CflReturnRequestResponse response =
+                await _repository.cflReturnRequest_FetchNextPage(0, "");
             if (response == null) {
               yield CflReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
         }
         break;
       case CflReturnRequestEventType.firstPage:
-        { 
-
+        {
           yield CflReturnRequestState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -85,9 +83,8 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflReturnRequestResponse response =
-                await _repository.cflReturnRequest_FetchNextPage(
-                    0,  event.searchQuery);
+            CflReturnRequestResponse response = await _repository
+                .cflReturnRequest_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +102,6 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +130,7 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
             var _repository = Repository();
             CflReturnRequestResponse response =
                 await _repository.cflReturnRequest_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery);
+                    currentState.data.length, event.searchQuery);
             if (response == null) {
               yield CflReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +148,6 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflReturnRequestState.success(
@@ -182,9 +176,8 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflReturnRequestResponse response = await _repository.cflReturnRequest_FetchNextPage(
-               0, 
-                event.searchQuery);
+            CflReturnRequestResponse response = await _repository
+                .cflReturnRequest_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +195,6 @@ class CflReturnRequestBloc extends BlocEventStateBase<CflReturnRequestEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

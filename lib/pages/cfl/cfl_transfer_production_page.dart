@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_transfer_production/cfl_transfer_production_bloc.dart';
-import 'package:admart_app/blocs/cfl_transfer_production/cfl_transfer_production_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_production/cfl_transfer_production_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_bloc.dart';
+import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_event.dart';
+import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflTransferProductionPage extends StatefulWidget {
   @override
-  _CflTransferProductionPageState createState() => _CflTransferProductionPageState();
+  _CflTransferProductionPageState createState() =>
+      _CflTransferProductionPageState();
 }
 
 class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
@@ -161,7 +162,8 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
           return Card(
             child: (Container(
               decoration: BoxDecoration(
-                gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+                gradient:
+                    index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
               ),
               //margin: const EdgeInsets.only(top: 8),
               // decoration:

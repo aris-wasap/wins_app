@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_production/detail/receipt_production_detail_event.dart';
-import 'package:admart_app/blocs/receipt_production/detail/receipt_production_detail_state.dart';
-import 'package:admart_app/models/receipt_production_detail_response.dart';
-import 'package:admart_app/models/receipt_production_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/receipt_production_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_production/detail/receipt_production_detail_event.dart';
+import 'package:wins_app/blocs/receipt_production/detail/receipt_production_detail_state.dart';
+import 'package:wins_app/models/receipt_production_detail_response.dart';
+import 'package:wins_app/models/receipt_production_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/receipt_production_detail_response.dart'
     as receiptProductionDetail;
 
 class ReceiptProductionDetailBloc extends BlocEventStateBase<
@@ -15,7 +15,8 @@ class ReceiptProductionDetailBloc extends BlocEventStateBase<
         );
 
   @override
-  Stream<ReceiptProductionDetailState> eventHandler(ReceiptProductionDetailEvent event,
+  Stream<ReceiptProductionDetailState> eventHandler(
+      ReceiptProductionDetailEvent event,
       ReceiptProductionDetailState currentState) async* {
     if (event is ReceiptProductionDetailEventNormal) {
       yield ReceiptProductionDetailState.success(
@@ -91,13 +92,12 @@ class ReceiptProductionDetailBloc extends BlocEventStateBase<
                 data: event.data,
               );
             } else {
-               if (response.data.itemCode == "") {
+              if (response.data.itemCode == "") {
                 yield ReceiptProductionDetailState.failure(
                   errorMessage: '${qrResult} tidak di temukan ',
                   data: event.data,
                 );
-              }
-              else {
+              } else {
                 yield ReceiptProductionDetailState.success(
                   data: newData,
                   newItem: response.data,
@@ -112,7 +112,7 @@ class ReceiptProductionDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReceiptProductionDetailEventItemAdd) {
+    } else if (event is ReceiptProductionDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield ReceiptProductionDetailState.success(

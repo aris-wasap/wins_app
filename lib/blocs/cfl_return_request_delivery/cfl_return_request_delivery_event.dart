@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_return_request_delivery_response.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
 
 class CflReturnRequestDeliveryEvent extends BlocEvent {
   CflReturnRequestDeliveryEvent({
-    this.event, 
+    this.event,
     this.searchQuery,
     this.selectedRow,
   });
 
-  final CflReturnRequestDeliveryEventType event; 
+  final CflReturnRequestDeliveryEventType event;
   final String searchQuery;
   final Data selectedRow;
 }

@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_event.dart';
-import 'package:admart_app/blocs/cfl_transfer_request/cfl_transfer_request_state.dart';
-import 'package:admart_app/models/cfl_transfer_request_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_transfer_request/cfl_transfer_request_event.dart';
+import 'package:wins_app/blocs/cfl_transfer_request/cfl_transfer_request_state.dart';
+import 'package:wins_app/models/cfl_transfer_request_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CflTransferRequestBloc extends BlocEventStateBase<CflTransferRequestEvent,

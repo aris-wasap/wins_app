@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/purchase_returns/list/purchase_returns_list_event.dart';
-import 'package:admart_app/blocs/purchase_returns/list/purchase_returns_list_state.dart';
-import 'package:admart_app/models/purchase_returns_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/purchase_returns/list/purchase_returns_list_event.dart';
+import 'package:wins_app/blocs/purchase_returns/list/purchase_returns_list_state.dart';
+import 'package:wins_app/models/purchase_returns_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PurchaseReturnsListBloc
-    extends BlocEventStateBase<PurchaseReturnsListEvent, PurchaseReturnsListState> {
+class PurchaseReturnsListBloc extends BlocEventStateBase<
+    PurchaseReturnsListEvent, PurchaseReturnsListState> {
   PurchaseReturnsListBloc()
       : super(
           initialState: PurchaseReturnsListState.noAction(),
@@ -14,7 +14,8 @@ class PurchaseReturnsListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {

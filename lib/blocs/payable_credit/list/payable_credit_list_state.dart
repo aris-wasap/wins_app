@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/payable_credit_list_response.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/payable_credit_list_response.dart';
 import 'package:meta/meta.dart';
 
 class PayableCreditListState extends BlocState {

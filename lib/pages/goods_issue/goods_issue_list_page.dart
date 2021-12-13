@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
-import 'package:admart_app/blocs/goods_issue/list/goods_issue_list_event.dart';
-import 'package:admart_app/blocs/goods_issue/list/goods_issue_list_state.dart';
-import 'package:admart_app/pages/goods_issue/goods_issue_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_event.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_state.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class GoodsIssueListPage extends StatefulWidget {
   @override
@@ -199,8 +199,10 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
-                    Text("Product : ${data[index].productCode} - ${data[index].productName}"),
+                    Text(
+                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
+                    Text(
+                        "Product : ${data[index].productCode} - ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

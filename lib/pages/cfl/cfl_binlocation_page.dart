@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_bloc.dart';
-import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
-import 'package:admart_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_binlocation/cfl_binlocation_bloc.dart';
+import 'package:wins_app/blocs/cfl_binlocation/cfl_binlocation_event.dart';
+import 'package:wins_app/blocs/cfl_binlocation/cfl_binlocation_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/models/cfl_binlocation_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflBinLocationPage extends StatefulWidget {
   CflBinLocationPage(this.whsCode);
@@ -45,7 +45,7 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
       bloc.emitEvent(CflBinLocationEvent(
         event: CflBinLocationEventType.nextPage,
         searchQuery: _searchQueryController.text,
-         whsCode: whsCode,
+        whsCode: whsCode,
       ));
     }
   }
@@ -85,12 +85,11 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -99,7 +98,7 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
                 bloc.emitEvent(CflBinLocationEvent(
                   event: CflBinLocationEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
-                   whsCode: whsCode,
+                  whsCode: whsCode,
                 ));
               }),
         ],
@@ -109,12 +108,11 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
         title: Text("Choose Bin Location"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -150,9 +148,7 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
-                  decoration: BoxDecoration(
-                    gradient: bgGradientPageWhite
-                  ),
+                  decoration: BoxDecoration(gradient: bgGradientPageWhite),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
                 ),
@@ -174,27 +170,26 @@ class _CflBinLocationPageState extends State<CflBinLocationPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "Bin Location ${data[index].binCode} "),
+                title: Text("Bin Location ${data[index].binCode} "),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
                 },
                 subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text("Warehouse. ${data[index].whsCode}"),
-                                  ],
-                                ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Warehouse. ${data[index].whsCode}"),
+                  ],
+                ),
               ),
             ),
           ));

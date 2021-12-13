@@ -1,4 +1,4 @@
-package com.admart.scanqr
+package com.wins.scanqr
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

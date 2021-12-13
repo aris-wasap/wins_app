@@ -1,4 +1,4 @@
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 

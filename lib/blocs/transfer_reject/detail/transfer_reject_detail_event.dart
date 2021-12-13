@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/transfer_reject_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/transfer_reject_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class TransferRejectDetailEvent extends BlocEvent {
@@ -9,7 +9,7 @@ class TransferRejectDetailEvent extends BlocEvent {
     this.item,
     this.whsCodeFrom,
     this.itemIndex,
-    this.qrResult, 
+    this.qrResult,
   });
 
   final int id;
@@ -17,7 +17,7 @@ class TransferRejectDetailEvent extends BlocEvent {
   final Item item;
   final String whsCodeFrom;
   final int itemIndex;
-  final String qrResult; 
+  final String qrResult;
 }
 
 class TransferRejectDetailEventNormal extends TransferRejectDetailEvent {
@@ -34,16 +34,15 @@ class TransferRejectDetailEventGetId extends TransferRejectDetailEvent {
 
 class TransferRejectDetailEventScan extends TransferRejectDetailEvent {
   TransferRejectDetailEventScan({
-    @required Data data, 
+    @required Data data,
     @required String whsCodeFrom,
     @required String qrResult,
   }) : super(
-          data: data, 
+          data: data,
           whsCodeFrom: whsCodeFrom,
           qrResult: qrResult,
         );
-} 
- 
+}
 
 class TransferRejectDetailEventItemAdd extends TransferRejectDetailEvent {
   TransferRejectDetailEventItemAdd({
@@ -63,14 +62,13 @@ class TransferRejectDetailEventItemUpdate extends TransferRejectDetailEvent {
         );
 }
 
-class TransferRejectDetailEventItemRemove extends TransferRejectDetailEvent { 
+class TransferRejectDetailEventItemRemove extends TransferRejectDetailEvent {
   TransferRejectDetailEventItemRemove({
     @required int itemIndex,
   }) : super(
           itemIndex: itemIndex,
         );
 }
-
 
 class TransferRejectDetailEventAdd extends TransferRejectDetailEvent {
   TransferRejectDetailEventAdd({

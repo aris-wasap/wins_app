@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_state.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart';
-import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:admart_app/widgets/label_field_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_state.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:wins_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
 
 import 'dart:math' as math;

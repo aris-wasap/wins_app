@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_event.dart';
-import 'package:admart_app/blocs/transfer_branch/detail/transfer_branch_detail_state.dart';
-import 'package:admart_app/models/transfer_branch_detail_response.dart';
-import 'package:admart_app/models/transfer_branch_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/transfer_branch_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/transfer_branch/detail/transfer_branch_detail_event.dart';
+import 'package:wins_app/blocs/transfer_branch/detail/transfer_branch_detail_state.dart';
+import 'package:wins_app/models/transfer_branch_detail_response.dart';
+import 'package:wins_app/models/transfer_branch_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/transfer_branch_detail_response.dart'
     as transferBranchDetail;
 
 class TransferBranchDetailBloc extends BlocEventStateBase<
@@ -72,7 +72,7 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         TransferBranchDetailScanResponse response =
-            await _repository.transferBranchDetail_Scan( requestId,qrResult);
+            await _repository.transferBranchDetail_Scan(requestId, qrResult);
         if (response == null) {
           yield TransferBranchDetailState.failure(
             errorMessage: 'Response null',
@@ -88,14 +88,15 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferBranchDetailState.failure(
-                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (1)',
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data == null) {
                 yield TransferBranchDetailState.failure(
-                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (2)',
-                
+                  errorMessage:
+                      'Item Batch Number ${qrResult} tidak di temukan dari Transfer Request ${requestNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -159,15 +160,13 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
             );
           }
         }
-      }
-       catch (e) {
+      } catch (e) {
         yield TransferBranchDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
         );
       }
-    }
-    else if (event is TransferBranchDetailEventPost) {
+    } else if (event is TransferBranchDetailEventPost) {
       yield TransferBranchDetailState.busy(
         data: event.data,
       );
@@ -195,15 +194,13 @@ class TransferBranchDetailBloc extends BlocEventStateBase<
             );
           }
         }
-      }
-       catch (e) {
+      } catch (e) {
         yield TransferBranchDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
         );
       }
-    }
-     else if (event is TransferBranchDetailEventCancel) {
+    } else if (event is TransferBranchDetailEventCancel) {
       yield TransferBranchDetailState.busy(
         data: currentState.data,
       );

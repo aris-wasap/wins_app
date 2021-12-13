@@ -1,17 +1,17 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:admart_app/pages/general_setting/general_setting_page.dart';
-import 'package:admart_app/pages/home_menu.dart';
+import 'package:wins_app/pages/general_setting/general_setting_page.dart';
+import 'package:wins_app/pages/home_menu.dart';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 import 'check_data/check_data_page.dart';
 
-// import 'package:admart_app/pages/transfer_request/transfer_request_list_page.dart';
-// import 'package:admart_app/pages/transfer_production/transfer_production_list_page.dart';
-// import 'package:admart_app/pages/transfer_reject/transfer_reject_list_page.dart';
+// import 'package:wins_app/pages/transfer_request/transfer_request_list_page.dart';
+// import 'package:wins_app/pages/transfer_production/transfer_production_list_page.dart';
+// import 'package:wins_app/pages/transfer_reject/transfer_reject_list_page.dart';
 // import 'transfer_reject/transfer_reject_list_page.dart';
 // import 'delivery_order/delivery_order_list_page.dart';
 
@@ -91,13 +91,13 @@ class _HomePageState extends State<HomePage> {
           body: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"),
+                    image: AssetImage(
+                        "assets/images/white-and-blue-surface-illustration.jpg"),
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.noRepeat),
               ),
               child: _widgetOptions.elementAt(_page)),
           bottomNavigationBar: BottomNavigationBar(
-            
             currentIndex: _page,
             onTap: (int index) {
               setState(() {

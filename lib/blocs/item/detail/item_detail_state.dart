@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/item_detail_scan_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/item_detail_scan_response.dart';
 import 'package:meta/meta.dart';
 
 class ItemDetailState extends BlocState {
@@ -36,7 +36,6 @@ class ItemDetailState extends BlocState {
     );
   }
 
- 
   factory ItemDetailState.success({
     String succesMessage,
     @required Data data,

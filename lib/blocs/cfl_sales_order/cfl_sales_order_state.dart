@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_sales_order_response.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_sales_order_response.dart';
 import 'package:meta/meta.dart';
 
 class CflSalesOrderState extends BlocState {
@@ -7,7 +7,7 @@ class CflSalesOrderState extends BlocState {
     @required this.data,
     this.isBusy: false,
     this.isSuccess: false,
-    this.isFailure: false, 
+    this.isFailure: false,
     this.isActiveSearch: false,
     this.errorMessage: '',
     @required this.selectedRows,
@@ -16,7 +16,7 @@ class CflSalesOrderState extends BlocState {
   final List<Data> data;
   final bool isBusy;
   final bool isSuccess;
-  final bool isFailure; 
+  final bool isFailure;
   final bool isActiveSearch;
   final String errorMessage;
   final List<Data> selectedRows;

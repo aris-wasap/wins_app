@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/download/download_bloc.dart';
-import 'package:admart_app/blocs/download/download_event.dart';
-import 'package:admart_app/blocs/download/download_state.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/download/download_bloc.dart';
+import 'package:wins_app/blocs/download/download_event.dart';
+import 'package:wins_app/blocs/download/download_state.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class DownloadPage extends StatefulWidget {
   @override
@@ -102,8 +102,7 @@ class _DownloadPageState extends State<DownloadPage> {
     });
   }
 
-  
-  Widget _listDownload(){
+  Widget _listDownload() {
     _errorMessage();
     _doneMessage();
     final List<String> entries = <String>['Sync All', 'Warehouse'];
@@ -118,34 +117,35 @@ class _DownloadPageState extends State<DownloadPage> {
             //color: Colors.orange[colorCodes[index]],
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
-                BoxShadow(color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
-                BoxShadow(color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
-              ],
+              BoxShadow(
+                  color: Colors.black26, offset: Offset(4, 4), blurRadius: 2),
+              BoxShadow(
+                  color: Colors.black12, offset: Offset(-4, -4), blurRadius: 2),
+            ],
           ),
           child: Material(
-           borderRadius: BorderRadius.circular(10),
-          color: Colors.orange[colorCodes[index]],
-          child: InkWell(
-          child: Center(
-            child: Text('${entries[index]}',
-              style: TextStyle(color: bgWhite, fontSize: 18, fontWeight: FontWeight.w600) )),
-          onTap: () 
-          {
-            if (index == 0) {
-                 bloc.emitEvent(DownloadEvent(
-                  event: DownloadEventType.all,
-                ));
-             
-            }
-            else if (index == 1){
-              bloc.emitEvent(DownloadEvent(
-                  event: DownloadEventType.warehouse,
-                ));
-            }
-            
-          },
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.orange[colorCodes[index]],
+            child: InkWell(
+              child: Center(
+                  child: Text('${entries[index]}',
+                      style: TextStyle(
+                          color: bgWhite,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600))),
+              onTap: () {
+                if (index == 0) {
+                  bloc.emitEvent(DownloadEvent(
+                    event: DownloadEventType.all,
+                  ));
+                } else if (index == 1) {
+                  bloc.emitEvent(DownloadEvent(
+                    event: DownloadEventType.warehouse,
+                  ));
+                }
+              },
+            ),
           ),
-        ),
           //child: Center(child: Text('${entries[index]}', style: TextStyle(color: bgWhite, fontSize: 18, fontWeight: FontWeight.w600),)),
         );
       },
@@ -181,7 +181,7 @@ class _DownloadPageState extends State<DownloadPage> {
       //             event: DownloadEventType.all,
       //           ));
       //         },
-      //       ), 
+      //       ),
       //       RaisedButton(
       //         child: Text("Warehouse"),
       //         onPressed: () {
@@ -189,10 +189,10 @@ class _DownloadPageState extends State<DownloadPage> {
       //             event: DownloadEventType.warehouse,
       //           ));
       //         },
-      //       ), 
+      //       ),
       //     ],
       //     ),
-          
+
       //   ),
       // ),
     );
@@ -211,27 +211,23 @@ class _DownloadPageState extends State<DownloadPage> {
             child: Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                flexibleSpace: Container(
-                  decoration: BoxDecoration(
-                    gradient: bgGradientAppBar,
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                      gradient: bgGradientAppBar,
+                    ),
                   ),
-                ),
-                title: Text("Download"),
-                //backgroundColor: bgBlue,
-                
-                bottom: PreferredSize(
-                  child: Container(
-                    color: bgBlue,
-                    height: 5.0,
-                  ),
-                  preferredSize: Size.fromHeight(5.0)
-                )
-              ),
+                  title: Text("Download"),
+                  //backgroundColor: bgBlue,
+
+                  bottom: PreferredSize(
+                      child: Container(
+                        color: bgBlue,
+                        height: 5.0,
+                      ),
+                      preferredSize: Size.fromHeight(5.0))),
               body: Container(
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite
-                ),
+                decoration: BoxDecoration(gradient: bgGradientPageWhite),
                 child: Stack(
                   children: <Widget>[
                     _listDownload(),

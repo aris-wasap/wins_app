@@ -1,19 +1,19 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_item_batch/cfl_item_batch_event.dart';
-import 'package:admart_app/blocs/cfl_item_batch/cfl_item_batch_state.dart';
-import 'package:admart_app/models/cfl_item_batch_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_item_batch/cfl_item_batch_event.dart';
+import 'package:wins_app/blocs/cfl_item_batch/cfl_item_batch_state.dart';
+import 'package:wins_app/models/cfl_item_batch_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatchState> {
+class CflItemBatchBloc
+    extends BlocEventStateBase<CflItemBatchEvent, CflItemBatchState> {
   CflItemBatchBloc()
       : super(
           initialState: CflItemBatchState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
           );
           try {
             var _repository = Repository();
-            CflItemBatchResponse response = await _repository
-                .cflItemBatch_FetchNextPage(0,  "","", "",0);
+            CflItemBatchResponse response =
+                await _repository.cflItemBatch_FetchNextPage(0, "", "", "", 0);
             if (response == null) {
               yield CflItemBatchState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflItemBatchState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
         }
         break;
       case CflItemBatchEventType.firstPage:
-        { 
-
+        {
           yield CflItemBatchState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -86,8 +84,8 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
           try {
             var _repository = Repository();
             CflItemBatchResponse response =
-                await _repository.cflItemBatch_FetchNextPage(
-                    0,  event.searchQuery, event.whsCode, event.batchNo, event.id);
+                await _repository.cflItemBatch_FetchNextPage(0,
+                    event.searchQuery, event.whsCode, event.batchNo, event.id);
             if (response == null) {
               yield CflItemBatchState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +103,6 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflItemBatchState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +131,11 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
             var _repository = Repository();
             CflItemBatchResponse response =
                 await _repository.cflItemBatch_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery, event.whsCode, event.batchNo, event.id);
+                    currentState.data.length,
+                    event.searchQuery,
+                    event.whsCode,
+                    event.batchNo,
+                    event.id);
             if (response == null) {
               yield CflItemBatchState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +153,6 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflItemBatchState.success(
@@ -182,9 +181,9 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
           );
           try {
             var _repository = Repository();
-            CflItemBatchResponse response = await _repository.cflItemBatch_FetchNextPage(
-               0, 
-                event.searchQuery, event.whsCode, event.batchNo, event.id);
+            CflItemBatchResponse response =
+                await _repository.cflItemBatch_FetchNextPage(0,
+                    event.searchQuery, event.whsCode, event.batchNo, event.id);
             if (response == null) {
               yield CflItemBatchState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +201,6 @@ class CflItemBatchBloc extends BlocEventStateBase<CflItemBatchEvent, CflItemBatc
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflItemBatchState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

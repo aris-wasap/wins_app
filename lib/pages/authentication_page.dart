@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/blocs/authentication/authentication_event.dart';
-import 'package:admart_app/blocs/authentication/authentication_state.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/pages/login_setting_page.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/blocs/authentication/authentication_event.dart';
+import 'package:wins_app/blocs/authentication/authentication_state.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/pages/login_setting_page.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -123,7 +123,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           decoration: BoxDecoration(
                             //gradient: bgGradient,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/white-and-blue-surface-illustration.jpg"),
+                                image: AssetImage(
+                                    "assets/images/white-and-blue-surface-illustration.jpg"),
                                 fit: BoxFit.cover,
                                 repeat: ImageRepeat.noRepeat),
                           ),
@@ -253,7 +254,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   Widget _showLogo() {
-    return Image.asset('assets/images/logo-admart.png', width: 100, height: 75);
+    return Image.asset('assets/images/logo-wins.png', width: 100, height: 75);
   }
 
   Widget _showIconSetting(AuthenticationBloc bloc) {

@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_db_warehouse_model.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_db_warehouse_model.dart';
 import 'package:meta/meta.dart';
 
 class CflDbWarehouseState extends BlocState {
@@ -24,7 +24,8 @@ class CflDbWarehouseState extends BlocState {
   }
 
   factory CflDbWarehouseState.busy(
-      {@required List<CflDbWarehouseModel> data, @required bool isActiveSearch}) {
+      {@required List<CflDbWarehouseModel> data,
+      @required bool isActiveSearch}) {
     return CflDbWarehouseState(
       data: data,
       isBusy: true,
@@ -33,7 +34,8 @@ class CflDbWarehouseState extends BlocState {
   }
 
   factory CflDbWarehouseState.success(
-      {@required List<CflDbWarehouseModel> data, @required bool isActiveSearch}) {
+      {@required List<CflDbWarehouseModel> data,
+      @required bool isActiveSearch}) {
     return CflDbWarehouseState(
       isSuccess: true,
       data: data,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/pages/download_page.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/pages/download_page.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/blocs/authentication/authentication_event.dart';
+import 'package:wins_app/blocs/authentication/authentication_event.dart';
 
 class GeneralSetting extends StatefulWidget {
   @override
@@ -35,8 +35,8 @@ class _GeneralSettingState extends State<GeneralSetting> {
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-            //  background: ,
-            ),
+                //  background: ,
+                ),
           ),
           SliverFillRemaining(
             child: Center(
@@ -46,33 +46,33 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   Card(
                     child: Column(
                       children: <Widget>[
-                      //   ListTile(
-                      //   leading: Icon(
-                      //     Icons.file_download,
-                      //     color: Colors.blue,
-                      //   ),
-                      //   title: Text('Sync'),
-                      //   onTap: () {
-                      //     Navigator.push(context, MaterialPageRoute(
-                      //         builder: (BuildContext context) {
-                      //       return DownloadPage();
-                      //     }));
-                      //   },
-                      // ),
-                      Divider(
-                        height: 2.0,
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.exit_to_app,
-                          color: Colors.orange[500],
+                        //   ListTile(
+                        //   leading: Icon(
+                        //     Icons.file_download,
+                        //     color: Colors.blue,
+                        //   ),
+                        //   title: Text('Sync'),
+                        //   onTap: () {
+                        //     Navigator.push(context, MaterialPageRoute(
+                        //         builder: (BuildContext context) {
+                        //       return DownloadPage();
+                        //     }));
+                        //   },
+                        // ),
+                        Divider(
+                          height: 2.0,
                         ),
-                        title: Text('Log-Out'),
-                        onTap: () {
-                          authenticationBloc
-                              .emitEvent(AuthenticationEventLogout());
-                        },
-                      )
+                        ListTile(
+                          leading: Icon(
+                            Icons.exit_to_app,
+                            color: Colors.orange[500],
+                          ),
+                          title: Text('Log-Out'),
+                          onTap: () {
+                            authenticationBloc
+                                .emitEvent(AuthenticationEventLogout());
+                          },
+                        )
                       ],
                     ),
                   )

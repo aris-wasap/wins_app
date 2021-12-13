@@ -1,16 +1,16 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 
 class DownloadEvent extends BlocEvent {
   DownloadEvent({
-    this.event, 
+    this.event,
   });
 
-  final DownloadEventType event; 
+  final DownloadEventType event;
 }
 
 enum DownloadEventType {
   none,
   normal,
-  all, 
-  warehouse, 
+  all,
+  warehouse,
 }

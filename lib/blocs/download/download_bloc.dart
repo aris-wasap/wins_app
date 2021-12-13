@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/download/download_event.dart';
-import 'package:admart_app/blocs/download/download_state.dart'; 
-import 'package:admart_app/resources/db_provider.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/download/download_event.dart';
+import 'package:wins_app/blocs/download/download_state.dart';
+import 'package:wins_app/resources/db_provider.dart';
+import 'package:wins_app/resources/repository.dart';
 
 class DownloadBloc extends BlocEventStateBase<DownloadEvent, DownloadState> {
   DownloadBloc()
@@ -27,7 +27,7 @@ class DownloadBloc extends BlocEventStateBase<DownloadEvent, DownloadState> {
           try {
             await DbProvider.db.initDB();
             await Repository().all_CopyApiToDb();
-            yield DownloadState.success(successMessage: "Done..."); 
+            yield DownloadState.success(successMessage: "Done...");
           } catch (e) {
             yield DownloadState.failure(
               errorMessage: "fail ${event.toString()}",
@@ -35,7 +35,7 @@ class DownloadBloc extends BlocEventStateBase<DownloadEvent, DownloadState> {
           }
         }
 
-        break; 
+        break;
       case DownloadEventType.warehouse:
         {
           yield DownloadState.busy();
@@ -43,14 +43,14 @@ class DownloadBloc extends BlocEventStateBase<DownloadEvent, DownloadState> {
           try {
             await DbProvider.db.initDB();
             await Repository().warehouse_CopyApiToDb();
-            yield DownloadState.success(successMessage: "Done..."); 
+            yield DownloadState.success(successMessage: "Done...");
           } catch (e) {
             yield DownloadState.failure(
               errorMessage: "fail ${event.toString()}",
             );
           }
         }
-  
+
         break;
 
       default:

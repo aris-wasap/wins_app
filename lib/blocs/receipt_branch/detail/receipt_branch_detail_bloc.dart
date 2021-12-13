@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_branch/detail/receipt_branch_detail_event.dart';
-import 'package:admart_app/blocs/receipt_branch/detail/receipt_branch_detail_state.dart';
-import 'package:admart_app/models/receipt_branch_detail_response.dart';
-import 'package:admart_app/models/receipt_branch_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/receipt_branch_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_branch/detail/receipt_branch_detail_event.dart';
+import 'package:wins_app/blocs/receipt_branch/detail/receipt_branch_detail_state.dart';
+import 'package:wins_app/models/receipt_branch_detail_response.dart';
+import 'package:wins_app/models/receipt_branch_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/receipt_branch_detail_response.dart'
     as receiptBranchDetail;
 
 class ReceiptBranchDetailBloc extends BlocEventStateBase<
@@ -87,13 +87,15 @@ class ReceiptBranchDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptBranchDetailState.failure(
-                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (1)',
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.issueId == 0) {
                 yield ReceiptBranchDetailState.failure(
-                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (2)',
+                  errorMessage:
+                      'Item Batch Number ${qrResult} tidak di temukan dari Issue No. ${issueNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class ReceiptBranchDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReceiptBranchDetailEventItemAdd) {
+    } else if (event is ReceiptBranchDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield ReceiptBranchDetailState.success(
@@ -163,7 +165,7 @@ class ReceiptBranchDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }else if (event is ReceiptBranchDetailEventPost) {
+    } else if (event is ReceiptBranchDetailEventPost) {
       yield ReceiptBranchDetailState.busy(
         data: event.data,
       );

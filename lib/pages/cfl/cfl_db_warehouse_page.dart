@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_db_warehouse/cfl_db_warehouse_bloc.dart';
-import 'package:admart_app/blocs/cfl_db_warehouse/cfl_db_warehouse_event.dart';
-import 'package:admart_app/blocs/cfl_db_warehouse/cfl_db_warehouse_state.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_db_warehouse/cfl_db_warehouse_bloc.dart';
+import 'package:wins_app/blocs/cfl_db_warehouse/cfl_db_warehouse_event.dart';
+import 'package:wins_app/blocs/cfl_db_warehouse/cfl_db_warehouse_state.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflDbWarehousePage extends StatefulWidget {
   @override
@@ -71,18 +71,16 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Warehouse",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Warehouse",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -100,12 +98,11 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
         title: Text("Choose Warehouse"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -161,9 +158,9 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             //margin: const EdgeInsets.all(8),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
@@ -177,7 +174,7 @@ class _CflDbWarehousePageState extends State<CflDbWarehousePage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${data[index].whsName??''}"), 
+                    Text("${data[index].whsName ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

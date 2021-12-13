@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/issue_production/detail/issue_production_detail_event.dart';
-import 'package:admart_app/blocs/issue_production/detail/issue_production_detail_state.dart';
-import 'package:admart_app/models/issue_production_detail_response.dart';
-import 'package:admart_app/models/issue_production_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/issue_production_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/issue_production/detail/issue_production_detail_event.dart';
+import 'package:wins_app/blocs/issue_production/detail/issue_production_detail_state.dart';
+import 'package:wins_app/models/issue_production_detail_response.dart';
+import 'package:wins_app/models/issue_production_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/issue_production_detail_response.dart'
     as issueProductionDetail;
 
 class IssueProductionDetailBloc extends BlocEventStateBase<
@@ -15,7 +15,8 @@ class IssueProductionDetailBloc extends BlocEventStateBase<
         );
 
   @override
-  Stream<IssueProductionDetailState> eventHandler(IssueProductionDetailEvent event,
+  Stream<IssueProductionDetailState> eventHandler(
+      IssueProductionDetailEvent event,
       IssueProductionDetailState currentState) async* {
     if (event is IssueProductionDetailEventNormal) {
       yield IssueProductionDetailState.success(
@@ -87,13 +88,15 @@ class IssueProductionDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield IssueProductionDetailState.failure(
-                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (1)',
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.woId == 0) {
                 yield IssueProductionDetailState.failure(
-                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (2)',
+                  errorMessage:
+                      'Item Batch Number ${qrResult} tidak di temukan  WO ${woNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +114,7 @@ class IssueProductionDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is IssueProductionDetailEventItemAdd) {
+    } else if (event is IssueProductionDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield IssueProductionDetailState.success(

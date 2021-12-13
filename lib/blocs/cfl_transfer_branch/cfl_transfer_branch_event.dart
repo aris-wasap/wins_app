@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_transfer_branch_response.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_transfer_branch_response.dart';
 
 class CflTransferBranchEvent extends BlocEvent {
   CflTransferBranchEvent({
-    this.event, 
+    this.event,
     this.searchQuery,
     this.selectedRow,
   });
 
-  final CflTransferBranchEventType event; 
+  final CflTransferBranchEventType event;
   final String searchQuery;
   final Data selectedRow;
 }

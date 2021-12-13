@@ -1,19 +1,19 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_warehouse/cfl_warehouse_event.dart';
-import 'package:admart_app/blocs/cfl_warehouse/cfl_warehouse_state.dart';
-import 'package:admart_app/models/cfl_warehouse_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_warehouse/cfl_warehouse_event.dart';
+import 'package:wins_app/blocs/cfl_warehouse/cfl_warehouse_state.dart';
+import 'package:wins_app/models/cfl_warehouse_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehouseState> {
+class CflWarehouseBloc
+    extends BlocEventStateBase<CflWarehouseEvent, CflWarehouseState> {
   CflWarehouseBloc()
       : super(
           initialState: CflWarehouseState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
           );
           try {
             var _repository = Repository();
-            CflWarehouseResponse response = await _repository
-                .cflWarehouse_FetchNextPage(0,  "",0);
+            CflWarehouseResponse response =
+                await _repository.cflWarehouse_FetchNextPage(0, "", 0);
             if (response == null) {
               yield CflWarehouseState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflWarehouseState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
         }
         break;
       case CflWarehouseEventType.firstPage:
-        { 
-
+        {
           yield CflWarehouseState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -87,7 +85,7 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
             var _repository = Repository();
             CflWarehouseResponse response =
                 await _repository.cflWarehouse_FetchNextPage(
-                    0,  event.searchQuery, event.branchId);
+                    0, event.searchQuery, event.branchId);
             if (response == null) {
               yield CflWarehouseState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +103,6 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflWarehouseState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +131,9 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
             var _repository = Repository();
             CflWarehouseResponse response =
                 await _repository.cflWarehouse_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery, event.branchId);
+                    currentState.data.length,
+                    event.searchQuery,
+                    event.branchId);
             if (response == null) {
               yield CflWarehouseState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +151,6 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflWarehouseState.success(
@@ -182,9 +179,9 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
           );
           try {
             var _repository = Repository();
-            CflWarehouseResponse response = await _repository.cflWarehouse_FetchNextPage(
-               0, 
-                event.searchQuery, event.branchId);
+            CflWarehouseResponse response =
+                await _repository.cflWarehouse_FetchNextPage(
+                    0, event.searchQuery, event.branchId);
             if (response == null) {
               yield CflWarehouseState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +199,6 @@ class CflWarehouseBloc extends BlocEventStateBase<CflWarehouseEvent, CflWarehous
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflWarehouseState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

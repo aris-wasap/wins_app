@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class GoodsIssueDetailState extends BlocState {
@@ -34,14 +34,9 @@ class GoodsIssueDetailState extends BlocState {
     Item newItem,
     List<Item> listItem,
   }) {
-    return GoodsIssueDetailState(
-      data: data,
-      isBusy: true,
-      listItem: listItem
-    );
+    return GoodsIssueDetailState(data: data, isBusy: true, listItem: listItem);
   }
 
- 
   factory GoodsIssueDetailState.success({
     String succesMessage,
     @required Data data,
@@ -49,12 +44,11 @@ class GoodsIssueDetailState extends BlocState {
     List<Item> listItem,
   }) {
     return GoodsIssueDetailState(
-      isSuccess: true,
-      succesMessage: succesMessage,
-      data: data,
-      newItem: newItem,
-      listItem: listItem
-    );
+        isSuccess: true,
+        succesMessage: succesMessage,
+        data: data,
+        newItem: newItem,
+        listItem: listItem);
   }
 
   factory GoodsIssueDetailState.failure({

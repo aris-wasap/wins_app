@@ -1,23 +1,23 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/transfer_request_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/transfer_request_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class TransferRequestDetailEvent extends BlocEvent {
   TransferRequestDetailEvent({
     this.id,
-    this.data, 
+    this.data,
     this.item,
     this.whsCodeFrom,
     this.itemIndex,
-    this.qrResult,  
+    this.qrResult,
   });
 
   final int id;
-  final Data data; 
+  final Data data;
   final Item item;
   final String whsCodeFrom;
   final int itemIndex;
-  final String qrResult;  
+  final String qrResult;
 }
 
 class TransferRequestDetailEventNormal extends TransferRequestDetailEvent {
@@ -34,16 +34,16 @@ class TransferRequestDetailEventGetId extends TransferRequestDetailEvent {
 
 class TransferRequestDetailEventScan extends TransferRequestDetailEvent {
   TransferRequestDetailEventScan({
-    @required Data data, 
+    @required Data data,
     @required String whsCodeFrom,
     @required String qrResult,
   }) : super(
-          data: data, 
+          data: data,
           whsCodeFrom: whsCodeFrom,
           qrResult: qrResult,
         );
-} 
- 
+}
+
 class TransferRequestDetailEventItemAdd extends TransferRequestDetailEvent {
   TransferRequestDetailEventItemAdd({
     @required Item item,
@@ -62,14 +62,13 @@ class TransferRequestDetailEventItemUpdate extends TransferRequestDetailEvent {
         );
 }
 
-class TransferRequestDetailEventItemRemove extends TransferRequestDetailEvent { 
+class TransferRequestDetailEventItemRemove extends TransferRequestDetailEvent {
   TransferRequestDetailEventItemRemove({
     @required int itemIndex,
   }) : super(
           itemIndex: itemIndex,
         );
 }
-
 
 class TransferRequestDetailEventAdd extends TransferRequestDetailEvent {
   TransferRequestDetailEventAdd({

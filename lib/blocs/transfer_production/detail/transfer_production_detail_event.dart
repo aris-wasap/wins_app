@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/transfer_production_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/transfer_production_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class TransferProductionDetailEvent extends BlocEvent {
@@ -13,7 +13,7 @@ class TransferProductionDetailEvent extends BlocEvent {
     this.itemIndex,
     this.absEntryFrom,
     this.binCodeFrom,
-    this.qrResult, 
+    this.qrResult,
   });
 
   final int id;
@@ -25,10 +25,11 @@ class TransferProductionDetailEvent extends BlocEvent {
   final Item item;
   final String woNo;
   final int itemIndex;
-  final String qrResult; 
+  final String qrResult;
 }
 
-class TransferProductionDetailEventNormal extends TransferProductionDetailEvent {
+class TransferProductionDetailEventNormal
+    extends TransferProductionDetailEvent {
   TransferProductionDetailEventNormal() : super();
 }
 
@@ -54,10 +55,10 @@ class TransferProductionDetailEventScan extends TransferProductionDetailEvent {
           fromWhsCode: fromWhsCode,
           qrResult: qrResult,
         );
-} 
- 
+}
 
-class TransferProductionDetailEventItemAdd extends TransferProductionDetailEvent {
+class TransferProductionDetailEventItemAdd
+    extends TransferProductionDetailEvent {
   TransferProductionDetailEventItemAdd({
     @required Item item,
   }) : super(
@@ -65,7 +66,8 @@ class TransferProductionDetailEventItemAdd extends TransferProductionDetailEvent
         );
 }
 
-class TransferProductionDetailEventItemUpdate extends TransferProductionDetailEvent {
+class TransferProductionDetailEventItemUpdate
+    extends TransferProductionDetailEvent {
   TransferProductionDetailEventItemUpdate({
     @required Item item,
     @required int itemIndex,
@@ -75,14 +77,14 @@ class TransferProductionDetailEventItemUpdate extends TransferProductionDetailEv
         );
 }
 
-class TransferProductionDetailEventItemRemove extends TransferProductionDetailEvent { 
+class TransferProductionDetailEventItemRemove
+    extends TransferProductionDetailEvent {
   TransferProductionDetailEventItemRemove({
     @required int itemIndex,
   }) : super(
           itemIndex: itemIndex,
         );
 }
-
 
 class TransferProductionDetailEventAdd extends TransferProductionDetailEvent {
   TransferProductionDetailEventAdd({
@@ -92,7 +94,8 @@ class TransferProductionDetailEventAdd extends TransferProductionDetailEvent {
         );
 }
 
-class TransferProductionDetailEventCancel extends TransferProductionDetailEvent {
+class TransferProductionDetailEventCancel
+    extends TransferProductionDetailEvent {
   TransferProductionDetailEventCancel({
     @required int id,
   }) : super(

@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/transfer_branch/list/transfer_branch_list_event.dart';
-import 'package:admart_app/blocs/transfer_branch/list/transfer_branch_list_state.dart';
-import 'package:admart_app/models/transfer_branch_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/transfer_branch/list/transfer_branch_list_event.dart';
+import 'package:wins_app/blocs/transfer_branch/list/transfer_branch_list_state.dart';
+import 'package:wins_app/models/transfer_branch_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TransferBranchListBloc
-    extends BlocEventStateBase<TransferBranchListEvent, TransferBranchListState> {
+class TransferBranchListBloc extends BlocEventStateBase<TransferBranchListEvent,
+    TransferBranchListState> {
   TransferBranchListBloc()
       : super(
           initialState: TransferBranchListState.noAction(),
@@ -14,7 +14,8 @@ class TransferBranchListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {

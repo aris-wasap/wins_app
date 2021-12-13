@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/delivery_order/detail/delivery_order_detail_event.dart';
-import 'package:admart_app/blocs/delivery_order/detail/delivery_order_detail_state.dart';
-import 'package:admart_app/models/delivery_order_detail_response.dart';
-import 'package:admart_app/models/delivery_order_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/delivery_order_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/delivery_order/detail/delivery_order_detail_event.dart';
+import 'package:wins_app/blocs/delivery_order/detail/delivery_order_detail_state.dart';
+import 'package:wins_app/models/delivery_order_detail_response.dart';
+import 'package:wins_app/models/delivery_order_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/delivery_order_detail_response.dart'
     as deliveryOrderDetail;
 
 class DeliveryOrderDetailBloc extends BlocEventStateBase<

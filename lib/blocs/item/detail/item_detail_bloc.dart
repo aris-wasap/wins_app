@@ -1,21 +1,20 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/item/detail/item_detail_event.dart';
-import 'package:admart_app/blocs/item/detail/item_detail_state.dart';
-import 'package:admart_app/models/item_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/item_detail_scan_response.dart'
-    as itemDetail;
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/item/detail/item_detail_event.dart';
+import 'package:wins_app/blocs/item/detail/item_detail_state.dart';
+import 'package:wins_app/models/item_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/item_detail_scan_response.dart' as itemDetail;
 
-class ItemDetailBloc extends BlocEventStateBase<
-    ItemDetailEvent, ItemDetailState> {
+class ItemDetailBloc
+    extends BlocEventStateBase<ItemDetailEvent, ItemDetailState> {
   ItemDetailBloc()
       : super(
           initialState: ItemDetailState.noAction(),
         );
 
   @override
-  Stream<ItemDetailState> eventHandler(ItemDetailEvent event,
-      ItemDetailState currentState) async* {
+  Stream<ItemDetailState> eventHandler(
+      ItemDetailEvent event, ItemDetailState currentState) async* {
     if (event is ItemDetailEventNormal) {
       yield ItemDetailState.success(
         data: currentState.data,
@@ -49,9 +48,7 @@ class ItemDetailBloc extends BlocEventStateBase<
                 data: event.data,
               );
             } else {
-              yield ItemDetailState.success(
-                data: response.data
-              );
+              yield ItemDetailState.success(data: response.data);
             }
           }
         }

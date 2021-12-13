@@ -1,6 +1,6 @@
-import 'package:admart_app/models/login_response.dart';
-import 'package:admart_app/models/serverInfo_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/models/login_response.dart';
+import 'package:wins_app/models/serverInfo_response.dart';
+import 'package:wins_app/resources/repository.dart';
 
 class GlobalBloc {
   static const isSkipLogin = "N"; //hanya untuk testing ya
@@ -10,7 +10,7 @@ class GlobalBloc {
 
   String getPrefApiUrl() => prefApiUrl;
 
-  //String getUrl() => "http://192.168.43.73/admart_app/"; //wifi huawai
+  //String getUrl() => "http://192.168.43.73/wins_app/"; //wifi huawai
   //String getUrl() => "http://192.168.113.125/admart_APP/"; //wifi bb
   // String getUrl() => "http://192.168.1.106/admart_APP/"; //wifi kosan
   //String getUrl() => "http://192.168.17.37/admart_APP/"; //kantor

@@ -1,33 +1,32 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_db_warehouse_page.dart';
-import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:admart_app/pages/cfl/cfl_transfer_request_page.dart';
-import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
-import 'package:admart_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
+import 'package:wins_app/pages/cfl/cfl_db_warehouse_page.dart';
+import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:wins_app/pages/cfl/cfl_transfer_request_page.dart';
+import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
+import 'package:wins_app/pages/inventory_transfer/inventory_transfer_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_bloc.dart';
-import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
-import 'package:admart_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/inventory_transfer_detail_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/inventory_transfer/detail/inventory_transfer_detail_bloc.dart';
+import 'package:wins_app/blocs/inventory_transfer/detail/inventory_transfer_detail_event.dart';
+import 'package:wins_app/blocs/inventory_transfer/detail/inventory_transfer_detail_state.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/models/inventory_transfer_detail_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_db_warehouse_model.dart'
-    as cflDbWarehouse;
-import 'package:admart_app/pages/barcode_scan.dart';
+import 'package:wins_app/models/cfl_db_warehouse_model.dart' as cflDbWarehouse;
+import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'
+import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-import 'package:admart_app/models/cfl_transfer_request_response.dart'
+import 'package:wins_app/models/cfl_transfer_request_response.dart'
     as cflTransferRequest;
-import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
-import 'package:admart_app/models/cfl_binlocation_response.dart'
+import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
+import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
 
 class InventoryTransferDetailPage extends StatefulWidget {
@@ -814,7 +813,7 @@ class _InventoryTransferDetailPageState
                             _toBranchIdController.text =
                                 trq.toBranchId.toString();
                             _toBranchNameController.text = trq.toBranchName;
-                           _toAbsEntryController.text =
+                            _toAbsEntryController.text =
                                 trq.toBinEntry.toString();
                             _toBinCodeController.text = trq.toBinCode;
                           }

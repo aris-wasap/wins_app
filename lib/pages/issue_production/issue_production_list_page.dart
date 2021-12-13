@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/issue_production/list/issue_production_list_bloc.dart';
-import 'package:admart_app/blocs/issue_production/list/issue_production_list_event.dart';
-import 'package:admart_app/blocs/issue_production/list/issue_production_list_state.dart';
-import 'package:admart_app/pages/issue_production/issue_production_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/issue_production/list/issue_production_list_bloc.dart';
+import 'package:wins_app/blocs/issue_production/list/issue_production_list_event.dart';
+import 'package:wins_app/blocs/issue_production/list/issue_production_list_state.dart';
+import 'package:wins_app/pages/issue_production/issue_production_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class IssueProductionListPage extends StatefulWidget {
   @override
-  _IssueProductionListPageState createState() => _IssueProductionListPageState();
+  _IssueProductionListPageState createState() =>
+      _IssueProductionListPageState();
 }
 
 class _IssueProductionListPageState extends State<IssueProductionListPage> {
@@ -76,18 +77,16 @@ class _IssueProductionListPageState extends State<IssueProductionListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Receipt",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
-        ), 
+              hintText: "Search Receipt",
+              hintStyle: TextStyle(color: Colors.white)),
+        ),
         backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.orange[500],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.orange[500],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -104,18 +103,17 @@ class _IssueProductionListPageState extends State<IssueProductionListPage> {
       return AppBar(
         title: Text("List Issue Production"),
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -188,8 +186,8 @@ class _IssueProductionListPageState extends State<IssueProductionListPage> {
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(3),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

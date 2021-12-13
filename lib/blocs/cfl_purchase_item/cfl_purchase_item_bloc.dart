@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_purchase_item/cfl_purchase_item_event.dart';
-import 'package:admart_app/blocs/cfl_purchase_item/cfl_purchase_item_state.dart';
-import 'package:admart_app/models/cfl_purchase_item_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_purchase_item/cfl_purchase_item_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_item/cfl_purchase_item_state.dart';
+import 'package:wins_app/models/cfl_purchase_item_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CflPurchaseItemBloc
@@ -83,8 +83,9 @@ class CflPurchaseItemBloc
           );
           try {
             var _repository = Repository();
-            CflPurchaseItemResponse response = await _repository
-                .cflPurchaseItem_FetchNextPage(0, event.searchQuery, event.poId);
+            CflPurchaseItemResponse response =
+                await _repository.cflPurchaseItem_FetchNextPage(
+                    0, event.searchQuery, event.poId);
             if (response == null) {
               yield CflPurchaseItemState.failure(
                 errorMessage: 'Response null',
@@ -176,8 +177,9 @@ class CflPurchaseItemBloc
           );
           try {
             var _repository = Repository();
-            CflPurchaseItemResponse response = await _repository
-                .cflPurchaseItem_FetchNextPage(0, event.searchQuery, event.poId);
+            CflPurchaseItemResponse response =
+                await _repository.cflPurchaseItem_FetchNextPage(
+                    0, event.searchQuery, event.poId);
             if (response == null) {
               yield CflPurchaseItemState.failure(
                 errorMessage: 'Response null',

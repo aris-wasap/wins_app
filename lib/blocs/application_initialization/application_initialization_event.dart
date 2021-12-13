@@ -1,7 +1,6 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 
 class ApplicationInitializationEvent extends BlocEvent {
-  
   final ApplicationInitializationEventType type;
 
   ApplicationInitializationEvent({
