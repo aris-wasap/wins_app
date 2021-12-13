@@ -272,17 +272,17 @@ class _RequestIssueDetailItemDetailPageState
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_batchNumberController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_itemNameController.text),
-                                    _itemTypeController.text == 'L'
-                                        ? Text(_widthController.text +
-                                            " X " +
-                                            _length2Controller.text)
-                                        : Text(""),
-                                  ],
-                                ),
+                                // subtitle: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Text(_itemNameController.text),
+                                //     _itemTypeController.text == 'L'
+                                //         ? Text(_widthController.text +
+                                //             " X " +
+                                //             _length2Controller.text)
+                                //         : Text(""),
+                                //   ],
+                                // ),
                               )
                             ],
                           ),
@@ -337,7 +337,7 @@ class _RequestIssueDetailItemDetailPageState
                       Padding(padding: EdgeInsets.only(top: 10)),
                       _data.id == 0
                           ? TextField(
-                              autofocus: true,
+                              autofocus: false,
                               textInputAction: TextInputAction.done,
                               focusNode: _focusNode,
                               controller: _qtyController,

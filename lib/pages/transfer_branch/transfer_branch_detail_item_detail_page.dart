@@ -468,7 +468,7 @@ class _TransferBranchDetailItemDetailPageState
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          _binCodeController.text != ""
+                                          _availableQtyController.text != ""
                                               ? Text("Stock Quantity : " +
                                                   _availableQtyController.text)
                                               : Text(""),
