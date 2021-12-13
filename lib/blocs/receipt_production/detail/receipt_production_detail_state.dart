@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/receipt_production_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/receipt_production_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class ReceiptProductionDetailState extends BlocState {
@@ -36,7 +36,6 @@ class ReceiptProductionDetailState extends BlocState {
     );
   }
 
- 
   factory ReceiptProductionDetailState.success({
     String succesMessage,
     @required Data data,

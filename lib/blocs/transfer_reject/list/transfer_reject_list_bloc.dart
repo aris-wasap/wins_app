@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/transfer_reject/list/transfer_reject_list_event.dart';
-import 'package:admart_app/blocs/transfer_reject/list/transfer_reject_list_state.dart';
-import 'package:admart_app/models/transfer_reject_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/transfer_reject/list/transfer_reject_list_event.dart';
+import 'package:wins_app/blocs/transfer_reject/list/transfer_reject_list_state.dart';
+import 'package:wins_app/models/transfer_reject_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TransferRejectListBloc
-    extends BlocEventStateBase<TransferRejectListEvent, TransferRejectListState> {
+class TransferRejectListBloc extends BlocEventStateBase<TransferRejectListEvent,
+    TransferRejectListState> {
   TransferRejectListBloc()
       : super(
           initialState: TransferRejectListState.noAction(),
@@ -14,7 +14,8 @@ class TransferRejectListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {

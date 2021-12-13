@@ -1,19 +1,18 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_branch/cfl_branch_event.dart';
-import 'package:admart_app/blocs/cfl_branch/cfl_branch_state.dart';
-import 'package:admart_app/models/cfl_branch_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_branch/cfl_branch_event.dart';
+import 'package:wins_app/blocs/cfl_branch/cfl_branch_state.dart';
+import 'package:wins_app/models/cfl_branch_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
   CflBranchBloc()
       : super(
           initialState: CflBranchState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +37,8 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
           );
           try {
             var _repository = Repository();
-            CflBranchResponse response = await _repository
-                .cflBranch_FetchNextPage(0,  "",0);
+            CflBranchResponse response =
+                await _repository.cflBranch_FetchNextPage(0, "", 0);
             if (response == null) {
               yield CflBranchState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +55,7 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflBranchState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +74,7 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
         }
         break;
       case CflBranchEventType.firstPage:
-        { 
-
+        {
           yield CflBranchState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -85,9 +82,8 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
           );
           try {
             var _repository = Repository();
-            CflBranchResponse response =
-                await _repository.cflBranch_FetchNextPage(
-                    0,  event.searchQuery, event.branchId);
+            CflBranchResponse response = await _repository
+                .cflBranch_FetchNextPage(0, event.searchQuery, event.branchId);
             if (response == null) {
               yield CflBranchState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +101,6 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflBranchState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +129,9 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
             var _repository = Repository();
             CflBranchResponse response =
                 await _repository.cflBranch_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery, event.branchId);
+                    currentState.data.length,
+                    event.searchQuery,
+                    event.branchId);
             if (response == null) {
               yield CflBranchState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +149,6 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflBranchState.success(
@@ -182,9 +177,8 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
           );
           try {
             var _repository = Repository();
-            CflBranchResponse response = await _repository.cflBranch_FetchNextPage(
-               0, 
-                event.searchQuery, event.branchId);
+            CflBranchResponse response = await _repository
+                .cflBranch_FetchNextPage(0, event.searchQuery, event.branchId);
             if (response == null) {
               yield CflBranchState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +196,6 @@ class CflBranchBloc extends BlocEventStateBase<CflBranchEvent, CflBranchState> {
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflBranchState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

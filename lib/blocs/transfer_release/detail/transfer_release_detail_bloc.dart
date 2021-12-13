@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/transfer_release/detail/transfer_release_detail_event.dart';
-import 'package:admart_app/blocs/transfer_release/detail/transfer_release_detail_state.dart';
-import 'package:admart_app/models/transfer_release_detail_response.dart';
-import 'package:admart_app/models/transfer_release_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/transfer_release_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/transfer_release/detail/transfer_release_detail_event.dart';
+import 'package:wins_app/blocs/transfer_release/detail/transfer_release_detail_state.dart';
+import 'package:wins_app/models/transfer_release_detail_response.dart';
+import 'package:wins_app/models/transfer_release_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/transfer_release_detail_response.dart'
     as transferReleaseDetail;
 
 class TransferReleaseDetailBloc extends BlocEventStateBase<
@@ -87,7 +87,8 @@ class TransferReleaseDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield TransferReleaseDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang ${whsCodeFrom}', 
+                errorMessage:
+                    '${qrResult} tidak di temukan di gudang ${whsCodeFrom}',
                 data: event.data,
               );
             } else {

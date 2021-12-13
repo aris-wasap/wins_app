@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/receipt_production_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/receipt_production_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class ReceiptProductionDetailEvent extends BlocEvent {
@@ -56,7 +56,8 @@ class ReceiptProductionDetailEventItemAdd extends ReceiptProductionDetailEvent {
         );
 }
 
-class ReceiptProductionDetailEventItemUpdate extends ReceiptProductionDetailEvent {
+class ReceiptProductionDetailEventItemUpdate
+    extends ReceiptProductionDetailEvent {
   ReceiptProductionDetailEventItemUpdate({
     @required Item item,
     @required int itemIndex,
@@ -66,7 +67,8 @@ class ReceiptProductionDetailEventItemUpdate extends ReceiptProductionDetailEven
         );
 }
 
-class ReceiptProductionDetailEventItemRemove extends ReceiptProductionDetailEvent {
+class ReceiptProductionDetailEventItemRemove
+    extends ReceiptProductionDetailEvent {
   ReceiptProductionDetailEventItemRemove({
     @required int itemIndex,
   }) : super(

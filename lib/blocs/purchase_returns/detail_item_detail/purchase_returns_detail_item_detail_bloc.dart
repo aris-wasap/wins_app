@@ -1,14 +1,16 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_state.dart';
-import 'package:admart_app/models/purchase_returns_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_state.dart';
+import 'package:wins_app/models/purchase_returns_detail_response.dart';
 
 class PurchaseReturnsDetailItemDetailBloc extends BlocEventStateBase<
-    PurchaseReturnsDetailItemDetailEvent, PurchaseReturnsDetailItemDetailState> {
+    PurchaseReturnsDetailItemDetailEvent,
+    PurchaseReturnsDetailItemDetailState> {
   PurchaseReturnsDetailItemDetailBloc(
     Item data,
   ) : super(
-          initialState: PurchaseReturnsDetailItemDetailState.noAction(data: data),
+          initialState:
+              PurchaseReturnsDetailItemDetailState.noAction(data: data),
         );
 
   @override

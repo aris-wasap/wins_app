@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_event.dart';
-import 'package:admart_app/blocs/return_sales/detail/return_sales_detail_state.dart';
-import 'package:admart_app/models/return_sales_detail_response.dart';
-import 'package:admart_app/models/return_sales_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/return_sales_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/return_sales/detail/return_sales_detail_event.dart';
+import 'package:wins_app/blocs/return_sales/detail/return_sales_detail_state.dart';
+import 'package:wins_app/models/return_sales_detail_response.dart';
+import 'package:wins_app/models/return_sales_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/return_sales_detail_response.dart'
     as returnSalesDetail;
 
-class ReturnSalesDetailBloc extends BlocEventStateBase<
-    ReturnSalesDetailEvent, ReturnSalesDetailState> {
+class ReturnSalesDetailBloc
+    extends BlocEventStateBase<ReturnSalesDetailEvent, ReturnSalesDetailState> {
   ReturnSalesDetailBloc()
       : super(
           initialState: ReturnSalesDetailState.noAction(),
@@ -87,13 +87,15 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReturnSalesDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (1)',
+                errorMessage:
+                    'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.returnRequestId == 0) {
                 yield ReturnSalesDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (2)',
+                  errorMessage:
+                      'Batch Number ${qrResult} tidak di temukan dari Return Request No. : ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReturnSalesDetailEventItemAdd) {
+    } else if (event is ReturnSalesDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield ReturnSalesDetailState.success(
@@ -150,10 +152,10 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            yield ReturnSalesDetailState.success( 
+            yield ReturnSalesDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<returnSalesDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<returnSalesDetail.Item>()),
             );
           }
         }
@@ -163,8 +165,7 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is ReturnSalesDetailEventPost) {
+    } else if (event is ReturnSalesDetailEventPost) {
       yield ReturnSalesDetailState.busy(
         data: event.data,
       );
@@ -185,10 +186,10 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            yield ReturnSalesDetailState.success( 
+            yield ReturnSalesDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<returnSalesDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<returnSalesDetail.Item>()),
             );
           }
         }
@@ -198,8 +199,7 @@ class ReturnSalesDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-     else if (event is ReturnSalesDetailEventCancel) {
+    } else if (event is ReturnSalesDetailEventCancel) {
       yield ReturnSalesDetailState.busy(
         data: currentState.data,
       );

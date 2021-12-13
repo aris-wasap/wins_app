@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_transfer_production_page.dart';
-import 'package:admart_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
+import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/goods_issue/detail/goods_issue_detail_bloc.dart';
-import 'package:admart_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
-import 'package:admart_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_transfer_production_response.dart'
+import 'package:wins_app/models/cfl_transfer_production_response.dart'
     as cflTransferProduction;
-import 'package:admart_app/pages/barcode_scan.dart';
+import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class GoodsIssueDetailPage extends StatefulWidget {
@@ -536,7 +536,6 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)))),
-
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),

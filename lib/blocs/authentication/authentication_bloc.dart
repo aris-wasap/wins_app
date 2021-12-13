@@ -1,9 +1,9 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/authentication/authentication_event.dart';
-import 'package:admart_app/blocs/authentication/authentication_state.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/login_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/authentication/authentication_event.dart';
+import 'package:wins_app/blocs/authentication/authentication_state.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/models/login_response.dart';
+import 'package:wins_app/resources/repository.dart';
 
 class AuthenticationBloc
     extends BlocEventStateBase<AuthenticationEvent, AuthenticationState> {

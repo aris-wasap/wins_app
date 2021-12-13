@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/purchase_returns_detail_response.dart';
+import 'package:wins_app/models/purchase_returns_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'purchase_returns_detail_scan_response.g.dart';
 
-PurchaseReturnsDetailScanResponse purchaseReturnsDetailScanResponseFromJson(String str) {
+PurchaseReturnsDetailScanResponse purchaseReturnsDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return PurchaseReturnsDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class PurchaseReturnsDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   PurchaseReturnsDetailScanResponse({
     this.error,
@@ -32,11 +33,11 @@ class PurchaseReturnsDetailScanResponse {
     this.data,
   });
 
-  factory PurchaseReturnsDetailScanResponse.fromJson(Map<String, dynamic> json) {
+  factory PurchaseReturnsDetailScanResponse.fromJson(
+      Map<String, dynamic> json) {
     return _$PurchaseReturnsDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$PurchaseReturnsDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$PurchaseReturnsDetailScanResponseToJson(this);
 }
-  
- 

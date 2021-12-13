@@ -1,25 +1,25 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_event.dart';
-import 'package:admart_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_state.dart';
-import 'package:admart_app/models/cfl_purchase_delivery_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_state.dart';
+import 'package:wins_app/models/cfl_purchase_delivery_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEvent, CflPurchaseDeliveryState> {
+class CflPurchaseDeliveryBloc extends BlocEventStateBase<
+    CflPurchaseDeliveryEvent, CflPurchaseDeliveryState> {
   CflPurchaseDeliveryBloc()
       : super(
           initialState: CflPurchaseDeliveryState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
   @override
-  Stream<CflPurchaseDeliveryState> eventHandler(
-      CflPurchaseDeliveryEvent event, CflPurchaseDeliveryState currentState) async* {
+  Stream<CflPurchaseDeliveryState> eventHandler(CflPurchaseDeliveryEvent event,
+      CflPurchaseDeliveryState currentState) async* {
     switch (event.event) {
       case CflPurchaseDeliveryEventType.activedSearch:
         yield CflPurchaseDeliveryState.success(
@@ -38,8 +38,8 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
           );
           try {
             var _repository = Repository();
-            CflPurchaseDeliveryResponse response = await _repository
-                .cflPurchaseDelivery_FetchNextPage(0,  "");
+            CflPurchaseDeliveryResponse response =
+                await _repository.cflPurchaseDelivery_FetchNextPage(0, "");
             if (response == null) {
               yield CflPurchaseDeliveryState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflPurchaseDeliveryState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
         }
         break;
       case CflPurchaseDeliveryEventType.firstPage:
-        { 
-
+        {
           yield CflPurchaseDeliveryState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -85,9 +83,8 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
           );
           try {
             var _repository = Repository();
-            CflPurchaseDeliveryResponse response =
-                await _repository.cflPurchaseDelivery_FetchNextPage(
-                    0,  event.searchQuery);
+            CflPurchaseDeliveryResponse response = await _repository
+                .cflPurchaseDelivery_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPurchaseDeliveryState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +102,6 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPurchaseDeliveryState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +130,7 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
             var _repository = Repository();
             CflPurchaseDeliveryResponse response =
                 await _repository.cflPurchaseDelivery_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery);
+                    currentState.data.length, event.searchQuery);
             if (response == null) {
               yield CflPurchaseDeliveryState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +148,6 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflPurchaseDeliveryState.success(
@@ -182,9 +176,8 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
           );
           try {
             var _repository = Repository();
-            CflPurchaseDeliveryResponse response = await _repository.cflPurchaseDelivery_FetchNextPage(
-               0, 
-                event.searchQuery);
+            CflPurchaseDeliveryResponse response = await _repository
+                .cflPurchaseDelivery_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPurchaseDeliveryState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +195,6 @@ class CflPurchaseDeliveryBloc extends BlocEventStateBase<CflPurchaseDeliveryEven
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPurchaseDeliveryState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

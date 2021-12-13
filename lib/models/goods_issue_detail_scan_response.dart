@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'goods_issue_detail_scan_response.g.dart';
 
@@ -24,7 +24,7 @@ class GoodsIssueDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   GoodsIssueDetailScanResponse({
     this.error,
@@ -38,5 +38,3 @@ class GoodsIssueDetailScanResponse {
 
   Map<String, dynamic> toJson() => _$GoodsIssueDetailScanResponseToJson(this);
 }
-  
- 

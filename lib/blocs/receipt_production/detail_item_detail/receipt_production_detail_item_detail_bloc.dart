@@ -1,14 +1,16 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_state.dart';
-import 'package:admart_app/models/receipt_production_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/receipt_production/detail_item_detail/receipt_production_detail_item_detail_state.dart';
+import 'package:wins_app/models/receipt_production_detail_response.dart';
 
 class ReceiptProductionDetailItemDetailBloc extends BlocEventStateBase<
-    ReceiptProductionDetailItemDetailEvent, ReceiptProductionDetailItemDetailState> {
+    ReceiptProductionDetailItemDetailEvent,
+    ReceiptProductionDetailItemDetailState> {
   ReceiptProductionDetailItemDetailBloc(
     Item data,
   ) : super(
-          initialState: ReceiptProductionDetailItemDetailState.noAction(data: data),
+          initialState:
+              ReceiptProductionDetailItemDetailState.noAction(data: data),
         );
 
   @override

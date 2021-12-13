@@ -1,4 +1,4 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 import 'package:meta/meta.dart';
 
 class ApplicationInitializationState extends BlocState {

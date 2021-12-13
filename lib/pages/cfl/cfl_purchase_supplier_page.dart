@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_bloc.dart';
-import 'package:admart_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_event.dart';
-import 'package:admart_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_bloc.dart';
+import 'package:wins_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_supplier/cfl_purchase_supplier_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflPurchaseSupplierPage extends StatefulWidget {
   @override
-  _CflPurchaseSupplierPageState createState() => _CflPurchaseSupplierPageState();
+  _CflPurchaseSupplierPageState createState() =>
+      _CflPurchaseSupplierPageState();
 }
 
 class _CflPurchaseSupplierPageState extends State<CflPurchaseSupplierPage> {
@@ -78,12 +79,11 @@ class _CflPurchaseSupplierPageState extends State<CflPurchaseSupplierPage> {
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -101,12 +101,11 @@ class _CflPurchaseSupplierPageState extends State<CflPurchaseSupplierPage> {
         title: Text("Choose Purchase Supplier"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -165,9 +164,9 @@ class _CflPurchaseSupplierPageState extends State<CflPurchaseSupplierPage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(bsupplier: Bsupplier(bottom: BsupplierSide(width: 1))),
@@ -179,9 +178,9 @@ class _CflPurchaseSupplierPageState extends State<CflPurchaseSupplierPage> {
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ 
-                    Text("${data[index].vendorCode??''}"),
-                    Text("${data[index].vendorName??''}"),
+                  children: <Widget>[
+                    Text("${data[index].vendorCode ?? ''}"),
+                    Text("${data[index].vendorName ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

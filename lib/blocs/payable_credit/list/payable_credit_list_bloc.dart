@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/payable_credit/list/payable_credit_list_event.dart';
-import 'package:admart_app/blocs/payable_credit/list/payable_credit_list_state.dart';
-import 'package:admart_app/models/payable_credit_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/payable_credit/list/payable_credit_list_event.dart';
+import 'package:wins_app/blocs/payable_credit/list/payable_credit_list_state.dart';
+import 'package:wins_app/models/payable_credit_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PayableCreditListBloc
@@ -14,7 +14,8 @@ class PayableCreditListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {

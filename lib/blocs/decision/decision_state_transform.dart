@@ -1,13 +1,13 @@
-import 'package:admart_app/bloc_helpers/bloc_state_transform_base.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/blocs/authentication/authentication_state.dart';
-import 'package:admart_app/blocs/decision/decision_state_action.dart';
-import 'package:admart_app/pages/authentication_page.dart';
-import 'package:admart_app/pages/home_page.dart';
+import 'package:wins_app/bloc_helpers/bloc_state_transform_base.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/blocs/authentication/authentication_state.dart';
+import 'package:wins_app/blocs/decision/decision_state_action.dart';
+import 'package:wins_app/pages/authentication_page.dart';
+import 'package:wins_app/pages/home_page.dart';
 
 ///
 /// Business Logic related to the DecisionPage
-/// 
+///
 /// based on the AuthenticationState
 ///
 class DecisionStateTransform
@@ -23,9 +23,10 @@ class DecisionStateTransform
   //
   factory DecisionStateTransform.init(AuthenticationBloc blocIn) {
     AuthenticationState authenticationState = blocIn.lastState;
-    DecisionStateAction action = authenticationState == null || !authenticationState.isAuthenticated
-        ? DecisionStateAction.routeToPage(AuthenticationPage())
-        : DecisionStateAction.routeToPage(HomePage());
+    DecisionStateAction action =
+        authenticationState == null || !authenticationState.isAuthenticated
+            ? DecisionStateAction.routeToPage(AuthenticationPage())
+            : DecisionStateAction.routeToPage(HomePage());
 
     return DecisionStateTransform(
       initialAction: action,

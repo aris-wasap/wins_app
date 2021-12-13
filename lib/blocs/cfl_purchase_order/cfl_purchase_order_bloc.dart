@@ -1,19 +1,19 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_purchase_order/cfl_purchase_order_event.dart';
-import 'package:admart_app/blocs/cfl_purchase_order/cfl_purchase_order_state.dart';
-import 'package:admart_app/models/cfl_purchase_order_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_purchase_order/cfl_purchase_order_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_order/cfl_purchase_order_state.dart';
+import 'package:wins_app/models/cfl_purchase_order_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, CflPurchaseOrderState> {
+class CflPurchaseOrderBloc
+    extends BlocEventStateBase<CflPurchaseOrderEvent, CflPurchaseOrderState> {
   CflPurchaseOrderBloc()
       : super(
           initialState: CflPurchaseOrderState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflPurchaseOrderResponse response = await _repository
-                .cflPurchaseOrder_FetchNextPage(0,  "");
+            CflPurchaseOrderResponse response =
+                await _repository.cflPurchaseOrder_FetchNextPage(0, "");
             if (response == null) {
               yield CflPurchaseOrderState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +56,7 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflPurchaseOrderState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +75,7 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
         }
         break;
       case CflPurchaseOrderEventType.firstPage:
-        { 
-
+        {
           yield CflPurchaseOrderState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -85,9 +83,8 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflPurchaseOrderResponse response =
-                await _repository.cflPurchaseOrder_FetchNextPage(
-                    0,  event.searchQuery);
+            CflPurchaseOrderResponse response = await _repository
+                .cflPurchaseOrder_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPurchaseOrderState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +102,6 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPurchaseOrderState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +130,7 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
             var _repository = Repository();
             CflPurchaseOrderResponse response =
                 await _repository.cflPurchaseOrder_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery);
+                    currentState.data.length, event.searchQuery);
             if (response == null) {
               yield CflPurchaseOrderState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +148,6 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflPurchaseOrderState.success(
@@ -182,9 +176,8 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
           );
           try {
             var _repository = Repository();
-            CflPurchaseOrderResponse response = await _repository.cflPurchaseOrder_FetchNextPage(
-               0, 
-                event.searchQuery);
+            CflPurchaseOrderResponse response = await _repository
+                .cflPurchaseOrder_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPurchaseOrderState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +195,6 @@ class CflPurchaseOrderBloc extends BlocEventStateBase<CflPurchaseOrderEvent, Cfl
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPurchaseOrderState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

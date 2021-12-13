@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/delivery_order_detail_response.dart';
+import 'package:wins_app/models/delivery_order_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'delivery_order_detail_scan_response.g.dart';
 
-DeliveryOrderDetailScanResponse deliveryOrderDetailScanResponseFromJson(String str) {
+DeliveryOrderDetailScanResponse deliveryOrderDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return DeliveryOrderDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class DeliveryOrderDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   DeliveryOrderDetailScanResponse({
     this.error,
@@ -36,7 +37,6 @@ class DeliveryOrderDetailScanResponse {
     return _$DeliveryOrderDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$DeliveryOrderDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$DeliveryOrderDetailScanResponseToJson(this);
 }
-  
- 

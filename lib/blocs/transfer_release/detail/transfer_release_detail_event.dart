@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/transfer_release_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/transfer_release_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class TransferReleaseDetailEvent extends BlocEvent {
@@ -9,7 +9,7 @@ class TransferReleaseDetailEvent extends BlocEvent {
     this.item,
     this.whsCodeFrom,
     this.itemIndex,
-    this.qrResult, 
+    this.qrResult,
   });
 
   final int id;
@@ -17,7 +17,7 @@ class TransferReleaseDetailEvent extends BlocEvent {
   final Item item;
   final String whsCodeFrom;
   final int itemIndex;
-  final String qrResult; 
+  final String qrResult;
 }
 
 class TransferReleaseDetailEventNormal extends TransferReleaseDetailEvent {
@@ -42,8 +42,7 @@ class TransferReleaseDetailEventScan extends TransferReleaseDetailEvent {
           whsCodeFrom: whsCodeFrom,
           qrResult: qrResult,
         );
-} 
- 
+}
 
 class TransferReleaseDetailEventItemAdd extends TransferReleaseDetailEvent {
   TransferReleaseDetailEventItemAdd({
@@ -63,14 +62,13 @@ class TransferReleaseDetailEventItemUpdate extends TransferReleaseDetailEvent {
         );
 }
 
-class TransferReleaseDetailEventItemRemove extends TransferReleaseDetailEvent { 
+class TransferReleaseDetailEventItemRemove extends TransferReleaseDetailEvent {
   TransferReleaseDetailEventItemRemove({
     @required int itemIndex,
   }) : super(
           itemIndex: itemIndex,
         );
 }
-
 
 class TransferReleaseDetailEventAdd extends TransferReleaseDetailEvent {
   TransferReleaseDetailEventAdd({

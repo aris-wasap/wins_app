@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/transfer_reject/list/transfer_reject_list_bloc.dart';
-import 'package:admart_app/blocs/transfer_reject/list/transfer_reject_list_event.dart';
-import 'package:admart_app/blocs/transfer_reject/list/transfer_reject_list_state.dart';
-import 'package:admart_app/pages/transfer_reject/transfer_reject_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/transfer_reject/list/transfer_reject_list_bloc.dart';
+import 'package:wins_app/blocs/transfer_reject/list/transfer_reject_list_event.dart';
+import 'package:wins_app/blocs/transfer_reject/list/transfer_reject_list_state.dart';
+import 'package:wins_app/pages/transfer_reject/transfer_reject_detail_page.dart';
 import 'package:intl/intl.dart';
 
 class TransferRejectListPage extends StatefulWidget {
@@ -75,18 +75,16 @@ class _TransferRejectListPageState extends State<TransferRejectListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Transfer Reject",
-            hintStyle: TextStyle(color: Colors.white)
-          ),
+              hintText: "Search Transfer Reject",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.yellow[900],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -104,12 +102,11 @@ class _TransferRejectListPageState extends State<TransferRejectListPage> {
         title: Text("List Transfer Reject"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.yellow[900],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -156,12 +153,11 @@ class _TransferRejectListPageState extends State<TransferRejectListPage> {
                 onRefresh: _handleRefresh,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
-                  ),
+                      gradient: LinearGradient(
+                    colors: [const Color(0xfff9fbe7), const Color(0xffd7ccc8)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )),
                   constraints: BoxConstraints.expand(),
                   child: _buildList(),
                 ),

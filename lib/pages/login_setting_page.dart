@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSettingPage extends StatefulWidget {
@@ -36,9 +36,10 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Login Settings", style: TextStyle(
-                  color: Colors.white
-          ),),
+          title: Text(
+            "Login Settings",
+            style: TextStyle(color: Colors.white),
+          ),
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: bgGradientAppBar,
@@ -61,16 +62,14 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
           ],
         ),
         body: Container(
-          // constraints: BoxConstraints.expand(),
-          child:Container(
-            alignment: Alignment.bottomCenter,
-            height: 500,
-            child: buildForm(),
-          ),
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient: bgGradientPage)
-        ),
+            // constraints: BoxConstraints.expand(),
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              height: 500,
+              child: buildForm(),
+            ),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(gradient: bgGradientPage)),
       ),
     );
   }
@@ -89,13 +88,12 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                 TextFormField(
                   controller: _urlController,
                   decoration: InputDecoration(
-                    hintText: "URL",
-                    labelText: "URL",
-                    contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0)
-                    )
-                  ),
+                      hintText: "URL",
+                      labelText: "URL",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
                 ),
               ],
             ),

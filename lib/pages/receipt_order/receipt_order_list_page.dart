@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/receipt_order/list/receipt_order_list_bloc.dart';
-import 'package:admart_app/blocs/receipt_order/list/receipt_order_list_event.dart';
-import 'package:admart_app/blocs/receipt_order/list/receipt_order_list_state.dart';
-import 'package:admart_app/pages/receipt_order/receipt_order_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_bloc.dart';
+import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_event.dart';
+import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_state.dart';
+import 'package:wins_app/pages/receipt_order/receipt_order_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class ReceiptOrderListPage extends StatefulWidget {
   @override

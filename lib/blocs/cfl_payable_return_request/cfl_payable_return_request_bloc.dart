@@ -1,25 +1,26 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_payable_return_request/cfl_payable_return_request_event.dart';
-import 'package:admart_app/blocs/cfl_payable_return_request/cfl_payable_return_request_state.dart';
-import 'package:admart_app/models/cfl_payable_return_request_response.dart'; 
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_payable_return_request/cfl_payable_return_request_event.dart';
+import 'package:wins_app/blocs/cfl_payable_return_request/cfl_payable_return_request_state.dart';
+import 'package:wins_app/models/cfl_payable_return_request_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnRequestEvent, CflPayableReturnRequestState> {
+class CflPayableReturnRequestBloc extends BlocEventStateBase<
+    CflPayableReturnRequestEvent, CflPayableReturnRequestState> {
   CflPayableReturnRequestBloc()
       : super(
           initialState: CflPayableReturnRequestState.noAction(),
-        ); 
- 
-  @override
-  void dispose() { 
+        );
 
+  @override
+  void dispose() {
     super.dispose();
   }
 
   @override
   Stream<CflPayableReturnRequestState> eventHandler(
-      CflPayableReturnRequestEvent event, CflPayableReturnRequestState currentState) async* {
+      CflPayableReturnRequestEvent event,
+      CflPayableReturnRequestState currentState) async* {
     switch (event.event) {
       case CflPayableReturnRequestEventType.activedSearch:
         yield CflPayableReturnRequestState.success(
@@ -38,8 +39,8 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
           );
           try {
             var _repository = Repository();
-            CflPayableReturnRequestResponse response = await _repository
-                .cflPayableReturnRequest_FetchNextPage(0,  "");
+            CflPayableReturnRequestResponse response =
+                await _repository.cflPayableReturnRequest_FetchNextPage(0, "");
             if (response == null) {
               yield CflPayableReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -56,8 +57,7 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
-              } else { 
-
+              } else {
                 yield CflPayableReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: false,
@@ -76,8 +76,7 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
         }
         break;
       case CflPayableReturnRequestEventType.firstPage:
-        { 
-
+        {
           yield CflPayableReturnRequestState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
@@ -85,9 +84,8 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
           );
           try {
             var _repository = Repository();
-            CflPayableReturnRequestResponse response =
-                await _repository.cflPayableReturnRequest_FetchNextPage(
-                    0,  event.searchQuery);
+            CflPayableReturnRequestResponse response = await _repository
+                .cflPayableReturnRequest_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPayableReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -105,7 +103,6 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPayableReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -134,8 +131,7 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
             var _repository = Repository();
             CflPayableReturnRequestResponse response =
                 await _repository.cflPayableReturnRequest_FetchNextPage(
-                    currentState.data.length, 
-                    event.searchQuery);
+                    currentState.data.length, event.searchQuery);
             if (response == null) {
               yield CflPayableReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -153,7 +149,6 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                
                 var data = currentState.data;
                 data.addAll(response.data);
                 yield CflPayableReturnRequestState.success(
@@ -182,9 +177,8 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
           );
           try {
             var _repository = Repository();
-            CflPayableReturnRequestResponse response = await _repository.cflPayableReturnRequest_FetchNextPage(
-               0, 
-                event.searchQuery);
+            CflPayableReturnRequestResponse response = await _repository
+                .cflPayableReturnRequest_FetchNextPage(0, event.searchQuery);
             if (response == null) {
               yield CflPayableReturnRequestState.failure(
                 errorMessage: 'Response null',
@@ -202,7 +196,6 @@ class CflPayableReturnRequestBloc extends BlocEventStateBase<CflPayableReturnReq
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                 
                 yield CflPayableReturnRequestState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,

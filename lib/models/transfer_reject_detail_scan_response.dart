@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/transfer_reject_detail_response.dart';
+import 'package:wins_app/models/transfer_reject_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'transfer_reject_detail_scan_response.g.dart';
 
-TransferRejectDetailScanResponse transferRejectDetailScanResponseFromJson(String str) {
+TransferRejectDetailScanResponse transferRejectDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return TransferRejectDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class TransferRejectDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   TransferRejectDetailScanResponse({
     this.error,
@@ -36,7 +37,6 @@ class TransferRejectDetailScanResponse {
     return _$TransferRejectDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TransferRejectDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$TransferRejectDetailScanResponseToJson(this);
 }
-  
- 

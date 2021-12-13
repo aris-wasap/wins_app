@@ -6,7 +6,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 

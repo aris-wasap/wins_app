@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/inventory_transfer_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/inventory_transfer_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class InventoryTransferDetailEvent extends BlocEvent {
@@ -13,7 +13,7 @@ class InventoryTransferDetailEvent extends BlocEvent {
     this.binCodeFrom,
     this.item,
     this.itemIndex,
-    this.qrResult, 
+    this.qrResult,
   });
 
   final int id;
@@ -25,7 +25,7 @@ class InventoryTransferDetailEvent extends BlocEvent {
   final String binCodeFrom;
   final Item item;
   final int itemIndex;
-  final String qrResult; 
+  final String qrResult;
 }
 
 class InventoryTransferDetailEventNormal extends InventoryTransferDetailEvent {
@@ -54,12 +54,11 @@ class InventoryTransferDetailEventScan extends InventoryTransferDetailEvent {
           requestId: requestId,
           requestNo: requestNo,
           whsCodeFrom: whsCodeFrom,
-          binCodeFrom : binCodeFrom,
-          absEntryFrom : absEntryFrom,
+          binCodeFrom: binCodeFrom,
+          absEntryFrom: absEntryFrom,
           qrResult: qrResult,
         );
-} 
- 
+}
 
 class InventoryTransferDetailEventItemAdd extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventItemAdd({
@@ -69,7 +68,8 @@ class InventoryTransferDetailEventItemAdd extends InventoryTransferDetailEvent {
         );
 }
 
-class InventoryTransferDetailEventItemUpdate extends InventoryTransferDetailEvent {
+class InventoryTransferDetailEventItemUpdate
+    extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventItemUpdate({
     @required Item item,
     @required int itemIndex,
@@ -79,14 +79,14 @@ class InventoryTransferDetailEventItemUpdate extends InventoryTransferDetailEven
         );
 }
 
-class InventoryTransferDetailEventItemRemove extends InventoryTransferDetailEvent { 
+class InventoryTransferDetailEventItemRemove
+    extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventItemRemove({
     @required int itemIndex,
   }) : super(
           itemIndex: itemIndex,
         );
 }
-
 
 class InventoryTransferDetailEventAdd extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventAdd({

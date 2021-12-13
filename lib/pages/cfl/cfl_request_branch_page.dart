@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_bloc.dart';
-import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_event.dart';
-import 'package:admart_app/blocs/cfl_request_branch/cfl_request_branch_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_request_branch/cfl_request_branch_bloc.dart';
+import 'package:wins_app/blocs/cfl_request_branch/cfl_request_branch_event.dart';
+import 'package:wins_app/blocs/cfl_request_branch/cfl_request_branch_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflRequestBranchPage extends StatefulWidget {
   @override
@@ -161,7 +161,8 @@ class _CflRequestBranchPageState extends State<CflRequestBranchPage> {
           return Card(
             child: (Container(
               decoration: BoxDecoration(
-                gradient: index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
+                gradient:
+                    index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
               ),
               //margin: const EdgeInsets.only(top: 8),
               // decoration:
@@ -172,13 +173,13 @@ class _CflRequestBranchPageState extends State<CflRequestBranchPage> {
                   title: Text(
                       "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}  "),
                   subtitle: Column(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("From : ${data[index].branchName ?? ''}"),
-                    Text("To : ${data[index].toBranchName ?? ''}"),
-                  ],
-                ),
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("From : ${data[index].branchName ?? ''}"),
+                      Text("To : ${data[index].toBranchName ?? ''}"),
+                    ],
+                  ),
                   leading: Icon(Icons.keyboard_arrow_left),
                   onTap: () {
                     Navigator.pop(context, data[index]);

@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_warehouse/cfl_warehouse_bloc.dart';
-import 'package:admart_app/blocs/cfl_warehouse/cfl_warehouse_event.dart';
-import 'package:admart_app/blocs/cfl_warehouse/cfl_warehouse_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_warehouse/cfl_warehouse_bloc.dart';
+import 'package:wins_app/blocs/cfl_warehouse/cfl_warehouse_event.dart';
+import 'package:wins_app/blocs/cfl_warehouse/cfl_warehouse_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/models/cfl_warehouse_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/models/cfl_warehouse_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflWarehousePage extends StatefulWidget {
   CflWarehousePage(this.branchId);

@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/blocs/receipt_production/list/receipt_production_list_bloc.dart';
-import 'package:admart_app/blocs/receipt_production/list/receipt_production_list_event.dart';
-import 'package:admart_app/blocs/receipt_production/list/receipt_production_list_state.dart';
-import 'package:admart_app/pages/receipt_production/receipt_production_detail_page.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/blocs/receipt_production/list/receipt_production_list_bloc.dart';
+import 'package:wins_app/blocs/receipt_production/list/receipt_production_list_event.dart';
+import 'package:wins_app/blocs/receipt_production/list/receipt_production_list_state.dart';
+import 'package:wins_app/pages/receipt_production/receipt_production_detail_page.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class ReceiptProductionListPage extends StatefulWidget {
   @override
-  _ReceiptProductionListPageState createState() => _ReceiptProductionListPageState();
+  _ReceiptProductionListPageState createState() =>
+      _ReceiptProductionListPageState();
 }
 
 class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
@@ -76,19 +77,16 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Receipt Production",
-            hintStyle: TextStyle(color: Colors.white)
-            
-          ),
+              hintText: "Search Receipt Production",
+              hintStyle: TextStyle(color: Colors.white)),
         ),
         backgroundColor: Colors.orange[500],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.orange[500],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.orange[500],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -105,18 +103,17 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
       return AppBar(
         title: Text("List Receipt"),
         flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: bgGradientAppBar,
-              ),
-            ),
+          decoration: BoxDecoration(
+            gradient: bgGradientAppBar,
+          ),
+        ),
         //backgroundColor: appBarBgColors,
         bottom: PreferredSize(
-          child: Container(
-            color: bgBlue,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgBlue,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -186,7 +183,7 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0, left: 8.0),
         child: Card(
-              child: ListView.separated(
+          child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) => Divider(),
             controller: _scrollController,
             itemCount: data.length + 1,
@@ -194,8 +191,9 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
               if (index < data.length) {
                 return (Container(
                   decoration: BoxDecoration(
-                          gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                        ),
+                    gradient:
+                        index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+                  ),
                   margin: const EdgeInsets.all(3),
                   // decoration:
                   //     BoxDecoration(border: Border(bottom: BorderSide(width: 0.5))),
@@ -209,7 +207,8 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           //Text(data[index].customerName),
-                          Text("${data[index].status} - ${data[index].createdUser}"),
+                          Text(
+                              "${data[index].status} - ${data[index].createdUser}"),
                         ],
                       ),
                       leading: ClipOval(
@@ -241,7 +240,10 @@ class _ReceiptProductionListPageState extends State<ReceiptProductionListPage> {
                 return ListTile(
                   title: Text(
                     'Error while loading data...',
-                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontSize: 16.0),
                   ),
                   isThreeLine: false,
                   leading: CircleAvatar(

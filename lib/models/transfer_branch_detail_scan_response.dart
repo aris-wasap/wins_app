@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/transfer_branch_detail_response.dart';
+import 'package:wins_app/models/transfer_branch_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'transfer_branch_detail_scan_response.g.dart';
 
-TransferBranchDetailScanResponse transferBranchDetailScanResponseFromJson(String str) {
+TransferBranchDetailScanResponse transferBranchDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return TransferBranchDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class TransferBranchDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   TransferBranchDetailScanResponse({
     this.error,
@@ -36,7 +37,6 @@ class TransferBranchDetailScanResponse {
     return _$TransferBranchDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TransferBranchDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$TransferBranchDetailScanResponseToJson(this);
 }
-  
- 

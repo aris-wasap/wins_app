@@ -1,15 +1,15 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/return_sales_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/return_sales_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class ReturnSalesDetailItemDetailEvent extends BlocEvent {
   ReturnSalesDetailItemDetailEvent({
     this.data,
-    this.qty, 
+    this.qty,
   });
 
   final Item data;
-  final double qty; 
+  final double qty;
 }
 
 class ReturnSalesDetailItemDetailEventQty
@@ -20,4 +20,3 @@ class ReturnSalesDetailItemDetailEventQty
           qty: qty,
         );
 }
- 

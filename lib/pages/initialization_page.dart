@@ -1,7 +1,7 @@
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/application_initialization/application_initialization_bloc.dart';
-import 'package:admart_app/blocs/application_initialization/application_initialization_event.dart';
-import 'package:admart_app/blocs/application_initialization/application_initialization_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/application_initialization/application_initialization_bloc.dart';
+import 'package:wins_app/blocs/application_initialization/application_initialization_event.dart';
+import 'package:wins_app/blocs/application_initialization/application_initialization_state.dart';
 import 'package:flutter/material.dart';
 
 class InitializationPage extends StatefulWidget {

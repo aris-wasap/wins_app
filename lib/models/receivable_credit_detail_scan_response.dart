@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/receivable_credit_detail_response.dart';
+import 'package:wins_app/models/receivable_credit_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'receivable_credit_detail_scan_response.g.dart';
 
-ReceivableCreditDetailScanResponse receivableCreditDetailScanResponseFromJson(String str) {
+ReceivableCreditDetailScanResponse receivableCreditDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return ReceivableCreditDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class ReceivableCreditDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   ReceivableCreditDetailScanResponse({
     this.error,
@@ -32,11 +33,11 @@ class ReceivableCreditDetailScanResponse {
     this.data,
   });
 
-  factory ReceivableCreditDetailScanResponse.fromJson(Map<String, dynamic> json) {
+  factory ReceivableCreditDetailScanResponse.fromJson(
+      Map<String, dynamic> json) {
     return _$ReceivableCreditDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$ReceivableCreditDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ReceivableCreditDetailScanResponseToJson(this);
 }
-  
- 

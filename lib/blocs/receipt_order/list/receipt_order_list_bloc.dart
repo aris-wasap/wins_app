@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_order/list/receipt_order_list_event.dart';
-import 'package:admart_app/blocs/receipt_order/list/receipt_order_list_state.dart';
-import 'package:admart_app/models/receipt_order_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_event.dart';
+import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_state.dart';
+import 'package:wins_app/models/receipt_order_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ReceiptOrderListBloc
@@ -14,7 +14,8 @@ class ReceiptOrderListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {
@@ -25,8 +26,8 @@ class ReceiptOrderListBloc
   }
 
   @override
-  Stream<ReceiptOrderListState> eventHandler(ReceiptOrderListEvent event,
-      ReceiptOrderListState currentState) async* {
+  Stream<ReceiptOrderListState> eventHandler(
+      ReceiptOrderListEvent event, ReceiptOrderListState currentState) async* {
     switch (event.event) {
       case ReceiptOrderListEventType.activedSearch:
         {

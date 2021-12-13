@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'goods_issue_detail_refresh_response.g.dart';
 
-GoodsIssueDetailRefreshResponse goodsIssueDetailRefreshResponseFromJson(String str) {
+GoodsIssueDetailRefreshResponse goodsIssueDetailRefreshResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return GoodsIssueDetailRefreshResponse.fromJson(jsonData);
 }
@@ -36,6 +37,6 @@ class GoodsIssueDetailRefreshResponse {
     return _$GoodsIssueDetailRefreshResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$GoodsIssueDetailRefreshResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$GoodsIssueDetailRefreshResponseToJson(this);
 }
- 

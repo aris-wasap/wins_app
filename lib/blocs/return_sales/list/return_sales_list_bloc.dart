@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_event.dart';
-import 'package:admart_app/blocs/return_sales/list/return_sales_list_state.dart';
-import 'package:admart_app/models/return_sales_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/return_sales/list/return_sales_list_event.dart';
+import 'package:wins_app/blocs/return_sales/list/return_sales_list_state.dart';
+import 'package:wins_app/models/return_sales_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ReturnSalesListBloc
@@ -14,7 +14,8 @@ class ReturnSalesListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {
@@ -25,8 +26,8 @@ class ReturnSalesListBloc
   }
 
   @override
-  Stream<ReturnSalesListState> eventHandler(ReturnSalesListEvent event,
-      ReturnSalesListState currentState) async* {
+  Stream<ReturnSalesListState> eventHandler(
+      ReturnSalesListEvent event, ReturnSalesListState currentState) async* {
     switch (event.event) {
       case ReturnSalesListEventType.activedSearch:
         {

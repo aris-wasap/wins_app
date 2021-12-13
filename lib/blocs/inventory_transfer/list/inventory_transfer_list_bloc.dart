@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
-import 'package:admart_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
-import 'package:admart_app/models/inventory_transfer_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/inventory_transfer/list/inventory_transfer_list_event.dart';
+import 'package:wins_app/blocs/inventory_transfer/list/inventory_transfer_list_state.dart';
+import 'package:wins_app/models/inventory_transfer_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class InventoryTransferListBloc
-    extends BlocEventStateBase<InventoryTransferListEvent, InventoryTransferListState> {
+class InventoryTransferListBloc extends BlocEventStateBase<
+    InventoryTransferListEvent, InventoryTransferListState> {
   InventoryTransferListBloc()
       : super(
           initialState: InventoryTransferListState.noAction(),
@@ -14,7 +14,8 @@ class InventoryTransferListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {
@@ -25,7 +26,8 @@ class InventoryTransferListBloc
   }
 
   @override
-  Stream<InventoryTransferListState> eventHandler(InventoryTransferListEvent event,
+  Stream<InventoryTransferListState> eventHandler(
+      InventoryTransferListEvent event,
       InventoryTransferListState currentState) async* {
     switch (event.event) {
       case InventoryTransferListEventType.activedSearch:

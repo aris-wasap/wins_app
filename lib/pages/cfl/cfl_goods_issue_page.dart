@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_goods_issue/cfl_goods_issue_bloc.dart';
-import 'package:admart_app/blocs/cfl_goods_issue/cfl_goods_issue_event.dart';
-import 'package:admart_app/blocs/cfl_goods_issue/cfl_goods_issue_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_goods_issue/cfl_goods_issue_bloc.dart';
+import 'package:wins_app/blocs/cfl_goods_issue/cfl_goods_issue_event.dart';
+import 'package:wins_app/blocs/cfl_goods_issue/cfl_goods_issue_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflGoodsIssuePage extends StatefulWidget {
   @override
@@ -78,12 +78,11 @@ class _CflGoodsIssuePageState extends State<CflGoodsIssuePage> {
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
@@ -101,12 +100,11 @@ class _CflGoodsIssuePageState extends State<CflGoodsIssuePage> {
         title: Text("Choose Goods Issue"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-          child: Container(
-            color: bgOrange,
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -165,9 +163,9 @@ class _CflGoodsIssuePageState extends State<CflGoodsIssuePage> {
       itemBuilder: (contex, index) {
         if (index < data.length) {
           return (Container(
-             decoration: BoxDecoration(
-                    gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
-                  ),
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
             margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),

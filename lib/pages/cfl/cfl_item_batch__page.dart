@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_item_batch/cfl_item_batch_bloc.dart';
-import 'package:admart_app/blocs/cfl_item_batch/cfl_item_batch_event.dart';
-import 'package:admart_app/blocs/cfl_item_batch/cfl_item_batch_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_item_batch/cfl_item_batch_bloc.dart';
+import 'package:wins_app/blocs/cfl_item_batch/cfl_item_batch_event.dart';
+import 'package:wins_app/blocs/cfl_item_batch/cfl_item_batch_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/models/cfl_item_batch_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/models/cfl_item_batch_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflItemBatchPage extends StatefulWidget {
   CflItemBatchPage(this.whsCode, this.bacthNo, this.id);
@@ -37,12 +37,11 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       bloc.emitEvent(CflItemBatchEvent(
-        event: CflItemBatchEventType.firstPage,
-        searchQuery: _searchQueryController.text,
-        whsCode: whsCode,
-        batchNo: batchNo,
-        id:id
-      ));
+          event: CflItemBatchEventType.firstPage,
+          searchQuery: _searchQueryController.text,
+          whsCode: whsCode,
+          batchNo: batchNo,
+          id: id));
     });
   }
 
@@ -50,12 +49,11 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
       bloc.emitEvent(CflItemBatchEvent(
-        event: CflItemBatchEventType.nextPage,
-        searchQuery: _searchQueryController.text,
-        whsCode: whsCode,
-        batchNo: batchNo,
-        id:id
-      ));
+          event: CflItemBatchEventType.nextPage,
+          searchQuery: _searchQueryController.text,
+          whsCode: whsCode,
+          batchNo: batchNo,
+          id: id));
     }
   }
 
@@ -64,11 +62,10 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
     super.initState();
 
     bloc.emitEvent(CflItemBatchEvent(
-      event: CflItemBatchEventType.firstPage,
-      whsCode: whsCode,
-      batchNo: batchNo,
-      id:id
-    ));
+        event: CflItemBatchEventType.firstPage,
+        whsCode: whsCode,
+        batchNo: batchNo,
+        id: id));
 
     _scrollController = ScrollController()..addListener(_onScroll);
 
@@ -107,12 +104,11 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
               onPressed: () {
                 _searchQueryController.text = "";
                 bloc.emitEvent(CflItemBatchEvent(
-                  event: CflItemBatchEventType.deactivedSearch,
-                  searchQuery: _searchQueryController.text,
-                  whsCode: whsCode,
-                  batchNo: batchNo,
-                  id:id
-                ));
+                    event: CflItemBatchEventType.deactivedSearch,
+                    searchQuery: _searchQueryController.text,
+                    whsCode: whsCode,
+                    batchNo: batchNo,
+                    id: id));
               }),
         ],
       );
@@ -131,11 +127,10 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
             icon: Icon(Icons.search),
             onPressed: () {
               bloc.emitEvent(CflItemBatchEvent(
-                event: CflItemBatchEventType.activedSearch,
-                whsCode: whsCode,
-                batchNo: batchNo,
-                id:id
-              ));
+                  event: CflItemBatchEventType.activedSearch,
+                  whsCode: whsCode,
+                  batchNo: batchNo,
+                  id: id));
             },
           ),
         ],
@@ -194,24 +189,24 @@ class _CflItemBatchPageState extends State<CflItemBatchPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "${data[index].itemCode} - ${data[index].itemName}"),
+                title:
+                    Text("${data[index].itemCode} - ${data[index].itemName}"),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
                 },
                 subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text("Batch Number : ${data[index].batchNumber}"),
-                                    Text("Stock Qty : ${data[index].availableQty}"),
-                                    Text("Planned Qty : ${data[index].plannedQty}"),
-                                    Text("Issued Qty : ${data[index].issueQty}"),
-                                    Text("Open Qty : ${data[index].openQty}"),
-                                    Text("Warehouse : ${data[index].whsCode}"),
-                                    Text("Bin Location : ${data[index].binCode}"),
-                                  ],
-                                ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Batch Number : ${data[index].batchNumber}"),
+                    Text("Stock Qty : ${data[index].availableQty}"),
+                    Text("Planned Qty : ${data[index].plannedQty}"),
+                    Text("Issued Qty : ${data[index].issueQty}"),
+                    Text("Open Qty : ${data[index].openQty}"),
+                    Text("Warehouse : ${data[index].whsCode}"),
+                    Text("Bin Location : ${data[index].binCode}"),
+                  ],
+                ),
               ),
             ),
           ));

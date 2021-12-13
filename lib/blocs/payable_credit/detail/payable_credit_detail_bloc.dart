@@ -1,10 +1,10 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/payable_credit/detail/payable_credit_detail_event.dart';
-import 'package:admart_app/blocs/payable_credit/detail/payable_credit_detail_state.dart';
-import 'package:admart_app/models/payable_credit_detail_response.dart';
-import 'package:admart_app/models/payable_credit_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/payable_credit_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/payable_credit/detail/payable_credit_detail_event.dart';
+import 'package:wins_app/blocs/payable_credit/detail/payable_credit_detail_state.dart';
+import 'package:wins_app/models/payable_credit_detail_response.dart';
+import 'package:wins_app/models/payable_credit_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/payable_credit_detail_response.dart'
     as payableCreditDetail;
 
 class PayableCreditDetailBloc extends BlocEventStateBase<
@@ -70,8 +70,8 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
       );
       try {
         var _repository = Repository();
-        PayableCreditDetailScanResponse response =
-            await _repository.payableCreditDetail_Scan(returnRequestId, qrResult);
+        PayableCreditDetailScanResponse response = await _repository
+            .payableCreditDetail_Scan(returnRequestId, qrResult);
         if (response == null) {
           yield PayableCreditDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,15 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield PayableCreditDetailState.failure(
-                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan Goods Returns Request No. ${returnRequestNo} (1)',
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan Goods Returns Request No. ${returnRequestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.returnRequestId == 0) {
                 yield PayableCreditDetailState.failure(
-                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan Goods Returns Request No. ${returnRequestNo} (2)',
+                  errorMessage:
+                      'Item Batch Number ${qrResult} tidak di temukan Goods Returns Request No. ${returnRequestNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is PayableCreditDetailEventItemAdd) {
+    } else if (event is PayableCreditDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield PayableCreditDetailState.success(
@@ -163,8 +165,7 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is PayableCreditDetailEventPost) {
+    } else if (event is PayableCreditDetailEventPost) {
       yield PayableCreditDetailState.busy(
         data: event.data,
       );
@@ -198,8 +199,7 @@ class PayableCreditDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-     else if (event is PayableCreditDetailEventCancel) {
+    } else if (event is PayableCreditDetailEventCancel) {
       yield PayableCreditDetailState.busy(
         data: currentState.data,
       );

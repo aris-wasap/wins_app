@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/transfer_request_detail_response.dart';
+import 'package:wins_app/models/transfer_request_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'transfer_request_detail_scan_response.g.dart';
 
-TransferRequestDetailScanResponse transferRequestDetailScanResponseFromJson(String str) {
+TransferRequestDetailScanResponse transferRequestDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return TransferRequestDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class TransferRequestDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   TransferRequestDetailScanResponse({
     this.error,
@@ -32,11 +33,11 @@ class TransferRequestDetailScanResponse {
     this.data,
   });
 
-  factory TransferRequestDetailScanResponse.fromJson(Map<String, dynamic> json) {
+  factory TransferRequestDetailScanResponse.fromJson(
+      Map<String, dynamic> json) {
     return _$TransferRequestDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TransferRequestDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$TransferRequestDetailScanResponseToJson(this);
 }
-  
- 

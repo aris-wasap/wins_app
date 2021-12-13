@@ -1,14 +1,16 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/issue_production/detail_item_detail/issue_production_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/issue_production/detail_item_detail/issue_production_detail_item_detail_state.dart';
-import 'package:admart_app/models/issue_production_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/issue_production/detail_item_detail/issue_production_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/issue_production/detail_item_detail/issue_production_detail_item_detail_state.dart';
+import 'package:wins_app/models/issue_production_detail_response.dart';
 
 class IssueProductionDetailItemDetailBloc extends BlocEventStateBase<
-    IssueProductionDetailItemDetailEvent, IssueProductionDetailItemDetailState> {
+    IssueProductionDetailItemDetailEvent,
+    IssueProductionDetailItemDetailState> {
   IssueProductionDetailItemDetailBloc(
     Item data,
   ) : super(
-          initialState: IssueProductionDetailItemDetailState.noAction(data: data),
+          initialState:
+              IssueProductionDetailItemDetailState.noAction(data: data),
         );
 
   @override

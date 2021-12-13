@@ -1,23 +1,23 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
-import 'package:admart_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
-import 'package:admart_app/models/goods_issue_detail_refresh_response.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart';
-import 'package:admart_app/models/goods_issue_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
+import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
 
-class GoodsIssueDetailBloc extends BlocEventStateBase<
-    GoodsIssueDetailEvent, GoodsIssueDetailState> {
+class GoodsIssueDetailBloc
+    extends BlocEventStateBase<GoodsIssueDetailEvent, GoodsIssueDetailState> {
   GoodsIssueDetailBloc()
       : super(
           initialState: GoodsIssueDetailState.noAction(),
         );
 
   @override
-  Stream<GoodsIssueDetailState> eventHandler(GoodsIssueDetailEvent event,
-      GoodsIssueDetailState currentState) async* {
+  Stream<GoodsIssueDetailState> eventHandler(
+      GoodsIssueDetailEvent event, GoodsIssueDetailState currentState) async* {
     if (event is GoodsIssueDetailEventNormal) {
       yield GoodsIssueDetailState.success(
         data: currentState.data,
@@ -50,7 +50,6 @@ class GoodsIssueDetailBloc extends BlocEventStateBase<
             } else {
               yield GoodsIssueDetailState.success(
                 data: response.data,
-                
               );
             }
           }
@@ -89,13 +88,15 @@ class GoodsIssueDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield GoodsIssueDetailState.failure(
-                errorMessage: '${qrResult} tidak di temukan di gudang dan WO ${woNo} (1)',
+                errorMessage:
+                    '${qrResult} tidak di temukan di gudang dan WO ${woNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.woId == 0) {
                 yield GoodsIssueDetailState.failure(
-                  errorMessage: '${qrResult} tidak di temukan di gudang dan WO ${woNo} (2)',
+                  errorMessage:
+                      '${qrResult} tidak di temukan di gudang dan WO ${woNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -113,13 +114,12 @@ class GoodsIssueDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is GoodsIssueDetailEventRefresh) {
+    } else if (event is GoodsIssueDetailEventRefresh) {
       var woId = event.woId;
       var newData = currentState.data;
       var listData = currentState.data.items;
-      
-       if (woId == 0) {
+
+      if (woId == 0) {
         yield GoodsIssueDetailState.success(
           data: Data(items: List<goodsIssueDetail.Item>()),
         );
@@ -156,8 +156,7 @@ class GoodsIssueDetailBloc extends BlocEventStateBase<
           );
         }
       }
-    }
-      else if (event is GoodsIssueDetailEventItemAdd) {
+    } else if (event is GoodsIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield GoodsIssueDetailState.success(
@@ -198,8 +197,7 @@ class GoodsIssueDetailBloc extends BlocEventStateBase<
           } else {
             yield GoodsIssueDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<goodsIssueDetail.Item>()),
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
             );
           }
         }

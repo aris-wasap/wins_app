@@ -1,4 +1,4 @@
-# ADMART SCAN QR 
+# WINS SCAN QR 
 
 Scan QR Code via Mobile App and integration API SAP Business One HANA
 

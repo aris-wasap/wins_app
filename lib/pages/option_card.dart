@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:admart_app/pages/icon_color.dart';
+import 'package:wins_app/pages/icon_color.dart';
 
-
-class OptionCard extends StatelessWidget{
-
+class OptionCard extends StatelessWidget {
   final String title;
   final String icon;
   final GestureTapCallback _onTap;
@@ -27,13 +25,20 @@ class OptionCard extends StatelessWidget{
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                SizedBox(height: 40, width: 40, child: Image(
+                SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Image(
                     image: AssetImage(icon),
-                ),),
+                  ),
+                ),
                 Spacer(),
-               Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0), textAlign: TextAlign.center,)
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+                  textAlign: TextAlign.center,
+                )
               ],
-
             ),
           ),
         ),

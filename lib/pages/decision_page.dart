@@ -1,15 +1,15 @@
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/blocs/authentication/authentication_state.dart';
-import 'package:admart_app/pages/authentication_page.dart';
-import 'package:admart_app/pages/home_page.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/blocs/authentication/authentication_state.dart';
+import 'package:wins_app/pages/authentication_page.dart';
+import 'package:wins_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class DecisionPage extends StatefulWidget {
   @override
   DecisionPageState createState() {
-    return   DecisionPageState();
+    return DecisionPageState();
   }
 }
 
@@ -38,7 +38,7 @@ class DecisionPageState extends State<DecisionPage> {
           // always remain behind any active page (and thus 'hidden').
           return Container();
         });
-  } 
+  }
 
   void _redirectToPage(BuildContext context, Widget page) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

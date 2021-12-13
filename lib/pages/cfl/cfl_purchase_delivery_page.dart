@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_bloc.dart';
-import 'package:admart_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_event.dart';
-import 'package:admart_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_bloc.dart';
+import 'package:wins_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_delivery/cfl_purchase_delivery_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflPurchaseDeliveryPage extends StatefulWidget {
   @override

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/item/detail/item_detail_bloc.dart';
-import 'package:admart_app/blocs/item/detail/item_detail_event.dart';
-import 'package:admart_app/blocs/item/detail/item_detail_state.dart';
-import 'package:admart_app/models/item_detail_scan_response.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/item/detail/item_detail_bloc.dart';
+import 'package:wins_app/blocs/item/detail/item_detail_event.dart';
+import 'package:wins_app/blocs/item/detail/item_detail_state.dart';
+import 'package:wins_app/models/item_detail_scan_response.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/pages/barcode_scan.dart';
+import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class CheckDataPage extends StatefulWidget {
@@ -483,7 +483,8 @@ class _CheckDataPageState extends State<CheckDataPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                  "Qty : ${NumberFormat("#,###.##").format(data[index].stock)} " + "${data[index].uom}"),
+                  "Qty : ${NumberFormat("#,###.##").format(data[index].stock)} " +
+                      "${data[index].uom}"),
               Text(
                   "Manufacture Date : ${data[index].mnfDate}".substring(0, 29)),
               Text("Receive Date : ${data[index].inDate}".substring(0, 25)),

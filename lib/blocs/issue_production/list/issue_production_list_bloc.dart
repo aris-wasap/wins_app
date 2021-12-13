@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/issue_production/list/issue_production_list_event.dart';
-import 'package:admart_app/blocs/issue_production/list/issue_production_list_state.dart';
-import 'package:admart_app/models/issue_production_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/issue_production/list/issue_production_list_event.dart';
+import 'package:wins_app/blocs/issue_production/list/issue_production_list_state.dart';
+import 'package:wins_app/models/issue_production_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class IssueProductionListBloc
-    extends BlocEventStateBase<IssueProductionListEvent, IssueProductionListState> {
+class IssueProductionListBloc extends BlocEventStateBase<
+    IssueProductionListEvent, IssueProductionListState> {
   IssueProductionListBloc()
       : super(
           initialState: IssueProductionListState.noAction(),
@@ -14,7 +14,8 @@ class IssueProductionListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {

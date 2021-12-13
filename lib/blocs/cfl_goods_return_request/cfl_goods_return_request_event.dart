@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_goods_return_request_response.dart'; 
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_goods_return_request_response.dart';
 
 class CflGoodsReturnRequestEvent extends BlocEvent {
   CflGoodsReturnRequestEvent({
-    this.event, 
+    this.event,
     this.searchQuery,
     this.selectedRow,
   });
 
-  final CflGoodsReturnRequestEventType event; 
+  final CflGoodsReturnRequestEventType event;
   final String searchQuery;
   final Data selectedRow;
 }

@@ -1,12 +1,12 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receivable_credit/list/receivable_credit_list_event.dart';
-import 'package:admart_app/blocs/receivable_credit/list/receivable_credit_list_state.dart';
-import 'package:admart_app/models/receivable_credit_list_response.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receivable_credit/list/receivable_credit_list_event.dart';
+import 'package:wins_app/blocs/receivable_credit/list/receivable_credit_list_state.dart';
+import 'package:wins_app/models/receivable_credit_list_response.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ReceivableCreditListBloc
-    extends BlocEventStateBase<ReceivableCreditListEvent, ReceivableCreditListState> {
+class ReceivableCreditListBloc extends BlocEventStateBase<
+    ReceivableCreditListEvent, ReceivableCreditListState> {
   ReceivableCreditListBloc()
       : super(
           initialState: ReceivableCreditListState.noAction(),
@@ -14,7 +14,8 @@ class ReceivableCreditListBloc
 
   final BehaviorSubject<int> _firstIdController =
       BehaviorSubject<int>(seedValue: 0);
-  final BehaviorSubject<int> _lastIdController = BehaviorSubject<int>(seedValue: 0);
+  final BehaviorSubject<int> _lastIdController =
+      BehaviorSubject<int>(seedValue: 0);
 
   @override
   void dispose() {
@@ -25,7 +26,8 @@ class ReceivableCreditListBloc
   }
 
   @override
-  Stream<ReceivableCreditListState> eventHandler(ReceivableCreditListEvent event,
+  Stream<ReceivableCreditListState> eventHandler(
+      ReceivableCreditListEvent event,
       ReceivableCreditListState currentState) async* {
     switch (event.event) {
       case ReceivableCreditListEventType.activedSearch:

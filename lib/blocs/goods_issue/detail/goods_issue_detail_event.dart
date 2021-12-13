@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class GoodsIssueDetailEvent extends BlocEvent {

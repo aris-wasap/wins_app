@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_order/detail/receipt_order_detail_event.dart';
-import 'package:admart_app/blocs/receipt_order/detail/receipt_order_detail_state.dart';
-import 'package:admart_app/models/receipt_order_detail_response.dart';
-import 'package:admart_app/models/receipt_order_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/receipt_order_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_order/detail/receipt_order_detail_event.dart';
+import 'package:wins_app/blocs/receipt_order/detail/receipt_order_detail_state.dart';
+import 'package:wins_app/models/receipt_order_detail_response.dart';
+import 'package:wins_app/models/receipt_order_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/receipt_order_detail_response.dart'
     as receiptOrderDetail;
 
-class ReceiptOrderDetailBloc extends BlocEventStateBase<
-    ReceiptOrderDetailEvent, ReceiptOrderDetailState> {
+class ReceiptOrderDetailBloc extends BlocEventStateBase<ReceiptOrderDetailEvent,
+    ReceiptOrderDetailState> {
   ReceiptOrderDetailBloc()
       : super(
           initialState: ReceiptOrderDetailState.noAction(),
@@ -87,13 +87,15 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptOrderDetailState.failure(
-                errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (1)',
+                errorMessage:
+                    'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptOrderDetailState.failure(
-                  errorMessage: 'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (2)',
+                  errorMessage:
+                      'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReceiptOrderDetailEventItemAdd) {
+    } else if (event is ReceiptOrderDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield ReceiptOrderDetailState.success(
@@ -152,8 +154,8 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           } else {
             yield ReceiptOrderDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<receiptOrderDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<receiptOrderDetail.Item>()),
             );
           }
         }
@@ -163,8 +165,7 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is ReceiptOrderDetailEventPost) {
+    } else if (event is ReceiptOrderDetailEventPost) {
       yield ReceiptOrderDetailState.busy(
         data: event.data,
       );
@@ -187,8 +188,8 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           } else {
             yield ReceiptOrderDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<receiptOrderDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<receiptOrderDetail.Item>()),
             );
           }
         }
@@ -198,7 +199,7 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReceiptOrderDetailEventCancel) {
+    } else if (event is ReceiptOrderDetailEventCancel) {
       yield ReceiptOrderDetailState.busy(
         data: currentState.data,
       );

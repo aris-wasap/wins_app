@@ -6,11 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:admart_app/models/receipt_branch_detail_response.dart';
+import 'package:wins_app/models/receipt_branch_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'receipt_branch_detail_scan_response.g.dart';
 
-ReceiptBranchDetailScanResponse receiptBranchDetailScanResponseFromJson(String str) {
+ReceiptBranchDetailScanResponse receiptBranchDetailScanResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return ReceiptBranchDetailScanResponse.fromJson(jsonData);
 }
@@ -24,7 +25,7 @@ class ReceiptBranchDetailScanResponse {
   String errorMessage;
 
   @JsonKey(name: 'Data')
-  Item data;  
+  Item data;
 
   ReceiptBranchDetailScanResponse({
     this.error,
@@ -36,7 +37,6 @@ class ReceiptBranchDetailScanResponse {
     return _$ReceiptBranchDetailScanResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$ReceiptBranchDetailScanResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ReceiptBranchDetailScanResponseToJson(this);
 }
-  
- 

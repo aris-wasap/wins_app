@@ -1,20 +1,20 @@
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_state.dart';
-import 'package:admart_app/models/payable_credit_detail_response.dart';
-import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:admart_app/widgets/label_field_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_bloc.dart';
+import 'package:wins_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/payable_credit/detail_item_detail/payable_credit_detail_item_detail_state.dart';
+import 'package:wins_app/models/payable_credit_detail_response.dart';
+import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:wins_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
+import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
 class PayableCreditDetailItemDetailPage extends StatefulWidget {
@@ -181,7 +181,7 @@ class _PayableCreditDetailItemDetailPageState
       }
     }
 
-     if (_data.length != 0) {
+    if (_data.length != 0) {
       if (_lengthController.text == "") {
         _lengthController.text = NumberFormat("###,###.####")
             .format(double.parse(data.length.toString()));
@@ -236,58 +236,56 @@ class _PayableCreditDetailItemDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 FlatButton(
-                        padding: EdgeInsets.only(top: 5),
-                        onPressed: () {
-                          if (data.id == 0) {}
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(left: 5, top: 5),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey[400]),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))
-                              // border: Border(
-                              //   bottom: BorderSide(
-                              //     color: (data.id == 0) ? Colors.blue : Colors.grey,
-                              //     width: 1.0,
-                              //   ),
-                              // ),
-                              ),
-                          child: Row(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {}
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                        // border: Border(
+                        //   bottom: BorderSide(
+                        //     color: (data.id == 0) ? Colors.blue : Colors.grey,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                        ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Expanded(
-                                child: Column(
+                              Text(
+                                "Batch Number",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 12.0),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text(_batchNumberController.text),
+                                subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      "Batch Number",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 12.0),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(left: 5),
-                                      title: Text(_batchNumberController.text),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(_itemNameController.text),
-                                          _itemTypeController.text == 'L'
-                                              ? Text(_widthController.text +
-                                                  " X " +
-                                                  _lengthController.text)
-                                              : Text(""),
-                                        ],
-                                      ),
-                                    )
+                                    Text(_itemNameController.text),
+                                    _itemTypeController.text == 'L'
+                                        ? Text(_widthController.text +
+                                            " X " +
+                                            _lengthController.text)
+                                        : Text(""),
                                   ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
+                ),
                 // TextFormField(
                 //   controller: _batchNumberController,
                 //   enabled: false,

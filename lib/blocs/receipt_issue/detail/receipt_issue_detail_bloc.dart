@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
-import 'package:admart_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
-import 'package:admart_app/models/receipt_issue_detail_response.dart';
-import 'package:admart_app/models/receipt_issue_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/receipt_issue_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
+import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
+import 'package:wins_app/models/receipt_issue_detail_response.dart';
+import 'package:wins_app/models/receipt_issue_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/receipt_issue_detail_response.dart'
     as receiptIssueDetail;
 
-class ReceiptIssueDetailBloc extends BlocEventStateBase<
-    ReceiptIssueDetailEvent, ReceiptIssueDetailState> {
+class ReceiptIssueDetailBloc extends BlocEventStateBase<ReceiptIssueDetailEvent,
+    ReceiptIssueDetailState> {
   ReceiptIssueDetailBloc()
       : super(
           initialState: ReceiptIssueDetailState.noAction(),
@@ -87,13 +87,15 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield ReceiptIssueDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak ditemukan dari Issue No. ${issueNo} (1)',
+                errorMessage:
+                    'Batch Number ${qrResult} tidak ditemukan dari Issue No. ${issueNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.issueId == 0) {
                 yield ReceiptIssueDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak ditemukan dari  Issue No. ${issueNo} (2)',
+                  errorMessage:
+                      'Batch Number ${qrResult} tidak ditemukan dari  Issue No. ${issueNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is ReceiptIssueDetailEventItemAdd) {
+    } else if (event is ReceiptIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield ReceiptIssueDetailState.success(
@@ -152,8 +154,8 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           } else {
             yield ReceiptIssueDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<receiptIssueDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<receiptIssueDetail.Item>()),
             );
           }
         }
@@ -163,7 +165,7 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }else if (event is ReceiptIssueDetailEventPost) {
+    } else if (event is ReceiptIssueDetailEventPost) {
       yield ReceiptIssueDetailState.busy(
         data: event.data,
       );
@@ -186,8 +188,8 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<
           } else {
             yield ReceiptIssueDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<receiptIssueDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<receiptIssueDetail.Item>()),
             );
           }
         }

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:admart_app/pages/new_it_page.dart';
-import 'package:admart_app/pages/detail_it_page.dart';
+import 'package:wins_app/pages/new_it_page.dart';
+import 'package:wins_app/pages/detail_it_page.dart';
 
 class InventoryTransfer extends StatefulWidget {
   @override
@@ -16,13 +16,16 @@ class InventoryTransferState extends State<InventoryTransfer> {
 
   Future<String> getData() async {
     HttpClient client = new HttpClient();
-    client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
 
-    String url = "https://192.168.1.9:50000/b1s/v1/StockTransfers?\$select=DocNum,DocDate,FromWarehouse,ToWarehouse&\$orderby=DocEntry";
+    String url =
+        "https://192.168.1.9:50000/b1s/v1/StockTransfers?\$select=DocNum,DocDate,FromWarehouse,ToWarehouse&\$orderby=DocEntry";
     HttpClientRequest request = await client.getUrl(Uri.parse(url));
     request.headers.set("content-type", "application/json");
-    request.headers.set("Cookie", "B1SESSION=90d5e0ba-a83d-11e9-8000-e4434b4da604");
-    
+    request.headers
+        .set("Cookie", "B1SESSION=90d5e0ba-a83d-11e9-8000-e4434b4da604");
+
     HttpClientResponse response = await request.close();
     String reply = await response.transform(utf8.decoder).join();
 
@@ -30,7 +33,7 @@ class InventoryTransferState extends State<InventoryTransfer> {
       var resBody = json.decode(reply);
       data = resBody["value"];
     });
-    
+
     client.close();
 
     return "success";
@@ -54,18 +57,17 @@ class InventoryTransferState extends State<InventoryTransfer> {
         title: Text("Inventory Transfer"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-          child: Container(
-            color: Colors.yellow[900],
-            height: 5.0,
-          ),
-          preferredSize: Size.fromHeight(5.0)
-        ),
+            child: Container(
+              color: Colors.yellow[900],
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add_circle_outline),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (BuildContext context) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
                 return NewIt();
               }));
             },
@@ -76,9 +78,9 @@ class InventoryTransferState extends State<InventoryTransfer> {
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int i) {
           return GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (BuildContext context) {
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
                 return DetailIT();
               }));
             },
@@ -93,7 +95,8 @@ class InventoryTransferState extends State<InventoryTransfer> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 0.0),
                             child: Text(
                               data[i]['DocNum'].toString(),
                               style: TextStyle(
@@ -101,9 +104,10 @@ class InventoryTransferState extends State<InventoryTransfer> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 6.0, 12.0, 12.0),
                             child: Text(
-                              "Doc Date: "+data[i]['DocDate'],
+                              "Doc Date: " + data[i]['DocDate'],
                               style: TextStyle(fontSize: 14.0),
                             ),
                           ),
@@ -115,10 +119,12 @@ class InventoryTransferState extends State<InventoryTransfer> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
-                              "From Warehouse: "+data[i]['FromWarehouse'], textAlign: TextAlign.right,
+                              "From Warehouse: " + data[i]['FromWarehouse'],
+                              textAlign: TextAlign.right,
                             ),
                             Text(
-                              "To Warehouse: "+data[i]['ToWarehouse'], textAlign: TextAlign.right,
+                              "To Warehouse: " + data[i]['ToWarehouse'],
+                              textAlign: TextAlign.right,
                             ),
                           ],
                         ),

@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/cfl_batch_location_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/cfl_batch_location_response.dart';
 
 class CflBatchLocationEvent extends BlocEvent {
   CflBatchLocationEvent(

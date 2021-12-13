@@ -1,7 +1,7 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_state.dart';
-import 'package:admart_app/models/receipt_order_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/receipt_order/detail_item_detail/receipt_order_detail_item_detail_state.dart';
+import 'package:wins_app/models/receipt_order_detail_response.dart';
 
 class ReceiptOrderDetailItemDetailBloc extends BlocEventStateBase<
     ReceiptOrderDetailItemDetailEvent, ReceiptOrderDetailItemDetailState> {

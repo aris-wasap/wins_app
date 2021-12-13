@@ -1,21 +1,21 @@
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/pages/cfl/cfl_batch_location_page.dart';
-import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/pages/cfl/cfl_batch_location_page.dart';
+import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_state.dart';
-import 'package:admart_app/models/transfer_branch_detail_response.dart';
-import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:admart_app/widgets/label_field_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_bloc.dart';
+import 'package:wins_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/transfer_branch/detail_item_detail/transfer_branch_detail_item_detail_state.dart';
+import 'package:wins_app/models/transfer_branch_detail_response.dart';
+import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:wins_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_batch_location_response.dart'
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/models/cfl_batch_location_response.dart'
     as cflBatchLocation;
-import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
+import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
 class TransferBranchDetailItemDetailPage extends StatefulWidget {

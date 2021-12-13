@@ -1,8 +1,8 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/cfl_db_warehouse/cfl_db_warehouse_event.dart';
-import 'package:admart_app/blocs/cfl_db_warehouse/cfl_db_warehouse_state.dart';
-import 'package:admart_app/models/cfl_db_warehouse_model.dart';
-import 'package:admart_app/resources/repository.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/cfl_db_warehouse/cfl_db_warehouse_event.dart';
+import 'package:wins_app/blocs/cfl_db_warehouse/cfl_db_warehouse_state.dart';
+import 'package:wins_app/models/cfl_db_warehouse_model.dart';
+import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CflDbWarehouseBloc
@@ -56,7 +56,8 @@ class CflDbWarehouseBloc
                 _lastIdController.value = data[data.length - 1].whsCode;
               }
 
-              yield CflDbWarehouseState.success(data: data, isActiveSearch: false);
+              yield CflDbWarehouseState.success(
+                  data: data, isActiveSearch: false);
             }
           } catch (e) {
             yield CflDbWarehouseState.failure(
@@ -141,7 +142,8 @@ class CflDbWarehouseBloc
           try {
             var _repository = Repository();
             //List<CflDbWarehouseModel> data = await _repository.cflDbWarehouse_Refresh(_lastIdController.value, event.searchQuery);
-            List<CflDbWarehouseModel> data = await _repository.cflDbWarehouse_Refresh("", event.searchQuery);
+            List<CflDbWarehouseModel> data =
+                await _repository.cflDbWarehouse_Refresh("", event.searchQuery);
             if (data == null) {
               yield CflDbWarehouseState.failure(
                   errorMessage: 'DB Local null',

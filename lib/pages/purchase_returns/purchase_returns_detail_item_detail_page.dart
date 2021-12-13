@@ -1,20 +1,20 @@
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/pages/cfl/cfl_warehouse_page.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_bloc.dart';
-import 'package:admart_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_event.dart';
-import 'package:admart_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_state.dart';
-import 'package:admart_app/models/purchase_returns_detail_response.dart';
-import 'package:admart_app/pages/cfl/cfl_binlocation_page.dart';
-import 'package:admart_app/widgets/label_field_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_bloc.dart';
+import 'package:wins_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/purchase_returns/detail_item_detail/purchase_returns_detail_item_detail_state.dart';
+import 'package:wins_app/models/purchase_returns_detail_response.dart';
+import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
+import 'package:wins_app/widgets/label_field_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
-import 'package:admart_app/models/cfl_binlocation_response.dart'
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-import 'package:admart_app/models/cfl_warehouse_response.dart' as cflWarehouse;
+import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'dart:math' as math;
 
 class PurchaseReturnsDetailItemDetailPage extends StatefulWidget {

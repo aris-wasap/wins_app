@@ -1,4 +1,4 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 import 'package:flutter/material.dart';
 
 class DecisionStateAction extends BlocState {
@@ -10,17 +10,16 @@ class DecisionStateAction extends BlocState {
     this.newPage,
   });
 
-  factory DecisionStateAction.routeToPage(Widget page){
+  factory DecisionStateAction.routeToPage(Widget page) {
     return DecisionStateAction(
       newPage: page,
       actionType: DecisionStateActionType.routeToPage,
     );
   }
 
-  factory DecisionStateAction.doNothing(){
+  factory DecisionStateAction.doNothing() {
     return DecisionStateAction();
   }
-
 
   @override
   bool operator ==(Object other) =>
@@ -31,9 +30,9 @@ class DecisionStateAction extends BlocState {
 
   @override
   int get hashCode => hashValues(
-    actionType,
-    newPage,
-  );
+        actionType,
+        newPage,
+      );
 }
 
 enum DecisionStateActionType {

@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/cfl_branch/cfl_branch_bloc.dart';
-import 'package:admart_app/blocs/cfl_branch/cfl_branch_event.dart';
-import 'package:admart_app/blocs/cfl_branch/cfl_branch_state.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/cfl_branch/cfl_branch_bloc.dart';
+import 'package:wins_app/blocs/cfl_branch/cfl_branch_event.dart';
+import 'package:wins_app/blocs/cfl_branch/cfl_branch_state.dart';
 import 'package:intl/intl.dart';
-import 'package:admart_app/models/cfl_branch_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/models/cfl_branch_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class CflBranchPage extends StatefulWidget {
   CflBranchPage(this.branchId);

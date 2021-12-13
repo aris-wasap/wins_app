@@ -1,24 +1,23 @@
 import 'dart:convert';
 
-import 'package:admart_app/blocs/receipt_issue/detail/receipt_issue_detail_bloc.dart';
-import 'package:admart_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
-import 'package:admart_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
-import 'package:admart_app/pages/cfl/cfl_goods_issue_page.dart';
-import 'package:admart_app/pages/receipt_issue/receipt_issue_detail_item_detail_page.dart';
+import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_bloc.dart';
+import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
+import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
+import 'package:wins_app/pages/cfl/cfl_goods_issue_page.dart';
+import 'package:wins_app/pages/receipt_issue/receipt_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/receipt_issue_detail_response.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/models/receipt_issue_detail_response.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_goods_issue_response.dart'
-    as cflGoodsIssue;
-import 'package:admart_app/pages/barcode_scan.dart';
+import 'package:wins_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
+import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:admart_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class ReceiptIssueDetailPage extends StatefulWidget {
   ReceiptIssueDetailPage(this._id);

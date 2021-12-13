@@ -1,14 +1,14 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/blocs/request_issue/detail/request_issue_detail_event.dart';
-import 'package:admart_app/blocs/request_issue/detail/request_issue_detail_state.dart';
-import 'package:admart_app/models/request_issue_detail_response.dart';
-import 'package:admart_app/models/request_issue_detail_scan_response.dart';
-import 'package:admart_app/resources/repository.dart';
-import 'package:admart_app/models/request_issue_detail_response.dart'
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/blocs/request_issue/detail/request_issue_detail_event.dart';
+import 'package:wins_app/blocs/request_issue/detail/request_issue_detail_state.dart';
+import 'package:wins_app/models/request_issue_detail_response.dart';
+import 'package:wins_app/models/request_issue_detail_scan_response.dart';
+import 'package:wins_app/resources/repository.dart';
+import 'package:wins_app/models/request_issue_detail_response.dart'
     as requestIssueDetail;
 
-class RequestIssueDetailBloc extends BlocEventStateBase<
-    RequestIssueDetailEvent, RequestIssueDetailState> {
+class RequestIssueDetailBloc extends BlocEventStateBase<RequestIssueDetailEvent,
+    RequestIssueDetailState> {
   RequestIssueDetailBloc()
       : super(
           initialState: RequestIssueDetailState.noAction(),
@@ -71,7 +71,7 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
       try {
         var _repository = Repository();
         RequestIssueDetailScanResponse response =
-            await _repository.requestIssueDetail_Scan(requestId,qrResult);
+            await _repository.requestIssueDetail_Scan(requestId, qrResult);
         if (response == null) {
           yield RequestIssueDetailState.failure(
             errorMessage: 'Response null',
@@ -87,13 +87,15 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield RequestIssueDetailState.failure(
-                errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (1)',
+                errorMessage:
+                    'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.requestId == 0) {
                 yield RequestIssueDetailState.failure(
-                  errorMessage: 'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (2)',
+                  errorMessage:
+                      'Batch Number ${qrResult} tidak di temukan dari Issue No. ${requestNo} (2)',
                   data: event.data,
                 );
               } else {
@@ -111,7 +113,7 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }  else if (event is RequestIssueDetailEventItemAdd) {
+    } else if (event is RequestIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield RequestIssueDetailState.success(
@@ -152,8 +154,8 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           } else {
             yield RequestIssueDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<requestIssueDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<requestIssueDetail.Item>()),
             );
           }
         }
@@ -163,8 +165,7 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is RequestIssueDetailEventPost) {
+    } else if (event is RequestIssueDetailEventPost) {
       yield RequestIssueDetailState.busy(
         data: event.data,
       );
@@ -187,8 +188,8 @@ class RequestIssueDetailBloc extends BlocEventStateBase<
           } else {
             yield RequestIssueDetailState.success(
               succesMessage: response.errorMessage,
-              data: response.data ??
-                  Data(items: List<requestIssueDetail.Item>()),
+              data:
+                  response.data ?? Data(items: List<requestIssueDetail.Item>()),
             );
           }
         }

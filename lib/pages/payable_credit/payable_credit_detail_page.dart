@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:admart_app/pages/cfl/cfl_payable_return_request_page.dart';
-import 'package:admart_app/pages/cfl/cfl_purchase_order_page.dart';
-import 'package:admart_app/pages/payable_credit/payable_credit_detail_item_detail_page.dart';
+import 'package:wins_app/pages/cfl/cfl_payable_return_request_page.dart';
+import 'package:wins_app/pages/cfl/cfl_purchase_order_page.dart';
+import 'package:wins_app/pages/payable_credit/payable_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:admart_app/blocs/payable_credit/detail/payable_credit_detail_bloc.dart';
-import 'package:admart_app/blocs/payable_credit/detail/payable_credit_detail_event.dart';
-import 'package:admart_app/blocs/payable_credit/detail/payable_credit_detail_state.dart';
-import 'package:admart_app/blocs/global_bloc.dart';
-import 'package:admart_app/models/payable_credit_detail_response.dart';
-import 'package:admart_app/widgets/set_colors.dart';
-import 'package:admart_app/widgets/validate_dialog_widget.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
+import 'package:wins_app/blocs/payable_credit/detail/payable_credit_detail_bloc.dart';
+import 'package:wins_app/blocs/payable_credit/detail/payable_credit_detail_event.dart';
+import 'package:wins_app/blocs/payable_credit/detail/payable_credit_detail_state.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
+import 'package:wins_app/models/payable_credit_detail_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
+import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:admart_app/models/cfl_payable_return_request_response.dart'
+import 'package:wins_app/models/cfl_payable_return_request_response.dart'
     as cflPayableReturnRequest;
-import 'package:admart_app/pages/barcode_scan.dart';
+import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 class PayableCreditDetailPage extends StatefulWidget {

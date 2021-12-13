@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/receivable_credit_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/receivable_credit_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class ReceivableCreditDetailEvent extends BlocEvent {
@@ -56,7 +56,8 @@ class ReceivableCreditDetailEventItemAdd extends ReceivableCreditDetailEvent {
         );
 }
 
-class ReceivableCreditDetailEventItemUpdate extends ReceivableCreditDetailEvent {
+class ReceivableCreditDetailEventItemUpdate
+    extends ReceivableCreditDetailEvent {
   ReceivableCreditDetailEventItemUpdate({
     @required Item item,
     @required int itemIndex,
@@ -66,7 +67,8 @@ class ReceivableCreditDetailEventItemUpdate extends ReceivableCreditDetailEvent 
         );
 }
 
-class ReceivableCreditDetailEventItemRemove extends ReceivableCreditDetailEvent {
+class ReceivableCreditDetailEventItemRemove
+    extends ReceivableCreditDetailEvent {
   ReceivableCreditDetailEventItemRemove({
     @required int itemIndex,
   }) : super(

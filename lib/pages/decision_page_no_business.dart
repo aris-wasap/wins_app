@@ -1,9 +1,9 @@
-import 'package:admart_app/bloc_helpers/bloc_provider.dart';
-import 'package:admart_app/bloc_widgets/bloc_state_transform_builder.dart';
-import 'package:admart_app/blocs/authentication/authentication_bloc.dart';
-import 'package:admart_app/blocs/authentication/authentication_state.dart';
-import 'package:admart_app/blocs/decision/decision_state_action.dart';
-import 'package:admart_app/blocs/decision/decision_state_transform.dart';
+import 'package:wins_app/bloc_helpers/bloc_provider.dart';
+import 'package:wins_app/bloc_widgets/bloc_state_transform_builder.dart';
+import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
+import 'package:wins_app/blocs/authentication/authentication_state.dart';
+import 'package:wins_app/blocs/decision/decision_state_action.dart';
+import 'package:wins_app/blocs/decision/decision_state_transform.dart';
 import 'package:flutter/material.dart';
 
 ///

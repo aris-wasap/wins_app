@@ -1,5 +1,5 @@
-import 'package:admart_app/bloc_helpers/bloc_event_state.dart';
-import 'package:admart_app/models/request_issue_detail_response.dart';
+import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
+import 'package:wins_app/models/request_issue_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class RequestIssueDetailEvent extends BlocEvent {
@@ -42,8 +42,8 @@ class RequestIssueDetailEventScan extends RequestIssueDetailEvent {
     @required String qrResult,
   }) : super(
           data: data,
-          requestId : requestId,
-          requestNo : requestNo,
+          requestId: requestId,
+          requestNo: requestNo,
           qrResult: qrResult,
         );
 }
