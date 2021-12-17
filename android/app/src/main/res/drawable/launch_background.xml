@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_admart" 
+            android:src="@drawable/splash_ncf" 
             android:width="10dp"
             android:height="10dp"/>
     </item>

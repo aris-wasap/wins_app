@@ -178,8 +178,7 @@ class _CheckDataPageState extends State<CheckDataPage> {
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(
-                          "assets/images/white-and-blue-surface-illustration.jpg"),
+                      image: AssetImage("assets/images/579.jpg"),
                       fit: BoxFit.cover,
                       repeat: ImageRepeat.noRepeat),
                   //     gradient: LinearGradient(
