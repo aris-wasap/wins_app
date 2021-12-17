@@ -48,8 +48,8 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "assets/laucher/icon.png"
-  image_path_android: "assets/laucher/icon.png"
+  image_path_ios: "assets/laucher/icon.jpeg"
+  image_path_android: "assets/laucher/icon.jpeg"
   # adaptive_icon_background: "assets/launcher/background.png"
   # adaptive_icon_foreground: "assets/launcher/foreground.png"
  

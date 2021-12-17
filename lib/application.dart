@@ -12,7 +12,7 @@ class Application extends StatelessWidget {
     return BlocProvider<AuthenticationBloc>(
       bloc: AuthenticationBloc(),
       child: MaterialApp(
-        title: "WINS",
+        title: "NCF Branch",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.blue,

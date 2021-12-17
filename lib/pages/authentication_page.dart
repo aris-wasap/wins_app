@@ -123,8 +123,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           decoration: BoxDecoration(
                             //gradient: bgGradient,
                             image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/white-and-blue-surface-illustration.jpg"),
+                                image: AssetImage("assets/images/579.jpg"),
                                 fit: BoxFit.cover,
                                 repeat: ImageRepeat.noRepeat),
                           ),
@@ -254,7 +253,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   Widget _showLogo() {
-    return Image.asset('assets/images/logo-wins.png', width: 100, height: 75);
+    return Image.asset('assets/images/icon.jpeg', width: 100, height: 75);
   }
 
   Widget _showIconSetting(AuthenticationBloc bloc) {
