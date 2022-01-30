@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'goods_receipt_list_response.dart';
+part of 'cfl_receipt_production_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GoodsReceiptListResponse _$GoodsReceiptListResponseFromJson(
+CflReceiptProductionResponse _$CflReceiptProductionResponseFromJson(
     Map<String, dynamic> json) {
-  return GoodsReceiptListResponse(
+  return CflReceiptProductionResponse(
     error: json['Error'] as bool,
     errorMessage: json['ErrorMessage'] as String,
     data: (json['Data'] as List)
@@ -18,8 +18,8 @@ GoodsReceiptListResponse _$GoodsReceiptListResponseFromJson(
   );
 }
 
-Map<String, dynamic> _$GoodsReceiptListResponseToJson(
-        GoodsReceiptListResponse instance) =>
+Map<String, dynamic> _$CflReceiptProductionResponseToJson(
+        CflReceiptProductionResponse instance) =>
     <String, dynamic>{
       'Error': instance.error,
       'ErrorMessage': instance.errorMessage,
@@ -29,37 +29,25 @@ Map<String, dynamic> _$GoodsReceiptListResponseToJson(
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     id: json['Id'] as int,
-    userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
-    status: json['Status'] as String,
-    createdUser: json['CreatedUser'] as String,
-    seriesName: json['SeriesName'] as String,
-    woNo: json['WoNo'] as String,
-    seriesNameWo: json['SeriesNameWo'] as String,
-    sapGoodsReceiptNo: json['SapGoodsReceiptNo'] as String,
     productCode: json['ProductCode'] as String,
     productName: json['ProductName'] as String,
-    branchId: json['BranchId'] as int,
-    branchName: json['BranchName'] as String,
+    whsCode: json['WhsCode'] as String,
+    whsName: json['WhsName'] as String,
+    status: json['Status'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
-      'UserId': instance.userId,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
-      'Status': instance.status,
-      'CreatedUser': instance.createdUser,
-      'SeriesName': instance.seriesName,
-      'WoNo': instance.woNo,
-      'SeriesNameWo': instance.seriesNameWo,
-      'SapGoodsReceiptNo': instance.sapGoodsReceiptNo,
       'ProductCode': instance.productCode,
       'ProductName': instance.productName,
-      'BranchId': instance.branchId,
-      'BranchName': instance.branchName,
+      'WhsCode': instance.whsCode,
+      'WhsName': instance.whsName,
+      'Status': instance.status,
     };

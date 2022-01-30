@@ -497,6 +497,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                 // ),
                 TextFormField(
                     controller: _transNoController,
+                    style: TextStyle(fontSize: 18, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Issue Prodcution No.",

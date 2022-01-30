@@ -127,23 +127,24 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 "${item.woVisOrder}" +
                 ' : Batch No. dan Quantity tidak boleh kosong/0');
         return;
-      } else if ((double.parse("${item.qty}") >
-          double.parse("${item.woQty}"))) {
-        ValidateDialogWidget(
-            context: context,
-            message: 'Line ' +
-                "${item.woVisOrder}" +
-                ' : Quantity tidak boleh lebih besar dari Planned Quantity');
-        return;
-      } else if ((double.parse("${item.qty}") <
-          double.parse("${item.woQty}"))) {
-        ValidateDialogWidget(
-            context: context,
-            message: 'Line ' +
-                "${item.woVisOrder}" +
-                ' : Quantity tidak boleh kurang dari Planned Quantity');
-        return;
-      }
+      } 
+      // else if ((double.parse("${item.qty}") >
+      //     double.parse("${item.woQty}"))) {
+      //   ValidateDialogWidget(
+      //       context: context,
+      //       message: 'Line ' +
+      //           "${item.woVisOrder}" +
+      //           ' : Quantity tidak boleh lebih besar dari Planned Quantity');
+      //   return;
+      // } else if ((double.parse("${item.qty}") <
+      //     double.parse("${item.woQty}"))) {
+      //   ValidateDialogWidget(
+      //       context: context,
+      //       message: 'Line ' +
+      //           "${item.woVisOrder}" +
+      //           ' : Quantity tidak boleh kurang dari Planned Quantity');
+      //   return;
+      // }
     }
 
     bloc.emitEvent(GoodsIssueDetailEventAdd(
@@ -517,6 +518,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               children: <Widget>[
                 TextFormField(
                     controller: _transNoController,
+                    style: TextStyle(fontSize: 16, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Issue Prodcution No.",
@@ -702,15 +704,26 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('No. ' + "${data[index].woVisOrder}"),
-              Text(data[index].itemCode),
+              Text("Item Code : ${data[index].itemCode}"),
+              
+              //Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
-              Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+              //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               Text(
-                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}"),
+                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
+                      " ${data[index].uom}"),
               Text(
-                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}"),
-              Text('Uom : ' + "${data[index].uom}"),
+                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
+                      " ${data[index].uom}"),
+              //Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
+
+              //Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
+              // Text(data[index].whsCode ?? ''),
+              //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           // trailing: IconButton(

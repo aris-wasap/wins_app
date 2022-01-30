@@ -71,6 +71,18 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'SapGoodsReceiptId')
+  int sapGoodsReceiptId;
+
+  @JsonKey(name: 'SapGoodsReceiptNo')
+  String sapGoodsReceiptNo;
+
+  @JsonKey(name: 'BranchId')
+  int branchId;
+
+  @JsonKey(name: 'BranchName')
+  String branchName;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -85,6 +97,10 @@ class Data {
     this.transDate, 
     this.seriesNameWo,
     this.seriesName,
+    this.sapGoodsReceiptId = 0,
+    this.sapGoodsReceiptNo,
+    this.branchId,
+    this.branchName,
     this.items,
   });
 
@@ -132,8 +148,8 @@ class Item {
   @JsonKey(name: 'Uom')
   String uom;
 
-  @JsonKey(name: 'ItemCost')
-  double itemCost;
+  @JsonKey(name: 'ItemCostTc')
+  double itemCostTc;
 
   @JsonKey(name: 'WhsCode')
   String whsCode;
@@ -149,7 +165,33 @@ class Item {
 
   @JsonKey(name: 'BatchNo')
   String batchNo; 
-  
+
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Length2')
+  double length2;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Type')
+  String type;
  
  
   Item({
@@ -165,12 +207,21 @@ class Item {
     this.woQty: 0,
     this.qty: 0,
     this.uom,
-    this.itemCost,
+    this.itemCostTc,
     this.whsCode,
     this.whsName,
     this.binAbs,
     this.binCode, 
     this.batchNo,
+    this.width,
+    this.length,
+    this.length2,
+    this.weight,
+    this.micron,
+    this.expirationDate,
+    this.manufacturingDate,
+    this.itemType,
+    this.type,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

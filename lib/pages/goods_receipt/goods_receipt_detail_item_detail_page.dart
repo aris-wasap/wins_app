@@ -39,12 +39,13 @@ class _GoodsReceiptDetailItemDetailPageState
   final _binCodeController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = GoodsReceiptDetailItemDetailBloc(this._data);
   }
 
@@ -53,6 +54,7 @@ class _GoodsReceiptDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
 
     bloc?.dispose();
 
@@ -190,7 +192,9 @@ class _GoodsReceiptDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
-                        autofocus: true,
+                        autofocus: false,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -203,6 +207,7 @@ class _GoodsReceiptDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)

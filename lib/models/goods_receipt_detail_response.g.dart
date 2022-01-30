@@ -36,6 +36,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['TransDate'] as String),
     seriesNameWo: json['SeriesNameWo'] as String,
     seriesName: json['SeriesName'] as String,
+    sapGoodsReceiptId: json['SapGoodsReceiptId'] as int,
+    sapGoodsReceiptNo: json['SapGoodsReceiptNo'] as String,
+    branchId: json['BranchId'] as int,
+    branchName: json['BranchName'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -58,6 +62,10 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'TransDate': instance.transDate?.toIso8601String(),
       'SeriesNameWo': instance.seriesNameWo,
       'SeriesName': instance.seriesName,
+      'SapGoodsReceiptId': instance.sapGoodsReceiptId,
+      'SapGoodsReceiptNo': instance.sapGoodsReceiptNo,
+      'BranchId': instance.branchId,
+      'BranchName': instance.branchName,
       'Items': instance.items,
     };
 
@@ -75,12 +83,25 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     woQty: (json['WoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
-    itemCost: (json['ItemCost'] as num)?.toDouble(),
+    itemCostTc: (json['ItemCostTc'] as num)?.toDouble(),
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
     binAbs: json['BinAbs'] as int,
     binCode: json['BinCode'] as String,
     batchNo: json['BatchNo'] as String,
+    width: (json['Width'] as num)?.toDouble(),
+    length: (json['Length'] as num)?.toDouble(),
+    length2: (json['Length2'] as num)?.toDouble(),
+    weight: (json['Weight'] as num)?.toDouble(),
+    micron: (json['Micron'] as num)?.toDouble(),
+    expirationDate: json['ExpirationDate'] == null
+        ? null
+        : DateTime.parse(json['ExpirationDate'] as String),
+    manufacturingDate: json['ManufacturingDate'] == null
+        ? null
+        : DateTime.parse(json['ManufacturingDate'] as String),
+    itemType: json['ItemType'] as String,
+    type: json['Type'] as String,
   );
 }
 
@@ -97,10 +118,19 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WoQty': instance.woQty,
       'Qty': instance.qty,
       'Uom': instance.uom,
-      'ItemCost': instance.itemCost,
+      'ItemCostTc': instance.itemCostTc,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,
       'BinCode': instance.binCode,
       'BatchNo': instance.batchNo,
+      'Length': instance.length,
+      'Length2': instance.length2,
+      'Width': instance.width,
+      'Weight': instance.weight,
+      'Micron': instance.micron,
+      'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
+      'ExpirationDate': instance.expirationDate?.toIso8601String(),
+      'ItemType': instance.itemType,
+      'Type': instance.type,
     };

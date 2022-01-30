@@ -729,8 +729,10 @@ class _InventoryTransferDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
+                (data.sapInventoryTransferId > 0)
+                          ? TextFormField(
                     controller: _sapInventoryTransferNoController,
+                    style: TextStyle(fontSize: 16, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Transfer No.",
@@ -738,7 +740,11 @@ class _InventoryTransferDetailPageState
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                            borderRadius: new BorderRadius.circular(10.0),
+                            ),
+                            ), 
+                            )
+                          : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
@@ -755,7 +761,7 @@ class _InventoryTransferDetailPageState
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapInventoryTransferId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -780,7 +786,7 @@ class _InventoryTransferDetailPageState
                                   ))),
                         ),
                       ),
-                      (data.id == 0)
+                      (data.sapInventoryTransferId == 0)
                           ? Icon(
                               Icons.date_range,
                             )

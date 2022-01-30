@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
+import 'package:wins_app/pages/cfl/cfl_receipt_production_page.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
@@ -11,11 +11,12 @@ import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:wins_app/models/cfl_transfer_production_response.dart'
-    as cflTransferProduction;
+import 'package:wins_app/models/cfl_receipt_production_response.dart'
+    as cflReceiptProduction;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -34,9 +35,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
+  final _sapGoodsReceiptNoController = TextEditingController();
   final _productCodeController = TextEditingController();
   final _productNameController = TextEditingController();
   final _transNoController = TextEditingController();
@@ -76,10 +78,12 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _productCodeController?.dispose();
     _productNameController?.dispose();
+    _sapGoodsReceiptNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
     _seriesNamePoController?.dispose();
@@ -91,6 +95,75 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   }
 
   void _create() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.sapGoodsReceiptNo = _sapGoodsReceiptNoController.text;
+    data.productCode = _productCodeController.text;
+    data.productName = _productNameController.text;
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNamePoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    bloc.emitEvent(GoodsReceiptDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  showAlertDialogCreate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.woNo = _woNoController.text;
@@ -123,6 +196,39 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     bloc.emitEvent(GoodsReceiptDetailEventAdd(
       data: data,
     ));
+  }
+
+  showAlertDialogSubmit(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _submit();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _newTrans() {
@@ -218,7 +324,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Receipt"),
+        title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -228,12 +334,54 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.save,
+              color: Colors.yellowAccent,
+            ),
             onPressed: () {
-              _create();
+              showAlertDialogCreate(context);
             },
             textColor: Colors.white,
-            label: Text("Submit"),
+            label: Text("Save"),
+          )
+        ],
+      );
+    } else if (_getState().data.sapGoodsReceiptId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Receipt",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              showAlertDialogSubmit(context);
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           )
         ],
       );
@@ -478,6 +626,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _productCodeController.text = data.productCode;
@@ -502,12 +651,27 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                (data.sapGoodsReceiptId > 0)
+                          ? TextFormField(
+                  controller: _sapGoodsReceiptNoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      hintText: "Receipt No.",
+                      labelText: "Receipt No.",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                )
+                          : Container(width: 0, height: 0),
+                
+                Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,
                     decoration: InputDecoration(
-                        hintText: "Receipt Production No.",
-                        labelText: "Receipt Production No.",
+                        hintText: "Scan No.",
+                        labelText: "Scan No.",
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
@@ -515,7 +679,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapGoodsReceiptId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -539,7 +703,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                       10.0,
                                     )))),
                       ),
-                      (data.id == 0)
+                      (data.sapGoodsReceiptId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -551,13 +715,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflTransferProduction.Data> wo = Navigator.push(
+                      Future<cflReceiptProduction.Data> wo = Navigator.push(
                           context,
-                          MaterialPageRoute<cflTransferProduction.Data>(
+                          MaterialPageRoute<cflReceiptProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage()));
+                                  CflReceiptProductionPage()));
 
-                      wo.then((cflTransferProduction.Data wo) {
+                      wo.then((cflReceiptProduction.Data wo) {
                         if (wo != null) {
                           _woIdController.text = wo.id.toString();
                           _woNoController.text = wo.transNo;

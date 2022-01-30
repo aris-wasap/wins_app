@@ -660,8 +660,10 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
+                (data.sapReceiptBranchId > 0)
+                          ? TextFormField(
                   controller: _sapReceiptBranchNoController,
+                  style: TextStyle(fontSize: 16, color: Colors.red),
                   enabled: false,
                   decoration: InputDecoration(
                       hintText: "Receipt No.",
@@ -670,7 +672,9 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                )
+                          : Container(width: 0, height: 0),
+                
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
@@ -698,7 +702,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapReceiptBranchId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -731,7 +735,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                             // ),
                             ),
                       ),
-                      (data.id == 0)
+                      (data.sapReceiptBranchId == 0)
                           ? Icon(
                               Icons.date_range,
                             )

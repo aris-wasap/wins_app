@@ -678,8 +678,10 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
+                (data.sapTransferBranchId > 0)
+                          ? TextFormField(
                   controller: _sapTransferBranchNoController,
+                  style: TextStyle(fontSize: 16, color: Colors.red),
                   enabled: false,
                   decoration: InputDecoration(
                       hintText: "Transfer No.",
@@ -688,7 +690,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                )
+                          : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
@@ -715,7 +718,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapTransferBranchId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -748,7 +751,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                             // ),
                             ),
                       ),
-                      (data.id == 0)
+                      (data.sapTransferBranchId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
