@@ -192,6 +192,15 @@ class Item {
 
   @JsonKey(name: 'Type')
   String type;
+
+  @JsonKey(name: 'Group')
+  String group;
+
+  @JsonKey(name: 'Machine')
+  String machine;
+
+  @JsonKey(name: 'Shift')
+  String shift;
  
  
   Item({
@@ -222,6 +231,9 @@ class Item {
     this.manufacturingDate,
     this.itemType,
     this.type,
+    this.group,
+    this.machine,
+    this.shift,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

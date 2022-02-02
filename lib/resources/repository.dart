@@ -433,6 +433,10 @@ class Repository {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Add(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Add(data);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Update(data);
   
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
           goodsReceiptDetail.Data data) =>
@@ -699,6 +703,10 @@ class Repository {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Add(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Add(data);
+
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Update(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Update(data);
 
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
           inventoryTransferDetail.Data data) =>

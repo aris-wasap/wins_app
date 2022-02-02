@@ -42,6 +42,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   final _transDateController = TextEditingController();
   final _seriesNameWoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _sapGoodsIssueNoController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -83,6 +84,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _transDateController?.dispose();
     _seriesNameWoController?.dispose();
     _seriesNameController?.dispose();
+    _sapGoodsIssueNoController?.dispose();
 
     bloc?.dispose();
 
@@ -127,7 +129,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 "${item.woVisOrder}" +
                 ' : Batch No. dan Quantity tidak boleh kosong/0');
         return;
-      } 
+      }
       // else if ((double.parse("${item.qty}") >
       //     double.parse("${item.woQty}"))) {
       //   ValidateDialogWidget(
@@ -487,7 +489,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
+    _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
 
     //jika nama signature berbah di kasih tanda
 
@@ -504,6 +506,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       }
       _seriesNameWoController.text = data.seriesNameWo;
       _seriesNameController.text = data.seriesName;
+      _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
     }
 
     return Column(
@@ -516,8 +519,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _transNoController,
+                (data.sapGoodsIssueId > 0)
+                          ? TextFormField(
+                    controller: _sapGoodsIssueNoController,
                     style: TextStyle(fontSize: 16, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
@@ -526,19 +530,20 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                            borderRadius: new BorderRadius.circular(10.0))))
+                          : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                // TextFormField(
+                //     controller: _transNoController,
+                //     enabled: false,
+                //     decoration: InputDecoration(
+                //         hintText: "Scan No.",
+                //         labelText: "Scan No.",
+                //         contentPadding: new EdgeInsets.symmetric(
+                //             vertical: 15.0, horizontal: 10.0),
+                //         border: new OutlineInputBorder(
+                //             borderRadius: new BorderRadius.circular(10.0)))),
+                // Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -705,7 +710,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             children: <Widget>[
               Text('No. ' + "${data[index].woVisOrder}"),
               Text("Item Code : ${data[index].itemCode}"),
-              
+
               //Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
               //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),

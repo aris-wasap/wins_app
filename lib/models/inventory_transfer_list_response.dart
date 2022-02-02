@@ -52,6 +52,9 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
+  @JsonKey(name: 'DocStatus')
+  String docStatus;
+
   @JsonKey(name: 'FromWhsCode')
   String fromWhsCode;
 
@@ -64,6 +67,9 @@ class Data {
   @JsonKey(name: 'ToWhsName')
   String toWhsName;
 
+  @JsonKey(name: 'SapInventoryTransferReqNo')
+  String sapInventoryTransferReqNo;
+
   @JsonKey(name: 'SapInventoryTransferNo')
   String sapInventoryTransferNo;
 
@@ -73,11 +79,13 @@ class Data {
   Data({
     this.id,
     this.userId,
+    this.sapInventoryTransferReqNo,
     this.sapInventoryTransferNo,
     this.transNo,
     this.seriesName,
     this.transDate,
     this.status,
+    this.docStatus,
     this.fromWhsCode,
     this.fromWhsName,
     this.toWhsCode,

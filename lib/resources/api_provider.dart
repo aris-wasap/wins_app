@@ -1658,6 +1658,29 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
+      goodsReceiptDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/GoodsReceiptDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsReceiptDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsReceiptDetail_Add:Failed to add GoodsReceipt(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_Add:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
       goodsReceiptDetail.Data data) async {
     try {
@@ -3036,6 +3059,32 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('inventoryTransferDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Update(
+      inventoryTransferDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(inventoryTransferDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_Update:Failed to update InventoryTransfer(2)');
+      }
+    } catch (e) {
+      throw Exception('inventoryTransferDetail_Update:Failed to load post(1)');
     }
   }
 

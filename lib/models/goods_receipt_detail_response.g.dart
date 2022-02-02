@@ -102,6 +102,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['ManufacturingDate'] as String),
     itemType: json['ItemType'] as String,
     type: json['Type'] as String,
+    group: json['Group'] as String,
+    machine: json['Machine'] as String,
+    shift: json['Shift'] as String,
   );
 }
 
@@ -133,4 +136,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ExpirationDate': instance.expirationDate?.toIso8601String(),
       'ItemType': instance.itemType,
       'Type': instance.type,
+      'Group': instance.group,
+      'Machine': instance.machine,
+      'Shift': instance.shift,
     };

@@ -201,11 +201,15 @@ class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                     (data[index].docStatus == 'C') ?
+                    Text("Request No : ${data[index].sapInventoryTransferReqNo} (Closed)", style: TextStyle(fontSize: 16, color: Colors.red),)
+                    : Text("Request No : ${data[index].sapInventoryTransferReqNo}"),
                     Text(
                         "IT No. : ${data[index].sapInventoryTransferNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
 
                     Text(
                         "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
+                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),

@@ -77,6 +77,40 @@ class _InventoryTransferDetailItemDetailPageState
     return bloc.lastState ?? bloc.initialState;
   }
 
+  showAlertDialogUpdate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _done();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan Batch Number?"),
+      actions: [
+        cancelButton,
+        continueButton,
+        
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocEventStateBuilder<InventoryTransferDetailItemDetailState>(
@@ -88,6 +122,7 @@ class _InventoryTransferDetailItemDetailPageState
             key: _scaffoldKey,
             appBar: AppBar(
               title: Text("Item Detail"),
+              //automaticallyImplyLeading: false,
               backgroundColor: bgBlue,
               bottom: PreferredSize(
                   child: Container(
@@ -100,10 +135,11 @@ class _InventoryTransferDetailItemDetailPageState
                     ? FlatButton.icon(
                         icon: Icon(Icons.check),
                         onPressed: () {
-                          _done();
+                          //_done();
+                          showAlertDialogUpdate(context);
                         },
                         textColor: Colors.white,
-                        label: Text("Done"),
+                        label: Text("DONE"),
                       )
                     : Container(),
               ],

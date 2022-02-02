@@ -88,6 +88,14 @@ class GoodsReceiptDetailEventAdd extends GoodsReceiptDetailEvent {
         );
 }
 
+class GoodsReceiptDetailEventUpdate extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class GoodsReceiptDetailEventPost extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventPost({
     @required Data data,
