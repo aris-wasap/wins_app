@@ -195,6 +195,15 @@ class Item {
   @JsonKey(name: 'Type')
   String type;
 
+  @JsonKey(name: 'Group')
+  String group;
+
+  @JsonKey(name: 'Machine')
+  String machine;
+
+  @JsonKey(name: 'Shift')
+  String shift;
+
   @JsonKey(name: 'WhsCode')
   String whsCode;
 
@@ -249,6 +258,9 @@ class Item {
     this.priceMode,
     this.batchNo,
     this.micron,
+    this.group,
+    this.machine,
+    this.shift,
     this.manufacturingDate,
     this.expirationDate,
   });

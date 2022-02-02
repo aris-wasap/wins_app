@@ -194,26 +194,29 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
+                        "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
+                    Text("Production No. : ${data[index].woNo}"),
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
+                    Text("Depo : ${data[index].branchName}"),
+                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),
-                leading: ClipOval(
-                  child: Image.network(
-                    globalBloc.getUrl() +
-                        "api/UserApi/GetImage?id=${data[index].userId}",
-                    width: 50.0,
-                    height: 50.0,
-                  ),
-                ),
+                // leading: ClipOval(
+                //   child: Image.network(
+                //     globalBloc.getUrl() +
+                //         "api/UserApi/GetImage?id=${data[index].userId}",
+                //     width: 50.0,
+                //     height: 50.0,
+                //   ),
+                // ),
 
                 trailing: Icon(Icons.keyboard_arrow_right),
                 //color: Colors.white, size: 30.0),

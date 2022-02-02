@@ -107,6 +107,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     priceMode: json['PriceMode'] as String,
     batchNo: json['BatchNo'] as String,
     micron: (json['Micron'] as num)?.toDouble(),
+    group: json['Group'] as String,
+    machine: json['Machine'] as String,
+    shift: json['Shift'] as String,
     manufacturingDate: json['ManufacturingDate'] == null
         ? null
         : DateTime.parse(json['ManufacturingDate'] as String),
@@ -140,6 +143,9 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'ItemType': instance.itemType,
       'Uom': instance.uom,
       'Type': instance.type,
+      'Group': instance.group,
+      'Machine': instance.machine,
+      'Shift': instance.shift,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
       'BinAbs': instance.binAbs,

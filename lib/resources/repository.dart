@@ -11,6 +11,7 @@ import 'package:wins_app/models/cfl_purchase_item_response.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_reference_response.dart';
 import 'package:wins_app/models/cfl_purchase_supplier_response.dart';
+import 'package:wins_app/models/cfl_receipt_production_response.dart';
 import 'package:wins_app/models/cfl_request_branch_response.dart';
 import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
 import 'package:wins_app/models/cfl_return_request_response.dart';
@@ -433,6 +434,14 @@ class Repository {
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Add(data);
 
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Update(data);
+  
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Post(data);
+
   Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_Scan(
           int poId, String qrResult) =>
       apiProvider.goodsReceiptDetail_Scan(poId, qrResult);
@@ -695,6 +704,10 @@ class Repository {
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Add(data);
 
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Update(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Update(data);
+
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Post(data);
@@ -720,6 +733,13 @@ class Repository {
   Future<CflProductionOrderResponse> cflProductionOrder_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflProductionOrder_FetchNextPage(rowStart, searchQuery);
+
+//-----------------------------
+  //CflReceiptProduction
+  //-----------------------------
+  Future<CflReceiptProductionResponse> cflReceiptProduction_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflReceiptProduction_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
   //CflTransferProduction

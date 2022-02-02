@@ -170,6 +170,40 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    }else if (event is InventoryTransferDetailEventUpdate) {
+      yield InventoryTransferDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        InventoryTransferDetailResponse response =
+            await _repository.inventoryTransferDetail_Update(event.data);
+        if (response == null) {
+          yield InventoryTransferDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield InventoryTransferDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield InventoryTransferDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<inventoryTransferDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield InventoryTransferDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is InventoryTransferDetailEventPost) {
       yield InventoryTransferDetailState.busy(
         data: event.data,

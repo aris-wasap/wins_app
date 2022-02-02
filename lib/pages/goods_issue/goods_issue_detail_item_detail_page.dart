@@ -223,7 +223,7 @@ class _GoodsIssueDetailItemDetailPageState
                         child: LabelFieldWidget(
                           labelText: "Issue Qty",
                           valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
+                              "${NumberFormat("#,###.##").format(data.qty)}",
                         ),
                       ),
                 Padding(padding: EdgeInsets.only(top: 15)),

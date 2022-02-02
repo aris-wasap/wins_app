@@ -149,15 +149,16 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, message: "To Bin Location harus di isi");
       return;
-    } else if ([null].contains(data.items)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
-    } else if ([0].contains(data.items.length)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
-    }
+    } 
+    //else if ([null].contains(data.items)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // } else if ([0].contains(data.items.length)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // }
     data.id = _id;
 
     data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
@@ -171,6 +172,59 @@ class _InventoryTransferDetailPageState
     }
 
     bloc.emitEvent(InventoryTransferDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _update() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.requestNo = _requestNoController.text;
+    data.transDate = transDate;
+    data.fromWhsCode = _fromWhsCodeController.text;
+    data.fromWhsName = _fromWhsNameController.text;
+    data.fromBinCode = _fromBinCodeController.text;
+    data.toBranchName = _toBranchNameController.text;
+    data.toWhsCode = _toWhsCodeController.text;
+    data.toWhsName = _toWhsNameController.text;
+    data.toBinCode = _toBinCodeController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Date harus di isi");
+      return;
+    } else if ([null, ""].contains(data.fromWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "From Warehouse harus di isi");
+      return;
+    } else if ([null, ""].contains(data.fromBinCode)) {
+      ValidateDialogWidget(
+          context: context, message: "From Bin Location harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "To Warehouse harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toBinCode)) {
+      ValidateDialogWidget(
+          context: context, message: "To Bin Location harus di isi");
+      return;
+    }
+    //data.id = _id;
+
+    data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
+    data.toAbsEntry = int.parse(_toAbsEntryController.text);
+    data.toBranchId = int.parse(_toBranchIdController.text);
+
+    if (_requestIdController.text == "" || _requestIdController.text == null) {
+      data.requestId = 0;
+    } else {
+      data.requestId = int.parse(_requestIdController.text);
+    }
+
+    bloc.emitEvent(InventoryTransferDetailEventUpdate(
       data: data,
     ));
   }
@@ -386,19 +440,20 @@ class _InventoryTransferDetailPageState
               color: bgOrange,
               height: 5.0,
             ),
+            
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(
-              Icons.save,
-              color: Colors.yellowAccent,
-            ),
-            onPressed: () {
-              showAlertDialogCreate(context);
-            },
-            textColor: Colors.white,
-            label: Text("Save"),
-          )
+          // FlatButton.icon(
+          //   icon: Icon(
+          //     Icons.save,
+          //     color: Colors.yellowAccent,
+          //   ),
+          //   onPressed: () {
+          //     showAlertDialogCreate(context);
+          //   },
+          //   textColor: Colors.white,
+          //   label: Text("Save"),
+          // )
         ],
       );
     } else if (_getState().data.sapInventoryTransferId == 0 &&
@@ -411,6 +466,10 @@ class _InventoryTransferDetailPageState
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
           ),
         ),
+        // leading: new IconButton(
+        //   icon: new Icon(Icons.ac_unit),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -589,7 +648,17 @@ class _InventoryTransferDetailPageState
             bloc.emitEvent(InventoryTransferDetailEventItemAdd(
               item: item,
             ));
+
+            if (_getState().data.id > 0){
+              _update();
+          }else {
+            _create();
           }
+
+          }
+
+          
+          
         });
       }
     });
@@ -682,6 +751,9 @@ class _InventoryTransferDetailPageState
           item: item,
           itemIndex: itemIndex,
         ));
+
+         _update();
+
       }
     });
   }
@@ -729,8 +801,10 @@ class _InventoryTransferDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
+                (data.sapInventoryTransferId > 0)
+                          ? TextFormField(
                     controller: _sapInventoryTransferNoController,
+                    style: TextStyle(fontSize: 16, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Transfer No.",
@@ -738,9 +812,14 @@ class _InventoryTransferDetailPageState
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                            borderRadius: new BorderRadius.circular(10.0),
+                            ),
+                            ), 
+                            )
+                          : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
+                (data.id > 0)
+                          ? TextFormField(
                     controller: _transNoController,
                     enabled: false,
                     decoration: InputDecoration(
@@ -749,13 +828,13 @@ class _InventoryTransferDetailPageState
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-
+                            borderRadius: new BorderRadius.circular(10.0))))
+                            : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapInventoryTransferId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -780,7 +859,7 @@ class _InventoryTransferDetailPageState
                                   ))),
                         ),
                       ),
-                      (data.id == 0)
+                      (data.sapInventoryTransferId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -1464,6 +1543,7 @@ class _InventoryTransferDetailPageState
             onDismissed: (direction) {
               bloc.emitEvent(
                   InventoryTransferDetailEventItemRemove(itemIndex: index));
+                  _update();
             },
             background: Container(
                 color: Colors.red,

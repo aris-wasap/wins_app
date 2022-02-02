@@ -13,6 +13,7 @@ import 'package:wins_app/models/cfl_purchase_item_response.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_reference_response.dart';
 import 'package:wins_app/models/cfl_purchase_supplier_response.dart';
+import 'package:wins_app/models/cfl_receipt_production_response.dart';
 import 'package:wins_app/models/cfl_request_branch_response.dart';
 import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
 import 'package:wins_app/models/cfl_return_request_response.dart';
@@ -1657,6 +1658,55 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
+      goodsReceiptDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/GoodsReceiptDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsReceiptDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsReceiptDetail_Add:Failed to add GoodsReceipt(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
+      goodsReceiptDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/Post",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsReceiptDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsReceiptDetail_Post:Failed to post GoodsReceipt(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_Post:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_Scan(
       int woId, String qrResult) async {
     try {
@@ -3012,6 +3062,32 @@ class ApiProvider {
     }
   }
 
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Update(
+      inventoryTransferDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/InventoryTransferDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(inventoryTransferDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_Update:Failed to update InventoryTransfer(2)');
+      }
+    } catch (e) {
+      throw Exception('inventoryTransferDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
       inventoryTransferDetail.Data data) async {
     try {
@@ -3121,6 +3197,38 @@ class ApiProvider {
     } catch (e) {
       throw Exception(
           'cflProductionOrder_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflReceiptProduction
+  //-----------------------------
+  Future<CflReceiptProductionResponse> cflReceiptProduction_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
+      });
+
+      final response = await http.post(
+          "${_url}api/CflReceiptProductionApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflReceiptProductionResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflReceiptProduction_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'cflReceiptProduction_FetchNextPage:Failed to load post(1)');
     }
   }
 

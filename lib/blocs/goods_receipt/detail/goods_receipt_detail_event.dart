@@ -88,6 +88,22 @@ class GoodsReceiptDetailEventAdd extends GoodsReceiptDetailEvent {
         );
 }
 
+class GoodsReceiptDetailEventUpdate extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
+class GoodsReceiptDetailEventPost extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class GoodsReceiptDetailEventCancel extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventCancel({
     @required int id,

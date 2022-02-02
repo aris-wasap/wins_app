@@ -66,6 +66,11 @@ class _TransferProductionDetailItemDetailPageState
   }
 
   void _done() {
+    if (_data.openQty <= 0 ) {
+      ValidateDialogWidget(
+          context: context, message: "Open Qty sudah terpenuhi, silahkan scan QR dengan itemcode yang berbeda");
+      return;
+    }
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
           context: context, message: "Qty harus lebih besar dari 0");
@@ -148,6 +153,47 @@ class _TransferProductionDetailItemDetailPageState
         }
       }
     }
+
+    if (_data.availableQty != 0) {
+      if (_availableQtyController.text == "") {
+        _availableQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.availableQty.toString()));
+      } else {
+        if (_data.availableQty ==
+            double.parse(_availableQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _availableQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.availableQty.toString()));
+        }
+      }
+    }
+
+    if (_data.openQty != 0) {
+      if (_openQtyController.text == "") {
+        _openQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.openQty.toString()));
+      } else {
+        if (_data.openQty ==
+            double.parse(_openQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _openQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.openQty.toString()));
+        }
+      }
+    }
+
+    if (_data.plannedQty != 0) {
+      if (_plannedQtyController.text == "") {
+        _plannedQtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.plannedQty.toString()));
+      } else {
+        if (_data.plannedQty ==
+            double.parse(
+                _plannedQtyController.text.replaceAll(new RegExp(','), ''))) {
+          _plannedQtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.plannedQty.toString()));
+        }
+      }
+    }
+    
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -422,10 +468,17 @@ class _TransferProductionDetailItemDetailPageState
                               borderSide: BorderSide(color: bgBlue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : LabelFieldWidget(
-                        labelText: "Qty",
-                        valueText:
-                            "${NumberFormat("#,###.00").format(data.qty)}",
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: " Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(

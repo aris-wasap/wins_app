@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:wins_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:wins_app/pages/cfl/cfl_production_order_page.dart';
+import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:wins_app/pages/transfer_production/transfer_production_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
@@ -21,6 +22,7 @@ import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/models/cfl_production_order_response.dart'
     as cflProductionOrder;
+import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
 
@@ -601,6 +603,7 @@ class _TransferProductionDetailPageState
               children: <Widget>[
                 TextFormField(
                     controller: _transNoController,
+                    style: TextStyle(fontSize: 16, color: Colors.red),
                     enabled: false,
                     decoration: InputDecoration(
                         hintText: "Transfer No.",
@@ -758,24 +761,24 @@ class _TransferProductionDetailPageState
                     ),
                   ),
                 ),
+                 Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute<
-                                      cflDbWarehouse.CflDbWarehouseModel>(
-                                  builder: (BuildContext context) =>
-                                      CflDbWarehousePage()));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                      warehouse
-                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                        if (warehouse != null || _woIdController.text != null) {
-                          _fromWhsCodeController.text = warehouse.whsCode;
-                          _fromWhsNameController.text = warehouse.whsName;
-                        }
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
+                          // if (whs != null) {
+                          //   _fromWhsCodeController.text = whs.whsCode;
+                          //   _fromWhsNameController.text = whs.whsName;
+                          // }
+                        });
                       });
                     }
                   },
@@ -783,7 +786,7 @@ class _TransferProductionDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                        border: Border.all(
+                        border: Border.all(      
                             color: (data.id == 0)
                                 ? Colors.blue
                                 : Colors.grey[400]),
@@ -800,8 +803,8 @@ class _TransferProductionDetailPageState
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
-                                contentPadding: EdgeInsets.all(0),
-                                title: Text(_fromWhsCodeController.text),
+                                contentPadding: EdgeInsets.only(left: 5),
+                                title: Text( _fromWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -821,6 +824,69 @@ class _TransferProductionDetailPageState
                     ),
                   ),
                 ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<
+                //                       cflDbWarehouse.CflDbWarehouseModel>(
+                //                   builder: (BuildContext context) =>
+                //                       CflDbWarehousePage()));
+
+                //       warehouse
+                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                //         if (warehouse != null || _woIdController.text != null) {
+                //           _fromWhsCodeController.text = warehouse.whsCode;
+                //           _fromWhsNameController.text = warehouse.whsName;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "From Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.all(0),
+                //                 title: Text(_fromWhsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_fromWhsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 // FlatButton(
                 //   padding: EdgeInsets.only(top: 5),
                 //   onPressed: () {
@@ -877,24 +943,87 @@ class _TransferProductionDetailPageState
                 //     ),
                 //   ),
                 // ),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute<
+                //                       cflDbWarehouse.CflDbWarehouseModel>(
+                //                   builder: (BuildContext context) =>
+                //                       CflDbWarehousePage()));
+
+                //       warehouse
+                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
+                //         if (warehouse != null) {
+                //           _toWhsCodeController.text = warehouse.whsCode;
+                //           _toWhsNameController.text = warehouse.whsName;
+                //         }
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                //     ),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "To Warehouse",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.all(0),
+                //                 title: Text(_toWhsCodeController.text),
+                //                 subtitle: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: <Widget>[
+                //                     Text(_toWhsNameController.text),
+                //                   ],
+                //                 ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute<
-                                      cflDbWarehouse.CflDbWarehouseModel>(
-                                  builder: (BuildContext context) =>
-                                      CflDbWarehousePage()));
+                      Future<cflWarehouse.Data> whs = Navigator.push(
+                          context,
+                          MaterialPageRoute<cflWarehouse.Data>(
+                              builder: (BuildContext context) =>
+                                  CflWarehousePage(globalBloc.branchId)));
 
-                      warehouse
-                          .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                        if (warehouse != null) {
-                          _toWhsCodeController.text = warehouse.whsCode;
-                          _toWhsNameController.text = warehouse.whsName;
-                        }
+                      whs.then((cflWarehouse.Data whs) {
+                        setState(() {
+                          if (whs != null) {
+                           _toWhsCodeController.text = whs.whsCode;
+                           _toWhsNameController.text = whs.whsName;
+                          }
+                        });
                       });
                     }
                   },
@@ -902,11 +1031,11 @@ class _TransferProductionDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color:
-                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
+                        border: Border.all(
+                            color: (data.id == 0)
+                                ? Colors.blue
+                                : Colors.grey[400]),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -919,7 +1048,7 @@ class _TransferProductionDetailPageState
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.only(left: 5),
                                 title: Text(_toWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1061,9 +1190,16 @@ class _TransferProductionDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(data[index].itemCode),
-              Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              Text(data[index].batchNo ?? ''),
+              // Text(data[index].itemCode),
+              // Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
+              // Text(data[index].batchNo ?? ''),
+              Text("Item Code : ${data[index].itemCode}", ),
+              Text("Batch No. : ${data[index].batchNo}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
+              // Text(data[index].whsCode ?? ''),
+              //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(

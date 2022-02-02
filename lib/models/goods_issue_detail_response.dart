@@ -70,6 +70,12 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'SapGoodsIssueId')
+  int sapGoodsIssueId;
+
+  @JsonKey(name: 'SapGoodsIssueNo')
+  String sapGoodsIssueNo;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -81,6 +87,8 @@ class Data {
     this.transDate,
     this.seriesNameWo,
     this.seriesName,
+    this.sapGoodsIssueId = 0,
+    this.sapGoodsIssueNo,
     this.items,
   });
 

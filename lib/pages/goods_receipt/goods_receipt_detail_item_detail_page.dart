@@ -37,14 +37,15 @@ class _GoodsReceiptDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
-  final _qtyPoController = TextEditingController();
+  final _qtyWoController = TextEditingController();
   final _qtyController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _focusNode = FocusNode();
     bloc = GoodsReceiptDetailItemDetailBloc(this._data);
   }
 
@@ -53,6 +54,7 @@ class _GoodsReceiptDetailItemDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _focusNode?.dispose();
 
     bloc?.dispose();
 
@@ -72,6 +74,40 @@ class _GoodsReceiptDetailItemDetailPageState
       binCode: _binCodeController.text,
     ));
     Navigator.pop(context, _getState().data);
+  }
+
+  showAlertDialogUpdate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _done();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan Batch Number?"),
+      actions: [
+        cancelButton,
+        continueButton,
+        
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   GoodsReceiptDetailItemDetailState _getState() {
@@ -100,7 +136,8 @@ class _GoodsReceiptDetailItemDetailPageState
                 _data.id == 0
                     ? FlatButton(
                         onPressed: () {
-                          _done();
+                          //_done();
+                          showAlertDialogUpdate(context);
                         },
                         textColor: Colors.white,
                         child: Row(
@@ -127,7 +164,8 @@ class _GoodsReceiptDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyPoController.text = data.woQty.toString();
+    _qtyWoController.text = data.woQty.toString();
+
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.##")
@@ -137,6 +175,20 @@ class _GoodsReceiptDetailItemDetailPageState
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.##")
               .format(double.parse(data.qty.toString()));
+        }
+      }
+    }
+
+    if (_data.woQty != 0) {
+      if (_qtyWoController.text == "") {
+        _qtyWoController.text = NumberFormat("###,###.##")
+            .format(double.parse(data.woQty.toString()));
+      } else {
+        if (_data.woQty ==
+            double.parse(
+                _qtyWoController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyWoController.text = NumberFormat("###,###.##")
+              .format(double.parse(data.woQty.toString()));
         }
       }
     }
@@ -178,7 +230,7 @@ class _GoodsReceiptDetailItemDetailPageState
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
-                  controller: _qtyPoController,
+                  controller: _qtyWoController,
                   enabled: false,
                   decoration: InputDecoration(
                       labelText: "Planned Qty",
@@ -190,7 +242,9 @@ class _GoodsReceiptDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
-                        autofocus: true,
+                        autofocus: false,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -203,6 +257,7 @@ class _GoodsReceiptDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -219,13 +274,17 @@ class _GoodsReceiptDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Receipt Qty",
-                          valueText:
-                              "${NumberFormat("#,###.00").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Receipt Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 15)),
                 TextFormField(
