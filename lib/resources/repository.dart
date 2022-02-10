@@ -217,6 +217,18 @@ class Repository {
           transferProductionDetail.Data data) =>
       apiProvider.transferProductionDetail_Add(data);
 
+  Future<TransferProductionDetailResponse> transferProductionDetail_Update(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Update(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_Post(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Post(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.transferProductionDetail_RemoveItem(id, detId);
+
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
           int woId, String whsCodeFrom, String qrResult) =>
       apiProvider.transferProductionDetail_Scan(woId, whsCodeFrom, qrResult);

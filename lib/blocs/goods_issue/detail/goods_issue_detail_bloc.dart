@@ -1,7 +1,7 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
 import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
-import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
+//import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
 import 'package:wins_app/resources/repository.dart';
@@ -116,8 +116,8 @@ class GoodsIssueDetailBloc
       }
     } else if (event is GoodsIssueDetailEventRefresh) {
       var woId = event.woId;
-      var newData = currentState.data;
-      var listData = currentState.data.items;
+      //var newData = currentState.data;
+      //var listData = currentState.data.items;
 
       if (woId == 0) {
         yield GoodsIssueDetailState.success(

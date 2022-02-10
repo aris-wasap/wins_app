@@ -154,6 +154,39 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     ));
   }
 
+  showAlertDialogCreate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => GoodsIssueDetailPage(0));
@@ -259,8 +292,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           FlatButton.icon(
             icon: Icon(Icons.check),
             onPressed: () {
-              _refreshDetailItem();
-              _create();
+              //_refreshDetailItem();
+              //_create();
+              showAlertDialogCreate(context);
             },
             textColor: Colors.white,
             label: Text("Submit"),

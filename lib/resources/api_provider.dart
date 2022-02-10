@@ -552,6 +552,81 @@ class ApiProvider {
     }
   }
 
+  Future<TransferProductionDetailResponse> transferProductionDetail_Update(
+      transferProductionDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/TransferProductionDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferProductionDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_update:Failed to update TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_update:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_Post(
+      transferProductionDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/TransferProductionDetailApi/Post",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferProductionDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_Post:Failed to post TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/TransferProductionDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return transferProductionDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_Add:Failed to add TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_Add:Failed to load post(1)');
+    }
+  }
+
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
       int woId, String fromWhsCode, String qrResult) async {
     try {

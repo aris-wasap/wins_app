@@ -3,7 +3,7 @@ import 'package:wins_app/blocs/item/detail/item_detail_event.dart';
 import 'package:wins_app/blocs/item/detail/item_detail_state.dart';
 import 'package:wins_app/models/item_detail_scan_response.dart';
 import 'package:wins_app/resources/repository.dart';
-import 'package:wins_app/models/item_detail_scan_response.dart' as itemDetail;
+//import 'package:wins_app/models/item_detail_scan_response.dart' as itemDetail;
 
 class ItemDetailBloc
     extends BlocEventStateBase<ItemDetailEvent, ItemDetailState> {

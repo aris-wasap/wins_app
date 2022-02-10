@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 class TransferProductionDetailEvent extends BlocEvent {
   TransferProductionDetailEvent({
     this.id,
+    this.detId,
     this.data,
     this.woId,
     this.woNo,
@@ -17,6 +18,7 @@ class TransferProductionDetailEvent extends BlocEvent {
   });
 
   final int id;
+  final int detId;
   final Data data;
   final int woId;
   final String fromWhsCode;
@@ -91,6 +93,32 @@ class TransferProductionDetailEventAdd extends TransferProductionDetailEvent {
     @required Data data,
   }) : super(
           data: data,
+        );
+}
+
+class TransferProductionDetailEventUpdate extends TransferProductionDetailEvent {
+  TransferProductionDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
+class TransferProductionDetailEventPost extends TransferProductionDetailEvent {
+  TransferProductionDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
+class TransferProductionDetailEventRemoveItem extends TransferProductionDetailEvent {
+  TransferProductionDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(
+          id: id,
+          detId: detId
         );
 }
 

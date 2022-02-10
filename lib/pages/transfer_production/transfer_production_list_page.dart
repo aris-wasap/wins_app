@@ -193,13 +193,18 @@ class _TransferProductionListPageState
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "Scan No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Production No. : ${data[index].woNo}"),
+                    Text(
+                        "Transfer Production No. : ${data[index].sapTransferProductionNo}"),
                     Text(
                         "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),
+                    //Text("Depo : ${data[index].branchName}"),
+                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),
@@ -209,7 +214,7 @@ class _TransferProductionListPageState
                 //         "api/UserApi/GetImage?id=${data[index].userId}",
                 //     width: 50.0,
                 //     height: 50.0,
-                //   ),b 
+                //   ),b
                 // ),
 
                 trailing: Icon(Icons.keyboard_arrow_right),

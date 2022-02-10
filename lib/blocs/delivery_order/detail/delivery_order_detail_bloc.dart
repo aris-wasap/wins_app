@@ -63,7 +63,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
       var soId = event.soId;
       var soNo = event.soNo;
       var qrResult = event.qrResult;
-      var whsCode = event.whsCode;
+      //var whsCode = event.whsCode;
       var newData = currentState.data;
 
       yield DeliveryOrderDetailState.busy(
