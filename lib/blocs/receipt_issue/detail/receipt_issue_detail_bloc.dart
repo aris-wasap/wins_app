@@ -165,7 +165,43 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<ReceiptIssueDetailEvent,
           data: event.data,
         );
       }
-    } else if (event is ReceiptIssueDetailEventPost) {
+    }
+    else if (event is ReceiptIssueDetailEventUpdate) {
+      yield ReceiptIssueDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptIssueDetailResponse response =
+            await _repository.receiptIssueDetail_Update(event.data);
+        if (response == null) {
+          yield ReceiptIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield ReceiptIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data:
+                  response.data ?? Data(items: List<receiptIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+     else if (event is ReceiptIssueDetailEventPost) {
       yield ReceiptIssueDetailState.busy(
         data: event.data,
       );
@@ -197,6 +233,39 @@ class ReceiptIssueDetailBloc extends BlocEventStateBase<ReceiptIssueDetailEvent,
         yield ReceiptIssueDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
+        );
+      }
+    }else if (event is ReceiptIssueDetailEventRemoveItem) {
+      yield ReceiptIssueDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        ReceiptIssueDetailResponse response = await _repository
+            .receiptIssueDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield ReceiptIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield ReceiptIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield ReceiptIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield ReceiptIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
         );
       }
     } else if (event is ReceiptIssueDetailEventCancel) {

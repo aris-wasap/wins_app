@@ -570,10 +570,18 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Add(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Update(
+          receiptIssueDetail.Data data) =>
+      apiProvider.receiptIssueDetail_Update(data);
+
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Post(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.receiptIssueDetail_RemoveItem(id, detId);
+      
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);

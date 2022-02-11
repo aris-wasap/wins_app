@@ -897,7 +897,7 @@ class _TransferProductionDetailPageState
                                   vertical: 15.0, horizontal: 10.0),
                               disabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: (data.id == 0)
+                                      color: (data.sapTransferProductionId == 0)
                                           ? Colors.blue
                                           : Colors.grey[400]),
                                   borderRadius: new BorderRadius.circular(

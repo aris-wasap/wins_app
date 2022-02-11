@@ -2377,6 +2377,29 @@ class ApiProvider {
     }
   }
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Update(
+      receiptIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceiptIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptIssueDetail_Update:Failed to update ReceiptIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptIssueDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
       receiptIssueDetail.Data data) async {
     try {
@@ -2398,6 +2421,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('receiptIssueDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/ReceiptIssueDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return receiptIssueDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'receiptIssueDetail_Add:Failed to add ReceiptIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptIssueDetail_Add:Failed to load post(1)');
     }
   }
 

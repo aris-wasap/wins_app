@@ -200,7 +200,7 @@ class _ReceiptIssueListPageState extends State<ReceiptIssueListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Receipt No. : ${data[index].sapReceiptIssueNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                        "Receipt No. : ${data[index].sapReceiptIssueNo} "), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                     Text("Issue No. : ${data[index].issueNo}"),
                     Text("Depo : ${data[index].branchName}"),
                     Text("User : ${data[index].createdUser}"),
