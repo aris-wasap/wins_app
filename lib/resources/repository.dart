@@ -279,9 +279,17 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Add(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Update(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Update(data);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
+  
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
           int soId, String qrResult) =>
@@ -512,9 +520,17 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Add(data);
 
+  Future<RequestIssueDetailResponse> requestIssueDetail_Update(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Update(data);
+
   Future<RequestIssueDetailResponse> requestIssueDetail_Post(
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.requestIssueDetail_RemoveItem(id, detId);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           int requestId, String qrResult) =>

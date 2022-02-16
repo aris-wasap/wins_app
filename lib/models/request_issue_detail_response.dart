@@ -126,6 +126,9 @@ class Item {
   @JsonKey(name: 'Id')
   int id;
 
+  @JsonKey(name: 'DetId')
+  int detId;
+
   @JsonKey(name: 'LineNo')
   int lineNo;
 
@@ -209,6 +212,7 @@ class Item {
     this.webId,
     this.webDetId,
     this.id: 0,
+    this.detId:0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,

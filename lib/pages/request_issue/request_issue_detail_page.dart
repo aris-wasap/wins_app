@@ -120,15 +120,16 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       ValidateDialogWidget(
           context: context, message: "Transfer Request No harus di isi");
       return;
-    } else if ([null].contains(data.items)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
-    } else if ([0].contains(data.items.length)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
     }
+    // else if ([null].contains(data.items)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // } else if ([0].contains(data.items.length)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // }
 
     data.id = _id;
     data.requestId = int.parse(_requestIdController.text);
@@ -136,6 +137,43 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     data.seriesNameReqNo = _seriesNameReqNoController.text;
 
     bloc.emitEvent(RequestIssueDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _update() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.seriesName = _seriesNameController.text;
+    data.transDate = transDate;
+    data.requestNo = _requestNoController.text;
+    data.items = state.data.items;
+    data.id = int.parse(_idTxController.text);
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Issue Date harus di isi");
+      return;
+    } else if (["", null].contains(data.requestNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Request No harus di isi");
+      return;
+    }
+    // else if ([null].contains(data.items)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // } else if ([0].contains(data.items.length)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Item detail harus di isi");
+    //   return;
+    // }
+
+    //data.id = _id;
+    data.requestId = int.parse(_requestIdController.text);
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameReqNo = _seriesNameReqNoController.text;
+
+    bloc.emitEvent(RequestIssueDetailEventUpdate(
       data: data,
     ));
   }
@@ -325,6 +363,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -347,25 +386,25 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(
-              Icons.save,
-              color: Colors.yellowAccent,
-            ),
-            onPressed: () {
-              showAlertDialogCreate(context);
-            },
-            textColor: Colors.white,
-            label: Text(
-              "Save",
-              style: GoogleFonts.openSans(
-                textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
-          )
+          // FlatButton.icon(
+          //   icon: Icon(
+          //     Icons.save,
+          //     color: Colors.yellowAccent,
+          //   ),
+          //   onPressed: () {
+          //     showAlertDialogCreate(context);
+          //   },
+          //   textColor: Colors.white,
+          //   label: Text(
+          //     "Save",
+          //     style: GoogleFonts.openSans(
+          //       textStyle: TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 15,
+          //           fontWeight: FontWeight.w900),
+          //     ),
+          //   ),
+          // )
         ],
       );
     } else if (_getState().data.sapRequestIssueId == 0 &&
@@ -535,6 +574,12 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
             bloc.emitEvent(RequestIssueDetailEventItemAdd(
               item: item,
             ));
+
+            if (_getState().data.id > 0) {
+              _update();
+            } else {
+              _create();
+            }
           }
         });
       }
@@ -637,6 +682,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
           item: item,
           itemIndex: itemIndex,
         ));
+
+        _update();
       }
     });
   }
@@ -676,33 +723,36 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _sapRequestIssueNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Request No.",
-                        labelText: "Request No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                (data.sapRequestIssueId > 0)
+                    ? TextFormField(
+                        controller: _sapRequestIssueNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Request No.",
+                            labelText: "Request No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapRequestIssueId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -719,7 +769,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                                     vertical: 15.0, horizontal: 10.0),
                                 disabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: (data.id == 0)
+                                        color: (data.sapRequestIssueId == 0)
                                             ? Colors.blue
                                             : Colors.grey[400]),
                                     borderRadius: new BorderRadius.circular(
@@ -735,7 +785,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                             // ),
                             ),
                       ),
-                      (data.id == 0)
+                      (data.sapRequestIssueId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -992,10 +1042,12 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
       itemBuilder: (contex, index) {
         if (_getState().data.sapRequestIssueId == 0) {
           return Dismissible(
-            key: Key(data[index].hashCode.toString()),
+            key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  RequestIssueDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(RequestIssueDetailEventRemoveItem(
+                  id: data[index].id, detId: data[index].detId));
+              // bloc.emitEvent(
+              //     RequestIssueDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
                 color: Colors.red,

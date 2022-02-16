@@ -620,10 +620,10 @@ class ApiProvider {
         return transferProductionDetailResponseFromJson(response.body);
       } else {
         throw Exception(
-            'transferProductionDetail_Add:Failed to add TransferProduction(2)');
+            'transferProductionDetail_RemoveItem:Failed to remove TransferProduction(2)');
       }
     } catch (e) {
-      throw Exception('transferProductionDetail_Add:Failed to load post(1)');
+      throw Exception('transferProductionDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -889,6 +889,30 @@ class ApiProvider {
     }
   }
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Update(
+      deliveryOrderDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/DeliveryOrderDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(deliveryOrderDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_Update:Failed to update DeliveryOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
       deliveryOrderDetail.Data data) async {
     try {
@@ -910,6 +934,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('deliveryOrderDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/DeliveryOrderDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return deliveryOrderDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_RemoveItem:Failed to add DeliveryOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -2081,6 +2128,29 @@ class ApiProvider {
     }
   }
 
+  Future<RequestIssueDetailResponse> requestIssueDetail_Update(
+      requestIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/RequestIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(requestIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('requestIssueDetail_Update:Failed to update RequestIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('requestIssueDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<RequestIssueDetailResponse> requestIssueDetail_Post(
       requestIssueDetail.Data data) async {
     try {
@@ -2102,6 +2172,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('requestIssueDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/RequestIssueDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return requestIssueDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'requestIssueDetail_RemoveItem:Failed to remove RequestIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('requestIssueDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -2440,10 +2533,10 @@ class ApiProvider {
         return receiptIssueDetailResponseFromJson(response.body);
       } else {
         throw Exception(
-            'receiptIssueDetail_Add:Failed to add ReceiptIssue(2)');
+            'receiptIssueDetail_RemoveItem:Failed to remove ReceiptIssue(2)');
       }
     } catch (e) {
-      throw Exception('receiptIssueDetail_Add:Failed to load post(1)');
+      throw Exception('receiptIssueDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
