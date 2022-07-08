@@ -111,6 +111,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     receiptBranch_WhsName: json['ReceiptBranch_WhsName'] as String,
     goodsIssue_Auth_Add: json['GoodsIssue_Auth_Add'] as String,
     goodsIssue_Auth_Detail: json['GoodsIssue_Auth_Detail'] as String,
+    goodsIssueMixing_Auth_Add: json['GoodsIssueMixing_Auth_Add'] as String,
+    goodsIssueMixing_Auth_Detail:
+        json['GoodsIssueMixing_Auth_Detail'] as String,
     goodsIssue_WhsCode: json['GoodsIssue_WhsCode'] as String,
     goodsIssue_WhsName: json['GoodsIssue_WhsName'] as String,
     goodsReceipt_Auth_Add: json['GoodsReceipt_Auth_Add'] as String,
@@ -177,6 +180,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ReceiptProduction_WhsName': instance.receiptProduction_WhsName,
       'GoodsIssue_Auth_Detail': instance.goodsIssue_Auth_Detail,
       'GoodsIssue_Auth_Add': instance.goodsIssue_Auth_Add,
+      'GoodsIssueMixing_Auth_Detail': instance.goodsIssueMixing_Auth_Detail,
+      'GoodsIssueMixing_Auth_Add': instance.goodsIssueMixing_Auth_Add,
       'GoodsIssue_WhsCode': instance.goodsIssue_WhsCode,
       'GoodsIssue_WhsName': instance.goodsIssue_WhsName,
       'GoodsReceipt_Auth_Detail': instance.goodsReceipt_Auth_Detail,

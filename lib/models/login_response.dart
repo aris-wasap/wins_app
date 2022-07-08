@@ -163,6 +163,12 @@ class Data {
   @JsonKey(name: 'GoodsIssue_Auth_Add')
   String goodsIssue_Auth_Add;
 
+  @JsonKey(name: 'GoodsIssueMixing_Auth_Detail')
+  String goodsIssueMixing_Auth_Detail;
+
+  @JsonKey(name: 'GoodsIssueMixing_Auth_Add')
+  String goodsIssueMixing_Auth_Add;
+
   @JsonKey(name: 'GoodsIssue_WhsCode')
   String goodsIssue_WhsCode;
 
@@ -397,6 +403,8 @@ class Data {
     this.receiptBranch_WhsName,
     this.goodsIssue_Auth_Add,
     this.goodsIssue_Auth_Detail,
+    this.goodsIssueMixing_Auth_Detail,
+    this.goodsIssueMixing_Auth_Add,
     this.goodsIssue_WhsCode,
     this.goodsIssue_WhsName,
     this.goodsReceipt_Auth_Add,

@@ -1,3 +1,4 @@
+import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_wo_list_page.dart';
 import 'package:wins_app/pages/payable_credit/payable_credit_list_page.dart';
 import 'package:wins_app/pages/receipt_branch/receipt_branch_list_page.dart';
 import 'package:wins_app/pages/receivable_credit/receivable_credit_list_page.dart';
@@ -73,6 +74,13 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "subtitle": "List Issue, Scan Item",
       "icon": "assets/images/goods_issue.png",
       "authDetail": "goodsIssue_Auth_Detail",
+    },
+    //Wins - Active
+    {
+      "title": "Mixing",
+      "subtitle": "List Issue, Scan Item",
+      "icon": "assets/images/goods_issue.png",
+      "authDetail": "goodsIssueMixing_Auth_Detail",
     },
     //Wins - InActive
     {
@@ -228,18 +236,25 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                     builder: (BuildContext context) {
                                   return GoodsIssueListPage();
                                 }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "goodsIssueMixing_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .goodsIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return GoodsIssueMixingWOListPage();
+                                }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "goodsReceipt_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .goodsReceipt_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return GoodsReceiptListPage();
+                                }));
                               }
-
-                                else if (subjectList[index]["authDetail"] ==
-                                        "goodsReceipt_Auth_Detail" &&
-                                    globalBloc.loginResponse.data
-                                            .goodsReceipt_Auth_Detail ==
-                                        'Y') {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return GoodsReceiptListPage();
-                                  }));
-                                }
 
                               // Change Product
                               //else
