@@ -54,7 +54,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
   @override
   void initState() {
     super.initState();
-
+    print("nilai id: $_id");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.emitEvent(GoodsIssueListEvent(
         event: GoodsIssueListEventType.firstPage,

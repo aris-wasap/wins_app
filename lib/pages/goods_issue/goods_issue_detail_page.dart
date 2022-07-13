@@ -9,6 +9,7 @@ import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart'
 import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_scan_detail_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
@@ -415,18 +416,33 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
+              // note: fungsi SCAN
+              floatingActionButton: _getState().data.id != 0
                   ? FloatingActionButton.extended(
-                      icon: Icon(Icons.refresh),
-                      backgroundColor: bgBlue,
-                      label: Text("Refresh"),
+                      backgroundColor: bgOrange,
+                      icon: Icon(Icons.camera_alt),
+                      label: Text("Scan"),
                       onPressed: () {
-                        _refreshDetailItem();
+                        // _refreshDetailItem();
                       },
                     )
                   : null,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
+              // note: fungsi refresh
+              // floatingActionButton: _getState().data.id == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.refresh),
+              //         backgroundColor: bgBlue,
+              //         label: Text("Refresh"),
+              //         onPressed: () {
+              //           _refreshDetailItem();
+              //         },
+              //       )
+              //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
+
               // bottomNavigationBar: data.id == 0
               //     ? BottomAppBar(
               //         color: Colors.blue,
@@ -469,7 +485,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            GoodsIssueDetailItemDetailPage(items[itemIndex]),
+            GoodsIssueDetailScanDetailPage(items[itemIndex]),
       ),
     );
 
@@ -520,18 +536,18 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 (data.sapGoodsIssueId > 0)
-                          ? TextFormField(
-                    controller: _sapGoodsIssueNoController,
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Issue Prodcution No.",
-                        labelText: "Issue Prodcution No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0))))
-                          : Container(width: 0, height: 0),
+                    ? TextFormField(
+                        controller: _sapGoodsIssueNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Issue Prodcution No.",
+                            labelText: "Issue Prodcution No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 // TextFormField(
                 //     controller: _transNoController,
@@ -713,13 +729,13 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
               //Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
-              //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
-              Text(
-                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
-                      " ${data[index].uom}"),
-              Text(
-                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
-                      " ${data[index].uom}"),
+              // Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+              // Text(
+              //     "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
+              //         " ${data[index].uom}"),
+              // Text(
+              //     "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
+              //         " ${data[index].uom}"),
               //Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
 
@@ -731,7 +747,20 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
-          // trailing: IconButton(
+          trailing: RaisedButton(
+            onPressed: () {
+              _showItemDetail(index);
+            },
+            color: bgOrange,
+            child: Text(
+              "ADD",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          // IconButton(
           //   icon: Icon(Icons.keyboard_arrow_right),
           //   iconSize: 30.0,
           //   onPressed: () {

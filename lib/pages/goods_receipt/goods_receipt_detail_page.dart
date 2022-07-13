@@ -9,6 +9,7 @@ import 'package:wins_app/blocs/goods_receipt/detail/goods_receipt_detail_event.d
 import 'package:wins_app/blocs/goods_receipt/detail/goods_receipt_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_scan_detail_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -115,7 +116,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       ValidateDialogWidget(
           context: context, message: "Production Order No harus di isi");
       return;
-   } 
+    }
     //else if ([null].contains(data.items)) {
     //   ValidateDialogWidget(
     //       context: context, message: "Item detail harus di isi");
@@ -492,21 +493,23 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     var data = _getState().data;
 
     try {
-      String qrResult = await BarcodeScanner.scan();
-      for (var item in _getState().data.items) {
-        if (("${item.batchNo}" == qrResult)) {
-          ValidateDialogWidget(
-              context: context,
-              message:
-                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
-          return;
-        }
-      }
+      // String qrResult = await BarcodeScanner.scan();
+      // for (var item in _getState().data.items) {
+      //   if (("${item.batchNo}" == qrResult)) {
+      //     ValidateDialogWidget(
+      //         context: context,
+      //         message:
+      //             'Item Batch Number : ${item.batchNo} sudah pernah di scan');
+      //     return;
+      //   }
+      // }
 
-      bloc.emitEvent(GoodsReceiptDetailEventScan(
-          woId: int.parse(_woIdController.text),
-          qrResult: qrResult,
-          data: data));
+      // bloc.emitEvent(GoodsReceiptDetailEventScan(
+      //     woId: int.parse(_woIdController.text),
+      //     qrResult: qrResult,
+      //     data: data));
+
+      return _showItemScanDetail();
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
@@ -548,17 +551,25 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               item: item,
             ));
 
-            if (_getState().data.id > 0){
+            if (_getState().data.id > 0) {
               _update();
-          }else {
-            _create();
+            } else {
+              _create();
+            }
           }
-
-          }
-          
         });
       }
     });
+  }
+
+  void _showItemScanDetail() {
+    final items = _getState().data.items;
+    Navigator.push(
+        context,
+        MaterialPageRoute<Item>(
+          builder: (BuildContext context) =>
+              GoodsReceiptDetailScanDetailPage(items[0]),
+        ));
   }
 
   void _showItemDetail(int itemIndex) {
@@ -608,7 +619,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapGoodsReceiptId == 0
+              floatingActionButton: _getState().data.sapGoodsReceiptId != 0
                   ? FloatingActionButton.extended(
                       icon: Icon(Icons.camera_alt),
                       backgroundColor: btnBgOrange,
@@ -656,8 +667,6 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       width: 0.0,
     );
   }
-
-  
 
   Widget _buildForm() {
     _errorMessage();
@@ -710,18 +719,18 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                       )
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                (_getState().data.id > 0) ?
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))):
-                            Container(width: 0, height: 0),
+                (_getState().data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
