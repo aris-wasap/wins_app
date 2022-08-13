@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_event.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_state.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_bloc.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_event.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_state.dart';
 import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
@@ -21,7 +21,7 @@ class GoodsIssueMixingListPage extends StatefulWidget {
 class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
   _GoodsIssueMixingListPageState(this._id);
 
-  GoodsIssueListBloc bloc = GoodsIssueListBloc();
+  GoodsIssueMixingListBloc bloc = GoodsIssueMixingListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final int _id;
@@ -34,8 +34,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -44,8 +44,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.nextPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -56,8 +56,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
     super.initState();
     print("nilai id: $_id");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.firstPage,
       ));
     });
 
@@ -96,8 +96,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsIssueListEvent(
-                  event: GoodsIssueListEventType.deactivedSearch,
+                bloc.emitEvent(GoodsIssueMixingListEvent(
+                  event: GoodsIssueMixingListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -122,8 +122,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsIssueListEvent(
-                event: GoodsIssueListEventType.activedSearch,
+              bloc.emitEvent(GoodsIssueMixingListEvent(
+                event: GoodsIssueMixingListEventType.activedSearch,
               ));
             },
           ),
@@ -145,17 +145,17 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsIssueListEvent(
-      event: GoodsIssueListEventType.refresh,
+    bloc.emitEvent(GoodsIssueMixingListEvent(
+      event: GoodsIssueMixingListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsIssueListState>(
+    return BlocEventStateBuilder<GoodsIssueMixingListState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueListState state) {
+        builder: (BuildContext context, GoodsIssueMixingListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -199,7 +199,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

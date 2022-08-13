@@ -27,6 +27,9 @@ import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_list_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_scan_response.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
@@ -121,6 +124,8 @@ import 'package:wins_app/models/issue_production_detail_response.dart'
     as issueProductionDetail;
 import 'package:wins_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart'
+    as goodsIssueMixingDetail;
 import 'package:wins_app/models/goods_receipt_detail_response.dart'
     as goodsReceiptDetail;
 //import 'package:wins_app/models/receipt_branch_detail_response.dart'
@@ -414,6 +419,49 @@ class Repository {
       apiProvider.goodsIssueDetail_ViewDetailItem(woId);
 
   //-----------------------------
+  //GoodsIssueMixingProductionList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse>
+      goodsIssueMixingProductionList_FetchNextPage(
+              int lastId, String searchQuery) =>
+          apiProvider.goodsIssueMixingProductionList_FetchNextPage(
+              lastId, searchQuery);
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingProductionList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueMixingProductionList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //GoodsIssueMixingList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_FetchNextPage(
+          int lastId, int woId, String searchQuery) =>
+      apiProvider.goodsIssueMixingList_FetchNextPage(lastId, woId, searchQuery);
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueMixingList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //GoodsIssueMixingDetail
+  //-----------------------------
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_GetById(
+          int id) =>
+      apiProvider.goodsIssueMixingDetail_GetById(id);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Add(
+          goodsIssueMixingDetail.Data data) =>
+      apiProvider.goodsIssueMixingDetail_Add(data);
+
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
+          int woId, String qrResult) =>
+      apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
+          int woId) =>
+      apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId);
+
+  //-----------------------------
   //GoodsReceiptList
   //-----------------------------
   Future<GoodsReceiptListResponse> goodsReceiptList_FetchNextPage(
@@ -437,7 +485,7 @@ class Repository {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Update(data);
-  
+
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Post(data);

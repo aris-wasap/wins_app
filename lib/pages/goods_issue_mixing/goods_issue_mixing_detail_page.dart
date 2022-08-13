@@ -4,11 +4,11 @@ import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
 import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_bloc.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +31,7 @@ class _GoodsIssueMixingDetailPageState
     extends State<GoodsIssueMixingDetailPage> {
   _GoodsIssueMixingDetailPageState(this._id);
 
-  GoodsIssueDetailBloc bloc = GoodsIssueDetailBloc();
+  GoodsIssueMixingDetailBloc bloc = GoodsIssueMixingDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
@@ -54,7 +54,7 @@ class _GoodsIssueMixingDetailPageState
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(GoodsIssueDetailEventGetId(
+        bloc.emitEvent(GoodsIssueMixingDetailEventGetId(
           id: _id,
         ));
       });
@@ -151,7 +151,7 @@ class _GoodsIssueMixingDetailPageState
       // }
     }
 
-    bloc.emitEvent(GoodsIssueDetailEventAdd(
+    bloc.emitEvent(GoodsIssueMixingDetailEventAdd(
       data: data,
     ));
   }
@@ -183,7 +183,7 @@ class _GoodsIssueMixingDetailPageState
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(GoodsIssueDetailEventNormal());
+                    bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -217,7 +217,7 @@ class _GoodsIssueMixingDetailPageState
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(GoodsIssueDetailEventNormal());
+                    bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -293,7 +293,7 @@ class _GoodsIssueMixingDetailPageState
     }
   }
 
-  GoodsIssueDetailState _getState() {
+  GoodsIssueMixingDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
@@ -314,8 +314,8 @@ class _GoodsIssueMixingDetailPageState
     //     }
     //   }
     try {
-      bloc.emitEvent(
-          GoodsIssueDetailEventRefresh(woId: int.parse(_woIdController.text)));
+      bloc.emitEvent(GoodsIssueMixingDetailEventRefresh(
+          woId: int.parse(_woIdController.text)));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -340,7 +340,7 @@ class _GoodsIssueMixingDetailPageState
   //       }
   //     }
 
-  //     bloc.emitEvent(GoodsIssueDetailEventScan(
+  //     bloc.emitEvent(GoodsIssueMixingDetailEventScan(
   //         woId: int.parse(_woIdController.text),
   //         woNo: _woNoController.text,
   //         qrResult: qrResult,
@@ -371,7 +371,7 @@ class _GoodsIssueMixingDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(GoodsIssueDetailEventNormal());
+        bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
@@ -382,7 +382,7 @@ class _GoodsIssueMixingDetailPageState
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(GoodsIssueDetailEventItemAdd(
+            bloc.emitEvent(GoodsIssueMixingDetailEventItemAdd(
               item: item,
             ));
           }
@@ -396,9 +396,9 @@ class _GoodsIssueMixingDetailPageState
     _context = context;
     var data = _getState().data;
 
-    return BlocEventStateBuilder<GoodsIssueDetailState>(
+    return BlocEventStateBuilder<GoodsIssueMixingDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueDetailState state) {
+        builder: (BuildContext context, GoodsIssueMixingDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -417,18 +417,19 @@ class _GoodsIssueMixingDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.refresh),
-                      backgroundColor: bgBlue,
-                      label: Text("Refresh"),
-                      onPressed: () {
-                        _refreshDetailItem();
-                      },
-                    )
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+              // floatingActionButton: _getState().data.id == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.refresh),
+              //         backgroundColor: bgBlue,
+              //         label: Text("Refresh"),
+              //         onPressed: () {
+              //           _refreshDetailItem();
+              //         },
+              //       )
+              //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
+
               // bottomNavigationBar: data.id == 0
               //     ? BottomAppBar(
               //         color: Colors.blue,
@@ -477,7 +478,7 @@ class _GoodsIssueMixingDetailPageState
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        bloc.emitEvent(GoodsIssueMixingDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -733,13 +734,27 @@ class _GoodsIssueMixingDetailPageState
               //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
-          trailing: IconButton(
-            icon: Icon(Icons.keyboard_arrow_right),
-            iconSize: 30.0,
-            onPressed: () {
-              _showItemDetail(index);
-            },
-          ),
+          trailing: data[index].valuationMethod == 'FIFO'
+              ? IconButton(
+                  icon: Icon(Icons.keyboard_arrow_right),
+                  iconSize: 30.0,
+                  onPressed: () {
+                    _showItemDetail(index);
+                  },
+                )
+              : RaisedButton(
+                  onPressed: () {
+                    _showItemDetail(index);
+                  },
+                  color: bgOrange,
+                  child: Text(
+                    "ADD",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
         ),
       ),
     );
@@ -761,7 +776,7 @@ class _GoodsIssueMixingDetailPageState
               key: Key(data[index].hashCode.toString()),
               onDismissed: (direction) {
                 bloc.emitEvent(
-                    GoodsIssueDetailEventItemRemove(itemIndex: index));
+                    GoodsIssueMixingDetailEventItemRemove(itemIndex: index));
               },
               background: Container(
                   color: Colors.red,

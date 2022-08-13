@@ -740,9 +740,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               // Text(data[index].whsCode ?? ''),
 
               //Text("Batch No. : ${data[index].batchNo}"),
-              Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
-                      " ${data[index].uom}"),
+
+              // Text(
+              //     "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+              //         " ${data[index].uom}"),
+
               // Text(data[index].whsCode ?? ''),
               //Text("Warehouse : ${data[index].whsName}"),
             ],

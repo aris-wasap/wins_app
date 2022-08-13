@@ -1,21 +1,22 @@
 // To parse this JSON data, do
 //
 //     final item = itemFromJson(jsonString);
-//     final goodsIssueDetailResponse = goodsIssueDetailResponseFromJson(jsonString);
+//     final goodsIssueMixingDetailResponse = goodsIssueMixingDetailResponseFromJson(jsonString);
 //     final data = dataFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-part 'goods_issue_detail_response.g.dart';
+part 'goods_issue_mixing_detail_response.g.dart';
 
-GoodsIssueDetailResponse goodsIssueDetailResponseFromJson(String str) {
+GoodsIssueMixingDetailResponse goodsIssueMixingDetailResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
-  return GoodsIssueDetailResponse.fromJson(jsonData);
+  return GoodsIssueMixingDetailResponse.fromJson(jsonData);
 }
 
 @JsonSerializable()
-class GoodsIssueDetailResponse {
+class GoodsIssueMixingDetailResponse {
   @JsonKey(name: 'Error')
   bool error;
 
@@ -25,17 +26,17 @@ class GoodsIssueDetailResponse {
   @JsonKey(name: 'Data')
   Data data;
 
-  GoodsIssueDetailResponse({
+  GoodsIssueMixingDetailResponse({
     this.error,
     this.errorMessage,
     this.data,
   });
 
-  factory GoodsIssueDetailResponse.fromJson(Map<String, dynamic> json) {
-    return _$GoodsIssueDetailResponseFromJson(json);
+  factory GoodsIssueMixingDetailResponse.fromJson(Map<String, dynamic> json) {
+    return _$GoodsIssueMixingDetailResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$GoodsIssueDetailResponseToJson(this);
+  Map<String, dynamic> toJson() => _$GoodsIssueMixingDetailResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -150,24 +151,33 @@ class Item {
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
-  Item(
-      {this.woId: 0,
-      this.woLineNo: 0,
-      this.woVisOrder: 0,
-      this.id: 0,
-      this.lineNo: 0,
-      this.visLineNo: 0,
-      this.itemCode,
-      this.itemName,
-      this.woQty: 0,
-      this.qty: 0,
-      this.openQty: 0,
-      this.uom,
-      this.whsCode,
-      this.whsName,
-      this.binAbs,
-      this.binCode,
-      this.batchNo});
+  @JsonKey(name: 'ProductionType')
+  String productionType;
+
+  @JsonKey(name: 'ValuationMethod')
+  String valuationMethod;
+
+  Item({
+    this.woId: 0,
+    this.woLineNo: 0,
+    this.woVisOrder: 0,
+    this.id: 0,
+    this.lineNo: 0,
+    this.visLineNo: 0,
+    this.itemCode,
+    this.itemName,
+    this.woQty: 0,
+    this.qty: 0,
+    this.openQty: 0,
+    this.uom,
+    this.whsCode,
+    this.whsName,
+    this.binAbs,
+    this.binCode,
+    this.batchNo,
+    this.productionType,
+    this.valuationMethod,
+  });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 

@@ -2,10 +2,10 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_event.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_state.dart';
-import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail_item_detail/goods_issue_mixing_detail_item_detail_bloc.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail_item_detail/goods_issue_mixing_detail_item_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail_item_detail/goods_issue_mixing_detail_item_detail_state.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_scan_detail_page.dart';
 import 'package:wins_app/widgets/label_field_widget.dart';
@@ -30,7 +30,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
   _GoodsIssueMixingDetailItemDetailPageState(this._data);
 
   final Item _data;
-  GoodsIssueDetailItemDetailBloc bloc;
+  GoodsIssueMixingDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
@@ -48,7 +48,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
     // TODO: implement initState
     super.initState();
 
-    bloc = GoodsIssueDetailItemDetailBloc(this._data);
+    bloc = GoodsIssueMixingDetailItemDetailBloc(this._data);
   }
 
   @override
@@ -69,7 +69,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
           context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
-    bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(
+    bloc.emitEvent(GoodsIssueMixingDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text),
       binCode: _binCodeController.text,
@@ -147,15 +147,16 @@ class _GoodsIssueMixingDetailItemDetailPageState
     });
   }
 
-  GoodsIssueDetailItemDetailState _getState() {
+  GoodsIssueMixingDetailItemDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsIssueDetailItemDetailState>(
+    return BlocEventStateBuilder<GoodsIssueMixingDetailItemDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueDetailItemDetailState state) {
+        builder: (BuildContext context,
+            GoodsIssueMixingDetailItemDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,

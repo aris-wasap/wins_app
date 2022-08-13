@@ -28,6 +28,9 @@ import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_list_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_scan_response.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
@@ -125,6 +128,8 @@ import 'package:wins_app/models/payable_credit_detail_response.dart'
     as payableCreditDetail;
 import 'package:wins_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart'
+    as goodsIssueMixingDetail;
 import 'package:wins_app/models/goods_receipt_detail_response.dart'
     as goodsReceiptDetail;
 //import 'package:wins_app/models/receipt_branch_detail_response.dart'
@@ -1560,6 +1565,208 @@ class ApiProvider {
   }
 
   //-----------------------------
+  //GoodsIssueMixingProductionList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse>
+      goodsIssueMixingProductionList_FetchNextPage(
+          int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingListProductionApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueMixingProductionList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'goodsIssueMixingProductionList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingProductionList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingListProductionApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueMixingProductionList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'goodsIssueMixingProductionList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //GoodsIssueMixingList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_FetchNextPage(
+      int lastId, int woId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "woId": woId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingListApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingListResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingListApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingListResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //GoodsIssueMixingDetail
+  //-----------------------------
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_GetById(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post("${_url}api/GoodsIssueDetailApi/GetById",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_GetById:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_GetById:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Add(
+      goodsIssueMixingDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/GoodsIssueDetailApi/Add",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_Add:Failed to add GoodsIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
+      int woId, String qrResult) async {
+    try {
+      var body = json.encode(
+          {"UserId": globalBloc.userId, "WoId": woId, "QrResult": qrResult});
+
+      final response = await http.post("${_url}api/GoodsIssueDetailApi/Scan",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            goodsIssueMixingDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_Scan:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_Scan:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
+      int woId) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/ViewDetailItem",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueDetail_ViewDetailItem:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_ViewDetailItem:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
   //GoodsReceiptList
   //-----------------------------
   Future<GoodsReceiptListResponse> goodsReceiptList_FetchNextPage(
@@ -1667,8 +1874,10 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/GoodsReceiptDetailApi/Update",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1690,10 +1899,8 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post(
-          "${_url}api/GoodsReceiptDetailApi/Post",
-          headers: {'Content-type': 'application/json'},
-          body: body);
+      final response = await http.post("${_url}api/GoodsReceiptDetailApi/Post",
+          headers: {'Content-type': 'application/json'}, body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -3237,6 +3444,7 @@ class ApiProvider {
   //-----------------------------
   Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
       int rowStart, String searchQuery) async {
+    // note: tambahkan parameter production type
     try {
       var body = json.encode({
         "userId": globalBloc.userId,
