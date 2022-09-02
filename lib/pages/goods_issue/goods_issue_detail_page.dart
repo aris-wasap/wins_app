@@ -603,7 +603,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage()));
+                                  CflTransferProductionPage(null)));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {

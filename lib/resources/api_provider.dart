@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
 import 'package:wins_app/models/cfl_return_request_response.dart';
 import 'package:wins_app/models/cfl_sales_order_response.dart';
 import 'package:wins_app/models/cfl_delivery_order_response.dart';
+import 'package:wins_app/models/cfl_scale_response.dart';
 import 'package:wins_app/models/cfl_transfer_branch_response.dart';
 import 'package:wins_app/models/cfl_transfer_production_response.dart';
 import 'package:wins_app/models/cfl_transfer_request_response.dart';
@@ -1627,14 +1628,15 @@ class ApiProvider {
   //GoodsIssueMixingList
   //-----------------------------
   Future<GoodsIssueMixingListResponse> goodsIssueMixingList_FetchNextPage(
-      int lastId, int woId, String searchQuery) async {
+      int lastId, String searchQuery, int woId) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "LastId": lastId,
         "Size": 10,
-        "woId": woId,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+         "woId": woId,
+       
       });
 
       final response = await http.post(
@@ -1654,12 +1656,13 @@ class ApiProvider {
   }
 
   Future<GoodsIssueMixingListResponse> goodsIssueMixingList_Refresh(
-      int lastId, String searchQuery) async {
+      int lastId, String searchQuery, int woId) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "LastId": lastId,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "woId": woId
       });
 
       final response = await http.post(
@@ -1686,7 +1689,7 @@ class ApiProvider {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "Id": id});
 
-      final response = await http.post("${_url}api/GoodsIssueDetailApi/GetById",
+      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/GetById",
           headers: {'Content-type': 'application/json'}, body: body);
 
       if (response.statusCode == 200) {
@@ -1709,7 +1712,7 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/GoodsIssueDetailApi/Add",
+      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/Add",
           headers: {'Content-type': 'application/json'}, body: body);
 
       if (response.statusCode == 200) {
@@ -1729,7 +1732,7 @@ class ApiProvider {
       var body = json.encode(
           {"UserId": globalBloc.userId, "WoId": woId, "QrResult": qrResult});
 
-      final response = await http.post("${_url}api/GoodsIssueDetailApi/Scan",
+      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
 
       if (response.statusCode == 200) {
@@ -1747,7 +1750,7 @@ class ApiProvider {
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
       int woId) async {
     try {
-      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
+      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId, "BranchId": globalBloc.branchId,});
 
       final response = await http.post(
           "${_url}api/GoodsIssueMixingDetailApi/ViewDetailItem",
@@ -3443,7 +3446,7 @@ class ApiProvider {
   //CflTransferProduction
   //-----------------------------
   Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
-      int rowStart, String searchQuery) async {
+      int rowStart, String searchQuery, String productionType) async {
     // note: tambahkan parameter production type
     try {
       var body = json.encode({
@@ -3451,6 +3454,7 @@ class ApiProvider {
         "rowStart": rowStart,
         "pageSize": 10,
         "searchQuery": searchQuery,
+        "productionType": productionType,
         "branchId": globalBloc.branchId
       });
 
@@ -3686,6 +3690,34 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflPurchaseOrder_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflScale
+  //-----------------------------
+  Future<CflScaleResponse> cflScale_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
+      });
+
+      final response = await http.post("${_url}api/CflScaleApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflScaleResponseFromJson, response.body);
+      } else {
+        throw Exception('cflScale_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflScale_FetchNextPage:Failed to load post(1)');
     }
   }
 

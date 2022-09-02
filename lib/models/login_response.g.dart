@@ -111,9 +111,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     receiptBranch_WhsName: json['ReceiptBranch_WhsName'] as String,
     goodsIssue_Auth_Add: json['GoodsIssue_Auth_Add'] as String,
     goodsIssue_Auth_Detail: json['GoodsIssue_Auth_Detail'] as String,
-    goodsIssueMixing_Auth_Add: json['GoodsIssueMixing_Auth_Add'] as String,
     goodsIssueMixing_Auth_Detail:
         json['GoodsIssueMixing_Auth_Detail'] as String,
+    goodsIssueMixing_Auth_Add: json['GoodsIssueMixing_Auth_Add'] as String,
     goodsIssue_WhsCode: json['GoodsIssue_WhsCode'] as String,
     goodsIssue_WhsName: json['GoodsIssue_WhsName'] as String,
     goodsReceipt_Auth_Add: json['GoodsReceipt_Auth_Add'] as String,

@@ -47,6 +47,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _vendorCodeController = TextEditingController();
   final _vendorNameController = TextEditingController();
   final _refNoController = TextEditingController();
+  final _scaleNoController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
@@ -93,6 +94,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _vendorCodeController?.dispose();
     _vendorNameController?.dispose();
     _refNoController?.dispose();
+    _scaleNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
@@ -111,6 +113,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
     data.refNo = _refNoController.text;
+    data.scaleNo = _scaleNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -160,6 +163,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     data.seriesName = _seriesNameController.text;
     data.seriesNamePo = _seriesNamePoController.text;
     data.refNo = _refNoController.text;
+    data.scaleNo = _scaleNoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -644,6 +648,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
       _refNoController.text = data.refNo;
+      _scaleNoController.text = data.scaleNo;
       _sapReceiptOrderNoController.text = data.sapReceiptOrderNo;
       transDate = data.transDate;
       if (transDate != null) {
@@ -691,9 +696,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                             vertical: 15.0, horizontal: 10.0),
                         border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0)))),
-
                 Padding(padding: EdgeInsets.only(top: 5)),
-
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -758,6 +761,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                             _vendorCodeController.text = po.vendorCode;
                             _vendorNameController.text = po.vendorName;
                             _refNoController.text = "";
+                            _scaleNoController.text = "";
                             _branchIdController.text = po.branchId.toString();
                             _branchNameController.text = po.branchName;
                             _seriesNamePoController.text = po.seriesName;
@@ -873,6 +877,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                             //_vendorCodeController.text = po.vendorCode;
                             //_vendorNameController.text = po.vendorName;
                             _refNoController.text = po.refNo;
+                            _scaleNoController.text = po.scaleNo;
                             //_branchIdController.text = po.branchId.toString();
                             //_branchNameController.text = po.branchName;
                             //_seriesNamePoController.text = po.seriesName;
@@ -923,28 +928,28 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                     ),
                   ),
                 ),
-                //Padding(padding: EdgeInsets.only(top: 5)),
-                // TextFormField(
-                //   controller: _refNoController,
-                //   autofocus: false,
-                //   enabled: _transNoController.text == "" ? true : false,
-                //   decoration: InputDecoration(
-                //     hintText: 'Reference No.',
-                //     labelText: "Reference No.",
-                //     contentPadding: new EdgeInsets.symmetric(
-                //         vertical: 15.0, horizontal: 10.0),
-                //     border: new OutlineInputBorder(
-                //         borderRadius: new BorderRadius.circular(10.0)),
-                //     disabledBorder: OutlineInputBorder(
-                //       borderSide: BorderSide(
-                //           color:
-                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                //       borderRadius: new BorderRadius.circular(
-                //         10.0,
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                TextFormField(
+                  controller: _scaleNoController,
+                  autofocus: false,
+                  enabled: data.id == 0 ? true : false,
+                  decoration: InputDecoration(
+                    hintText: 'Scale No.',
+                    labelText: "Scale No.",
+                    contentPadding: new EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10.0)),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color:
+                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                      borderRadius: new BorderRadius.circular(
+                        10.0,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

@@ -2,27 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/cfl_purchase_reference/cfl_purchase_reference_bloc.dart';
-import 'package:wins_app/blocs/cfl_purchase_reference/cfl_purchase_reference_event.dart';
-import 'package:wins_app/blocs/cfl_purchase_reference/cfl_purchase_reference_state.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_bloc.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_event.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_state.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class CflPurchaseReferencePage extends StatefulWidget {
-  CflPurchaseReferencePage(this.poId);
-  final int poId;
+class CflScalePage extends StatefulWidget {
   @override
-  _CflPurchaseReferencePageState createState() =>
-      _CflPurchaseReferencePageState(poId);
+  _CflScalePageState createState() => _CflScalePageState();
 }
 
-class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
-  _CflPurchaseReferencePageState(this.poId);
-  CflPurchaseReferenceBloc bloc = CflPurchaseReferenceBloc();
+class _CflScalePageState extends State<CflScalePage> {
+  CflScaleBloc bloc = CflScaleBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final int poId;
+
   static const offsetVisibleThreshold = 50;
 
   final TextEditingController _searchQueryController = TextEditingController();
@@ -31,10 +27,9 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      bloc.emitEvent(CflPurchaseReferenceEvent(
-        event: CflPurchaseReferenceEventType.firstPage,
+      bloc.emitEvent(CflScaleEvent(
+        event: CflScaleEventType.firstPage,
         searchQuery: _searchQueryController.text,
-        poId: poId,
       ));
     });
   }
@@ -42,10 +37,9 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(CflPurchaseReferenceEvent(
-        event: CflPurchaseReferenceEventType.nextPage,
+      bloc.emitEvent(CflScaleEvent(
+        event: CflScaleEventType.nextPage,
         searchQuery: _searchQueryController.text,
-        poId: poId,
       ));
     }
   }
@@ -54,9 +48,8 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
   void initState() {
     super.initState();
 
-    bloc.emitEvent(CflPurchaseReferenceEvent(
-      event: CflPurchaseReferenceEventType.firstPage,
-      poId: poId,
+    bloc.emitEvent(CflScaleEvent(
+      event: CflScaleEventType.firstPage,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -73,13 +66,13 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar(CflPurchaseReferenceState state) {
+  PreferredSizeWidget _appBar(CflScaleState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-            hintText: "Search Purchase Reference",
+            hintText: "Search Purchase Order",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
@@ -95,16 +88,16 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(CflPurchaseReferenceEvent(
-                    event: CflPurchaseReferenceEventType.deactivedSearch,
-                    searchQuery: _searchQueryController.text,
-                    poId: poId));
+                bloc.emitEvent(CflScaleEvent(
+                  event: CflScaleEventType.deactivedSearch,
+                  searchQuery: _searchQueryController.text,
+                ));
               }),
         ],
       );
     } else {
       return AppBar(
-        title: Text("Choose Purchase Reference"),
+        title: Text("Choose Purchase Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -116,9 +109,8 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(CflPurchaseReferenceEvent(
-                event: CflPurchaseReferenceEventType.activedSearch,
-                poId: poId,
+              bloc.emitEvent(CflScaleEvent(
+                event: CflScaleEventType.activedSearch,
               ));
             },
           ),
@@ -129,17 +121,17 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(CflPurchaseReferenceEvent(
-      event: CflPurchaseReferenceEventType.refresh,
+    bloc.emitEvent(CflScaleEvent(
+      event: CflScaleEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<CflPurchaseReferenceState>(
+    return BlocEventStateBuilder<CflScaleState>(
         bloc: bloc,
-        builder: (BuildContext context, CflPurchaseReferenceState state) {
+        builder: (BuildContext context, CflScaleState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -159,7 +151,7 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
         });
   }
 
-  Widget buildList(CflPurchaseReferenceState state) {
+  Widget buildList(CflScaleState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -176,21 +168,19 @@ class _CflPurchaseReferencePageState extends State<CflPurchaseReferencePage> {
             ),
             margin: const EdgeInsets.all(0),
             // decoration:
-            //     BoxDecoration(breference: Breference(bottom: BreferenceSide(width: 1))),
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "Ref No. ${data[index].refNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                title: Text("No. ${data[index].code} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Scale No.  : ${data[index].scaleNo ?? ''}"),
-                    Text("PO No.  : ${data[index].transNo ?? ''}"),
-                    Text("Branch  : ${data[index].branchName ?? ''}"),
-                    Text("Vendor  : ${data[index].vendorCode ?? ''}"),
-                    Text("Vendor Name : ${data[index].vendorName ?? ''}"),
+                    Text("${data[index].noPo ?? ''}"),
+                    Text("${data[index].vendor ?? ''}"),
+                    Text("${data[index].noKendaraan ?? ''}"),
+                    Text("${data[index].namaBarang ?? ''}"),
                   ],
                 ),
                 leading: Icon(Icons.keyboard_arrow_left),

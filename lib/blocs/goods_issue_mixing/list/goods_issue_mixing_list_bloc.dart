@@ -45,7 +45,7 @@ class GoodsIssueMixingListBloc extends BlocEventStateBase<
           try {
             var _repository = Repository();
             GoodsIssueMixingListResponse response = await _repository
-                .goodsIssueMixingList_FetchNextPage(0, 166, "");
+                .goodsIssueMixingList_FetchNextPage(0, "", 0);
             if (response == null) {
               yield GoodsIssueMixingListState.failure(
                   errorMessage: 'Response null',
@@ -88,7 +88,7 @@ class GoodsIssueMixingListBloc extends BlocEventStateBase<
           try {
             var _repository = Repository();
             GoodsIssueMixingListResponse response = await _repository
-                .goodsIssueMixingList_FetchNextPage(0, 166, event.searchQuery);
+                .goodsIssueMixingList_FetchNextPage(0, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsIssueMixingListState.failure(
                   errorMessage: 'Response null',
@@ -132,7 +132,7 @@ class GoodsIssueMixingListBloc extends BlocEventStateBase<
             var _repository = Repository();
             GoodsIssueMixingListResponse response =
                 await _repository.goodsIssueMixingList_FetchNextPage(
-                    _lastIdController.value, 166, event.searchQuery);
+                    _lastIdController.value, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsIssueMixingListState.failure(
                   errorMessage: 'Response null',
@@ -175,7 +175,7 @@ class GoodsIssueMixingListBloc extends BlocEventStateBase<
             var _repository = Repository();
             GoodsIssueMixingListResponse response =
                 await _repository.goodsIssueMixingList_Refresh(
-                    _lastIdController.value, event.searchQuery);
+                    _lastIdController.value, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsIssueMixingListState.failure(
                   errorMessage: 'Response null',

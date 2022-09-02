@@ -4,10 +4,12 @@ class GoodsIssueMixingListEvent extends BlocEvent {
   GoodsIssueMixingListEvent({
     this.event,
     this.searchQuery,
+    this.woId,
   });
 
   final GoodsIssueMixingListEventType event;
   final String searchQuery;
+  final int woId;
 }
 
 enum GoodsIssueMixingListEventType {

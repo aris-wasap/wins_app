@@ -175,7 +175,7 @@ class GoodsIssueMixingWOListBloc extends BlocEventStateBase<
             var _repository = Repository();
             GoodsIssueMixingListResponse response =
                 await _repository.goodsIssueMixingList_Refresh(
-                    _lastIdController.value, event.searchQuery);
+                    _lastIdController.value, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsIssueMixingWOListState.failure(
                   errorMessage: 'Response null',

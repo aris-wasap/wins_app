@@ -60,6 +60,9 @@ class Data {
   @JsonKey(name: 'RefNo')
   String refNo;
 
+  @JsonKey(name: 'ScaleNo')
+  String scaleNo;
+
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
@@ -77,6 +80,7 @@ class Data {
     this.vendorCode,
     this.vendorName,
     this.refNo,
+    this.scaleNo,
     this.seriesName,
     this.branchId,
     this.branchName,

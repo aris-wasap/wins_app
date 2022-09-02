@@ -522,7 +522,7 @@ class _GoodsIssueMixingDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                (data.sapGoodsIssueId > 0)
+                (data.id > 0)
                     ? TextFormField(
                         controller: _sapGoodsIssueNoController,
                         style: TextStyle(fontSize: 16, color: Colors.red),
@@ -590,7 +590,7 @@ class _GoodsIssueMixingDetailPageState
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage()));
+                                  CflTransferProductionPage("M")));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {

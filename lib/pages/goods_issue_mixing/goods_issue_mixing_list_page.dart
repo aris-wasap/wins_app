@@ -37,6 +37,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
       bloc.emitEvent(GoodsIssueMixingListEvent(
         event: GoodsIssueMixingListEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
   }
@@ -47,6 +48,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
       bloc.emitEvent(GoodsIssueMixingListEvent(
         event: GoodsIssueMixingListEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     }
   }
@@ -58,6 +60,8 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.emitEvent(GoodsIssueMixingListEvent(
         event: GoodsIssueMixingListEventType.firstPage,
+        searchQuery: _searchQueryController.text,
+        woId:_id,
       ));
     });
 
