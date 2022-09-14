@@ -61,7 +61,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
       bloc.emitEvent(GoodsIssueMixingListEvent(
         event: GoodsIssueMixingListEventType.firstPage,
         searchQuery: _searchQueryController.text,
-        woId:_id,
+        woId: _id,
       ));
     });
 
@@ -181,7 +181,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
 
   Widget _buildList() {
     var state = bloc.lastState ?? bloc.initialState;
-
+    
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;

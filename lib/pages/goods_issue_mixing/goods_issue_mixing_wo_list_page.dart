@@ -7,6 +7,7 @@ import 'package:wins_app/blocs/goods_issue_mixing/list_wo/goods_issue_mixing_wo_
 import 'package:wins_app/blocs/goods_issue_mixing/list_wo/goods_issue_mixing_wo_list_event.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/list_wo/goods_issue_mixing_wo_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_page.dart';
 import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
@@ -119,9 +120,11 @@ class _GoodsIssueMixingWOListPageState
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsIssueMixingWOListEvent(
-                event: GoodsIssueMixingWOListEventType.activedSearch,
-              ));
+              bloc.emitEvent(
+                GoodsIssueMixingWOListEvent(
+                  event: GoodsIssueMixingWOListEventType.activedSearch,
+                ),
+              );
             },
           ),
           (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
@@ -130,7 +133,7 @@ class _GoodsIssueMixingWOListPageState
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsIssueMixingListPage(0);
+                      return GoodsIssueMixingDetailPage(0);
                     }));
                   },
                 )

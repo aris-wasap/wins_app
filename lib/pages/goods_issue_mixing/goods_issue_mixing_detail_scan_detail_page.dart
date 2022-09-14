@@ -30,6 +30,8 @@ class _GoodsIssueMixingDetailScanDetailPageState
   final Item _data;
   GoodsIssueMixingDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _woIdController = TextEditingController();
+  final _woLineNoController = TextEditingController();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
@@ -54,9 +56,17 @@ class _GoodsIssueMixingDetailScanDetailPageState
 
   @override
   void dispose() {
-    _qtyController?.dispose();
+    _woIdController?.dispose();
+    _woLineNoController?.dispose();
+    _itemCodeController?.dispose();
+    _itemNameController?.dispose();
+    _uomController?.dispose();
+    _whsCodeController?.dispose();
+    _whsNameController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _qtyPoController?.dispose();
+    _qtyController?.dispose();
 
     bloc?.dispose();
 
@@ -124,6 +134,8 @@ class _GoodsIssueMixingDetailScanDetailPageState
   Widget _buildForm() {
     var data = _getState().data;
 
+    _woIdController.text = data.woId.toString();
+    _woLineNoController.text = data.woLineNo.toString();
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
     _uomController.text = data.uom;
@@ -135,7 +147,7 @@ class _GoodsIssueMixingDetailScanDetailPageState
     _availableQtyPoController.text = data.woQty.toString();
     _openQtyPoController.text = data.woQty.toString();
     _qtyPoController.text = data.woQty.toString();
-    _batchNoController.text = "xxx";
+    _batchNoController.text = data.batchNo;
 
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
@@ -201,7 +213,7 @@ class _GoodsIssueMixingDetailScanDetailPageState
                   controller: _whsCodeController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "To Warehouse Code",
+                      labelText: "From Warehouse Code",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -212,7 +224,7 @@ class _GoodsIssueMixingDetailScanDetailPageState
                   controller: _whsNameController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "To Warehouse Name",
+                      labelText: "From Warehouse Name",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -258,7 +270,7 @@ class _GoodsIssueMixingDetailScanDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "To Bin Location",
+                                "From Bin Location",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),

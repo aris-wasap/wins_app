@@ -247,7 +247,7 @@ class _GoodsIssueMixingDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.sapGoodsIssueId == 0) {
       return AppBar(
         title: Text("Create Issue"),
         backgroundColor: bgBlue,
@@ -261,7 +261,7 @@ class _GoodsIssueMixingDetailPageState
           FlatButton.icon(
             icon: Icon(Icons.check),
             onPressed: () {
-              _refreshDetailItem();
+              //_refreshDetailItem();
               _create();
             },
             textColor: Colors.white,
@@ -417,39 +417,7 @@ class _GoodsIssueMixingDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              // floatingActionButton: _getState().data.id == 0
-              //     ? FloatingActionButton.extended(
-              //         icon: Icon(Icons.refresh),
-              //         backgroundColor: bgBlue,
-              //         label: Text("Refresh"),
-              //         onPressed: () {
-              //           _refreshDetailItem();
-              //         },
-              //       )
-              //     : null,
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerFloat,
-
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       )
-              //     : null,
+       
             ),
           );
         });
@@ -492,15 +460,24 @@ class _GoodsIssueMixingDetailPageState
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
 
     //jika nama signature berbah di kasih tanda
+    _woIdController.text = data.woId.toString();
+    _woNoController.text = data.woNo;
 
+    if (transDate != null) {
+        _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      } else {
+        _transDateController.text = null;
+      }
+      
     if (data.id != 0) {
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
+      _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
+      _transNoController.text = data.transNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -522,7 +499,7 @@ class _GoodsIssueMixingDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                (data.id > 0)
+                (data.sapGoodsIssueId > 0)
                     ? TextFormField(
                         controller: _sapGoodsIssueNoController,
                         style: TextStyle(fontSize: 16, color: Colors.red),
@@ -536,17 +513,19 @@ class _GoodsIssueMixingDetailPageState
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                // TextFormField(
-                //     controller: _transNoController,
-                //     enabled: false,
-                //     decoration: InputDecoration(
-                //         hintText: "Scan No.",
-                //         labelText: "Scan No.",
-                //         contentPadding: new EdgeInsets.symmetric(
-                //             vertical: 15.0, horizontal: 10.0),
-                //         border: new OutlineInputBorder(
-                //             borderRadius: new BorderRadius.circular(10.0)))),
-                // Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {

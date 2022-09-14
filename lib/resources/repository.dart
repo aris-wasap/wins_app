@@ -458,6 +458,10 @@ class Repository {
           int woId, String qrResult) =>
       apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
 
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_ScanBatch(
+          int woId, int woLineNo, String qrResult) =>
+      apiProvider.goodsIssueMixingDetail_ScanBatch(woId, woLineNo, qrResult);
+
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
           int woId) =>
       apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId);
@@ -795,7 +799,8 @@ class Repository {
   //-----------------------------
   Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
           int rowStart, String searchQuery, String productionType) =>
-      apiProvider.cflTransferProduction_FetchNextPage(rowStart, searchQuery, productionType);
+      apiProvider.cflTransferProduction_FetchNextPage(
+          rowStart, searchQuery, productionType);
 
   //-----------------------------
   //CflTransferRequest

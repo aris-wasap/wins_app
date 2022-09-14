@@ -32,6 +32,8 @@ class _GoodsIssueMixingDetailItemDetailPageState
   final Item _data;
   GoodsIssueMixingDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _woIdController = TextEditingController();
+  final _woLineNoController = TextEditingController();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
@@ -39,6 +41,10 @@ class _GoodsIssueMixingDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
+  final _toWhsCodeController = TextEditingController();
+  final _toWhsNameController = TextEditingController();
+  final _toBinAbsController = TextEditingController();
+  final _toBinCodeController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
   ScrollController _scrollController;
@@ -53,9 +59,21 @@ class _GoodsIssueMixingDetailItemDetailPageState
 
   @override
   void dispose() {
-    _qtyController?.dispose();
+    _woIdController?.dispose();
+    _woLineNoController?.dispose();
+    _itemCodeController?.dispose();
+    _itemNameController?.dispose();
+    _uomController?.dispose();
+    _whsCodeController?.dispose();
+    _whsNameController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
+    _toWhsCodeController?.dispose();
+    _toWhsNameController?.dispose();
+    _toBinAbsController?.dispose();
+    _toBinCodeController?.dispose();
+    _qtyPoController?.dispose();
+    _qtyController?.dispose();
 
     bloc?.dispose();
 
@@ -79,38 +97,36 @@ class _GoodsIssueMixingDetailItemDetailPageState
 
   Future _scanQR() async {
     if (["", null].contains(_itemCodeController.text)) {
-      ValidateDialogWidget(context: context, message: "WO No harus di isi");
+      ValidateDialogWidget(context: context, message: "Item Code No harus di isi");
       return;
     }
     var data = _getState().data;
 
     try {
-      print("Scan Qr on process...");
-      // String qrResult = await BarcodeScanner.scan();
-      // print(qrResult);
-      //     for (var item in _getState().data.items) {
-      //       if (("${item.batchNo}" == qrResult)) {
-      //         ValidateDialogWidget(
-      //             context: context, message: 'Item sudah pernah di scan');
-      //         return;
-      //       }
-      //     }
+      String qrResult = await BarcodeScanner.scan();
+      for (var itemBatchs in _getState().data.batchs) {
+        if (("${itemBatchs.batchNo}" == qrResult)) {
+          ValidateDialogWidget(
+              context: context, message: 'Batch Number sudah pernah di scan');
+          return;
+        }
+      }
 
-      //     bloc.emitEvent(GoodsIssueDetailEventScan(
-      //         woId: int.parse(_woIdController.text),
-      //         woNo: _woNoController.text,
-      //         qrResult: qrResult,
-      //         data: data));
-      //   } on PlatformException catch (ex) {
-      //     if (ex.code == BarcodeScanner.CameraAccessDenied) {
-      //       ValidateDialogWidget(
-      //           context: context, message: "Scan : Camera permition was denied");
-      //       return;
-      //     } else {
-      //       ValidateDialogWidget(
-      //           context: context, message: "Scan : Unknown error $ex");
-      //       return;
-      //     }
+      bloc.emitEvent(GoodsIssueMixingDetailItemDetailEventScan(
+          woId: int.parse(_woIdController.text),
+          woLineNo: int.parse(_woLineNoController.text),
+          qrResult: qrResult,
+          data: data));
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        ValidateDialogWidget(
+            context: context, message: "Scan : Camera permition was denied");
+        return;
+      } else {
+        ValidateDialogWidget(
+            context: context, message: "Scan : Unknown error $ex");
+        return;
+      }
     } on FormatException {
       // ValidateDialogWidget(
       //     context: context,
@@ -193,8 +209,8 @@ class _GoodsIssueMixingDetailItemDetailPageState
                       label: Text("Scan"),
                       onPressed: () {
                         // do something here
-                        // _scanQR();
-                        _showScanNewItemDetail('');
+                        _scanQR();
+                        //_showScanNewItemDetail('');
                       },
                     )
                   : null,
@@ -215,6 +231,12 @@ class _GoodsIssueMixingDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
+
+    _toWhsCodeController.text = data.toWhsCode;
+    _toWhsNameController.text = data.toWhsName;
+    _toBinAbsController.text = data.toBinAbs.toString();
+    _toBinCodeController.text = data.toBinCode;
+
     _qtyPoController.text = data.woQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
@@ -269,7 +291,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
                   controller: _whsCodeController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "To Warehouse Code",
+                      labelText: "From Warehouse Code",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -280,7 +302,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
                   controller: _whsNameController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "To Warehouse Name",
+                      labelText: "From Warehouse Name",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -326,7 +348,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "To Bin Location",
+                                "From Bin Location",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
@@ -346,7 +368,6 @@ class _GoodsIssueMixingDetailItemDetailPageState
                     ),
                   ),
                 ),
-
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _qtyPoController,
@@ -409,39 +430,6 @@ class _GoodsIssueMixingDetailItemDetailPageState
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
-
-                // LabelFieldWidget(
-                //   labelText: "Item Code",
-                //   valueText: "${data.itemCode}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Item Name",
-                //   valueText: "${data.itemName}",
-                // ),
-                // LabelFieldWidget(
-                //   labelText: "Open PO Qty",
-                //   valueText: "${NumberFormat("#,###.00").format(data.soQty)}",
-                // ),
-                // _data.id == 0
-                //     ? TextField(
-                //         controller: _qtyController,
-                //         keyboardType: TextInputType.number,
-                //         // onChanged: (text) {},
-                //         decoration: InputDecoration(
-                //           labelText: "Receipt Qty",
-                //           contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                //           enabledBorder: UnderlineInputBorder(
-                //               borderSide: BorderSide(color: Colors.blue)),
-                //         ))
-                //     : LabelFieldWidget(
-                //         labelText: "Receipt Qty",
-                //         valueText:
-                //             "${NumberFormat("#,###.00").format(data.qty)}",
-                //       ),
-                // LabelFieldWidget(
-                //   labelText: "UoM",
-                //   valueText: "${data.uom}",
-                // ),
               ],
             ),
           ),
@@ -501,13 +489,14 @@ class _GoodsIssueMixingDetailItemDetailPageState
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("No. $index"),
+          title: Text("Batch No. : ${_data.batchs[index].batchNo}"),
           subtitle: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Batch No. :'),
-              Text("Qty Batch :"),
+              // Text("Batch No. : ${_data.batchs[index].batchNo}"),
+              Text(
+                  "Qty Batch : ${NumberFormat("#,###.##").format(_data.batchs[index].openQty)}"),
             ],
           ),
         ),
@@ -523,7 +512,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
         controller: _scrollController,
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
-        itemCount: 1,
+        itemCount: data.batchs.length,
         itemBuilder: (contex, index) {
           if (data != null) {
             return _rowDetail(index);

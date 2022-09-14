@@ -1635,8 +1635,7 @@ class ApiProvider {
         "LastId": lastId,
         "Size": 10,
         "searchQuery": searchQuery,
-         "woId": woId,
-       
+        "woId": woId,
       });
 
       final response = await http.post(
@@ -1689,8 +1688,10 @@ class ApiProvider {
     try {
       var body = json.encode({"UserId": globalBloc.userId, "Id": id});
 
-      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/GetById",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/GetById",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1712,8 +1713,10 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/Add",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/Add",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1732,8 +1735,10 @@ class ApiProvider {
       var body = json.encode(
           {"UserId": globalBloc.userId, "WoId": woId, "QrResult": qrResult});
 
-      final response = await http.post("${_url}api/GoodsIssueMixingDetailApi/Scan",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/Scan",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1747,10 +1752,37 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_ScanBatch(
+      int woId, int woLineNo, String qrResult) async {
+    try {
+      var body = json.encode(
+          {"UserId": globalBloc.userId, "WoId": woId, "WoLineNo": woLineNo, "QrResult": qrResult});
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/ScanBatch",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            goodsIssueMixingDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
       int woId) async {
     try {
-      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId, "BranchId": globalBloc.branchId,});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WoId": woId,
+        "BranchId": globalBloc.branchId,
+      });
 
       final response = await http.post(
           "${_url}api/GoodsIssueMixingDetailApi/ViewDetailItem",
