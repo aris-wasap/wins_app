@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
-import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
+import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
-import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_state.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_bloc.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/models/goods_issue_detail_response.dart';
-import 'package:wins_app/pages/goods_issue/goods_issue_detail_scan_detail_page.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
@@ -20,17 +19,19 @@ import 'package:wins_app/models/cfl_transfer_production_response.dart'
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
-class GoodsIssueDetailPage extends StatefulWidget {
-  GoodsIssueDetailPage(this._id);
+class GoodsIssueMixingDetailPage extends StatefulWidget {
+  GoodsIssueMixingDetailPage(this._id);
   final int _id;
   @override
-  _GoodsIssueDetailPageState createState() => _GoodsIssueDetailPageState(_id);
+  _GoodsIssueMixingDetailPageState createState() =>
+      _GoodsIssueMixingDetailPageState(_id);
 }
 
-class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
-  _GoodsIssueDetailPageState(this._id);
+class _GoodsIssueMixingDetailPageState
+    extends State<GoodsIssueMixingDetailPage> {
+  _GoodsIssueMixingDetailPageState(this._id);
 
-  GoodsIssueDetailBloc bloc = GoodsIssueDetailBloc();
+  GoodsIssueMixingDetailBloc bloc = GoodsIssueMixingDetailBloc();
   final int _id;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
@@ -53,7 +54,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        bloc.emitEvent(GoodsIssueDetailEventGetId(
+        bloc.emitEvent(GoodsIssueMixingDetailEventGetId(
           id: _id,
         ));
       });
@@ -150,47 +151,14 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       // }
     }
 
-    bloc.emitEvent(GoodsIssueDetailEventAdd(
+    bloc.emitEvent(GoodsIssueMixingDetailEventAdd(
       data: data,
     ));
   }
 
-  showAlertDialogCreate(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Yes"),
-      onPressed: () {
-        Navigator.of(context).pop();
-        _create();
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Perhatian !!!"),
-      content: Text("Apakah anda yakin simpan document?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
-        builder: (BuildContext context) => GoodsIssueDetailPage(0));
+        builder: (BuildContext context) => GoodsIssueMixingDetailPage(0));
     Navigator.of(context).pushReplacement(newRoute);
   }
 
@@ -215,7 +183,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(GoodsIssueDetailEventNormal());
+                    bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
                     Navigator.of(context).pop();
                   },
                 ),
@@ -249,7 +217,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    bloc.emitEvent(GoodsIssueDetailEventNormal());
+                    bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
                     if ((bloc.lastState ?? bloc.initialState).data.id == 0) {
                       _newTrans();
                     } else {
@@ -279,7 +247,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.sapGoodsIssueId == 0) {
       return AppBar(
         title: Text("Create Issue"),
         backgroundColor: bgBlue,
@@ -294,8 +262,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             icon: Icon(Icons.check),
             onPressed: () {
               //_refreshDetailItem();
-              //_create();
-              showAlertDialogCreate(context);
+              _create();
             },
             textColor: Colors.white,
             label: Text("Submit"),
@@ -326,7 +293,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     }
   }
 
-  GoodsIssueDetailState _getState() {
+  GoodsIssueMixingDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
@@ -347,8 +314,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     //     }
     //   }
     try {
-      bloc.emitEvent(
-          GoodsIssueDetailEventRefresh(woId: int.parse(_woIdController.text)));
+      bloc.emitEvent(GoodsIssueMixingDetailEventRefresh(
+          woId: int.parse(_woIdController.text)));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -373,7 +340,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //       }
   //     }
 
-  //     bloc.emitEvent(GoodsIssueDetailEventScan(
+  //     bloc.emitEvent(GoodsIssueMixingDetailEventScan(
   //         woId: int.parse(_woIdController.text),
   //         woNo: _woNoController.text,
   //         qrResult: qrResult,
@@ -404,18 +371,18 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
-        bloc.emitEvent(GoodsIssueDetailEventNormal());
+        bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                GoodsIssueDetailItemDetailPage(newItem),
+                GoodsIssueMixingDetailItemDetailPage(newItem),
           ),
         );
 
         item.then((Item item) {
           if (item != null) {
-            bloc.emitEvent(GoodsIssueDetailEventItemAdd(
+            bloc.emitEvent(GoodsIssueMixingDetailEventItemAdd(
               item: item,
             ));
           }
@@ -429,9 +396,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _context = context;
     var data = _getState().data;
 
-    return BlocEventStateBuilder<GoodsIssueDetailState>(
+    return BlocEventStateBuilder<GoodsIssueMixingDetailState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueDetailState state) {
+        builder: (BuildContext context, GoodsIssueMixingDetailState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -450,53 +417,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              // note: fungsi SCAN
-              floatingActionButton: _getState().data.id != 0
-                  ? FloatingActionButton.extended(
-                      backgroundColor: bgOrange,
-                      icon: Icon(Icons.camera_alt),
-                      label: Text("Scan"),
-                      onPressed: () {
-                        // _refreshDetailItem();
-                      },
-                    )
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // note: fungsi refresh
-              // floatingActionButton: _getState().data.id == 0
-              //     ? FloatingActionButton.extended(
-              //         icon: Icon(Icons.refresh),
-              //         backgroundColor: bgBlue,
-              //         label: Text("Refresh"),
-              //         onPressed: () {
-              //           _refreshDetailItem();
-              //         },
-              //       )
-              //     : null,
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerFloat,
-
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       )
-              //     : null,
+       
             ),
           );
         });
@@ -519,13 +440,13 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       context,
       MaterialPageRoute<Item>(
         builder: (BuildContext context) =>
-            GoodsIssueDetailScanDetailPage(items[itemIndex]),
+            GoodsIssueMixingDetailItemDetailPage(items[itemIndex]),
       ),
     );
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        bloc.emitEvent(GoodsIssueMixingDetailEventItemUpdate(
           item: item,
           itemIndex: itemIndex,
         ));
@@ -539,15 +460,24 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
 
     //jika nama signature berbah di kasih tanda
+    _woIdController.text = data.woId.toString();
+    _woNoController.text = data.woNo;
 
+    if (transDate != null) {
+        _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      } else {
+        _transDateController.text = null;
+      }
+      
     if (data.id != 0) {
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
+      _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
+      _transNoController.text = data.transNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -583,17 +513,19 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                // TextFormField(
-                //     controller: _transNoController,
-                //     enabled: false,
-                //     decoration: InputDecoration(
-                //         hintText: "Scan No.",
-                //         labelText: "Scan No.",
-                //         contentPadding: new EdgeInsets.symmetric(
-                //             vertical: 15.0, horizontal: 10.0),
-                //         border: new OutlineInputBorder(
-                //             borderRadius: new BorderRadius.circular(10.0)))),
-                // Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -637,7 +569,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage(null)));
+                                  CflTransferProductionPage("M")));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {
@@ -763,46 +695,45 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
               //Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
-              // Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
-              // Text(
-              //     "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
-              //         " ${data[index].uom}"),
-              // Text(
-              //     "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
-              //         " ${data[index].uom}"),
+              //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+              Text(
+                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
+                      " ${data[index].uom}"),
+              Text(
+                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
+                      " ${data[index].uom}"),
               //Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
 
               //Text("Batch No. : ${data[index].batchNo}"),
-
-              // Text(
-              //     "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
-              //         " ${data[index].uom}"),
-
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
+                      " ${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
               //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
-          trailing: RaisedButton(
-            onPressed: () {
-              _showItemDetail(index);
-            },
-            color: bgOrange,
-            child: Text(
-              "ADD",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          // IconButton(
-          //   icon: Icon(Icons.keyboard_arrow_right),
-          //   iconSize: 30.0,
-          //   onPressed: () {
-          //     _showItemDetail(index);
-          //   },
-          // ),
+          trailing: data[index].valuationMethod == 'FIFO'
+              ? IconButton(
+                  icon: Icon(Icons.keyboard_arrow_right),
+                  iconSize: 30.0,
+                  onPressed: () {
+                    _showItemDetail(index);
+                  },
+                )
+              : RaisedButton(
+                  onPressed: () {
+                    _showItemDetail(index);
+                  },
+                  color: bgOrange,
+                  child: Text(
+                    "ADD",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
         ),
       ),
     );
@@ -819,24 +750,24 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         itemCount: data.length,
         itemBuilder: (contex, index) {
           if (data != null) {
-            return _rowDetail(data, index);
-            // return Dismissible(
-            //   key: Key(data[index].hashCode.toString()),
-            //   onDismissed: (direction) {
-            //     bloc.emitEvent(
-            //         GoodsIssueDetailEventItemRemove(itemIndex: index));
-            //   },
-            //   background: Container(
-            //       color: Colors.red,
-            //       child: Align(
-            //           child: Text('Delete',
-            //               textAlign: TextAlign.right,
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontSize: 24,
-            //                   fontWeight: FontWeight.bold)))),
-            //   child: _rowDetail(data, index),
-            // );
+            // return _rowDetail(data, index);
+            return Dismissible(
+              key: Key(data[index].hashCode.toString()),
+              onDismissed: (direction) {
+                bloc.emitEvent(
+                    GoodsIssueMixingDetailEventItemRemove(itemIndex: index));
+              },
+              background: Container(
+                  color: Colors.red,
+                  child: Align(
+                      child: Text('Delete',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold)))),
+              child: _rowDetail(data, index),
+            );
           }
           //else {
           //   return _rowDetail(data, index);

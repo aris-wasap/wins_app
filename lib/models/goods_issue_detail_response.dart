@@ -150,25 +150,24 @@ class Item {
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
-  Item({
-    this.woId: 0,
-    this.woLineNo: 0,
-    this.woVisOrder: 0,
-    this.id: 0,
-    this.lineNo: 0,
-    this.visLineNo: 0,
-    this.itemCode,
-    this.itemName,
-    this.woQty: 0,
-    this.qty: 0,
-    this.openQty: 0,
-    this.uom,
-    this.whsCode,
-    this.whsName,
-    this.binAbs,
-    this.binCode,
-    this.batchNo,
-  });
+  Item(
+      {this.woId: 0,
+      this.woLineNo: 0,
+      this.woVisOrder: 0,
+      this.id: 0,
+      this.lineNo: 0,
+      this.visLineNo: 0,
+      this.itemCode,
+      this.itemName,
+      this.woQty: 0,
+      this.qty: 0,
+      this.openQty: 0,
+      this.uom,
+      this.whsCode,
+      this.whsName,
+      this.binAbs,
+      this.binCode,
+      this.batchNo});
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 

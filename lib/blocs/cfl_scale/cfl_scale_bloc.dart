@@ -1,15 +1,15 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
-import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_event.dart';
-import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_state.dart';
-import 'package:wins_app/models/cfl_transfer_production_response.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_event.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_state.dart';
+import 'package:wins_app/models/cfl_scale_response.dart';
 import 'package:wins_app/resources/repository.dart';
-//import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart';
 
-class CflTransferProductionBloc extends BlocEventStateBase<
-    CflTransferProductionEvent, CflTransferProductionState> {
-  CflTransferProductionBloc()
+class CflScaleBloc
+    extends BlocEventStateBase<CflScaleEvent, CflScaleState> {
+  CflScaleBloc()
       : super(
-          initialState: CflTransferProductionState.noAction(),
+          initialState: CflScaleState.noAction(),
         );
 
   @override
@@ -18,31 +18,30 @@ class CflTransferProductionBloc extends BlocEventStateBase<
   }
 
   @override
-  Stream<CflTransferProductionState> eventHandler(
-      CflTransferProductionEvent event,
-      CflTransferProductionState currentState) async* {
+  Stream<CflScaleState> eventHandler(
+      CflScaleEvent event, CflScaleState currentState) async* {
     switch (event.event) {
-      case CflTransferProductionEventType.activedSearch:
-        yield CflTransferProductionState.success(
+      case CflScaleEventType.activedSearch:
+        yield CflScaleState.success(
           data: currentState.data,
           isActiveSearch: true,
           selectedRows: currentState.selectedRows,
         );
 
         break;
-      case CflTransferProductionEventType.deactivedSearch:
+      case CflScaleEventType.deactivedSearch:
         {
-          yield CflTransferProductionState.busy(
+          yield CflScaleState.busy(
             data: currentState.data,
             isActiveSearch: false,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response =
-                await _repository.cflTransferProduction_FetchNextPage(0, "", "");
+            CflScaleResponse response =
+                await _repository.cflScale_FetchNextPage(0, "");
             if (response == null) {
-              yield CflTransferProductionState.failure(
+              yield CflScaleState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: false,
@@ -51,14 +50,14 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferProductionState.failure(
+                yield CflScaleState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferProductionState.success(
+                yield CflScaleState.success(
                   data: response.data,
                   isActiveSearch: false,
                   selectedRows: currentState.selectedRows,
@@ -66,7 +65,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
               }
             }
           } catch (e) {
-            yield CflTransferProductionState.failure(
+            yield CflScaleState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: false,
@@ -75,19 +74,19 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           }
         }
         break;
-      case CflTransferProductionEventType.firstPage:
+      case CflScaleEventType.firstPage:
         {
-          yield CflTransferProductionState.busy(
+          yield CflScaleState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
+            CflScaleResponse response = await _repository
+                .cflScale_FetchNextPage(0, event.searchQuery);
             if (response == null) {
-              yield CflTransferProductionState.failure(
+              yield CflScaleState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -96,14 +95,14 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferProductionState.failure(
+                yield CflScaleState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferProductionState.success(
+                yield CflScaleState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -111,7 +110,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
               }
             }
           } catch (e) {
-            yield CflTransferProductionState.failure(
+            yield CflScaleState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -120,20 +119,20 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           }
         }
         break;
-      case CflTransferProductionEventType.nextPage:
+      case CflScaleEventType.nextPage:
         {
-          yield CflTransferProductionState.busy(
+          yield CflScaleState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response =
-                await _repository.cflTransferProduction_FetchNextPage(
-                    currentState.data.length, event.searchQuery, event.productionType);
+            CflScaleResponse response =
+                await _repository.cflScale_FetchNextPage(
+                    currentState.data.length, event.searchQuery);
             if (response == null) {
-              yield CflTransferProductionState.failure(
+              yield CflScaleState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -142,7 +141,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferProductionState.failure(
+                yield CflScaleState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
@@ -151,7 +150,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
               } else {
                 var data = currentState.data;
                 data.addAll(response.data);
-                yield CflTransferProductionState.success(
+                yield CflScaleState.success(
                   data: data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -159,7 +158,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
               }
             }
           } catch (e) {
-            yield CflTransferProductionState.failure(
+            yield CflScaleState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -168,19 +167,19 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           }
         }
         break;
-      case CflTransferProductionEventType.refresh:
+      case CflScaleEventType.refresh:
         {
-          yield CflTransferProductionState.busy(
+          yield CflScaleState.busy(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
+            CflScaleResponse response = await _repository
+                .cflScale_FetchNextPage(0, event.searchQuery);
             if (response == null) {
-              yield CflTransferProductionState.failure(
+              yield CflScaleState.failure(
                 errorMessage: 'Response null',
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch,
@@ -189,14 +188,14 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             } else {
               bool error = response.error;
               if (error) {
-                yield CflTransferProductionState.failure(
+                yield CflScaleState.failure(
                   errorMessage: 'Fetch fail ${response.errorMessage}',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
                 );
               } else {
-                yield CflTransferProductionState.success(
+                yield CflScaleState.success(
                   data: response.data,
                   isActiveSearch: currentState.isActiveSearch,
                   selectedRows: currentState.selectedRows,
@@ -204,7 +203,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
               }
             }
           } catch (e) {
-            yield CflTransferProductionState.failure(
+            yield CflScaleState.failure(
               errorMessage: "fail ${event.event}",
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch,
@@ -213,14 +212,14 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           }
         }
         break;
-      case CflTransferProductionEventType.selectedRow:
+      case CflScaleEventType.selectedRow:
         {
           if (currentState.selectedRows.contains(event.selectedRow)) {
             currentState.selectedRows.remove(event.selectedRow);
           } else {
             currentState.selectedRows.add(event.selectedRow);
           }
-          yield CflTransferProductionState.success(
+          yield CflScaleState.success(
             data: currentState.data,
             isActiveSearch: currentState.isActiveSearch,
             selectedRows: currentState.selectedRows,

@@ -94,6 +94,9 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
+  @JsonKey(name: 'ScaleNo')
+  String scaleNo;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -116,6 +119,7 @@ class Data {
     this.sapReceiptOrderNo,
     this.createdUser,
     this.status,
+    this.scaleNo,
     this.items,
   });
 

@@ -3,24 +3,25 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_state.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_bloc.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_event.dart';
+import 'package:wins_app/blocs/goods_issue_mixing/list/goods_issue_mixing_list_state.dart';
+import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_detail_page.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class GoodsReceiptListPage extends StatefulWidget {
-  GoodsReceiptListPage(this._id);
+class GoodsIssueMixingListPage extends StatefulWidget {
+  GoodsIssueMixingListPage(this._id);
   final int _id;
   @override
-  _GoodsReceiptListPageState createState() => _GoodsReceiptListPageState(_id);
+  _GoodsIssueMixingListPageState createState() =>
+      _GoodsIssueMixingListPageState(_id);
 }
 
-class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
-  _GoodsReceiptListPageState(this._id);
+class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
+  _GoodsIssueMixingListPageState(this._id);
 
-  GoodsReceiptListBloc bloc = GoodsReceiptListBloc();
+  GoodsIssueMixingListBloc bloc = GoodsIssueMixingListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final int _id;
@@ -33,9 +34,10 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
   }
@@ -43,9 +45,10 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.nextPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     }
   }
@@ -55,8 +58,10 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     super.initState();
     print("nilai id: $_id");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueMixingListEvent(
+        event: GoodsIssueMixingListEventType.firstPage,
+        searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
 
@@ -95,8 +100,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsReceiptListEvent(
-                  event: GoodsReceiptListEventType.deactivedSearch,
+                bloc.emitEvent(GoodsIssueMixingListEvent(
+                  event: GoodsIssueMixingListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -104,7 +109,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt Production"),
+        title: Text("List Mixing"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
@@ -121,18 +126,18 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsReceiptListEvent(
-                event: GoodsReceiptListEventType.activedSearch,
+              bloc.emitEvent(GoodsIssueMixingListEvent(
+                event: GoodsIssueMixingListEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.goodsReceipt_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptDetailPage(0);
+                      return GoodsIssueMixingDetailPage(0);
                     }));
                   },
                 )
@@ -144,17 +149,17 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsReceiptListEvent(
-      event: GoodsReceiptListEventType.refresh,
+    bloc.emitEvent(GoodsIssueMixingListEvent(
+      event: GoodsIssueMixingListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsReceiptListState>(
+    return BlocEventStateBuilder<GoodsIssueMixingListState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsReceiptListState state) {
+        builder: (BuildContext context, GoodsIssueMixingListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -176,7 +181,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
 
   Widget _buildList() {
     var state = bloc.lastState ?? bloc.initialState;
-
+    
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -198,18 +203,15 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
-                    Text("Production No. : ${data[index].woNo}"),
+                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Depo : ${data[index].branchName}"),
-                    Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
                   ],
                 ),
@@ -229,7 +231,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          GoodsReceiptDetailPage(data[index].id),
+                          GoodsIssueMixingDetailPage(data[index].id),
                     ),
                   );
                 },

@@ -3,27 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_state.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_event.dart';
+import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class GoodsReceiptListPage extends StatefulWidget {
-  GoodsReceiptListPage(this._id);
-  final int _id;
+class GoodsIssueWOListPage extends StatefulWidget {
   @override
-  _GoodsReceiptListPageState createState() => _GoodsReceiptListPageState(_id);
+  _GoodsIssueWOListPageState createState() => _GoodsIssueWOListPageState();
 }
 
-class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
-  _GoodsReceiptListPageState(this._id);
-
-  GoodsReceiptListBloc bloc = GoodsReceiptListBloc();
+class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
+  GoodsIssueListBloc bloc = GoodsIssueListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final int _id;
+
   static const offsetVisibleThreshold = 50;
 
   final TextEditingController _searchQueryController = TextEditingController();
@@ -33,8 +29,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueListEvent(
+        event: GoodsIssueListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -43,8 +39,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.nextPage,
+      bloc.emitEvent(GoodsIssueListEvent(
+        event: GoodsIssueListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -53,10 +49,10 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   @override
   void initState() {
     super.initState();
-    print("nilai id: $_id");
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueListEvent(
+        event: GoodsIssueListEventType.firstPage,
       ));
     });
 
@@ -95,8 +91,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsReceiptListEvent(
-                  event: GoodsReceiptListEventType.deactivedSearch,
+                bloc.emitEvent(GoodsIssueListEvent(
+                  event: GoodsIssueListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -104,7 +100,12 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt Production"),
+        title: Column(
+          children: <Widget>[
+            Text("List Issue Production"),
+            Text("by WO/SPK"),
+          ],
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
@@ -121,18 +122,18 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsReceiptListEvent(
-                event: GoodsReceiptListEventType.activedSearch,
+              bloc.emitEvent(GoodsIssueListEvent(
+                event: GoodsIssueListEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.goodsReceipt_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptDetailPage(0);
+                      return GoodsIssueListPage(0);
                     }));
                   },
                 )
@@ -144,17 +145,17 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsReceiptListEvent(
-      event: GoodsReceiptListEventType.refresh,
+    bloc.emitEvent(GoodsIssueListEvent(
+      event: GoodsIssueListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsReceiptListState>(
+    return BlocEventStateBuilder<GoodsIssueListState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsReceiptListState state) {
+        builder: (BuildContext context, GoodsIssueListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -198,19 +199,14 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    "Production No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                        "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
-                    Text("Production No. : ${data[index].woNo}"),
-                    Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Depo : ${data[index].branchName}"),
-                    Text("Status : ${data[index].status}"),
-                    Text("User : ${data[index].createdUser}"),
+                    Text("Order Qty : 2210 KG"),
                   ],
                 ),
                 // leading: ClipOval(
@@ -228,8 +224,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          GoodsReceiptDetailPage(data[index].id),
+                      builder: (BuildContext context) => GoodsIssueListPage(0),
                     ),
                   );
                 },

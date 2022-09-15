@@ -1,3 +1,6 @@
+import 'package:wins_app/pages/goods_issue/goods_issue_wo_list_page.dart';
+import 'package:wins_app/pages/goods_issue_mixing/goods_issue_mixing_wo_list_page.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_wo_list_page.dart';
 import 'package:wins_app/pages/payable_credit/payable_credit_list_page.dart';
 import 'package:wins_app/pages/receipt_branch/receipt_branch_list_page.dart';
 import 'package:wins_app/pages/receivable_credit/receivable_credit_list_page.dart';
@@ -7,9 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 //import 'package:wins_app/pages/dashboard_menu.dart';
 import 'package:wins_app/pages/delivery_order/delivery_order_list_page.dart';
-import 'package:wins_app/pages/goods_issue/goods_issue_list_page.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
-import 'package:wins_app/pages/issue_production/issue_production_list_page.dart';
 import 'package:wins_app/pages/purchase_returns/purchase_returns_list_page.dart';
 import 'package:wins_app/pages/receipt_supplier/receipt_supplier_list_page.dart';
 import 'package:wins_app/pages/request_issue/request_issue_list_page.dart';
@@ -18,7 +18,6 @@ import 'package:wins_app/pages/inventory_transfer/inventory_transfer_list_page.d
 //import 'package:wins_app/pages/option_card.dart';
 import 'package:wins_app/pages/receipt_issue/receipt_issue_list_page.dart';
 import 'package:wins_app/pages/receipt_order/receipt_order_list_page.dart';
-import 'package:wins_app/pages/receipt_production/receipt_production_list_page.dart';
 import 'package:wins_app/pages/transfer_production/transfer_production_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
@@ -73,6 +72,13 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
       "subtitle": "List Issue, Scan Item",
       "icon": "assets/images/goods_issue.png",
       "authDetail": "goodsIssue_Auth_Detail",
+    },
+    //Wins - Active
+    {
+      "title": "Mixing",
+      "subtitle": "List Issue, Scan Item",
+      "icon": "assets/images/goods_issue.png",
+      "authDetail": "goodsIssueMixing_Auth_Detail",
     },
     //Wins - InActive
     {
@@ -226,20 +232,27 @@ class _HomeMenuPageState extends State<HomeMenuPage> {
                                       'Y') {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return GoodsIssueListPage();
+                                  return GoodsIssueWOListPage();
+                                }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "goodsIssueMixing_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .goodsIssue_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return GoodsIssueMixingWOListPage();
+                                }));
+                              } else if (subjectList[index]["authDetail"] ==
+                                      "goodsReceipt_Auth_Detail" &&
+                                  globalBloc.loginResponse.data
+                                          .goodsReceipt_Auth_Detail ==
+                                      'Y') {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return GoodsReceiptWOListPage();
                                 }));
                               }
-
-                                else if (subjectList[index]["authDetail"] ==
-                                        "goodsReceipt_Auth_Detail" &&
-                                    globalBloc.loginResponse.data
-                                            .goodsReceipt_Auth_Detail ==
-                                        'Y') {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return GoodsReceiptListPage();
-                                  }));
-                                }
 
                               // Change Product
                               //else

@@ -2,28 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_state.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_bloc.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_event.dart';
+import 'package:wins_app/blocs/cfl_scale/cfl_scale_state.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class GoodsReceiptListPage extends StatefulWidget {
-  GoodsReceiptListPage(this._id);
-  final int _id;
+class CflScalePage extends StatefulWidget {
   @override
-  _GoodsReceiptListPageState createState() => _GoodsReceiptListPageState(_id);
+  _CflScalePageState createState() => _CflScalePageState();
 }
 
-class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
-  _GoodsReceiptListPageState(this._id);
+class _CflScalePageState extends State<CflScalePage> {
+  CflScaleBloc bloc = CflScaleBloc();
 
-  GoodsReceiptListBloc bloc = GoodsReceiptListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final int _id;
+
   static const offsetVisibleThreshold = 50;
 
   final TextEditingController _searchQueryController = TextEditingController();
@@ -32,9 +27,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(CflScaleEvent(
+        event: CflScaleEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -43,8 +37,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.nextPage,
+      bloc.emitEvent(CflScaleEvent(
+        event: CflScaleEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -53,14 +47,13 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   @override
   void initState() {
     super.initState();
-    print("nilai id: $_id");
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
-      ));
-    });
+
+    bloc.emitEvent(CflScaleEvent(
+      event: CflScaleEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -73,20 +66,20 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflScaleState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Receipt",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Purchase Order",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
-              color: Colors.orange[500],
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -95,8 +88,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsReceiptListEvent(
-                  event: GoodsReceiptListEventType.deactivedSearch,
+                bloc.emitEvent(CflScaleEvent(
+                  event: CflScaleEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -104,16 +97,11 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt Production"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradientAppBar,
-          ),
-        ),
-        //ackgroundColor: Colors.blue[500],
+        title: Text("Choose Purchase Order"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: bgBlue,
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -121,22 +109,11 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsReceiptListEvent(
-                event: GoodsReceiptListEventType.activedSearch,
+              bloc.emitEvent(CflScaleEvent(
+                event: CflScaleEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.goodsReceipt_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptDetailPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -144,21 +121,21 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsReceiptListEvent(
-      event: GoodsReceiptListEventType.refresh,
+    bloc.emitEvent(CflScaleEvent(
+      event: CflScaleEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsReceiptListState>(
+    return BlocEventStateBuilder<CflScaleState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsReceiptListState state) {
+        builder: (BuildContext context, CflScaleState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
@@ -166,7 +143,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
                     gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -174,9 +151,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflScaleState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -191,47 +166,26 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
             ),
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                title: Text("No. ${data[index].code} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
-                    Text("Production No. : ${data[index].woNo}"),
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Depo : ${data[index].branchName}"),
-                    Text("Status : ${data[index].status}"),
-                    Text("User : ${data[index].createdUser}"),
+                    Text("${data[index].noPo ?? ''}"),
+                    Text("${data[index].vendor ?? ''}"),
+                    Text("${data[index].noKendaraan ?? ''}"),
+                    Text("${data[index].namaBarang ?? ''}"),
                   ],
                 ),
-                // leading: ClipOval(
-                //   child: Image.network(
-                //     globalBloc.getUrl() +
-                //         "api/UserApi/GetImage?id=${data[index].userId}",
-                //     width: 50.0,
-                //     height: 50.0,
-                //   ),
-                // ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          GoodsReceiptDetailPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),
