@@ -426,6 +426,7 @@ class _InventoryTransferDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -892,9 +893,9 @@ class _InventoryTransferDetailPageState
                             _toBranchIdController.text =
                                 trq.toBranchId.toString();
                             _toBranchNameController.text = trq.toBranchName;
-                            _toAbsEntryController.text =
-                                trq.toBinEntry.toString();
-                            _toBinCodeController.text = trq.toBinCode;
+                            //_toAbsEntryController.text =
+                             //   trq.toBinEntry.toString();
+                            //_toBinCodeController.text = trq.toBinCode;
                           }
                         });
                       });
@@ -1160,6 +1161,7 @@ class _InventoryTransferDetailPageState
                             _toBinCodeController.text = bin.binCode;
                             // _getState().data.toAbsEntry = bin.absEntry;
                             // _getState().data.toBinCode = bin.binCode;
+                            _update();
                           }
                         });
                       });

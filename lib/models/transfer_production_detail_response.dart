@@ -93,6 +93,12 @@ class Data {
   @JsonKey(name: 'TotalQty')
   double totalQty;
 
+  @JsonKey(name: 'SapTransferProductionId')
+  int sapTransferProductionId;
+
+  @JsonKey(name: 'SapTransferProductionNo')
+  String sapTransferProductionNo;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -114,6 +120,8 @@ class Data {
     this.toAbsEntry,
     this.toBinCode,
     this.totalQty,
+    this.sapTransferProductionId: 0,
+    this.sapTransferProductionNo,
     this.items,
   });
 
@@ -130,8 +138,14 @@ class Item {
   @JsonKey(name: 'WoLineNo')
   int woLineNo;
 
+  @JsonKey(name: 'WoVisOrder')
+  int woVisOrder;
+
   @JsonKey(name: 'Id')
   int id;
+
+  @JsonKey(name: 'DetId')
+  int detId;
 
   @JsonKey(name: 'LineNo')
   int lineNo;
@@ -190,10 +204,49 @@ class Item {
   @JsonKey(name: 'BatchNo')
   String batchNo;
 
+  @JsonKey(name: 'Length')
+  double length;
+
+  @JsonKey(name: 'Length2')
+  double length2;
+
+  @JsonKey(name: 'Width')
+  double width;
+
+  @JsonKey(name: 'Weight')
+  double weight;
+
+  @JsonKey(name: 'Micron')
+  double micron;
+
+  @JsonKey(name: 'ManufacturingDate')
+  DateTime manufacturingDate;
+
+  @JsonKey(name: 'ExpirationDate')
+  DateTime expirationDate;
+
+  @JsonKey(name: 'ItemType')
+  String itemType;
+
+  @JsonKey(name: 'Type')
+  String type;
+
+  @JsonKey(name: 'Group')
+  String group;
+
+  @JsonKey(name: 'Machine')
+  String machine;
+
+  @JsonKey(name: 'Shift')
+  String shift;
+  
+
   Item({
     this.woId: 0,
     this.woLineNo: 0,
+    this.woVisOrder: 0,
     this.id: 0,
+    this.detId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
@@ -212,6 +265,18 @@ class Item {
     this.toAbsEntry,
     this.toBinCode,
     this.batchNo,
+    this.width,
+    this.length,
+    this.length2,
+    this.weight,
+    this.micron,
+    this.expirationDate,
+    this.manufacturingDate,
+    this.itemType,
+    this.type,
+    this.group,
+    this.machine,
+    this.shift,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

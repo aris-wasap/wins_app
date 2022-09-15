@@ -40,6 +40,7 @@ class _GoodsReceiptDetailItemDetailPageState
   final _qtyWoController = TextEditingController();
   final _qtyController = TextEditingController();
   FocusNode _focusNode;
+  ScrollController _scrollController;
 
   @override
   void initState() {
@@ -98,7 +99,6 @@ class _GoodsReceiptDetailItemDetailPageState
       actions: [
         cancelButton,
         continueButton,
-        
       ],
     );
     // show the dialog
@@ -121,36 +121,49 @@ class _GoodsReceiptDetailItemDetailPageState
         builder:
             (BuildContext context, GoodsReceiptDetailItemDetailState state) {
           return SafeArea(
-              child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text("Item Detail"),
-              backgroundColor: bgBlue,
-              bottom: PreferredSize(
-                  child: Container(
-                    color: bgOrange,
-                    height: 5.0,
-                  ),
-                  preferredSize: Size.fromHeight(5.0)),
-              actions: <Widget>[
-                _data.id == 0
-                    ? FlatButton(
-                        onPressed: () {
-                          //_done();
-                          showAlertDialogUpdate(context);
-                        },
-                        textColor: Colors.white,
-                        child: Row(
-                          children: <Widget>[Text("DONE")],
-                        ),
-                      )
-                    : Container(),
-              ],
+            child: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                title: Text("Item Detail"),
+                backgroundColor: bgBlue,
+                bottom: PreferredSize(
+                    child: Container(
+                      color: bgOrange,
+                      height: 5.0,
+                    ),
+                    preferredSize: Size.fromHeight(5.0)),
+                actions: <Widget>[
+                  _data.id == 0
+                      ? FlatButton(
+                          onPressed: () {
+                            //_done();
+                            showAlertDialogUpdate(context);
+                          },
+                          textColor: Colors.white,
+                          child: Row(
+                            children: <Widget>[Text("DONE")],
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: _buildForm(),
+              ),
+              floatingActionButton: _getState().data.id != 0
+                  ? FloatingActionButton.extended(
+                      icon: Icon(Icons.camera_alt),
+                      backgroundColor: btnBgOrange,
+                      label: Text("Scan"),
+                      onPressed: () {
+                        //_refreshDetailItem();
+                      },
+                    )
+                  : null,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
             ),
-            body: SingleChildScrollView(
-              child: _buildForm(),
-            ),
-          ));
+          );
         });
   }
 
@@ -198,7 +211,7 @@ class _GoodsReceiptDetailItemDetailPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height,
+            // height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               gradient: bgGradientPageWhite,
             ),
@@ -223,75 +236,6 @@ class _GoodsReceiptDetailItemDetailPageState
                   enabled: false,
                   decoration: InputDecoration(
                       labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextField(
-                  controller: _qtyWoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Planned Qty",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                _data.id == 0
-                    ? TextField(
-                        autofocus: false,
-                        textInputAction: TextInputAction.done,
-                        focusNode: _focusNode,
-                        controller: _qtyController,
-                        onEditingComplete: () {
-                          setState(() {
-                            String newValue = NumberFormat("###,###.####")
-                                .format(double.parse(_qtyController.text
-                                    .replaceAll(new RegExp(','), '')
-                                    .replaceAll(new RegExp('-'), '')
-                                    .replaceAll(new RegExp(' '), '')));
-                            _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(
-                                offset: newValue.length);
-                          });
-                          _focusNode.unfocus();
-                        },
-                        inputFormatters: [
-                          DecimalTextInputFormatter(decimalRange: 4)
-                        ],
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                          labelText: "Receipt Qty",
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(10.0)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
-                              borderRadius: new BorderRadius.circular(10.0)),
-                        ))
-                    : TextField(
-                        controller: _qtyController,
-                        enabled: false,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                            labelText: "Receipt Qty",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      ),
-                Padding(padding: EdgeInsets.only(top: 15)),
-                TextFormField(
-                  controller: _uomController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "UoM",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -379,6 +323,76 @@ class _GoodsReceiptDetailItemDetailPageState
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _qtyWoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Planned Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                _data.id == 0
+                    ? TextField(
+                        autofocus: false,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
+                        controller: _qtyController,
+                        onEditingComplete: () {
+                          setState(() {
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
+                            _qtyController.text = newValue;
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
+                          });
+                          _focusNode.unfocus();
+                        },
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          labelText: "Receipt Qty",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Receipt Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
+                Padding(padding: EdgeInsets.only(top: 15)),
+                TextFormField(
+                  controller: _uomController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",
@@ -414,7 +428,113 @@ class _GoodsReceiptDetailItemDetailPageState
               ],
             ),
           ),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: data.id == 0
+                      ? BorderSide(
+                          color: Colors.blue,
+                          width: 1.0,
+                        )
+                      : BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                ),
+              ),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("List of Items"),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              //color: Colors.brown,
+              child: (data != null)
+                  ? _buildList()
+                  : Container(
+                      padding: EdgeInsets.all(10.0),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Text("Item Empty"),
+                    )),
+          Container(
+            height: 5,
+            color: Colors.grey,
+          ),
+          SizedBox(
+            height: 65,
+          ),
         ]);
+  }
+
+  Widget _rowDetail(int index) {
+    return Container(
+      margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
+      decoration: BoxDecoration(
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: ListTile(
+          title: Text("No. $index"),
+          subtitle: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Batch No. :'),
+              Text("Qty Batch :"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildList() {
+    var state = bloc.lastState ?? bloc.initialState;
+    final data = state.data;
+    if (data != null) {
+      return ListView.builder(
+        controller: _scrollController,
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: 1,
+        itemBuilder: (contex, index) {
+          if (data != null) {
+            return _rowDetail(index);
+            // return Dismissible(
+            //   // key: Key(data[index].hashCode.toString()),
+            //   onDismissed: (direction) {
+            //     // bloc.emitEvent(
+            //     //     // GoodsIssueDetailEventItemRemove(itemIndex: index),
+            //     //     );
+            //   },
+            //   background: Container(
+            //       color: Colors.red,
+            //       child: Align(
+            //           child: Text('Delete',
+            //               textAlign: TextAlign.right,
+            //               style: TextStyle(
+            //                   color: Colors.white,
+            //                   fontSize: 24,
+            //                   fontWeight: FontWeight.bold)))),
+            //   child: _rowDetail(index),
+            // );
+          }
+          //else {
+          //   return _rowDetail(data, index);
+          // }
+        },
+      );
+    }
   }
 }
 

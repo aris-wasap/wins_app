@@ -132,14 +132,14 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       //   ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
       //   return;
       //
-    } else if ([null].contains(data.items)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
-    } else if ([0].contains(data.items.length)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
+      // } else if ([null].contains(data.items)) {
+      //   ValidateDialogWidget(
+      //       context: context, message: "Item detail harus di isi");
+      //   return;
+      // } else if ([0].contains(data.items.length)) {
+      //   ValidateDialogWidget(
+      //       context: context, message: "Item detail harus di isi");
+      //   return;
     }
 
     data.id = _id;
@@ -147,6 +147,54 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     data.seriesNameSo = _seriesNameSoController.text;
 
     bloc.emitEvent(DeliveryOrderDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _update() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.soNo = _soNoController.text;
+    data.transDate = transDate;
+    data.customerCode = _customerCodeController.text;
+    data.customerName = _customerNameController.text;
+    data.refNo = _refNoController.text;
+    data.items = state.data.items;
+    data.whsCode = _whsCodeController.text;
+    data.whsName = _whsNameController.text;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Delivery Order Date harus di isi");
+      return;
+    } else if (["", null].contains(data.soNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Sales Order No harus di isi");
+      return;
+    } else if (["", null].contains(data.customerCode)) {
+      ValidateDialogWidget(context: context, message: "Customer harus di isi");
+      return;
+      //}
+      //else if (["", null].contains(data.whsCode)) {
+      //   ValidateDialogWidget(context: context, message: "Warehouse harus di isi");
+      //   return;
+      //
+      // } else if ([null].contains(data.items)) {
+      //   ValidateDialogWidget(
+      //       context: context, message: "Item detail harus di isi");
+      //   return;
+      // } else if ([0].contains(data.items.length)) {
+      //   ValidateDialogWidget(
+      //       context: context, message: "Item detail harus di isi");
+      //   return;
+    }
+
+    //data.id = _id;
+    data.soId = int.parse(_soIdController.text);
+    data.seriesNameSo = _seriesNameSoController.text;
+
+    bloc.emitEvent(DeliveryOrderDetailEventUpdate(
       data: data,
     ));
   }
@@ -343,6 +391,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -359,17 +408,17 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(
-              Icons.save,
-              color: Colors.yellowAccent,
-            ),
-            onPressed: () {
-              showAlertDialogCreate(context);
-            },
-            textColor: Colors.white,
-            label: Text("Save"),
-          )
+          // FlatButton.icon(
+          //   icon: Icon(
+          //     Icons.save,
+          //     color: Colors.yellowAccent,
+          //   ),
+          //   onPressed: () {
+          //     showAlertDialogCreate(context);
+          //   },
+          //   textColor: Colors.white,
+          //   label: Text("Save"),
+          // )
         ],
       );
     } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
@@ -532,6 +581,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             bloc.emitEvent(DeliveryOrderDetailEventItemAdd(
               item: item,
             ));
+
+            if (_getState().data.id > 0) {
+              _update();
+            } else {
+              _create();
+            }
           }
         });
       }
@@ -628,6 +683,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           item: item,
           itemIndex: itemIndex,
         ));
+
+        _update();
       }
     });
   }
@@ -669,33 +726,36 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _sapDeliveryNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Delivery No.",
-                        labelText: "Delivery No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                (data.sapDeliveryId > 0)
+                    ? TextFormField(
+                        controller: _sapDeliveryNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Delivery No.",
+                            labelText: "Delivery No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapDeliveryId == 0) {
                       _selectTransDate(context);
                     }
                   },
@@ -712,7 +772,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                                     vertical: 15.0, horizontal: 10.0),
                                 disabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: (data.id == 0)
+                                        color: (data.sapDeliveryId == 0)
                                             ? Colors.blue
                                             : Colors.grey[400]),
                                     borderRadius: new BorderRadius.circular(
@@ -728,7 +788,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             // ),
                             ),
                       ),
-                      (data.id == 0)
+                      (data.sapDeliveryId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -1011,10 +1071,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       itemBuilder: (contex, index) {
         if (_getState().data.sapDeliveryId == 0) {
           return Dismissible(
-            key: Key(data[index].hashCode.toString()),
+            key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  DeliveryOrderDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(DeliveryOrderDetailEventRemoveItem(
+                  id: data[index].id, detId: data[index].detId));
+              // bloc.emitEvent(
+              //     DeliveryOrderDetailEventItemRemove(itemIndex: index));
             },
             background: Container(
                 color: Colors.red,

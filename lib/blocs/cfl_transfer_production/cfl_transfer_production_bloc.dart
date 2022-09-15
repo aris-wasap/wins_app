@@ -3,7 +3,7 @@ import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_e
 import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_state.dart';
 import 'package:wins_app/models/cfl_transfer_production_response.dart';
 import 'package:wins_app/resources/repository.dart';
-import 'package:rxdart/rxdart.dart';
+//import 'package:rxdart/rxdart.dart';
 
 class CflTransferProductionBloc extends BlocEventStateBase<
     CflTransferProductionEvent, CflTransferProductionState> {
@@ -40,7 +40,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           try {
             var _repository = Repository();
             CflTransferProductionResponse response =
-                await _repository.cflTransferProduction_FetchNextPage(0, "");
+                await _repository.cflTransferProduction_FetchNextPage(0, "", "");
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -85,7 +85,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           try {
             var _repository = Repository();
             CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery);
+                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -131,7 +131,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             var _repository = Repository();
             CflTransferProductionResponse response =
                 await _repository.cflTransferProduction_FetchNextPage(
-                    currentState.data.length, event.searchQuery);
+                    currentState.data.length, event.searchQuery, event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -178,7 +178,7 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           try {
             var _repository = Repository();
             CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery);
+                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',

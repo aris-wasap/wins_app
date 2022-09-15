@@ -9,16 +9,20 @@ import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
 class CflTransferProductionPage extends StatefulWidget {
+  CflTransferProductionPage(this.productionType);
+  final String productionType;
   @override
   _CflTransferProductionPageState createState() =>
-      _CflTransferProductionPageState();
+      _CflTransferProductionPageState(productionType);
 }
 
 class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
+  _CflTransferProductionPageState(this.productionType);
   CflTransferProductionBloc bloc = CflTransferProductionBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final String productionType;
 
   static const offsetVisibleThreshold = 50;
 
@@ -31,6 +35,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
       bloc.emitEvent(CflTransferProductionEvent(
         event: CflTransferProductionEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        productionType: productionType,
       ));
     });
   }
@@ -41,6 +46,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
       bloc.emitEvent(CflTransferProductionEvent(
         event: CflTransferProductionEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        productionType: productionType,
       ));
     }
   }
@@ -51,6 +57,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
 
     bloc.emitEvent(CflTransferProductionEvent(
       event: CflTransferProductionEventType.firstPage,
+      productionType: productionType,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -91,6 +98,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
                 bloc.emitEvent(CflTransferProductionEvent(
                   event: CflTransferProductionEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
+                  productionType: "MIXING"
                 ));
               }),
         ],
@@ -111,6 +119,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
             onPressed: () {
               bloc.emitEvent(CflTransferProductionEvent(
                 event: CflTransferProductionEventType.activedSearch,
+                productionType: productionType
               ));
             },
           ),

@@ -37,8 +37,13 @@ class _GoodsIssueDetailItemDetailPageState
   final _whsNameController = TextEditingController();
   final _binAbsController = TextEditingController();
   final _binCodeController = TextEditingController();
+  final _plannedQtyPoController = TextEditingController();
+  final _availableQtyPoController = TextEditingController();
+  final _openQtyPoController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _qtyController = TextEditingController();
+
+  ScrollController _scrollController;
 
   @override
   void initState() {
@@ -84,35 +89,47 @@ class _GoodsIssueDetailItemDetailPageState
         bloc: bloc,
         builder: (BuildContext context, GoodsIssueDetailItemDetailState state) {
           return SafeArea(
-              child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text("Item Detail"),
-              backgroundColor: bgBlue,
-              bottom: PreferredSize(
-                  child: Container(
-                    color: bgOrange,
-                    height: 5.0,
-                  ),
-                  preferredSize: Size.fromHeight(5.0)),
-              actions: <Widget>[
-                _data.id == 0
-                    ? FlatButton(
-                        onPressed: () {
-                          _done();
-                        },
-                        textColor: Colors.white,
-                        child: Row(
-                          children: <Widget>[Text("DONE")],
-                        ),
-                      )
-                    : Container(),
-              ],
+            child: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                title: Text("Item Detail"),
+                backgroundColor: bgBlue,
+                bottom: PreferredSize(
+                    child: Container(
+                      color: bgOrange,
+                      height: 5.0,
+                    ),
+                    preferredSize: Size.fromHeight(5.0)),
+                actions: <Widget>[
+                  _data.id == 0
+                      ? FlatButton(
+                          onPressed: () {
+                            _done();
+                          },
+                          textColor: Colors.white,
+                          child: Row(
+                            children: <Widget>[Text("DONE")],
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: _buildForm(),
+              ),
+              // note: fungsi SCAN
+              floatingActionButton: _getState().data.id != 0
+                  ? FloatingActionButton.extended(
+                      backgroundColor: bgOrange,
+                      icon: Icon(Icons.camera_alt),
+                      label: Text("Scan"),
+                      onPressed: () {},
+                    )
+                  : null,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
             ),
-            body: SingleChildScrollView(
-              child: _buildForm(),
-            ),
-          ));
+          );
         });
   }
 
@@ -127,6 +144,9 @@ class _GoodsIssueDetailItemDetailPageState
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
     _qtyPoController.text = data.woQty.toString();
+    _plannedQtyPoController.text = data.woQty.toString();
+    _availableQtyPoController.text = data.woQty.toString();
+    _openQtyPoController.text = data.woQty.toString();
     if (_data.qty != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.##")
@@ -170,68 +190,6 @@ class _GoodsIssueDetailItemDetailPageState
                   enabled: false,
                   decoration: InputDecoration(
                       labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextField(
-                  controller: _qtyPoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Planned Qty",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                _data.id == 0
-                    ? TextField(
-                        autofocus: true,
-                        controller: _qtyController,
-                        onEditingComplete: () {
-                          setState(() {
-                            String newValue = NumberFormat("###,###.####")
-                                .format(double.parse(_qtyController.text
-                                    .replaceAll(new RegExp(','), '')
-                                    .replaceAll(new RegExp('-'), '')
-                                    .replaceAll(new RegExp(' '), '')));
-                            _qtyController.text = newValue;
-                            _qtyController.selection = TextSelection.collapsed(
-                                offset: newValue.length);
-                          });
-                        },
-                        inputFormatters: [
-                          DecimalTextInputFormatter(decimalRange: 4)
-                        ],
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
-                          labelText: "Issue Qty",
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(10.0)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
-                              borderRadius: new BorderRadius.circular(10.0)),
-                        ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Issue Qty",
-                          valueText:
-                              "${NumberFormat("#,###.##").format(data.qty)}",
-                        ),
-                      ),
-                Padding(padding: EdgeInsets.only(top: 15)),
-                TextFormField(
-                  controller: _uomController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "UoM",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
@@ -319,6 +277,112 @@ class _GoodsIssueDetailItemDetailPageState
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _qtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Planned Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                _data.id == 0
+                    ? TextField(
+                        autofocus: true,
+                        controller: _qtyController,
+                        onEditingComplete: () {
+                          setState(() {
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
+                            _qtyController.text = newValue;
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
+                          });
+                        },
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          labelText: "Issue Qty",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
+                    : Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: LabelFieldWidget(
+                          labelText: "Issue Qty",
+                          valueText:
+                              "${NumberFormat("#,###.##").format(data.qty)}",
+                        ),
+                      ),
+                Padding(padding: EdgeInsets.only(top: 15)),
+                TextField(
+                  controller: _availableQtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Available Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _plannedQtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Planned Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _openQtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Open Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                TextField(
+                  controller: _qtyPoController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "Qty",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
+                Padding(padding: EdgeInsets.only(top: 15)),
+                TextFormField(
+                  controller: _uomController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                      labelText: "UoM",
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
+                      border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(10.0))),
+                ),
                 // LabelFieldWidget(
                 //   labelText: "Item Code",
                 //   valueText: "${data.itemCode}",
@@ -354,7 +418,113 @@ class _GoodsIssueDetailItemDetailPageState
               ],
             ),
           ),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: data.id == 0
+                      ? BorderSide(
+                          color: Colors.blue,
+                          width: 1.0,
+                        )
+                      : BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                ),
+              ),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("List of Items"),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              //color: Colors.brown,
+              child: (data != null)
+                  ? _buildList()
+                  : Container(
+                      padding: EdgeInsets.all(10.0),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Text("Item Empty"),
+                    )),
+          Container(
+            height: 5,
+            color: Colors.grey,
+          ),
+          SizedBox(
+            height: 65,
+          )
         ]);
+  }
+
+  Widget _rowDetail(int index) {
+    return Container(
+      margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
+      decoration: BoxDecoration(
+          color: Colors.grey[400].withOpacity(0.5),
+          border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey[500]),
+              left: BorderSide(width: 5, color: Colors.blue))),
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: ListTile(
+          title: Text("No. $index"),
+          subtitle: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Batch No. :'),
+              Text("Qty Batch :"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildList() {
+    var state = bloc.lastState ?? bloc.initialState;
+    final data = state.data;
+    if (data != null) {
+      return ListView.builder(
+        controller: _scrollController,
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: 1,
+        itemBuilder: (contex, index) {
+          if (data != null) {
+            return _rowDetail(index);
+            // return Dismissible(
+            //   // key: Key(data[index].hashCode.toString()),
+            //   onDismissed: (direction) {
+            //     // bloc.emitEvent(
+            //     //     // GoodsIssueDetailEventItemRemove(itemIndex: index),
+            //     //     );
+            //   },
+            //   background: Container(
+            //       color: Colors.red,
+            //       child: Align(
+            //           child: Text('Delete',
+            //               textAlign: TextAlign.right,
+            //               style: TextStyle(
+            //                   color: Colors.white,
+            //                   fontSize: 24,
+            //                   fontWeight: FontWeight.bold)))),
+            //   child: _rowDetail(index),
+            // );
+          }
+          //else {
+          //   return _rowDetail(data, index);
+          // }
+        },
+      );
+    }
   }
 }
 

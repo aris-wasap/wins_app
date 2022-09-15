@@ -11,15 +11,19 @@ import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
 class GoodsReceiptListPage extends StatefulWidget {
+  GoodsReceiptListPage(this._id);
+  final int _id;
   @override
-  _GoodsReceiptListPageState createState() => _GoodsReceiptListPageState();
+  _GoodsReceiptListPageState createState() => _GoodsReceiptListPageState(_id);
 }
 
 class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
+  _GoodsReceiptListPageState(this._id);
+
   GoodsReceiptListBloc bloc = GoodsReceiptListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final int _id;
   static const offsetVisibleThreshold = 50;
 
   final TextEditingController _searchQueryController = TextEditingController();
@@ -49,7 +53,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
   @override
   void initState() {
     super.initState();
-
+    print("nilai id: $_id");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.emitEvent(GoodsReceiptListEvent(
         event: GoodsReceiptListEventType.firstPage,

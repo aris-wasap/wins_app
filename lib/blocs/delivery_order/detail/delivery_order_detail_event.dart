@@ -3,8 +3,9 @@ import 'package:wins_app/models/delivery_order_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class DeliveryOrderDetailEvent extends BlocEvent {
-  DeliveryOrderDetailEvent(
-      {this.id,
+  DeliveryOrderDetailEvent({
+      this.id,
+      this.detId,
       this.data,
       this.item,
       this.soId,
@@ -14,6 +15,7 @@ class DeliveryOrderDetailEvent extends BlocEvent {
       this.whsCode});
 
   final int id;
+  final int detId;
   final Data data;
   final Item item;
   final int soId;
@@ -83,6 +85,14 @@ class DeliveryOrderDetailEventAdd extends DeliveryOrderDetailEvent {
         );
 }
 
+class DeliveryOrderDetailEventUpdate extends DeliveryOrderDetailEvent {
+  DeliveryOrderDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class DeliveryOrderDetailEventPost extends DeliveryOrderDetailEvent {
   DeliveryOrderDetailEventPost({
     @required Data data,
@@ -96,5 +106,15 @@ class DeliveryOrderDetailEventCancel extends DeliveryOrderDetailEvent {
     @required int id,
   }) : super(
           id: id,
+        );
+}
+
+class DeliveryOrderDetailEventRemoveItem extends DeliveryOrderDetailEvent {
+  DeliveryOrderDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(
+          id: id,
+          detId: detId
         );
 }

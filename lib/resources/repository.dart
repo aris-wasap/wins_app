@@ -18,6 +18,7 @@ import 'package:wins_app/models/cfl_return_request_response.dart';
 import 'package:wins_app/models/cfl_sales_order_response.dart';
 import 'package:wins_app/models/cfl_delivery_order_response.dart';
 import 'package:wins_app/models/cfl_goods_issue_response.dart';
+import 'package:wins_app/models/cfl_scale_response.dart';
 import 'package:wins_app/models/cfl_transfer_branch_response.dart';
 import 'package:wins_app/models/cfl_transfer_production_response.dart';
 import 'package:wins_app/models/cfl_transfer_request_response.dart';
@@ -27,6 +28,9 @@ import 'package:wins_app/models/goods_issue_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_list_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_scan_response.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
@@ -121,6 +125,8 @@ import 'package:wins_app/models/issue_production_detail_response.dart'
     as issueProductionDetail;
 import 'package:wins_app/models/goods_issue_detail_response.dart'
     as goodsIssueDetail;
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart'
+    as goodsIssueMixingDetail;
 import 'package:wins_app/models/goods_receipt_detail_response.dart'
     as goodsReceiptDetail;
 //import 'package:wins_app/models/receipt_branch_detail_response.dart'
@@ -217,6 +223,18 @@ class Repository {
           transferProductionDetail.Data data) =>
       apiProvider.transferProductionDetail_Add(data);
 
+  Future<TransferProductionDetailResponse> transferProductionDetail_Update(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Update(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_Post(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Post(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.transferProductionDetail_RemoveItem(id, detId);
+
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
           int woId, String whsCodeFrom, String qrResult) =>
       apiProvider.transferProductionDetail_Scan(woId, whsCodeFrom, qrResult);
@@ -267,9 +285,17 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Add(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Update(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Update(data);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
+  
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
           int soId, String qrResult) =>
@@ -414,6 +440,53 @@ class Repository {
       apiProvider.goodsIssueDetail_ViewDetailItem(woId);
 
   //-----------------------------
+  //GoodsIssueMixingProductionList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse>
+      goodsIssueMixingProductionList_FetchNextPage(
+              int lastId, String searchQuery) =>
+          apiProvider.goodsIssueMixingProductionList_FetchNextPage(
+              lastId, searchQuery);
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingProductionList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueMixingProductionList_Refresh(lastId, searchQuery);
+
+  //-----------------------------
+  //GoodsIssueMixingList
+  //-----------------------------
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_FetchNextPage(
+          int lastId, String searchQuery, int woId) =>
+      apiProvider.goodsIssueMixingList_FetchNextPage(lastId, searchQuery, woId);
+
+  Future<GoodsIssueMixingListResponse> goodsIssueMixingList_Refresh(
+          int lastId, String searchQuery, int woId) =>
+      apiProvider.goodsIssueMixingList_Refresh(lastId, searchQuery, woId);
+
+  //-----------------------------
+  //GoodsIssueMixingDetail
+  //-----------------------------
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_GetById(
+          int id) =>
+      apiProvider.goodsIssueMixingDetail_GetById(id);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Add(
+          goodsIssueMixingDetail.Data data) =>
+      apiProvider.goodsIssueMixingDetail_Add(data);
+
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
+          int woId, String qrResult) =>
+      apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
+
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_ScanBatch(
+          int woId, int woLineNo, String qrResult) =>
+      apiProvider.goodsIssueMixingDetail_ScanBatch(woId, woLineNo, qrResult);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
+          int woId) =>
+      apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId);
+
+  //-----------------------------
   //GoodsReceiptList
   //-----------------------------
   Future<GoodsReceiptListResponse> goodsReceiptList_FetchNextPage(
@@ -437,7 +510,7 @@ class Repository {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Update(data);
-  
+
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Post(data);
@@ -500,9 +573,17 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Add(data);
 
+  Future<RequestIssueDetailResponse> requestIssueDetail_Update(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Update(data);
+
   Future<RequestIssueDetailResponse> requestIssueDetail_Post(
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.requestIssueDetail_RemoveItem(id, detId);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           int requestId, String qrResult) =>
@@ -558,10 +639,18 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Add(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Update(
+          receiptIssueDetail.Data data) =>
+      apiProvider.receiptIssueDetail_Update(data);
+
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Post(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.receiptIssueDetail_RemoveItem(id, detId);
+      
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);
@@ -745,8 +834,9 @@ class Repository {
   //CflTransferProduction
   //-----------------------------
   Future<CflTransferProductionResponse> cflTransferProduction_FetchNextPage(
-          int rowStart, String searchQuery) =>
-      apiProvider.cflTransferProduction_FetchNextPage(rowStart, searchQuery);
+          int rowStart, String searchQuery, String productionType) =>
+      apiProvider.cflTransferProduction_FetchNextPage(
+          rowStart, searchQuery, productionType);
 
   //-----------------------------
   //CflTransferRequest
@@ -796,6 +886,13 @@ class Repository {
   Future<CflPurchaseOrderResponse> cflPurchaseOrder_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPurchaseOrder_FetchNextPage(rowStart, searchQuery);
+
+  //-----------------------------
+  //CflScale
+  //-----------------------------
+  Future<CflScaleResponse> cflScale_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflScale_FetchNextPage(rowStart, searchQuery);
 
   //-----------------------------
   //CflPurchaseReference
