@@ -673,7 +673,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: <Widget>[(data.sapReceiptOrderId > 0)?
                 TextFormField(
                   controller: _sapReceiptOrderNoController,
                   enabled: false,
@@ -684,7 +684,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                ): Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,

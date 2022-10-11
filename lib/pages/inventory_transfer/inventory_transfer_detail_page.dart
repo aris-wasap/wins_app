@@ -766,6 +766,7 @@ class _InventoryTransferDetailPageState
     var data = state.data;
     _transNoController.text = data.transNo;
 
+    var cekData = _getState().data;
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
@@ -867,7 +868,8 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                FlatButton(
+                 (data.status == null)
+                          ? FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
@@ -935,7 +937,7 @@ class _InventoryTransferDetailPageState
                       ],
                     ),
                   ),
-                ),
+                ): Container(width: 0, height: 0),
                 //FromWarehouse
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -950,15 +952,22 @@ class _InventoryTransferDetailPageState
                       whs.then((cflWarehouse.Data whs) {
                         setState(() {
                           if (whs != null) {
+                            if (data.id == 0){
                             _fromWhsCodeController.text = whs.whsCode;
                             _fromWhsNameController.text = whs.whsName;
                             _fromAbsEntryController.text =
                                 whs.absEntry.toString();
                             _fromBinCodeController.text = whs.binCode;
-                            // _getState().data.fromBranchId = whs.branchId;
-                            // _getState().data.fromBranchName = whs.branchName;
-                            // _getState().data.fromWhsCode = whs.whsCode;
-                            // _getState().data.fromWhsName = whs.whsName;
+                            }else{
+                            _getState().data.fromBranchId = whs.branchId;
+                            _getState().data.fromBranchName = whs.branchName;
+                            _getState().data.fromWhsCode = whs.whsCode;
+                            _getState().data.fromWhsName = whs.whsName;
+                            _getState().data.fromAbsEntry = whs.absEntry;
+                            _getState().data.fromBinCode = whs.binCode;
+                            }
+                           
+                           
                           }
                         });
                       });
@@ -1021,11 +1030,16 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
+                            if (data.id == 0){
+                                
                             _fromAbsEntryController.text =
                                 bin.absEntry.toString();
                             _fromBinCodeController.text = bin.binCode;
-                            //_getState().data.fromAbsEntry = bin.absEntry;
-                            //_getState().data.fromBinCode = bin.binCode;
+                            } else{
+                            _getState().data.fromAbsEntry = bin.absEntry;
+                            _getState().data.fromBinCode = bin.binCode;}
+                            
+                            
                           }
                         });
                       });
@@ -1081,6 +1095,7 @@ class _InventoryTransferDetailPageState
                       whs.then((cflWarehouse.Data whs) {
                         setState(() {
                           if (whs != null) {
+                            if (data.id == 0){
                             _toBranchIdController.text =
                                 whs.branchId.toString();
                             _toBranchNameController.text = whs.branchName;
@@ -1089,10 +1104,16 @@ class _InventoryTransferDetailPageState
                             _toAbsEntryController.text =
                                 whs.absEntry.toString();
                             _toBinCodeController.text = whs.binCode;
-                            // _getState().data.toBranchId = whs.branchId;
-                            // _getState().data.toBranchName = whs.branchName;
-                            // _getState().data.toWhsCode = whs.whsCode;
-                            // _getState().data.toWhsName = whs.whsName;
+                            } else {
+                              _getState().data.toBranchId = whs.branchId;
+                            _getState().data.toBranchName = whs.branchName;
+                            _getState().data.toWhsCode = whs.whsCode;
+                            _getState().data.toWhsName = whs.whsName;
+                            _getState().data.toAbsEntry = whs.absEntry;
+                            _getState().data.toBinCode = whs.binCode;
+                            }                          
+
+                            
                           }
                         });
                       });
@@ -1155,11 +1176,18 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
-                            _toAbsEntryController.text =
+                            if (data.id == 0){
+                               _toAbsEntryController.text =
                                 bin.absEntry.toString();
                             _toBinCodeController.text = bin.binCode;
-                            // _getState().data.toAbsEntry = bin.absEntry;
-                            // _getState().data.toBinCode = bin.binCode;
+                            } else {
+                              _getState().data.toAbsEntry = bin.absEntry;
+                              _getState().data.toBinCode = bin.binCode;
+                            }
+                           
+
+
+                            
                           }
                         });
                       });

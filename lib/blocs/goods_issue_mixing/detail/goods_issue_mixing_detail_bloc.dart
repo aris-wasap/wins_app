@@ -89,15 +89,13 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield GoodsIssueMixingDetailState.failure(
-                errorMessage:
-                    '${qrResult} tidak di temukan di gudang dan WO ${woNo} (1)',
+                errorMessage: '${qrResult} tidak di temukan di gudang (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.woId == 0) {
+              if (response.data.batchNo == null) {
                 yield GoodsIssueMixingDetailState.failure(
-                  errorMessage:
-                      '${qrResult} tidak di temukan di gudang dan WO ${woNo} (2)',
+                  errorMessage: '${qrResult} tidak di temukan di gudang (2)',
                   data: event.data,
                 );
               } else {
@@ -132,6 +130,91 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
           var _repository = Repository();
           GoodsIssueMixingDetailResponse response =
               await _repository.goodsIssueMixingDetail_ViewDetailItem(woId);
+          if (response == null) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueMixingDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueMixingDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is GoodsIssueMixingDetailEventRefreshAfter) {
+      var id = event.id;
+      var newData = currentState.data;
+      var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsIssueMixingDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueMixingDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueMixingDetailResponse response =
+              await _repository.goodsIssueMixingDetail_RefreshAfter(id);
+          if (response == null) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueMixingDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueMixingDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is GoodsIssueMixingDetailEventResetData) {
+      var id = event.id;
+      var woId = event.woId;
+      // var newData = currentState.data;
+      // var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsIssueMixingDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueMixingDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueMixingDetailResponse response =
+              await _repository.goodsIssueMixingDetail_ResetData(id, woId);
           if (response == null) {
             yield GoodsIssueMixingDetailState.failure(
               errorMessage: 'Response null',
@@ -208,14 +291,77 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    } else if (event is GoodsIssueMixingDetailEventCancel) {
+    } else if (event is GoodsIssueMixingDetailEventPost) {
       yield GoodsIssueMixingDetailState.busy(
-        data: currentState.data,
+        data: event.data,
       );
-
-      yield GoodsIssueMixingDetailState.success(
-        data: currentState.data,
-      );
+      try {
+        var _repository = Repository();
+        GoodsIssueMixingDetailResponse response =
+            await _repository.goodsIssueMixingDetail_Post(event.data);
+        if (response == null) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsIssueMixingDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueMixingDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is GoodsIssueMixingDetailEventCancel) {
+      if (event.id == 0) {
+        yield GoodsIssueMixingDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueMixingDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueMixingDetailResponse response =
+              await _repository.goodsIssueMixingDetail_Cancel(event.data);
+          if (response == null) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueMixingDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueMixingDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }

@@ -5,6 +5,9 @@ import 'package:meta/meta.dart';
 class GoodsIssueMixingDetailItemDetailEvent extends BlocEvent {
   GoodsIssueMixingDetailItemDetailEvent(
       {this.data,
+      this.id,
+      this.detId,
+      this.detDetId,
       this.woId,
       this.woLineNo,
       this.qty,
@@ -13,6 +16,9 @@ class GoodsIssueMixingDetailItemDetailEvent extends BlocEvent {
       this.qrResult});
 
   final Item data;
+  final int id;
+  final int detId;
+  final int detDetId;
   final int woId;
   final int woLineNo;
   final double qty;
@@ -34,13 +40,37 @@ class GoodsIssueMixingDetailItemDetailEventScan
     extends GoodsIssueMixingDetailItemDetailEvent {
   GoodsIssueMixingDetailItemDetailEventScan(
       {@required Item data,
+      @required int id,
+      @required int detId,
       @required int woId,
       @required int woLineNo,
       @required String qrResult})
       : super(
           data: data,
+          id: id,
+          detId: detId,
           woId: woId,
           woLineNo: woLineNo,
           qrResult: qrResult,
+        );
+}
+
+class GoodsIssueMixingDetailItemDetailEventRemoveContent
+    extends GoodsIssueMixingDetailItemDetailEvent {
+  GoodsIssueMixingDetailItemDetailEventRemoveContent(
+      {@required int id, @required int detId, @required int detDetId})
+      : super(id: id, detId: detId, detDetId: detDetId);
+}
+
+class GoodsIssueMixingDetailItemDetailEventRefreshDetail
+    extends GoodsIssueMixingDetailItemDetailEvent {
+  GoodsIssueMixingDetailItemDetailEventRefreshDetail({
+    @required int detId,
+    @required int woLineNo,
+    @required Item newDataItem,
+  }) : super(
+          detId: detId,
+          woLineNo: woLineNo,
+          data: newDataItem,
         );
 }

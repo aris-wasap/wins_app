@@ -77,6 +77,15 @@ class Data {
   @JsonKey(name: 'SapGoodsIssueNo')
   String sapGoodsIssueNo;
 
+  @JsonKey(name: 'SapGoodsReceiptId')
+  int sapGoodsReceiptId;
+
+  @JsonKey(name: 'SapGoodsReceiptNo')
+  String sapGoodsReceiptNo;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -90,6 +99,9 @@ class Data {
     this.seriesName,
     this.sapGoodsIssueId = 0,
     this.sapGoodsIssueNo,
+    this.sapGoodsReceiptId = 0,
+    this.sapGoodsReceiptNo,
+    this.status,
     this.items,
   });
 
@@ -111,6 +123,12 @@ class Item {
 
   @JsonKey(name: 'Id')
   int id;
+
+  @JsonKey(name: 'DetId')
+  int detId;
+
+  @JsonKey(name: 'DetDetId')
+  int detDetId;
 
   @JsonKey(name: 'LineNo')
   int lineNo;
@@ -177,6 +195,8 @@ class Item {
     this.woLineNo: 0,
     this.woVisOrder: 0,
     this.id: 0,
+    this.detId: 0,
+    this.detDetId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
@@ -187,7 +207,7 @@ class Item {
     this.uom,
     this.whsCode,
     this.whsName,
-    this.binAbs:0,
+    this.binAbs: 0,
     this.binCode,
     this.toWhsCode,
     this.toWhsName,
@@ -293,7 +313,7 @@ class ItemBatch {
     this.whsName,
     this.toWhsCode,
     this.toWhsName,
-    this.toBinAbs : 0,
+    this.toBinAbs: 0,
     this.toBinCode,
     this.woQty: 0,
     this.qty: 0,

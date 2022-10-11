@@ -29,6 +29,7 @@ import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_list_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_scan_batch_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
@@ -450,21 +451,79 @@ class Repository {
           int id) =>
       apiProvider.goodsIssueMixingDetail_GetById(id);
 
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Cancel(
+          goodsIssueMixingDetail.Data data) =>
+      apiProvider.goodsIssueMixingDetail_Cancel(data);
+
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Add(
           goodsIssueMixingDetail.Data data) =>
       apiProvider.goodsIssueMixingDetail_Add(data);
 
-  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
-          int woId, String qrResult) =>
-      apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_Post(
+          goodsIssueMixingDetail.Data data) =>
+      apiProvider.goodsIssueMixingDetail_Post(data);
 
-  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_ScanBatch(
-          int woId, int woLineNo, String qrResult) =>
-      apiProvider.goodsIssueMixingDetail_ScanBatch(woId, woLineNo, qrResult);
+  Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
+    int woId,
+    String qrResult,
+  ) =>
+      apiProvider.goodsIssueMixingDetail_Scan(
+        woId,
+        qrResult,
+      );
+
+  Future<GoodsIssueMixingDetailScanResponse>
+      goodsIssueMixingDetail_ScanItemBatch(
+    int id,
+    int detId,
+    int woId,
+    int woLineNo,
+    String qrResult,
+  ) =>
+          apiProvider.goodsIssueMixingDetail_ScanItemBatch(
+            id,
+            detId,
+            woId,
+            woLineNo,
+            qrResult,
+          );
+
+  Future<GoodsIssueMixingDetailScanBatchResponse>
+      goodsIssueMixingDetail_ScanBatch(
+    int id,
+    int detId,
+    int woId,
+    int woLineNo,
+    String qrResult,
+  ) =>
+          apiProvider.goodsIssueMixingDetail_ScanBatch(
+            id,
+            detId,
+            woId,
+            woLineNo,
+            qrResult,
+          );
+
+  Future<GoodsIssueMixingDetailScanResponse>
+      goodsIssueMixingDetail_RemoveContent(id, detId, detDetId) =>
+          apiProvider.goodsIssueMixingDetail_RemoveContent(id, detId, detDetId);
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
           int woId) =>
       apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_RefreshAfter(
+          int id) =>
+      apiProvider.goodsIssueMixingDetail_RefreshAfter(id);
+
+  Future<GoodsIssueMixingDetailScanResponse>
+      goodsIssueMixingDetailItemDetail_RefreshDetail(int detId, int woLineNo) =>
+          apiProvider.goodsIssueMixingDetailItemDetail_RefreshDetail(
+              detId, woLineNo);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ResetData(
+          int id, int woId) =>
+      apiProvider.goodsIssueMixingDetail_ResetData(id, woId);
 
   //-----------------------------
   //GoodsReceiptList

@@ -54,6 +54,27 @@ class GoodsIssueMixingDetailEventRefresh extends GoodsIssueMixingDetailEvent {
         );
 }
 
+class GoodsIssueMixingDetailEventResetData extends GoodsIssueMixingDetailEvent {
+  GoodsIssueMixingDetailEventResetData({
+    @required int id,
+    @required int woId,
+  }) : super(
+          id: id,
+          woId: woId,
+        );
+}
+
+class GoodsIssueMixingDetailEventRefreshAfter
+    extends GoodsIssueMixingDetailEvent {
+  GoodsIssueMixingDetailEventRefreshAfter({
+    @required int id,
+    @required Data newData,
+  }) : super(
+          id: id,
+          data: newData,
+        );
+}
+
 class GoodsIssueMixingDetailEventItemAdd extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventItemAdd({
     @required Item item,
@@ -90,9 +111,18 @@ class GoodsIssueMixingDetailEventAdd extends GoodsIssueMixingDetailEvent {
         );
 }
 
+class GoodsIssueMixingDetailEventPost extends GoodsIssueMixingDetailEvent {
+  GoodsIssueMixingDetailEventPost({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class GoodsIssueMixingDetailEventCancel extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
         );

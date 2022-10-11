@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 class GoodsIssueMixingDetailPage extends StatefulWidget {
   GoodsIssueMixingDetailPage(this._id);
   final int _id;
+  //final Data _newData;
   @override
   _GoodsIssueMixingDetailPageState createState() =>
       _GoodsIssueMixingDetailPageState(_id);
@@ -33,6 +34,7 @@ class _GoodsIssueMixingDetailPageState
 
   GoodsIssueMixingDetailBloc bloc = GoodsIssueMixingDetailBloc();
   final int _id;
+  //final Data _newData;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
@@ -45,6 +47,7 @@ class _GoodsIssueMixingDetailPageState
   final _seriesNameWoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
+  final _sapGoodsReceiptNoController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -95,7 +98,7 @@ class _GoodsIssueMixingDetailPageState
 
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
-    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    var data = state.data; // (bloc.lastState ?? bloc.initialState).data;
     data.woNo = _woNoController.text;
     data.woId = int.parse(_woIdController.text);
     data.transDate = transDate;
@@ -122,14 +125,12 @@ class _GoodsIssueMixingDetailPageState
     }
 
     for (var item in _getState().data.items) {
-      if (("${item.batchNo}" == null) ||
-          ("${item.qty}" == null) ||
-          (double.parse("${item.qty}") <= 0)) {
+      if (("${item.qty}" == null) || (double.parse("${item.qty}") <= 0)) {
         ValidateDialogWidget(
             context: context,
             message: 'Line ' +
                 "${item.woVisOrder}" +
-                ' : Batch No. dan Quantity tidak boleh kosong/0');
+                ' : Quantity tidak boleh kosong/0');
         return;
       }
       // else if ((double.parse("${item.qty}") >
@@ -152,6 +153,51 @@ class _GoodsIssueMixingDetailPageState
     }
 
     bloc.emitEvent(GoodsIssueMixingDetailEventAdd(
+      data: data,
+    ));
+  }
+
+  void _post() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = state.data; // (bloc.lastState ?? bloc.initialState).data;
+    data.sapGoodsIssueNo = _sapGoodsIssueNoController.text;
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNameWoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    for (var item in _getState().data.items) {
+      if (("${item.qty}" == null) || (double.parse("${item.qty}") <= 0)) {
+        ValidateDialogWidget(
+            context: context,
+            message: 'Line ' +
+                "${item.woVisOrder}" +
+                ' : Quantity tidak boleh kosong/0');
+        return;
+      }
+    }
+
+    bloc.emitEvent(GoodsIssueMixingDetailEventPost(
       data: data,
     ));
   }
@@ -247,7 +293,7 @@ class _GoodsIssueMixingDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapGoodsIssueId == 0) {
+    if (_getState().data.sapGoodsIssueId == 0 && _getState().data.id > 0) {
       return AppBar(
         title: Text("Create Issue"),
         backgroundColor: bgBlue,
@@ -258,15 +304,43 @@ class _GoodsIssueMixingDetailPageState
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              //_refreshDetailItem();
-              _create();
-            },
-            textColor: Colors.white,
-            label: Text("Submit"),
-          )
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                child: const Text('Submit'),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
+                ),
+                onPressed: () {
+                  showAlertDialogSubmit(context);
+                },
+              )),
+        ],
+      );
+    } else if (_getState().data.sapGoodsIssueId > 0 &&
+        _getState().data.sapGoodsReceiptId == 0) {
+      return AppBar(
+        title: Text("Create Receipt"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              child: const Text('Post'),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
+              ),
+              onPressed: () {
+                showAlertDialogPostSap(context);
+              },
+            ),
+          ),
         ],
       );
     } else {
@@ -323,6 +397,72 @@ class _GoodsIssueMixingDetailPageState
     }
   }
 
+  Future _refreshAfter() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+    //var data = _getState().data;
+    //   for (var item in _getState().data.items) {
+    //     if (("${item.batchNo}" == qrResult)) {
+    //       ValidateDialogWidget(
+    //           context: context, message: 'Item sudah pernah di scan');
+    //       return;
+    //     }
+    //   }
+    try {
+      bloc.emitEvent(
+        GoodsIssueMixingDetailEventRefreshAfter(
+            id: _id, newData: _getState().data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _resetData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsIssueMixingDetailEventResetData(id: data.id, woId: data.woId),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _deleteData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsIssueMixingDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   // Future _scanQR() async {
   //   if (["", null].contains(_woNoController.text)) {
   //     ValidateDialogWidget(context: context, message: "WO No harus di isi");
@@ -370,13 +510,14 @@ class _GoodsIssueMixingDetailPageState
   void _showScanNewItemDetail() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
+      var newData = _getState().data;
       if (newItem != null) {
         bloc.emitEvent(GoodsIssueMixingDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                GoodsIssueMixingDetailItemDetailPage(newItem),
+                GoodsIssueMixingDetailItemDetailPage(newItem, 0, newData),
           ),
         );
 
@@ -414,10 +555,70 @@ class _GoodsIssueMixingDetailPageState
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
+                    child: Stack(
+                      children: <Widget>[
+                        Align(
+                            alignment: Alignment.bottomLeft,
+                            child: _getState().data.sapGoodsIssueId == 0
+                                ? FloatingActionButton(
+                                    heroTag: "btnReset",
+                                    backgroundColor: Colors.red,
+                                    child: Icon(Icons.autorenew),
+                                    onPressed: () {
+                                      showAlertDialogReset(context);
+                                    },
+                                  )
+                                : null),
+                        // Align(
+                        //     alignment: Alignment.bottomCenter,
+                        //     child: _getState().data.sapGoodsIssueId == 0 &&
+                        //             _getState().data.status == "Draft" //Tidak dipakai
+                        //         ? FloatingActionButton(
+                        //             heroTag: "btnCreateNew",
+                        //             backgroundColor: Colors.blue,
+                        //             child: Icon(Icons.add),
+                        //             onPressed: () {
+                        //               showAlertDialogCreateNew(context);
+                        //             },
+                        //           )
+                        //         : null),
+                        // Align(
+                        //   alignment: Alignment.bottomRight,
+                        //   child: _getState().data.sapGoodsIssueId == 0 &&
+                        //           _getState().data.status == "Draft" //Tidak dipakai
+                        //       ? FloatingActionButton(
+                        //           heroTag: "btnRefresh",
+                        //           backgroundColor: Colors.green,
+                        //           child: Icon(Icons.autorenew),
+                        //           onPressed: () {
+                        //             showAlertDialogRefresh(context);
+                        //           },
+                        //         )
+                        //       : null,
+                        // ),
+
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: _getState().data.sapGoodsIssueId == 0
+                              ? FloatingActionButton(
+                                  heroTag: "btnDelete",
+                                  backgroundColor: Colors.grey,
+                                  child: Icon(Icons.delete_forever),
+                                  onPressed: () {
+                                    showAlertDialogDelete(context);
+                                  },
+                                )
+                              : null,
+                        ),
+                      ],
+                    ),
+                  ),
                   _showCircularProgress(),
                 ]),
               ),
-       
+              //Floating Button
             ),
           );
         });
@@ -435,12 +636,14 @@ class _GoodsIssueMixingDetailPageState
   }
 
   void _showItemDetail(int itemIndex) {
+    final newData = _getState().data;
     final items = _getState().data.items;
+
     Future<Item> item = Navigator.push(
       context,
       MaterialPageRoute<Item>(
-        builder: (BuildContext context) =>
-            GoodsIssueMixingDetailItemDetailPage(items[itemIndex]),
+        builder: (BuildContext context) => GoodsIssueMixingDetailItemDetailPage(
+            items[itemIndex], itemIndex, newData),
       ),
     );
 
@@ -460,17 +663,18 @@ class _GoodsIssueMixingDetailPageState
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-
-    //jika nama signature berbah di kasih tanda
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
 
     if (transDate != null) {
-        _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
-      } else {
-        _transDateController.text = null;
-      }
-      
+      _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+    } else {
+      _transDateController.text = null;
+    }
+
+    if (data.sapGoodsReceiptId != 0) {
+      _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
+    }
     if (data.id != 0) {
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
@@ -486,7 +690,6 @@ class _GoodsIssueMixingDetailPageState
       }
       _seriesNameWoController.text = data.seriesNameWo;
       _seriesNameController.text = data.seriesName;
-      _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
     }
 
     return Column(
@@ -505,12 +708,27 @@ class _GoodsIssueMixingDetailPageState
                         style: TextStyle(fontSize: 16, color: Colors.red),
                         enabled: false,
                         decoration: InputDecoration(
-                            hintText: "Issue Prodcution No.",
-                            labelText: "Issue Prodcution No.",
+                            hintText: "Issue Production No.",
+                            labelText: "Issue Production No.",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.sapGoodsReceiptId > 0)
+                    ? TextFormField(
+                        controller: _sapGoodsReceiptNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Goods Receipt Production No.",
+                            labelText: "Goods Receipt Production No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 (data.id > 0)
@@ -674,7 +892,7 @@ class _GoodsIssueMixingDetailPageState
         ]);
   }
 
-  Widget _rowDetail(List<Item> data, int index) {
+  Widget _rowDetail(Data data, List<Item> items, int index) {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -685,35 +903,35 @@ class _GoodsIssueMixingDetailPageState
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("${data[index].itemName}"),
+          title: Text("${items[index].itemName}"),
           subtitle: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('No. ' + "${data[index].woVisOrder}"),
-              Text("Item Code : ${data[index].itemCode}"),
+              Text('No. ' + "${items[index].woVisOrder}"),
+              Text("Item Code : ${items[index].itemCode}"),
 
               //Text(data[index].itemCode),
               //Text(data[index].whsCode ?? '-'),
               //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
               Text(
-                  "Open Qty : ${NumberFormat("#,###.##").format(data[index].openQty)}" +
-                      " ${data[index].uom}"),
+                  "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
+                      " ${items[index].uom}"),
               Text(
-                  "Planned Qty : ${NumberFormat("#,###.##").format(data[index].woQty)}" +
-                      " ${data[index].uom}"),
+                  "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
+                      " ${items[index].uom}"),
               //Text('Uom : ' + "${data[index].uom}"),
               // Text(data[index].whsCode ?? ''),
 
               //Text("Batch No. : ${data[index].batchNo}"),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
-                      " ${data[index].uom}"),
+                  "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
+                      " ${items[index].uom}"),
               // Text(data[index].whsCode ?? ''),
               //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
-          trailing: data[index].valuationMethod == 'FIFO'
+          trailing: items[index].valuationMethod == 'FIFO'
               ? IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
                   iconSize: 30.0,
@@ -721,19 +939,27 @@ class _GoodsIssueMixingDetailPageState
                     _showItemDetail(index);
                   },
                 )
-              : RaisedButton(
-                  onPressed: () {
-                    _showItemDetail(index);
-                  },
-                  color: bgOrange,
-                  child: Text(
-                    "ADD",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+              : data.sapGoodsIssueId == 0 && data.sapGoodsReceiptId == 0
+                  ? RaisedButton(
+                      onPressed: () {
+                        _showItemDetail(index);
+                      },
+                      color: bgOrange,
+                      child: Text(
+                        "ADD",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : IconButton(
+                      icon: Icon(Icons.keyboard_arrow_right),
+                      iconSize: 30.0,
+                      onPressed: () {
+                        _showItemDetail(index);
+                      },
                     ),
-                  ),
-                ),
         ),
       ),
     );
@@ -741,18 +967,18 @@ class _GoodsIssueMixingDetailPageState
 
   Widget _buildList() {
     var state = bloc.lastState ?? bloc.initialState;
-    final data = state.data.items;
-    if (data != null) {
+    final data = state.data;
+    if (data.items != null) {
       return ListView.builder(
         controller: _scrollController,
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
-        itemCount: data.length,
+        itemCount: data.items.length,
         itemBuilder: (contex, index) {
-          if (data != null) {
+          if (data.sapGoodsIssueId == 0) {
             // return _rowDetail(data, index);
             return Dismissible(
-              key: Key(data[index].hashCode.toString()),
+              key: Key(data.items[index].hashCode.toString()),
               onDismissed: (direction) {
                 bloc.emitEvent(
                     GoodsIssueMixingDetailEventItemRemove(itemIndex: index));
@@ -766,14 +992,212 @@ class _GoodsIssueMixingDetailPageState
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold)))),
-              child: _rowDetail(data, index),
+              child: _rowDetail(data, data.items, index),
             );
+          } else {
+            return _rowDetail(data, data.items, index);
           }
-          //else {
-          //   return _rowDetail(data, index);
-          // }
         },
       );
     }
+  }
+
+  // Show Dialog Button
+  showAlertDialogSubmit(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogPostSap(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _post();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogCreateNew(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _newTrans();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda ingin membuat Dokumen Baru ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogRefresh(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _refreshAfter();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda ingin Refresh Data ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogReset(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _resetData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Data Item akan di reset?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

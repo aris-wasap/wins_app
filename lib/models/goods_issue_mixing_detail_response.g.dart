@@ -38,6 +38,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     seriesName: json['SeriesName'] as String,
     sapGoodsIssueId: json['SapGoodsIssueId'] as int,
     sapGoodsIssueNo: json['SapGoodsIssueNo'] as String,
+    sapGoodsReceiptId: json['SapGoodsReceiptId'] as int,
+    sapGoodsReceiptNo: json['SapGoodsReceiptNo'] as String,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -62,6 +65,9 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SeriesName': instance.seriesName,
       'SapGoodsIssueId': instance.sapGoodsIssueId,
       'SapGoodsIssueNo': instance.sapGoodsIssueNo,
+      'SapGoodsReceiptId': instance.sapGoodsReceiptId,
+      'SapGoodsReceiptNo': instance.sapGoodsReceiptNo,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
@@ -71,6 +77,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     woLineNo: json['WoLineNo'] as int,
     woVisOrder: json['WoVisOrder'] as int,
     id: json['Id'] as int,
+    detId: json['DetId'] as int,
+    detDetId: json['DetDetId'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
@@ -102,6 +110,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WoLineNo': instance.woLineNo,
       'WoVisOrder': instance.woVisOrder,
       'Id': instance.id,
+      'DetId': instance.detId,
+      'DetDetId': instance.detDetId,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
