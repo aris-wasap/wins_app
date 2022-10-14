@@ -2,21 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_state.dart';
+import 'package:wins_app/blocs/cfl_purchase_order_label/cfl_purchase_order_label_bloc.dart';
+import 'package:wins_app/blocs/cfl_purchase_order_label/cfl_purchase_order_label_event.dart';
+import 'package:wins_app/blocs/cfl_purchase_order_label/cfl_purchase_order_label_state.dart';
 import 'package:intl/intl.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class GoodsReceiptWOListPage extends StatefulWidget {
+class CflPurchaseOrderLabelPage extends StatefulWidget {
   @override
-  _GoodsReceiptWOListPageState createState() => _GoodsReceiptWOListPageState();
+  _CflPurchaseOrderLabelPageState createState() =>
+      _CflPurchaseOrderLabelPageState();
 }
 
-class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
-  GoodsReceiptWOListBloc bloc = GoodsReceiptWOListBloc();
+class _CflPurchaseOrderLabelPageState extends State<CflPurchaseOrderLabelPage> {
+  CflPurchaseOrderLabelBloc bloc = CflPurchaseOrderLabelBloc();
+
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -28,9 +28,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsReceiptWOListEvent(
-        event: GoodsReceiptWOListEventType.firstPage,
+      bloc.emitEvent(CflPurchaseOrderLabelEvent(
+        event: CflPurchaseOrderLabelEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +38,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsReceiptWOListEvent(
-        event: GoodsReceiptWOListEventType.nextPage,
+      bloc.emitEvent(CflPurchaseOrderLabelEvent(
+        event: CflPurchaseOrderLabelEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -50,13 +49,12 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsReceiptWOListEvent(
-        event: GoodsReceiptWOListEventType.firstPage,
-      ));
-    });
+    bloc.emitEvent(CflPurchaseOrderLabelEvent(
+      event: CflPurchaseOrderLabelEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -69,20 +67,20 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflPurchaseOrderLabelState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Receipt",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Purchase Order",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
-              color: Colors.orange[500],
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -91,8 +89,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsReceiptWOListEvent(
-                  event: GoodsReceiptWOListEventType.deactivedSearch,
+                bloc.emitEvent(CflPurchaseOrderLabelEvent(
+                  event: CflPurchaseOrderLabelEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -100,18 +98,11 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
       );
     } else {
       return AppBar(
-        title: Column(
-          children: <Widget>[Text("List Work Order")],
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradientAppBar,
-          ),
-        ),
-        //ackgroundColor: Colors.blue[500],
+        title: Text("Choose Purchase Order"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: bgBlue,
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -119,22 +110,11 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsReceiptWOListEvent(
-                event: GoodsReceiptWOListEventType.activedSearch,
+              bloc.emitEvent(CflPurchaseOrderLabelEvent(
+                event: CflPurchaseOrderLabelEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptListPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -142,21 +122,21 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsReceiptWOListEvent(
-      event: GoodsReceiptWOListEventType.refresh,
+    bloc.emitEvent(CflPurchaseOrderLabelEvent(
+      event: CflPurchaseOrderLabelEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsReceiptWOListState>(
+    return BlocEventStateBuilder<CflPurchaseOrderLabelState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsReceiptWOListState state) {
+        builder: (BuildContext context, CflPurchaseOrderLabelState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
@@ -164,7 +144,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                     gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -172,9 +152,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflPurchaseOrderLabelState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -189,44 +167,29 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
             ),
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Production No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
-                    Text("Production Type : ${data[index].productionType}"),
-                    Text("Status : ${data[index].status}"),
+                    Text("PO No. : ${data[index].docNum ?? ''}"),
+                    Text("Ref No. : ${data[index].refNo ?? ''}"),
+                    Text("Scale No. : ${data[index].scaleNo ?? ''}"),
+                    Text("Vendor : ${data[index].vendorCode ?? ''}"),
+                    Text("Vendor Name : ${data[index].vendorName ?? ''}"),
+                    // Text("Branch : ${data[index].branchName ?? ''}"),
                   ],
                 ),
-                // leading: ClipOval(
-                //   child: Image.network(
-                //     globalBloc.getUrl() +
-                //         "api/UserApi/GetImage?id=${data[index].userId}",
-                //     width: 50.0,
-                //     height: 50.0,
-                //   ),
-                // ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          GoodsReceiptListPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),

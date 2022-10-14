@@ -152,8 +152,8 @@ ItemBatch _$ItemBatchFromJson(Map<String, dynamic> json) {
     woQty: (json['WoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     openQty: (json['OpenQty'] as num)?.toDouble(),
-    uomCode: json['UomCode'] as String,
-    uomName: json['UomName'] as String,
+    uomEntry: json['UomEntry'] as int,
+    uom: json['Uom'] as String,
     manufacturingDate: json['ManufacturingDate'] == null
         ? null
         : DateTime.parse(json['ManufacturingDate'] as String),
@@ -201,8 +201,8 @@ Map<String, dynamic> _$ItemBatchToJson(ItemBatch instance) => <String, dynamic>{
       'WoQty': instance.woQty,
       'Qty': instance.qty,
       'OpenQty': instance.openQty,
-      'UomCode': instance.uomCode,
-      'UomName': instance.uomName,
+      'UomEntry': instance.uomEntry,
+      'Uom': instance.uom,
       'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
       'ExpirationDate': instance.expirationDate?.toIso8601String(),
       'Length': instance.length,

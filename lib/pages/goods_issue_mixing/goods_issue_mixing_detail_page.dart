@@ -560,11 +560,12 @@ class _GoodsIssueMixingDetailPageState
                     child: Stack(
                       children: <Widget>[
                         Align(
-                            alignment: Alignment.bottomLeft,
-                            child: _getState().data.sapGoodsIssueId == 0
+                            alignment: Alignment.bottomRight,
+                            child: _getState().data.sapGoodsIssueId == 0 &&
+                                    _getState().data.id > 0
                                 ? FloatingActionButton(
                                     heroTag: "btnReset",
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.green,
                                     child: Icon(Icons.autorenew),
                                     onPressed: () {
                                       showAlertDialogReset(context);
@@ -600,12 +601,13 @@ class _GoodsIssueMixingDetailPageState
                         // ),
 
                         Align(
-                          alignment: Alignment.bottomRight,
-                          child: _getState().data.sapGoodsIssueId == 0
+                          alignment: Alignment.bottomLeft,
+                          child: _getState().data.sapGoodsIssueId == 0 &&
+                                  _getState().data.id > 0
                               ? FloatingActionButton(
                                   heroTag: "btnDelete",
-                                  backgroundColor: Colors.grey,
-                                  child: Icon(Icons.delete_forever),
+                                  backgroundColor: Colors.red,
+                                  child: Icon(Icons.delete_outline),
                                   onPressed: () {
                                     showAlertDialogDelete(context);
                                   },
@@ -722,6 +724,14 @@ class _GoodsIssueMixingDetailPageState
                         style: TextStyle(fontSize: 16, color: Colors.red),
                         enabled: false,
                         decoration: InputDecoration(
+                            // suffixIcon: (data.sapGoodsReceiptId > 0)
+                            //     ? IconButton(
+                            //         icon: Icon(Icons.create_new_folder),
+                            //         onPressed: () {
+                            //           showAlertDialogPostSap(context);
+                            //         },
+                            //       )
+                            //     : null,
                             hintText: "Goods Receipt Production No.",
                             labelText: "Goods Receipt Production No.",
                             contentPadding: new EdgeInsets.symmetric(
@@ -975,7 +985,7 @@ class _GoodsIssueMixingDetailPageState
         physics: ClampingScrollPhysics(),
         itemCount: data.items.length,
         itemBuilder: (contex, index) {
-          if (data.sapGoodsIssueId == 0) {
+          if (data.sapGoodsIssueId == 0 && data.id > 0) {
             // return _rowDetail(data, index);
             return Dismissible(
               key: Key(data.items[index].hashCode.toString()),
@@ -1021,7 +1031,8 @@ class _GoodsIssueMixingDetailPageState
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
-      content: Text("Apakah anda yakin Submit document?"),
+      content: Text(
+          "Apakah anda yakin Submit document? Jika menyimpan dokumen ini akan otomatis membuat Goods Issue dan Goods Receipt"),
       actions: [
         cancelButton,
         continueButton,
@@ -1054,7 +1065,8 @@ class _GoodsIssueMixingDetailPageState
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
-      content: Text("Apakah anda yakin Submit document?"),
+      content: Text(
+          "Apakah anda yakin Submit document ? Jika menyimpan dokumen ini akan otomatis membuat Goods Receipt"),
       actions: [
         cancelButton,
         continueButton,
@@ -1153,7 +1165,8 @@ class _GoodsIssueMixingDetailPageState
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
-      content: Text("Data Item akan di reset?"),
+      content: Text(
+          "Data Item akan di reset, Batch Number yang sudah di scan akan dihapus"),
       actions: [
         cancelButton,
         continueButton,

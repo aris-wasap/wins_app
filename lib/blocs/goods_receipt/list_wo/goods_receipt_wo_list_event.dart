@@ -1,18 +1,18 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 
-class GoodsReceiptListEvent extends BlocEvent {
-  GoodsReceiptListEvent({
+class GoodsReceiptWOListEvent extends BlocEvent {
+  GoodsReceiptWOListEvent({
     this.event,
     this.searchQuery,
     this.woId,
   });
 
-  final GoodsReceiptListEventType event;
+  final GoodsReceiptWOListEventType event;
   final String searchQuery;
   final int woId;
 }
 
-enum GoodsReceiptListEventType {
+enum GoodsReceiptWOListEventType {
   none,
   firstPage,
   nextPage,

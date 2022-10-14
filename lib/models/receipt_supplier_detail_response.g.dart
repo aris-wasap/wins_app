@@ -34,6 +34,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
+    webId: json['WebId'] as int,
+    webNo: json['WebNo'] as String,
     vendorCode: json['VendorCode'] as String,
     vendorName: json['VendorName'] as String,
     contactPerson: json['ContactPerson'] as String,
@@ -60,6 +62,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'PoNo': instance.poNo,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
+      'WebId': instance.webId,
+      'WebNo': instance.webNo,
       'VendorCode': instance.vendorCode,
       'VendorName': instance.vendorName,
       'ContactPerson': instance.contactPerson,

@@ -40,9 +40,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
+  final _sapGoodsIssueIdController = TextEditingController();
+  final _sapGoodsIssueNoController = TextEditingController();
   final _productCodeController = TextEditingController();
   final _productNameController = TextEditingController();
   final _transNoController = TextEditingController();
+  final _baseIdController = TextEditingController();
+  final _baseNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
@@ -85,8 +89,12 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     _productCodeController?.dispose();
     _productNameController?.dispose();
     _sapGoodsReceiptNoController?.dispose();
+    _sapGoodsIssueIdController?.dispose();
+    _sapGoodsIssueNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
+    _baseIdController?.dispose();
+    _baseNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
 
@@ -101,6 +109,9 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     data.woNo = _woNoController.text;
     data.woId = int.parse(_woIdController.text);
     data.sapGoodsReceiptNo = _sapGoodsReceiptNoController.text;
+    data.sapGoodsIssueNo = _sapGoodsIssueNoController.text;
+    // data.baseId = int.parse(_baseIdController.text);
+    // data.baseNo = _baseNoController.text;
     data.productCode = _productCodeController.text;
     data.productName = _productNameController.text;
     data.transDate = transDate;
@@ -199,6 +210,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     data.id = int.parse(_idTxController.text);
     data.woNo = _woNoController.text;
     data.woId = int.parse(_woIdController.text);
+    data.baseNo = _baseNoController.text;
+    data.baseId = int.parse(_baseIdController.text);
+    data.sapGoodsIssueNo = _sapGoodsIssueNoController.text;
+    data.sapGoodsIssueId = int.parse(_sapGoodsIssueIdController.text);
     data.productCode = _productCodeController.text;
     data.productName = _productNameController.text;
     data.transDate = transDate;
@@ -619,19 +634,19 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapGoodsReceiptId != 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                        //_refreshDetailItem();
-                      },
-                    )
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+              // floatingActionButton: _getState().data.sapGoodsReceiptId != 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //           //_refreshDetailItem();
+              //         },
+              //       )
+              //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
               // bottomNavigationBar: data.id == 0
               //     ? BottomAppBar(
               //         color: Colors.blue,
@@ -683,6 +698,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
+      _sapGoodsIssueIdController.text = data.sapGoodsIssueId.toString();
+      _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
+      _baseIdController.text = data.baseId.toString();
+      _baseNoController.text = data.baseNo;
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
       transDate = data.transDate;
@@ -692,7 +711,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
         _transDateController.text = null;
       }
       _seriesNamePoController.text = data.seriesNameWo;
-      _seriesNameController.text = data.seriesName;
+      _seriesNameController.text = data.seriesNameWo;
     }
 
     return Column(
@@ -719,13 +738,40 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                       )
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                (_getState().data.id > 0)
+                (data.id > 0)
                     ? TextFormField(
                         controller: _transNoController,
                         enabled: false,
                         decoration: InputDecoration(
                             hintText: "Scan No.",
                             labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.sapGoodsIssueId > 0)
+                    ? TextFormField(
+                        controller: _sapGoodsIssueNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Issue No.",
+                            labelText: "Issue No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.baseId > 0)
+                    ? TextFormField(
+                        controller: _baseNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Base No.",
+                            labelText: "Base No.",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
@@ -897,7 +943,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               Text(
                   "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
                       " ${data[index].uom}"),
-              Text("Batch No. : ${data[index].batchNo}"),
+              // Text("Batch No. : ${data[index].batchNo}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),

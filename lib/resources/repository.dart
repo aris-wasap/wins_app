@@ -8,6 +8,7 @@ import 'package:wins_app/models/cfl_payable_return_request_response.dart';
 import 'package:wins_app/models/cfl_production_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_delivery_response.dart';
 import 'package:wins_app/models/cfl_purchase_item_response.dart';
+import 'package:wins_app/models/cfl_purchase_order_label_response.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_reference_response.dart';
 import 'package:wins_app/models/cfl_purchase_supplier_response.dart';
@@ -525,16 +526,27 @@ class Repository {
           int id, int woId) =>
       apiProvider.goodsIssueMixingDetail_ResetData(id, woId);
 
+//-----------------------------
+  //GoodsReceiptProductionList
+  //-----------------------------
+  Future<GoodsReceiptListResponse> goodsReceiptProductionList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsReceiptProductionList_FetchNextPage(lastId, searchQuery);
+
+  Future<GoodsReceiptListResponse> goodsReceiptProductionList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsReceiptProductionList_Refresh(lastId, searchQuery);
+
   //-----------------------------
   //GoodsReceiptList
   //-----------------------------
   Future<GoodsReceiptListResponse> goodsReceiptList_FetchNextPage(
-          int lastId, String searchQuery) =>
-      apiProvider.goodsReceiptList_FetchNextPage(lastId, searchQuery);
+          int lastId, String searchQuery, int woId) =>
+      apiProvider.goodsReceiptList_FetchNextPage(lastId, searchQuery, woId);
 
   Future<GoodsReceiptListResponse> goodsReceiptList_Refresh(
-          int lastId, String searchQuery) =>
-      apiProvider.goodsReceiptList_Refresh(lastId, searchQuery);
+          int lastId, String searchQuery, int woId) =>
+      apiProvider.goodsReceiptList_Refresh(lastId, searchQuery, woId);
 
   //-----------------------------
   //GoodsReceiptDetail
@@ -902,7 +914,13 @@ class Repository {
   Future<CflGoodsIssueResponse> cflGoodsIssue_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflGoodsIssue_FetchNextPage(rowStart, searchQuery);
-
+//-----------------------------
+  //CflPurchaseOrderLabel
+  //-----------------------------
+  Future<CflPurchaseOrderLabelResponse> cflPurchaseOrderLabel_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflPurchaseOrderLabel_FetchNextPage(rowStart, searchQuery);
+      
   //-----------------------------
   //CflPurchaseOrder
   //-----------------------------

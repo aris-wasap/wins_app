@@ -55,6 +55,12 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebNo')
+  String webNo;
+
   @JsonKey(name: 'VendorCode')
   String vendorCode;
 
@@ -105,6 +111,8 @@ class Data {
     this.poNo,
     this.id: 0,
     this.transNo,
+    this.webId: 0,
+    this.webNo,
     this.transDate,
     this.vendorCode,
     this.vendorName,
@@ -115,7 +123,7 @@ class Data {
     this.seriesName,
     this.branchId,
     this.branchName,
-    this.sapReceiptOrderId=0,
+    this.sapReceiptOrderId = 0,
     this.sapReceiptOrderNo,
     this.createdUser,
     this.status,

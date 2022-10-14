@@ -258,10 +258,10 @@ class ItemBatch {
   double qty;
   @JsonKey(name: 'OpenQty')
   double openQty;
-  @JsonKey(name: 'UomCode')
-  String uomCode;
-  @JsonKey(name: 'UomName')
-  String uomName;
+  @JsonKey(name: 'UomEntry')
+  int uomEntry;
+  @JsonKey(name: 'Uom')
+  String uom;
   @JsonKey(name: 'ManufacturingDate')
   DateTime manufacturingDate;
   @JsonKey(name: 'ExpirationDate')
@@ -318,8 +318,8 @@ class ItemBatch {
     this.woQty: 0,
     this.qty: 0,
     this.openQty: 0,
-    this.uomCode,
-    this.uomName,
+    this.uomEntry:0,
+    this.uom,
     this.manufacturingDate,
     this.expirationDate,
     this.length: 0,

@@ -36,6 +36,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
       bloc.emitEvent(GoodsReceiptListEvent(
         event: GoodsReceiptListEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
   }
@@ -46,6 +47,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
       bloc.emitEvent(GoodsReceiptListEvent(
         event: GoodsReceiptListEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     }
   }
@@ -57,6 +59,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.emitEvent(GoodsReceiptListEvent(
         event: GoodsReceiptListEventType.firstPage,
+        woId: _id,
       ));
     });
 

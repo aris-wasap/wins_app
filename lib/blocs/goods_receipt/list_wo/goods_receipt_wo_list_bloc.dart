@@ -1,15 +1,15 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_state.dart';
+import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_event.dart';
+import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_state.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
 import 'package:wins_app/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class GoodsReceiptListBloc
-    extends BlocEventStateBase<GoodsReceiptListEvent, GoodsReceiptListState> {
-  GoodsReceiptListBloc()
+class GoodsReceiptWOListBloc extends BlocEventStateBase<GoodsReceiptWOListEvent,
+    GoodsReceiptWOListState> {
+  GoodsReceiptWOListBloc()
       : super(
-          initialState: GoodsReceiptListState.noAction(),
+          initialState: GoodsReceiptWOListState.noAction(),
         );
 
   final BehaviorSubject<int> _firstIdController =
@@ -26,33 +26,33 @@ class GoodsReceiptListBloc
   }
 
   @override
-  Stream<GoodsReceiptListState> eventHandler(
-      GoodsReceiptListEvent event, GoodsReceiptListState currentState) async* {
+  Stream<GoodsReceiptWOListState> eventHandler(GoodsReceiptWOListEvent event,
+      GoodsReceiptWOListState currentState) async* {
     switch (event.event) {
-      case GoodsReceiptListEventType.activedSearch:
+      case GoodsReceiptWOListEventType.activedSearch:
         {
-          yield GoodsReceiptListState.success(
+          yield GoodsReceiptWOListState.success(
               data: currentState.data, isActiveSearch: true);
         }
 
         break;
-      case GoodsReceiptListEventType.deactivedSearch:
+      case GoodsReceiptWOListEventType.deactivedSearch:
         {
-          yield GoodsReceiptListState.busy(
+          yield GoodsReceiptWOListState.busy(
               data: currentState.data, isActiveSearch: false);
           try {
             var _repository = Repository();
-            GoodsReceiptListResponse response =
-                await _repository.goodsReceiptList_FetchNextPage(0, "", 0);
+            GoodsReceiptListResponse response = await _repository
+                .goodsReceiptProductionList_FetchNextPage(0, "");
             if (response == null) {
-              yield GoodsReceiptListState.failure(
+              yield GoodsReceiptWOListState.failure(
                   errorMessage: 'Response null',
                   data: currentState.data,
                   isActiveSearch: false);
             } else {
               bool error = response.error;
               if (error) {
-                yield GoodsReceiptListState.failure(
+                yield GoodsReceiptWOListState.failure(
                     errorMessage: 'Fetch fail ${response.errorMessage}',
                     data: currentState.data,
                     isActiveSearch: false);
@@ -66,36 +66,36 @@ class GoodsReceiptListBloc
                       response.data[response.data.length - 1].id;
                 }
 
-                yield GoodsReceiptListState.success(
+                yield GoodsReceiptWOListState.success(
                     data: response.data, isActiveSearch: false);
               }
             }
           } catch (e) {
-            yield GoodsReceiptListState.failure(
+            yield GoodsReceiptWOListState.failure(
                 errorMessage: "fail ${event.event}",
                 data: currentState.data,
                 isActiveSearch: false);
           }
         }
         break;
-      case GoodsReceiptListEventType.firstPage:
+      case GoodsReceiptWOListEventType.firstPage:
         {
-          yield GoodsReceiptListState.busy(
+          yield GoodsReceiptWOListState.busy(
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch);
           try {
             var _repository = Repository();
             GoodsReceiptListResponse response = await _repository
-                .goodsReceiptList_FetchNextPage(0, event.searchQuery, event.woId);
+                .goodsReceiptProductionList_FetchNextPage(0, event.searchQuery);
             if (response == null) {
-              yield GoodsReceiptListState.failure(
+              yield GoodsReceiptWOListState.failure(
                   errorMessage: 'Response null',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch);
             } else {
               bool error = response.error;
               if (error) {
-                yield GoodsReceiptListState.failure(
+                yield GoodsReceiptWOListState.failure(
                     errorMessage: 'Fetch fail ${response.errorMessage}',
                     data: currentState.data,
                     isActiveSearch: currentState.isActiveSearch);
@@ -108,38 +108,38 @@ class GoodsReceiptListBloc
                   _lastIdController.value =
                       response.data[response.data.length - 1].id;
                 }
-                yield GoodsReceiptListState.success(
+                yield GoodsReceiptWOListState.success(
                     data: response.data,
                     isActiveSearch: currentState.isActiveSearch);
               }
             }
           } catch (e) {
-            yield GoodsReceiptListState.failure(
+            yield GoodsReceiptWOListState.failure(
                 errorMessage: "fail ${event.event}",
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch);
           }
         }
         break;
-      case GoodsReceiptListEventType.nextPage:
+      case GoodsReceiptWOListEventType.nextPage:
         {
-          yield GoodsReceiptListState.busy(
+          yield GoodsReceiptWOListState.busy(
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch);
           try {
             var _repository = Repository();
             GoodsReceiptListResponse response =
-                await _repository.goodsReceiptList_FetchNextPage(
-                    _lastIdController.value, event.searchQuery, event.woId);
+                await _repository.goodsReceiptProductionList_FetchNextPage(
+                    _lastIdController.value, event.searchQuery);
             if (response == null) {
-              yield GoodsReceiptListState.failure(
+              yield GoodsReceiptWOListState.failure(
                   errorMessage: 'Response null',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch);
             } else {
               bool error = response.error;
               if (error) {
-                yield GoodsReceiptListState.failure(
+                yield GoodsReceiptWOListState.failure(
                     errorMessage: 'Fetch fail ${response.errorMessage}',
                     data: currentState.data,
                     isActiveSearch: currentState.isActiveSearch);
@@ -152,37 +152,37 @@ class GoodsReceiptListBloc
 
                 var data = currentState.data;
                 data.addAll(response.data);
-                yield GoodsReceiptListState.success(
+                yield GoodsReceiptWOListState.success(
                     data: data, isActiveSearch: currentState.isActiveSearch);
               }
             }
           } catch (e) {
-            yield GoodsReceiptListState.failure(
+            yield GoodsReceiptWOListState.failure(
                 errorMessage: "fail ${event.event}",
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch);
           }
         }
         break;
-      case GoodsReceiptListEventType.refresh:
+      case GoodsReceiptWOListEventType.refresh:
         {
-          yield GoodsReceiptListState.busy(
+          yield GoodsReceiptWOListState.busy(
               data: currentState.data,
               isActiveSearch: currentState.isActiveSearch);
           try {
             var _repository = Repository();
             GoodsReceiptListResponse response =
-                await _repository.goodsReceiptList_Refresh(
-                    _lastIdController.value, event.searchQuery, event.woId);
+                await _repository.goodsReceiptProductionList_Refresh(
+                    _lastIdController.value, event.searchQuery);
             if (response == null) {
-              yield GoodsReceiptListState.failure(
+              yield GoodsReceiptWOListState.failure(
                   errorMessage: 'Response null',
                   data: currentState.data,
                   isActiveSearch: currentState.isActiveSearch);
             } else {
               bool error = response.error;
               if (error) {
-                yield GoodsReceiptListState.failure(
+                yield GoodsReceiptWOListState.failure(
                     errorMessage: 'Fetch fail ${response.errorMessage}',
                     data: currentState.data,
                     isActiveSearch: currentState.isActiveSearch);
@@ -195,13 +195,13 @@ class GoodsReceiptListBloc
                   _lastIdController.value =
                       response.data[response.data.length - 1].id;
                 }
-                yield GoodsReceiptListState.success(
+                yield GoodsReceiptWOListState.success(
                     data: response.data,
                     isActiveSearch: currentState.isActiveSearch);
               }
             }
           } catch (e) {
-            yield GoodsReceiptListState.failure(
+            yield GoodsReceiptWOListState.failure(
                 errorMessage: "fail ${event.event}",
                 data: currentState.data,
                 isActiveSearch: currentState.isActiveSearch);
