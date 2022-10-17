@@ -393,6 +393,17 @@ class Repository {
           int lastId, String searchQuery) =>
       apiProvider.receiptProductionList_Refresh(lastId, searchQuery);
 
+//-----------------------------
+  //GoodsIssueProductionList
+  //-----------------------------
+  Future<GoodsIssueListResponse> goodsIssueProductionList_FetchNextPage(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueProductionList_FetchNextPage(lastId, searchQuery);
+
+  Future<GoodsIssueListResponse> goodsIssueProductionList_Refresh(
+          int lastId, String searchQuery) =>
+      apiProvider.goodsIssueProductionList_Refresh(lastId, searchQuery);
+
   //-----------------------------
   //GoodsIssueList
   //-----------------------------
@@ -920,7 +931,7 @@ class Repository {
   Future<CflPurchaseOrderLabelResponse> cflPurchaseOrderLabel_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflPurchaseOrderLabel_FetchNextPage(rowStart, searchQuery);
-      
+
   //-----------------------------
   //CflPurchaseOrder
   //-----------------------------

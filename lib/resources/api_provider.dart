@@ -1430,6 +1430,65 @@ class ApiProvider {
   }
 
   //-----------------------------
+  //GoodsIssueProductionList
+  //-----------------------------
+  Future<GoodsIssueListResponse>
+      goodsIssueProductionList_FetchNextPage(
+          int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "Size": 10,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueListProductionApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueProductionList_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'goodsIssueProductionList_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsIssueListResponse> goodsIssueProductionList_Refresh(
+      int lastId, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "LastId": lastId,
+        "searchQuery": searchQuery
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueListProductionApi/Refresh",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueListResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueProductionList_Refresh:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'goodsIssueProductionList_Refresh:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
   //GoodsIssueList
   //-----------------------------
   Future<GoodsIssueListResponse> goodsIssueList_FetchNextPage(

@@ -603,7 +603,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage(null)));
+                                   CflTransferProductionPage("W, T, C, L")));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {
@@ -611,7 +611,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           _woNoController.text = wo.transNo;
                           _productCodeController.text = wo.productCode;
                           _productNameController.text = wo.productName;
-                          _refreshDetailItem();
+                          // _refreshDetailItem();
                         }
                       });
                     }

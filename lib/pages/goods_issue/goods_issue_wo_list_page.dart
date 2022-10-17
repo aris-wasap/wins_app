@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_event.dart';
-import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_state.dart';
+import 'package:wins_app/blocs/goods_issue/list_wo/goods_issue_wo_list_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/list_wo/goods_issue_wo_list_event.dart';
+import 'package:wins_app/blocs/goods_issue/list_wo/goods_issue_wo_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
@@ -16,7 +17,7 @@ class GoodsIssueWOListPage extends StatefulWidget {
 }
 
 class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
-  GoodsIssueListBloc bloc = GoodsIssueListBloc();
+  GoodsIssueWOListBloc bloc = GoodsIssueWOListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,8 +30,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueWOListEvent(
+        event: GoodsIssueWOListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +40,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.nextPage,
+      bloc.emitEvent(GoodsIssueWOListEvent(
+        event: GoodsIssueWOListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,8 +52,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsIssueListEvent(
-        event: GoodsIssueListEventType.firstPage,
+      bloc.emitEvent(GoodsIssueWOListEvent(
+        event: GoodsIssueWOListEventType.firstPage,
       ));
     });
 
@@ -91,8 +92,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsIssueListEvent(
-                  event: GoodsIssueListEventType.deactivedSearch,
+                bloc.emitEvent(GoodsIssueWOListEvent(
+                  event: GoodsIssueWOListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -122,8 +123,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsIssueListEvent(
-                event: GoodsIssueListEventType.activedSearch,
+              bloc.emitEvent(GoodsIssueWOListEvent(
+                event: GoodsIssueWOListEventType.activedSearch,
               ));
             },
           ),
@@ -133,7 +134,7 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsIssueListPage(0);
+                      return GoodsIssueDetailPage(0);
                     }));
                   },
                 )
@@ -145,17 +146,17 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsIssueListEvent(
-      event: GoodsIssueListEventType.refresh,
+    bloc.emitEvent(GoodsIssueWOListEvent(
+      event: GoodsIssueWOListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsIssueListState>(
+    return BlocEventStateBuilder<GoodsIssueWOListState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueListState state) {
+        builder: (BuildContext context, GoodsIssueWOListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -206,7 +207,11 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
                   children: <Widget>[
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Order Qty : 2210 KG"),
+                    Text(
+                        "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                    Text("Production Type : ${data[index].productionType}"),
+                    // Text("Order Qty : 2210 KG"),
+                    Text("Status : ${data[index].woStatus}"),
                   ],
                 ),
                 // leading: ClipOval(
