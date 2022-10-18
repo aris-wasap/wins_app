@@ -6,6 +6,7 @@ import 'package:wins_app/models/cfl_branch_response.dart';
 import 'package:wins_app/models/cfl_goods_issue_response.dart';
 import 'package:wins_app/models/cfl_goods_return_request_response.dart';
 import 'package:wins_app/models/cfl_item_batch_response.dart';
+import 'package:wins_app/models/cfl_item_response.dart';
 import 'package:wins_app/models/cfl_payable_return_request_response.dart';
 import 'package:wins_app/models/cfl_production_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_delivery_response.dart';
@@ -1432,9 +1433,8 @@ class ApiProvider {
   //-----------------------------
   //GoodsIssueProductionList
   //-----------------------------
-  Future<GoodsIssueListResponse>
-      goodsIssueProductionList_FetchNextPage(
-          int lastId, String searchQuery) async {
+  Future<GoodsIssueListResponse> goodsIssueProductionList_FetchNextPage(
+      int lastId, String searchQuery) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
@@ -1492,13 +1492,14 @@ class ApiProvider {
   //GoodsIssueList
   //-----------------------------
   Future<GoodsIssueListResponse> goodsIssueList_FetchNextPage(
-      int lastId, String searchQuery) async {
+      int lastId, String searchQuery, int woId) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "LastId": lastId,
         "Size": 10,
-        "searchQuery": searchQuery
+        "searchQuery": searchQuery,
+        "woId": woId,
       });
 
       final response = await http.post(
@@ -1607,7 +1608,11 @@ class ApiProvider {
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(
       int woId) async {
     try {
-      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WoId": woId,
+        "BranchId": globalBloc.branchId,
+      });
 
       final response = await http.post(
           "${_url}api/GoodsIssueDetailApi/ViewDetailItem",
@@ -2068,9 +2073,8 @@ class ApiProvider {
   //-----------------------------
   //GoodsReceiptProductionList
   //-----------------------------
-  Future<GoodsReceiptListResponse>
-      goodsReceiptProductionList_FetchNextPage(
-          int lastId, String searchQuery) async {
+  Future<GoodsReceiptListResponse> goodsReceiptProductionList_FetchNextPage(
+      int lastId, String searchQuery) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
@@ -2277,8 +2281,11 @@ class ApiProvider {
   Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_Scan(
       int woId, String qrResult) async {
     try {
-      var body = json.encode(
-          {"UserId": globalBloc.userId, "WoId": woId, "QrResult": qrResult});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WoId": woId,
+        "QrResult": qrResult,
+      });
 
       final response = await http.post("${_url}api/GoodsReceiptDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -2297,7 +2304,11 @@ class ApiProvider {
   Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(
       int woId) async {
     try {
-      var body = json.encode({"UserId": globalBloc.userId, "WoId": woId});
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WoId": woId,
+        "BranchId": globalBloc.branchId,
+      });
 
       final response = await http.post(
           "${_url}api/GoodsReceiptDetailApi/ViewDetailItem",
@@ -3040,10 +3051,15 @@ class ApiProvider {
   }
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
-      int poId, String qrResult) async {
+      int webId, String qrResult) async {
     try {
       var body = json.encode(
-          {"UserId": globalBloc.userId, "PoId": poId, "QrResult": qrResult});
+        {
+          "UserId": globalBloc.userId,
+          "WebId": webId,
+          "QrResult": qrResult,
+        },
+      );
 
       final response = await http.post("${_url}api/ReceiptOrderDetailApi/Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -4046,7 +4062,8 @@ class ApiProvider {
             'cflPurchaseOrderLabel_FetchNextPage:Failed to load post(2)');
       }
     } catch (e) {
-      throw Exception('cflPurchaseOrderLabel_FetchNextPage:Failed to load post(1)');
+      throw Exception(
+          'cflPurchaseOrderLabel_FetchNextPage:Failed to load post(1)');
     }
   }
 
@@ -4539,6 +4556,33 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflItemBatch_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflItem
+  //-----------------------------
+  Future<CflItemResponse> cflItem_FetchNextPage(
+      int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+      });
+
+      final response = await http.post("${_url}api/CflItemApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(cflItemResponseFromJson, response.body);
+      } else {
+        throw Exception('cflItem_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('cflItem_FetchNextPage:Failed to load post(1)');
     }
   }
 }

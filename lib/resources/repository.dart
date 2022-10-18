@@ -4,6 +4,7 @@ import 'package:wins_app/models/cfl_branch_response.dart';
 import 'package:wins_app/models/cfl_db_warehouse_model.dart';
 import 'package:wins_app/models/cfl_goods_return_request_response.dart';
 import 'package:wins_app/models/cfl_item_batch_response.dart';
+import 'package:wins_app/models/cfl_item_response.dart';
 import 'package:wins_app/models/cfl_payable_return_request_response.dart';
 import 'package:wins_app/models/cfl_production_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_delivery_response.dart';
@@ -408,8 +409,8 @@ class Repository {
   //GoodsIssueList
   //-----------------------------
   Future<GoodsIssueListResponse> goodsIssueList_FetchNextPage(
-          int lastId, String searchQuery) =>
-      apiProvider.goodsIssueList_FetchNextPage(lastId, searchQuery);
+          int lastId, String searchQuery, int woId) =>
+      apiProvider.goodsIssueList_FetchNextPage(lastId, searchQuery, woId);
 
   Future<GoodsIssueListResponse> goodsIssueList_Refresh(
           int lastId, String searchQuery) =>
@@ -727,8 +728,8 @@ class Repository {
       apiProvider.receiptOrderDetail_Post(data);
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
-          int poId, String qrResult) =>
-      apiProvider.receiptOrderDetail_Scan(poId, qrResult);
+          int webId, String qrResult) =>
+      apiProvider.receiptOrderDetail_Scan(webId, qrResult);
 
   //-----------------------------
   //ReceiptSupplierList
@@ -1073,4 +1074,14 @@ class Repository {
           String searchQuery, String whsCode, String batchNo, int id) =>
       apiProvider.cflItemBatch_FetchNextPage(
           rowStart, searchQuery, whsCode, batchNo, id);
+
+  //-----------------------------
+  //CflItem
+  //-----------------------------
+  Future<CflItemResponse> cflItem_FetchNextPage(
+          int rowStart, String searchQuery) =>
+      apiProvider.cflItem_FetchNextPage(
+        rowStart,
+        searchQuery,
+      );
 }

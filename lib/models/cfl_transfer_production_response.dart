@@ -8,11 +8,11 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'cfl_transfer_production_response.g.dart';
 
-CflTransferProductionResponse cflTransferProductionResponseFromJson(String str) {
+CflTransferProductionResponse cflTransferProductionResponseFromJson(
+    String str) {
   final jsonData = json.decode(str);
   return CflTransferProductionResponse.fromJson(jsonData);
 }
- 
 
 @JsonSerializable()
 class CflTransferProductionResponse {
@@ -39,44 +39,51 @@ class CflTransferProductionResponse {
 }
 
 @JsonSerializable()
-class Data { 
+class Data {
   @JsonKey(name: 'Id')
   int id;
 
   @JsonKey(name: 'TransNo')
-  String transNo;  
+  String transNo;
 
   @JsonKey(name: 'TransDate')
-  DateTime transDate;  
+  DateTime transDate;
 
   @JsonKey(name: 'ProductCode')
-  String productCode;  
+  String productCode;
 
   @JsonKey(name: 'ProductName')
   String productName;
 
   @JsonKey(name: 'WhsCode')
-  String whsCode;  
+  String whsCode;
 
   @JsonKey(name: 'WhsName')
-  String whsName;  
+  String whsName;
+
+  @JsonKey(name: 'PlannedQty')
+  double plannedQty;
+
+  @JsonKey(name: 'Uom')
+  String uom;
 
   @JsonKey(name: 'Status')
-  String status;  
+  String status;
 
-
-  Data({ 
-    this.id=0,
-    this.transNo, 
-    this.transDate, 
-    this.productCode, 
+  Data({
+    this.id = 0,
+    this.transNo,
+    this.transDate,
+    this.productCode,
     this.productName,
     this.whsCode,
-    this.whsName, 
-    this.status, 
+    this.whsName,
+    this.plannedQty: 0,
+    this.uom,
+    this.status,
   });
 
- factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }

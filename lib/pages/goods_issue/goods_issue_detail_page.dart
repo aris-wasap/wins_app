@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:wins_app/pages/cfl/cfl_item_page.dart';
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:wins_app/models/cfl_transfer_production_response.dart'
     as cflTransferProduction;
+import 'package:wins_app/models/cfl_item_response.dart' as cflItem;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -416,14 +418,24 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              // note: fungsi SCAN
+              // note: fungsi Add Item
               floatingActionButton: _getState().data.id != 0
                   ? FloatingActionButton.extended(
-                      backgroundColor: bgOrange,
-                      icon: Icon(Icons.camera_alt),
-                      label: Text("Scan"),
+                      backgroundColor: bgBlue,
+                      icon: Icon(Icons.add_shopping_cart),
+                      label: Text("Add Item"),
                       onPressed: () {
-                        // _refreshDetailItem();
+                        if (data.id == 0) {
+                          Future<cflItem.Data> addItem = Navigator.push(
+                              context,
+                              MaterialPageRoute<cflItem.Data>(
+                                  builder: (BuildContext context) =>
+                                      CflItemPage()));
+
+                          addItem.then((cflItem.Data addItem) {
+                            if (addItem != null) {}
+                          });
+                        }
                       },
                     )
                   : null,
@@ -603,7 +615,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                   CflTransferProductionPage("W, T, C, L")));
+                                  CflTransferProductionPage("C")));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {
@@ -611,7 +623,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                           _woNoController.text = wo.transNo;
                           _productCodeController.text = wo.productCode;
                           _productNameController.text = wo.productName;
-                          // _refreshDetailItem();
+                          _refreshDetailItem();
                         }
                       });
                     }

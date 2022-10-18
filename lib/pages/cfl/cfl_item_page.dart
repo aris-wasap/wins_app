@@ -2,40 +2,36 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_bloc.dart';
-import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_event.dart';
-import 'package:wins_app/blocs/cfl_transfer_production/cfl_transfer_production_state.dart';
-import 'package:intl/intl.dart';
+import 'package:wins_app/blocs/cfl_item/cfl_item_bloc.dart';
+import 'package:wins_app/blocs/cfl_item/cfl_item_event.dart';
+import 'package:wins_app/blocs/cfl_item/cfl_item_state.dart';
+// import 'package:intl/intl.dart';
+// import 'package:wins_app/models/cfl_item_response.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class CflTransferProductionPage extends StatefulWidget {
-  CflTransferProductionPage(this.productionType);
-  final String productionType;
+class CflItemPage extends StatefulWidget {
+  CflItemPage();
   @override
-  _CflTransferProductionPageState createState() =>
-      _CflTransferProductionPageState(productionType);
+  _CflItemPageState createState() => _CflItemPageState();
 }
 
-class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
-  _CflTransferProductionPageState(this.productionType);
-  CflTransferProductionBloc bloc = CflTransferProductionBloc();
+class _CflItemPageState extends State<CflItemPage> {
+  _CflItemPageState();
+  CflItemBloc bloc = CflItemBloc();
 
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final String productionType;
 
   static const offsetVisibleThreshold = 50;
-
   final TextEditingController _searchQueryController = TextEditingController();
   Timer _debounce;
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      bloc.emitEvent(CflTransferProductionEvent(
-        event: CflTransferProductionEventType.firstPage,
+      bloc.emitEvent(CflItemEvent(
+        event: CflItemEventType.firstPage,
         searchQuery: _searchQueryController.text,
-        productionType: productionType,
       ));
     });
   }
@@ -43,10 +39,9 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(CflTransferProductionEvent(
-        event: CflTransferProductionEventType.nextPage,
+      bloc.emitEvent(CflItemEvent(
+        event: CflItemEventType.nextPage,
         searchQuery: _searchQueryController.text,
-        productionType: productionType,
       ));
     }
   }
@@ -55,9 +50,8 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
   void initState() {
     super.initState();
 
-    bloc.emitEvent(CflTransferProductionEvent(
-      event: CflTransferProductionEventType.firstPage,
-      productionType: productionType,
+    bloc.emitEvent(CflItemEvent(
+      event: CflItemEventType.firstPage,
     ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
@@ -74,14 +68,15 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar(CflTransferProductionState state) {
+  PreferredSizeWidget _appBar(CflItemState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Production Order",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Item",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
@@ -95,17 +90,16 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(CflTransferProductionEvent(
-                  event: CflTransferProductionEventType.deactivedSearch,
+                bloc.emitEvent(CflItemEvent(
+                  event: CflItemEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
-                  productionType: productionType,
                 ));
               }),
         ],
       );
     } else {
       return AppBar(
-        title: Text("Choose Production Order"),
+        title: Text("Choose Item"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -117,9 +111,9 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(CflTransferProductionEvent(
-                  event: CflTransferProductionEventType.activedSearch,
-                  productionType: productionType));
+              bloc.emitEvent(CflItemEvent(
+                event: CflItemEventType.activedSearch,
+              ));
             },
           ),
         ],
@@ -129,17 +123,17 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(CflTransferProductionEvent(
-      event: CflTransferProductionEventType.refresh,
+    bloc.emitEvent(CflItemEvent(
+      event: CflItemEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<CflTransferProductionState>(
+    return BlocEventStateBuilder<CflItemState>(
         bloc: bloc,
-        builder: (BuildContext context, CflTransferProductionState state) {
+        builder: (BuildContext context, CflItemState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -147,6 +141,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
+                  decoration: BoxDecoration(gradient: bgGradientPageWhite),
                   constraints: BoxConstraints.expand(),
                   child: buildList(state),
                 ),
@@ -156,7 +151,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
         });
   }
 
-  Widget buildList(CflTransferProductionState state) {
+  Widget buildList(CflItemState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -167,39 +162,30 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
-          return Card(
-            child: (Container(
-              decoration: BoxDecoration(
-                gradient:
-                    index % 2 == 0 ? bgGradientPageWhite : bgGradientPageBlue,
-              ),
-              //margin: const EdgeInsets.only(top: 8),
-              // decoration:
-              //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: ListTile(
-                  title: Text(
-                      "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
-                  subtitle: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("${data[index].productCode ?? ''}"),
-                      Text("${data[index].productName ?? ''}"),
-                      Text(
-                          "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
-                      Text("Status : ${data[index].status}"),
-                    ],
-                  ),
-                  leading: Icon(Icons.keyboard_arrow_left),
-                  onTap: () {
-                    Navigator.pop(context, data[index]);
-                  },
+          return (Container(
+            decoration: BoxDecoration(
+              gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
+            ),
+            margin: const EdgeInsets.all(0),
+            // decoration:
+            //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text("${data[index].itemCode}"),
+                leading: Icon(Icons.keyboard_arrow_left),
+                onTap: () {
+                  Navigator.pop(context, data[index]);
+                },
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Item Name : ${data[index].itemName}"),
+                  ],
                 ),
               ),
-            )),
-          );
+            ),
+          ));
         }
 
         if (isFailure) {

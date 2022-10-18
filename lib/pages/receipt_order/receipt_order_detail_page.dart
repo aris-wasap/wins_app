@@ -132,6 +132,11 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       ValidateDialogWidget(
           context: context, message: "Purchase Order No. harus di isi");
       return;
+    } else if (["", null].contains(data.webNo)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Labeling Purchase Order No. harus di isi");
+      return;
     } else if (["", null].contains(data.refNo)) {
       ValidateDialogWidget(
           context: context, message: "Reference No. harus di isi");
@@ -151,7 +156,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
 
     data.id = _id;
     data.poId = int.parse(_poIdController.text);
-    // data.webId = int.parse(_webIdController.text);
+    data.webId = int.parse(_webIdController.text);
     data.seriesName = _seriesNameController.text;
     data.seriesNamePo = _seriesNamePoController.text;
 
@@ -473,8 +478,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       }
 
       bloc.emitEvent(ReceiptOrderDetailEventScan(
-          poId: int.parse(_poIdController.text),
-          poNo: _poNoController.text,
+          webId: int.parse(_webIdController.text),
+          webNo: _webNoController.text,
           qrResult: qrResult,
           data: data));
 
@@ -773,17 +778,31 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                       po.then((cflPurchaseOrderLabel.Data po) {
                         setState(() {
                           if (po != null) {
-                            _poIdController.text = po.docEntry.toString();
-                            _poNoController.text = po.docNum;
-                            _webIdController.text = po.id.toString(); //webId
-                            _webNoController.text = po.transNo; // WebNo
-                            _vendorCodeController.text = po.vendorCode;
-                            _vendorNameController.text = po.vendorName;
-                            _refNoController.text = po.refNo;
-                            _scaleNoController.text = po.scaleNo;
-                            _branchIdController.text = po.branchId.toString();
-                            _branchNameController.text = po.branchName;
-                            _seriesNamePoController.text = po.seriesName;
+                            if (data.id == 0) {
+                              _poIdController.text = po.docEntry.toString();
+                              _poNoController.text = po.docNum;
+                              _webIdController.text = po.id.toString(); //webId
+                              _webNoController.text = po.transNo; // WebNo
+                              _vendorCodeController.text = po.vendorCode;
+                              _vendorNameController.text = po.vendorName;
+                              _refNoController.text = po.refNo;
+                              _scaleNoController.text = po.scaleNo;
+                              _branchIdController.text = po.branchId.toString();
+                              _branchNameController.text = po.branchName;
+                              _seriesNamePoController.text = po.seriesName;
+                            }
+                          } else {
+                            _getState().data.poId = po.docEntry;
+                            _getState().data.poNo = po.docNum;
+                            _getState().data.webId = po.id; //webId
+                            _getState().data.webNo = po.transNo; // WebNo
+                            _getState().data.vendorCode = po.vendorCode;
+                            _getState().data.vendorName = po.vendorName;
+                            _getState().data.refNo = po.refNo;
+                            _getState().data.scaleNo = po.scaleNo;
+                            _getState().data.branchId = po.branchId;
+                            _getState().data.branchName = po.branchName;
+                            _getState().data.seriesNamePo = po.seriesName;
                           }
                         });
                       });

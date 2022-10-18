@@ -4,10 +4,12 @@ class GoodsIssueListEvent extends BlocEvent {
   GoodsIssueListEvent({
     this.event,
     this.searchQuery,
+    this.woId,
   });
 
   final GoodsIssueListEventType event;
   final String searchQuery;
+  final int woId;
 }
 
 enum GoodsIssueListEventType {
