@@ -227,6 +227,18 @@ class Repository {
           transferProductionDetail.Data data) =>
       apiProvider.transferProductionDetail_Add(data);
 
+  Future<TransferProductionDetailResponse> transferProductionDetail_Update(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Update(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_Post(
+          transferProductionDetail.Data data) =>
+      apiProvider.transferProductionDetail_Post(data);
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.transferProductionDetail_RemoveItem(id, detId);
+
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
           int woId, String whsCodeFrom, String qrResult) =>
       apiProvider.transferProductionDetail_Scan(woId, whsCodeFrom, qrResult);
@@ -277,9 +289,17 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Add(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Update(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Update(data);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
+  
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
 
   Future<DeliveryOrderDetailScanResponse> deliveryOrderDetail_Scan(
           int soId, String qrResult) =>
@@ -645,9 +665,17 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Add(data);
 
+  Future<RequestIssueDetailResponse> requestIssueDetail_Update(
+          requestIssueDetail.Data data) =>
+      apiProvider.requestIssueDetail_Update(data);
+
   Future<RequestIssueDetailResponse> requestIssueDetail_Post(
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.requestIssueDetail_RemoveItem(id, detId);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
           int requestId, String qrResult) =>
@@ -703,10 +731,18 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Add(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Update(
+          receiptIssueDetail.Data data) =>
+      apiProvider.receiptIssueDetail_Update(data);
+
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Post(data);
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.receiptIssueDetail_RemoveItem(id, detId);
+      
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);

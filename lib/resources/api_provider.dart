@@ -562,6 +562,81 @@ class ApiProvider {
     }
   }
 
+  Future<TransferProductionDetailResponse> transferProductionDetail_Update(
+      transferProductionDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/TransferProductionDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferProductionDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_update:Failed to update TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_update:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_Post(
+      transferProductionDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/TransferProductionDetailApi/Post",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(transferProductionDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_Post:Failed to post TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<TransferProductionDetailResponse> transferProductionDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/TransferProductionDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return transferProductionDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'transferProductionDetail_RemoveItem:Failed to remove TransferProduction(2)');
+      }
+    } catch (e) {
+      throw Exception('transferProductionDetail_RemoveItem:Failed to load post(1)');
+    }
+  }
+
   Future<TransferProductionDetailScanResponse> transferProductionDetail_Scan(
       int woId, String fromWhsCode, String qrResult) async {
     try {
@@ -824,6 +899,30 @@ class ApiProvider {
     }
   }
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Update(
+      deliveryOrderDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/DeliveryOrderDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(deliveryOrderDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_Update:Failed to update DeliveryOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
       deliveryOrderDetail.Data data) async {
     try {
@@ -845,6 +944,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('deliveryOrderDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/DeliveryOrderDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return deliveryOrderDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_RemoveItem:Failed to add DeliveryOrder(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -2794,6 +2916,29 @@ class ApiProvider {
     }
   }
 
+  Future<RequestIssueDetailResponse> requestIssueDetail_Update(
+      requestIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/RequestIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(requestIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('requestIssueDetail_Update:Failed to update RequestIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('requestIssueDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<RequestIssueDetailResponse> requestIssueDetail_Post(
       requestIssueDetail.Data data) async {
     try {
@@ -2815,6 +2960,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('requestIssueDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/RequestIssueDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return requestIssueDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'requestIssueDetail_RemoveItem:Failed to remove RequestIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('requestIssueDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -3090,6 +3258,29 @@ class ApiProvider {
     }
   }
 
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_Update(
+      receiptIssueDetail.Data data) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": data.toJson()
+      });
+
+      final response = await http.post("${_url}api/ReceiptIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(receiptIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('receiptIssueDetail_Update:Failed to update ReceiptIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptIssueDetail_Update:Failed to load post(1)');
+    }
+  }
+
   Future<ReceiptIssueDetailResponse> receiptIssueDetail_Post(
       receiptIssueDetail.Data data) async {
     try {
@@ -3111,6 +3302,29 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('receiptIssueDetail_Post:Failed to load post(1)');
+    }
+  }
+
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/ReceiptIssueDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return receiptIssueDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'receiptIssueDetail_RemoveItem:Failed to remove ReceiptIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('receiptIssueDetail_RemoveItem:Failed to load post(1)');
     }
   }
 

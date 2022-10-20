@@ -426,6 +426,7 @@ class _InventoryTransferDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -897,6 +898,7 @@ class _InventoryTransferDetailPageState
                                 }
                               });
                             });
+
                           }
                         },
                         child: Container(
@@ -1177,6 +1179,7 @@ class _InventoryTransferDetailPageState
                               _getState().data.toAbsEntry = bin.absEntry;
                               _getState().data.toBinCode = bin.binCode;
                             }
+
                           }
                         });
                       });

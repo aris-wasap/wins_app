@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 class RequestIssueDetailEvent extends BlocEvent {
   RequestIssueDetailEvent({
     this.id,
+    this.detId,
     this.data,
     this.item,
     this.requestId,
@@ -14,6 +15,7 @@ class RequestIssueDetailEvent extends BlocEvent {
   });
 
   final int id;
+  final int detId;
   final Data data;
   final Item item;
   final int requestId;
@@ -82,6 +84,14 @@ class RequestIssueDetailEventAdd extends RequestIssueDetailEvent {
         );
 }
 
+class RequestIssueDetailEventUpdate extends RequestIssueDetailEvent {
+  RequestIssueDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class RequestIssueDetailEventPost extends RequestIssueDetailEvent {
   RequestIssueDetailEventPost({
     @required Data data,
@@ -95,5 +105,15 @@ class RequestIssueDetailEventCancel extends RequestIssueDetailEvent {
     @required int id,
   }) : super(
           id: id,
+        );
+}
+
+class RequestIssueDetailEventRemoveItem extends RequestIssueDetailEvent {
+  RequestIssueDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(
+          id: id,
+          detId: detId
         );
 }

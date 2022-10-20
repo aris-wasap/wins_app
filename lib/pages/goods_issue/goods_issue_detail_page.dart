@@ -306,6 +306,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
+
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
@@ -343,6 +344,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               },
             ),
           ),
+
         ],
       );
     } else {

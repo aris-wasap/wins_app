@@ -33,7 +33,8 @@ class _TransferProductionDetailItemDetailPageState
   TransferProductionDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _woIdController = TextEditingController();
-  final _lineNumController = TextEditingController();
+  final _woLineNumController = TextEditingController();
+  final _woVisOrderController = TextEditingController();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
   final _uomController = TextEditingController();
@@ -46,19 +47,20 @@ class _TransferProductionDetailItemDetailPageState
   final _plannedQtyController = TextEditingController();
   final _qtyController = TextEditingController();
   final _openQtyController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+     _focusNode = FocusNode();
     bloc = TransferProductionDetailItemDetailBloc(this._data);
   }
 
   @override
   void dispose() {
     _qtyController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -80,6 +82,40 @@ class _TransferProductionDetailItemDetailPageState
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
     ));
     Navigator.pop(context, _getState().data);
+  }
+
+  showAlertDialogUpdate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _done();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan Batch Number?"),
+      actions: [
+        cancelButton,
+        continueButton,
+        
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   TransferProductionDetailItemDetailState _getState() {
@@ -109,7 +145,8 @@ class _TransferProductionDetailItemDetailPageState
                     ? FlatButton.icon(
                         icon: Icon(Icons.check),
                         onPressed: () {
-                          _done();
+                          //_done();
+                          showAlertDialogUpdate(context);
                         },
                         textColor: Colors.white,
                         label: Text("DONE"),
@@ -128,7 +165,8 @@ class _TransferProductionDetailItemDetailPageState
     var data = _getState().data;
 
     _woIdController.text = data.woId.toString();
-    _lineNumController.text = data.woLineNo.toString();
+    _woLineNumController.text = data.woLineNo.toString();
+    _woVisOrderController.text = data.woVisOrder.toString();
     _batchNumberController.text = data.batchNo;
     _itemCodeController.text = data.itemCode;
     _itemNameController.text = data.itemName;
@@ -440,6 +478,7 @@ class _TransferProductionDetailItemDetailPageState
                 _data.id == 0
                     ? TextField(
                         autofocus: true,
+                        focusNode: _focusNode,
                         controller: _qtyController,
                         onEditingComplete: () {
                           setState(() {
@@ -452,6 +491,7 @@ class _TransferProductionDetailItemDetailPageState
                             _qtyController.selection = TextSelection.collapsed(
                                 offset: newValue.length);
                           });
+                          _focusNode.unfocus();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
