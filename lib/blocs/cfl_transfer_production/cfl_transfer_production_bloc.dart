@@ -39,8 +39,8 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response =
-                await _repository.cflTransferProduction_FetchNextPage(0, "", "");
+            CflTransferProductionResponse response = await _repository
+                .cflTransferProduction_FetchNextPage(0, "", "");
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -84,8 +84,9 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
+            CflTransferProductionResponse response =
+                await _repository.cflTransferProduction_FetchNextPage(
+                    0, event.searchQuery, event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -131,7 +132,9 @@ class CflTransferProductionBloc extends BlocEventStateBase<
             var _repository = Repository();
             CflTransferProductionResponse response =
                 await _repository.cflTransferProduction_FetchNextPage(
-                    currentState.data.length, event.searchQuery, event.productionType);
+                    currentState.data.length,
+                    event.searchQuery,
+                    event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',
@@ -177,8 +180,9 @@ class CflTransferProductionBloc extends BlocEventStateBase<
           );
           try {
             var _repository = Repository();
-            CflTransferProductionResponse response = await _repository
-                .cflTransferProduction_FetchNextPage(0, event.searchQuery, event.productionType);
+            CflTransferProductionResponse response =
+                await _repository.cflTransferProduction_FetchNextPage(
+                    0, event.searchQuery, event.productionType);
             if (response == null) {
               yield CflTransferProductionState.failure(
                 errorMessage: 'Response null',

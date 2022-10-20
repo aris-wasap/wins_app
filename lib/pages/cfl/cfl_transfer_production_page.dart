@@ -98,7 +98,7 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
                 bloc.emitEvent(CflTransferProductionEvent(
                   event: CflTransferProductionEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
-                  productionType: "MIXING"
+                  productionType: productionType,
                 ));
               }),
         ],
@@ -118,9 +118,8 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
             icon: Icon(Icons.search),
             onPressed: () {
               bloc.emitEvent(CflTransferProductionEvent(
-                event: CflTransferProductionEventType.activedSearch,
-                productionType: productionType
-              ));
+                  event: CflTransferProductionEventType.activedSearch,
+                  productionType: productionType));
             },
           ),
         ],
@@ -188,6 +187,9 @@ class _CflTransferProductionPageState extends State<CflTransferProductionPage> {
                     children: <Widget>[
                       Text("${data[index].productCode ?? ''}"),
                       Text("${data[index].productName ?? ''}"),
+                      Text(
+                          "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                      Text("Status : ${data[index].status}"),
                     ],
                   ),
                   leading: Icon(Icons.keyboard_arrow_left),

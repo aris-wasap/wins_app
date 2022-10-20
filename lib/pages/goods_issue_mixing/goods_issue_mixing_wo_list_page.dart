@@ -206,7 +206,10 @@ class _GoodsIssueMixingWOListPageState
                   children: <Widget>[
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Order Qty : 2210 KG"),
+                    Text("Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                    Text("Production Type : ${data[index].productionType}"),
+                    // Text("Order Qty : 2210 KG"),
+                    Text("Status : ${data[index].woStatus}"),
                   ],
                 ),
                 // leading: ClipOval(

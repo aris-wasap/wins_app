@@ -62,6 +62,27 @@ class _GoodsIssueDetailScanDetailPageState
     super.dispose();
   }
 
+  // void _done() {
+  //   if (_qtyController.text == "0" || _qtyController.text == "") {
+  //     ValidateDialogWidget(
+  //         context: context, message: "Qty harus lebih besar dari 0");
+  //     return;
+  //   }
+  //   bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(
+  //     qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
+  //     binAbs: int.parse(_binAbsController.text),
+  //     binCode: _binCodeController.text,
+  //   ));
+  //   // Navigator.pop(context, _getState().data);
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute<Item>(
+  //       builder: (BuildContext context) =>
+  //           GoodsIssueDetailItemDetailPage(_getState().data),
+  //     ),
+  //   );
+  // }
+
   void _done() {
     if (_qtyController.text == "0" || _qtyController.text == "") {
       ValidateDialogWidget(
@@ -73,14 +94,7 @@ class _GoodsIssueDetailScanDetailPageState
       binAbs: int.parse(_binAbsController.text),
       binCode: _binCodeController.text,
     ));
-    // Navigator.pop(context, _getState().data);
-    Navigator.push(
-      context,
-      MaterialPageRoute<Item>(
-        builder: (BuildContext context) =>
-            GoodsIssueDetailItemDetailPage(_getState().data),
-      ),
-    );
+    Navigator.pop(context, _getState().data);
   }
 
   GoodsIssueDetailItemDetailState _getState() {

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_bloc.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_event.dart';
-import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_state.dart';
+import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_bloc.dart';
+import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_event.dart';
+import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_state.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
@@ -16,7 +16,7 @@ class GoodsReceiptWOListPage extends StatefulWidget {
 }
 
 class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
-  GoodsReceiptListBloc bloc = GoodsReceiptListBloc();
+  GoodsReceiptWOListBloc bloc = GoodsReceiptWOListBloc();
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,8 +29,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
       var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsReceiptWOListEvent(
+        event: GoodsReceiptWOListEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +39,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.nextPage,
+      bloc.emitEvent(GoodsReceiptWOListEvent(
+        event: GoodsReceiptWOListEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -51,8 +51,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(GoodsReceiptListEvent(
-        event: GoodsReceiptListEventType.firstPage,
+      bloc.emitEvent(GoodsReceiptWOListEvent(
+        event: GoodsReceiptWOListEventType.firstPage,
       ));
     });
 
@@ -91,8 +91,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(GoodsReceiptListEvent(
-                  event: GoodsReceiptListEventType.deactivedSearch,
+                bloc.emitEvent(GoodsReceiptWOListEvent(
+                  event: GoodsReceiptWOListEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -101,10 +101,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     } else {
       return AppBar(
         title: Column(
-          children: <Widget>[
-            Text("List Issue Production"),
-            Text("by WO/SPK"),
-          ],
+          children: <Widget>[Text("List Work Order")],
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -122,8 +119,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsReceiptListEvent(
-                event: GoodsReceiptListEventType.activedSearch,
+              bloc.emitEvent(GoodsReceiptWOListEvent(
+                event: GoodsReceiptWOListEventType.activedSearch,
               ));
             },
           ),
@@ -145,17 +142,17 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(GoodsReceiptListEvent(
-      event: GoodsReceiptListEventType.refresh,
+    bloc.emitEvent(GoodsReceiptWOListEvent(
+      event: GoodsReceiptWOListEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsReceiptListState>(
+    return BlocEventStateBuilder<GoodsReceiptWOListState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsReceiptListState state) {
+        builder: (BuildContext context, GoodsReceiptWOListState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
@@ -206,7 +203,9 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                   children: <Widget>[
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Order Qty : 2210 KG"),
+                    Text("Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                    Text("Production Type : ${data[index].productionType}"),
+                    Text("Status : ${data[index].status}"),
                   ],
                 ),
                 // leading: ClipOval(
@@ -225,7 +224,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          GoodsReceiptListPage(0),
+                          GoodsReceiptListPage(data[index].id),
                     ),
                   );
                 },

@@ -51,9 +51,9 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
-  @JsonKey(name: 'Status')
-  String status;
-  
+  @JsonKey(name: 'WoStatus')
+  String woStatus;
+
   @JsonKey(name: 'CreatedUser')
   String createdUser;
 
@@ -71,20 +71,31 @@ class Data {
 
   @JsonKey(name: 'ProductName')
   String productName;
- 
+
+  @JsonKey(name: 'PlannedQty')
+  double plannedQty;
+
+  @JsonKey(name: 'Uom')
+  String uom;
+
+  @JsonKey(name: 'ProductionType')
+  String productionType;
 
   Data({
     this.id,
     this.userId,
     this.transNo,
     this.transDate,
-    this.status, 
-    this.createdUser, 
+    this.woStatus,
+    this.createdUser,
     this.seriesName,
     this.woNo,
     this.seriesNameWo,
     this.productCode,
-    this.productName
+    this.productName,
+    this.plannedQty,
+    this.uom,
+    this.productionType,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

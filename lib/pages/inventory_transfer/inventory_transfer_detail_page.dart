@@ -149,7 +149,7 @@ class _InventoryTransferDetailPageState
       ValidateDialogWidget(
           context: context, message: "To Bin Location harus di isi");
       return;
-    } 
+    }
     //else if ([null].contains(data.items)) {
     //   ValidateDialogWidget(
     //       context: context, message: "Item detail harus di isi");
@@ -441,7 +441,6 @@ class _InventoryTransferDetailPageState
               color: bgOrange,
               height: 5.0,
             ),
-            
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           // FlatButton.icon(
@@ -650,16 +649,12 @@ class _InventoryTransferDetailPageState
               item: item,
             ));
 
-            if (_getState().data.id > 0){
+            if (_getState().data.id > 0) {
               _update();
-          }else {
-            _create();
+            } else {
+              _create();
+            }
           }
-
-          }
-
-          
-          
         });
       }
     });
@@ -753,8 +748,7 @@ class _InventoryTransferDetailPageState
           itemIndex: itemIndex,
         ));
 
-         _update();
-
+        _update();
       }
     });
   }
@@ -767,6 +761,7 @@ class _InventoryTransferDetailPageState
     var data = state.data;
     _transNoController.text = data.transNo;
 
+    var cekData = _getState().data;
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
@@ -803,34 +798,34 @@ class _InventoryTransferDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 (data.sapInventoryTransferId > 0)
-                          ? TextFormField(
-                    controller: _sapInventoryTransferNoController,
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Transfer No.",
-                        labelText: "Transfer No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
+                    ? TextFormField(
+                        controller: _sapInventoryTransferNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                          hintText: "Transfer No.",
+                          labelText: "Transfer No.",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0),
-                            ),
-                            ), 
-                            )
-                          : Container(width: 0, height: 0),
+                          ),
+                        ),
+                      )
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 (data.id > 0)
-                          ? TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0))))
-                            : Container(width: 0, height: 0),
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
@@ -868,75 +863,82 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflTransferRequest.Data> trq = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflTransferRequest.Data>(
-                              builder: (BuildContext context) =>
-                                  CflTransferRequestPage("InventoryTransfer")));
+                (data.status == null)
+                    ? FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.id == 0) {
+                            Future<cflTransferRequest.Data> trq =
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute<cflTransferRequest.Data>(
+                                        builder: (BuildContext context) =>
+                                            CflTransferRequestPage(
+                                                "InventoryTransfer")));
 
-                      trq.then((cflTransferRequest.Data trq) {
-                        setState(() {
-                          if (trq != null) {
-                            _requestIdController.text = trq.id.toString();
-                            _requestNoController.text = trq.transNo;
-                            _fromWhsCodeController.text = trq.fromWhsCode;
-                            _fromWhsNameController.text = trq.fromWhsName;
-                            _fromAbsEntryController.text =
-                                trq.fromBinEntry.toString();
-                            _fromBinCodeController.text = trq.fromBinCode;
-                            _toWhsCodeController.text = trq.toWhsCode;
-                            _toWhsNameController.text = trq.toWhsName;
-                            _toBranchIdController.text =
-                                trq.toBranchId.toString();
-                            _toBranchNameController.text = trq.toBranchName;
-                            //_toAbsEntryController.text =
-                             //   trq.toBinEntry.toString();
-                            //_toBinCodeController.text = trq.toBinCode;
+                            trq.then((cflTransferRequest.Data trq) {
+                              setState(() {
+                                if (trq != null) {
+                                  _requestIdController.text = trq.id.toString();
+                                  _requestNoController.text = trq.transNo;
+                                  _fromWhsCodeController.text = trq.fromWhsCode;
+                                  _fromWhsNameController.text = trq.fromWhsName;
+                                  _fromAbsEntryController.text =
+                                      trq.fromBinEntry.toString();
+                                  _fromBinCodeController.text = trq.fromBinCode;
+                                  _toWhsCodeController.text = trq.toWhsCode;
+                                  _toWhsNameController.text = trq.toWhsName;
+                                  _toBranchIdController.text =
+                                      trq.toBranchId.toString();
+                                  _toBranchNameController.text =
+                                      trq.toBranchName;
+                                  _toAbsEntryController.text =
+                                      trq.toBinEntry.toString();
+                                  _toBinCodeController.text = trq.toBinCode;
+                                }
+                              });
+                            });
+
                           }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (data.id == 0)
+                                      ? Colors.blue
+                                      : Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Row(
                             children: <Widget>[
-                              Text(
-                                "Transfer Request No",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Transfer Request No",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_requestNoController.text),
+                                    )
+                                  ],
+                                ),
                               ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_requestNoController.text),
-                              )
+                              (data.id == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
                             ],
                           ),
                         ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
+                      )
+                    : Container(width: 0, height: 0),
                 //FromWarehouse
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -951,15 +953,20 @@ class _InventoryTransferDetailPageState
                       whs.then((cflWarehouse.Data whs) {
                         setState(() {
                           if (whs != null) {
-                            _fromWhsCodeController.text = whs.whsCode;
-                            _fromWhsNameController.text = whs.whsName;
-                            _fromAbsEntryController.text =
-                                whs.absEntry.toString();
-                            _fromBinCodeController.text = whs.binCode;
-                            // _getState().data.fromBranchId = whs.branchId;
-                            // _getState().data.fromBranchName = whs.branchName;
-                            // _getState().data.fromWhsCode = whs.whsCode;
-                            // _getState().data.fromWhsName = whs.whsName;
+                            if (data.id == 0) {
+                              _fromWhsCodeController.text = whs.whsCode;
+                              _fromWhsNameController.text = whs.whsName;
+                              _fromAbsEntryController.text =
+                                  whs.absEntry.toString();
+                              _fromBinCodeController.text = whs.binCode;
+                            } else {
+                              _getState().data.fromBranchId = whs.branchId;
+                              _getState().data.fromBranchName = whs.branchName;
+                              _getState().data.fromWhsCode = whs.whsCode;
+                              _getState().data.fromWhsName = whs.whsName;
+                              _getState().data.fromAbsEntry = whs.absEntry;
+                              _getState().data.fromBinCode = whs.binCode;
+                            }
                           }
                         });
                       });
@@ -1022,11 +1029,14 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
-                            _fromAbsEntryController.text =
-                                bin.absEntry.toString();
-                            _fromBinCodeController.text = bin.binCode;
-                            //_getState().data.fromAbsEntry = bin.absEntry;
-                            //_getState().data.fromBinCode = bin.binCode;
+                            if (data.id == 0) {
+                              _fromAbsEntryController.text =
+                                  bin.absEntry.toString();
+                              _fromBinCodeController.text = bin.binCode;
+                            } else {
+                              _getState().data.fromAbsEntry = bin.absEntry;
+                              _getState().data.fromBinCode = bin.binCode;
+                            }
                           }
                         });
                       });
@@ -1082,18 +1092,23 @@ class _InventoryTransferDetailPageState
                       whs.then((cflWarehouse.Data whs) {
                         setState(() {
                           if (whs != null) {
-                            _toBranchIdController.text =
-                                whs.branchId.toString();
-                            _toBranchNameController.text = whs.branchName;
-                            _toWhsCodeController.text = whs.whsCode;
-                            _toWhsNameController.text = whs.whsName;
-                            _toAbsEntryController.text =
-                                whs.absEntry.toString();
-                            _toBinCodeController.text = whs.binCode;
-                            // _getState().data.toBranchId = whs.branchId;
-                            // _getState().data.toBranchName = whs.branchName;
-                            // _getState().data.toWhsCode = whs.whsCode;
-                            // _getState().data.toWhsName = whs.whsName;
+                            if (data.id == 0) {
+                              _toBranchIdController.text =
+                                  whs.branchId.toString();
+                              _toBranchNameController.text = whs.branchName;
+                              _toWhsCodeController.text = whs.whsCode;
+                              _toWhsNameController.text = whs.whsName;
+                              _toAbsEntryController.text =
+                                  whs.absEntry.toString();
+                              _toBinCodeController.text = whs.binCode;
+                            } else {
+                              _getState().data.toBranchId = whs.branchId;
+                              _getState().data.toBranchName = whs.branchName;
+                              _getState().data.toWhsCode = whs.whsCode;
+                              _getState().data.toWhsName = whs.whsName;
+                              _getState().data.toAbsEntry = whs.absEntry;
+                              _getState().data.toBinCode = whs.binCode;
+                            }
                           }
                         });
                       });
@@ -1156,12 +1171,15 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
-                            _toAbsEntryController.text =
-                                bin.absEntry.toString();
-                            _toBinCodeController.text = bin.binCode;
-                            // _getState().data.toAbsEntry = bin.absEntry;
-                            // _getState().data.toBinCode = bin.binCode;
-                            _update();
+                            if (data.id == 0) {
+                              _toAbsEntryController.text =
+                                  bin.absEntry.toString();
+                              _toBinCodeController.text = bin.binCode;
+                            } else {
+                              _getState().data.toAbsEntry = bin.absEntry;
+                              _getState().data.toBinCode = bin.binCode;
+                            }
+
                           }
                         });
                       });
@@ -1545,7 +1563,7 @@ class _InventoryTransferDetailPageState
             onDismissed: (direction) {
               bloc.emitEvent(
                   InventoryTransferDetailEventItemRemove(itemIndex: index));
-                  _update();
+              _update();
             },
             background: Container(
                 color: Colors.red,

@@ -20,6 +20,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   TextEditingController controllerUserName = TextEditingController();
   TextEditingController controllerPwd = TextEditingController();
+  bool checkPass = true;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -320,7 +321,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               border: new OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(5.0)),
               //border: InputBorder.none,
-              suffixIcon: Icon(Icons.person, color: Colors.blueGrey),
+              suffixIcon: Icon(Icons.person_outline, color: Colors.blueGrey),
             ),
             validator: (value) =>
                 value.isEmpty ? 'Username can\'t be empty' : null,
@@ -341,7 +342,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           child: TextFormField(
             controller: controllerPwd,
             maxLines: 1,
-            obscureText: true,
+            obscureText: checkPass,
             autofocus: false,
             decoration: InputDecoration(
                 hintText: 'Password',
@@ -349,9 +350,16 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(5.0)),
                 // border: InputBorder.none,
-                suffixIcon: Icon(
-                  Icons.lock,
-                  color: Colors.blueGrey,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      checkPass = !checkPass;
+                    });
+                  },
+                  child: Icon(
+                    checkPass == true ? Icons.lock_outline : Icons.lock_open,
+                    color: checkPass == true ? Colors.blueGrey : bgOrange,
+                  ),
                 )),
             validator: (value) =>
                 value.isEmpty ? 'Password can\'t be empty' : null,
@@ -392,7 +400,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               bloc.emitEvent(AuthenticationEventLogin(
                 userName: controllerUserName.text,
                 pwd: controllerPwd.text,
-              ));
+              ),);
             } else {}
           },
         ),

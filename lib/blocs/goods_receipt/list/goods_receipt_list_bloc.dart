@@ -43,7 +43,7 @@ class GoodsReceiptListBloc
           try {
             var _repository = Repository();
             GoodsReceiptListResponse response =
-                await _repository.goodsReceiptList_FetchNextPage(0, "");
+                await _repository.goodsReceiptList_FetchNextPage(0, "", 0);
             if (response == null) {
               yield GoodsReceiptListState.failure(
                   errorMessage: 'Response null',
@@ -86,7 +86,7 @@ class GoodsReceiptListBloc
           try {
             var _repository = Repository();
             GoodsReceiptListResponse response = await _repository
-                .goodsReceiptList_FetchNextPage(0, event.searchQuery);
+                .goodsReceiptList_FetchNextPage(0, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsReceiptListState.failure(
                   errorMessage: 'Response null',
@@ -130,7 +130,7 @@ class GoodsReceiptListBloc
             var _repository = Repository();
             GoodsReceiptListResponse response =
                 await _repository.goodsReceiptList_FetchNextPage(
-                    _lastIdController.value, event.searchQuery);
+                    _lastIdController.value, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsReceiptListState.failure(
                   errorMessage: 'Response null',
@@ -173,7 +173,7 @@ class GoodsReceiptListBloc
             var _repository = Repository();
             GoodsReceiptListResponse response =
                 await _repository.goodsReceiptList_Refresh(
-                    _lastIdController.value, event.searchQuery);
+                    _lastIdController.value, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsReceiptListState.failure(
                   errorMessage: 'Response null',

@@ -9,6 +9,7 @@ class GoodsIssueMixingDetailItemDetailState extends BlocState {
     this.isSuccess: false,
     this.isFailure: false,
     this.errorMessage: '',
+    this.newData,
   });
 
   final Item data;
@@ -16,6 +17,7 @@ class GoodsIssueMixingDetailItemDetailState extends BlocState {
   final bool isSuccess;
   final bool isFailure;
   final String errorMessage;
+  final Data newData;
 
   factory GoodsIssueMixingDetailItemDetailState.noAction({
     @required Item data,
@@ -36,11 +38,14 @@ class GoodsIssueMixingDetailItemDetailState extends BlocState {
   }
 
   factory GoodsIssueMixingDetailItemDetailState.success({
-    @required Item data,
+     Item data,
+     Data newData,
+    String errorMessage,
   }) {
     return GoodsIssueMixingDetailItemDetailState(
       isSuccess: true,
       data: data,
+      newData: newData,
     );
   }
 

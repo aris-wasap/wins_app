@@ -35,18 +35,23 @@ class GoodsIssueMixingDetailItemDetailBloc extends BlocEventStateBase<
         data: newData,
       );
     } else if (event is GoodsIssueMixingDetailItemDetailEventScan) {
+      var id = event.id;
+      var detId = event.detId;
       var woId = event.woId;
       var woLineNo = event.woLineNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
-
+      if (newData.batchs == null) {
+        newData.batchs = [];
+      }
       yield GoodsIssueMixingDetailItemDetailState.busy(
         data: currentState.data,
       );
       try {
         var _repository = Repository();
-        GoodsIssueMixingDetailScanResponse response = await _repository
-            .goodsIssueMixingDetail_ScanBatch(woId, woLineNo, qrResult);
+        GoodsIssueMixingDetailScanResponse response =
+            await _repository.goodsIssueMixingDetail_ScanItemBatch(
+                id, detId, woId, woLineNo, qrResult);
         if (response == null) {
           yield GoodsIssueMixingDetailItemDetailState.failure(
             errorMessage: 'Response null',
@@ -62,23 +67,14 @@ class GoodsIssueMixingDetailItemDetailBloc extends BlocEventStateBase<
           } else {
             if (response.data == null) {
               yield GoodsIssueMixingDetailItemDetailState.failure(
-                errorMessage:
-                    '${qrResult} tidak di temukan di gudang  (1)',
+                errorMessage: '${qrResult} tidak di temukan di gudang  (1)',
                 data: event.data,
               );
             } else {
-              if (response.data.woId == 0) {
-                yield GoodsIssueMixingDetailItemDetailState.failure(
-                  errorMessage:
-                      '${qrResult} tidak di temukan di gudang (2)',
-                  data: event.data,
-                );
-              } else {
-                yield GoodsIssueMixingDetailItemDetailState.success(
-                  data: newData,
-                  // newItem: response.data,
-                );
-              }
+              yield GoodsIssueMixingDetailItemDetailState.success(
+                data: response.data,
+                // newData : response.data,
+              );
             }
           }
         }
@@ -87,6 +83,85 @@ class GoodsIssueMixingDetailItemDetailBloc extends BlocEventStateBase<
           errorMessage: "fail ${event.toString()}",
           data: event.data,
         );
+      }
+    } else if (event is GoodsIssueMixingDetailItemDetailEventRemoveContent) {
+      yield GoodsIssueMixingDetailItemDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueMixingDetailScanResponse response =
+            await _repository.goodsIssueMixingDetail_RemoveContent(
+                event.id, event.detId, event.detDetId);
+        if (response == null) {
+          yield GoodsIssueMixingDetailItemDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueMixingDetailItemDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            currentState.data.batchs
+                .removeWhere((content) => content.detDetId == event.detDetId);
+            yield GoodsIssueMixingDetailItemDetailState.success(
+                errorMessage: response.errorMessage,
+                // dataNew: response.data,
+                data: response.data);
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueMixingDetailItemDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is GoodsIssueMixingDetailItemDetailEventRefreshDetail) {
+      var detId = event.detId;
+      var woLineNo = event.woLineNo;
+      var newData = currentState.data;
+      //var listData = currentState.data.batchs;
+
+      if (detId == 0) {
+        yield GoodsIssueMixingDetailItemDetailState.success(
+          data: newData,
+        );
+      } else {
+        yield GoodsIssueMixingDetailItemDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueMixingDetailScanResponse response = await _repository
+              .goodsIssueMixingDetailItemDetail_RefreshDetail(detId, woLineNo);
+          if (response == null) {
+            yield GoodsIssueMixingDetailItemDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueMixingDetailItemDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueMixingDetailItemDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueMixingDetailItemDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
       }
     } else {}
   }

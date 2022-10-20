@@ -36,6 +36,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
       bloc.emitEvent(GoodsIssueListEvent(
         event: GoodsIssueListEventType.firstPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
   }
@@ -46,6 +47,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
       bloc.emitEvent(GoodsIssueListEvent(
         event: GoodsIssueListEventType.nextPage,
         searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     }
   }
@@ -57,6 +59,8 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.emitEvent(GoodsIssueListEvent(
         event: GoodsIssueListEventType.firstPage,
+        searchQuery: _searchQueryController.text,
+        woId: _id,
       ));
     });
 
@@ -104,7 +108,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Issue Production"),
+        title: Text("List Goods Issue"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
@@ -198,7 +202,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

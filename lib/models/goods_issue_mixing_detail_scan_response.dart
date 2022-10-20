@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:wins_app/models/goods_issue_detail_response.dart';
+import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'goods_issue_mixing_detail_scan_response.g.dart';
 

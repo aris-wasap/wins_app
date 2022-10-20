@@ -60,8 +60,8 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<ReceiptOrderDetailEvent,
         }
       }
     } else if (event is ReceiptOrderDetailEventScan) {
-      var poId = event.poId;
-      var poNo = event.poNo;
+      var webId = event.webId;
+      var webNo = event.webNo;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +71,7 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<ReceiptOrderDetailEvent,
       try {
         var _repository = Repository();
         ReceiptOrderDetailScanResponse response =
-            await _repository.receiptOrderDetail_Scan(poId, qrResult);
+            await _repository.receiptOrderDetail_Scan(webId, qrResult);
         if (response == null) {
           yield ReceiptOrderDetailState.failure(
             errorMessage: 'Response null',
@@ -88,14 +88,14 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<ReceiptOrderDetailEvent,
             if (response.data == null) {
               yield ReceiptOrderDetailState.failure(
                 errorMessage:
-                    'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (1)',
+                    'Item Batch Number ${qrResult} tidak di temukan  Labeling PO ${webNo} (1)',
                 data: event.data,
               );
             } else {
               if (response.data.poId == 0) {
                 yield ReceiptOrderDetailState.failure(
                   errorMessage:
-                      'Item Batch Number ${qrResult} tidak di temukan  PO ${poNo} (2)',
+                      'Item Batch Number ${qrResult} tidak di temukan  Labeling  PO ${webNo} (2)',
                   data: event.data,
                 );
               } else {

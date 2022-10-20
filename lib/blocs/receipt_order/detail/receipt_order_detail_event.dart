@@ -9,6 +9,8 @@ class ReceiptOrderDetailEvent extends BlocEvent {
     this.item,
     this.poId,
     this.poNo,
+    this.webId,
+    this.webNo,
     this.itemIndex,
     this.qrResult,
   });
@@ -18,6 +20,8 @@ class ReceiptOrderDetailEvent extends BlocEvent {
   final Item item;
   final int poId;
   final String poNo;
+  final int webId;
+  final String webNo;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,13 +41,13 @@ class ReceiptOrderDetailEventGetId extends ReceiptOrderDetailEvent {
 class ReceiptOrderDetailEventScan extends ReceiptOrderDetailEvent {
   ReceiptOrderDetailEventScan({
     @required Data data,
-    @required int poId,
-    @required String poNo,
+    @required int webId,
+    @required String webNo,
     @required String qrResult,
   }) : super(
           data: data,
-          poId: poId,
-          poNo: poNo,
+          webId: webId,
+          webNo: webNo,
           qrResult: qrResult,
         );
 }

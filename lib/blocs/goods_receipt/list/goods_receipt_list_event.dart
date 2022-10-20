@@ -4,10 +4,12 @@ class GoodsReceiptListEvent extends BlocEvent {
   GoodsReceiptListEvent({
     this.event,
     this.searchQuery,
+    this.woId,
   });
 
   final GoodsReceiptListEventType event;
   final String searchQuery;
+  final int woId;
 }
 
 enum GoodsReceiptListEventType {
