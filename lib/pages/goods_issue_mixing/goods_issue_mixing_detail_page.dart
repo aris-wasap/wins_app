@@ -9,6 +9,7 @@ import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_deta
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
@@ -44,6 +45,7 @@ class _GoodsIssueMixingDetailPageState
   final _productNameController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
+  final _baseNoController = TextEditingController();
   final _seriesNameWoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
@@ -87,6 +89,7 @@ class _GoodsIssueMixingDetailPageState
     _productNameController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
+    _baseNoController?.dispose();
     _seriesNameWoController?.dispose();
     _seriesNameController?.dispose();
     _sapGoodsIssueNoController?.dispose();
@@ -684,6 +687,7 @@ class _GoodsIssueMixingDetailPageState
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
       _transNoController.text = data.transNo;
+      _baseNoController.text = data.baseNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -718,29 +722,6 @@ class _GoodsIssueMixingDetailPageState
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                (data.sapGoodsReceiptId > 0)
-                    ? TextFormField(
-                        controller: _sapGoodsReceiptNoController,
-                        style: TextStyle(fontSize: 16, color: Colors.red),
-                        enabled: false,
-                        decoration: InputDecoration(
-                            // suffixIcon: (data.sapGoodsReceiptId > 0)
-                            //     ? IconButton(
-                            //         icon: Icon(Icons.create_new_folder),
-                            //         onPressed: () {
-                            //           showAlertDialogPostSap(context);
-                            //         },
-                            //       )
-                            //     : null,
-                            hintText: "Goods Receipt Production No.",
-                            labelText: "Goods Receipt Production No.",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      )
-                    : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
                 (data.id > 0)
                     ? TextFormField(
                         controller: _transNoController,
@@ -752,8 +733,111 @@ class _GoodsIssueMixingDetailPageState
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))))
-                    : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                    : Container(width: 0, height: 0),                
+                 (data.sapGoodsReceiptId > 0) ?
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {},
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                            controller: _sapGoodsReceiptNoController,
+                            enabled: false,
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                            decoration: InputDecoration(
+                                hintText: "Goods Receipt Production No.",
+                                labelText: "Goods Receipt Production No.",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[300]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))),
+                      ),
+                      (data.sapGoodsReceiptId > 0)
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.view_list,
+                                color: bgOrange,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        GoodsReceiptDetailPage(data.baseId),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(width: 0, height: 0),
+                    ],
+                  ),
+                ) : Container(width: 0, height: 0),
+                (data.baseId > 0) ?
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {},
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                            controller: _baseNoController,
+                            enabled: false,
+                            // style: TextStyle(fontSize: 16, color: Colors.red),
+                            decoration: InputDecoration(
+                                hintText: "Ref No.",
+                                labelText: "Ref No.",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[300]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))),
+                      ),
+                      (data.baseId > 0)
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.view_list,
+                                color: Colors.green,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        GoodsReceiptDetailPage(data.baseId),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(width: 0, height: 0),
+                    ],
+                  ),
+                ) : Container(width: 0, height: 0),
+                // Padding(padding: EdgeInsets.only(top: 5)),
+                // (data.baseId > 0)
+                //     ? TextFormField(
+                //         controller: _baseNoController,
+                //         enabled: false,
+                //         decoration: InputDecoration(
+                //             hintText: "Scan No.",
+                //             labelText: "Scan No.",
+                //             contentPadding: new EdgeInsets.symmetric(
+                //                 vertical: 15.0, horizontal: 10.0),
+                //             border: new OutlineInputBorder(
+                //                 borderRadius: new BorderRadius.circular(10.0))))
+                //     : Container(width: 0, height: 0),
+
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -776,14 +860,17 @@ class _GoodsIssueMixingDetailPageState
                                     borderSide: BorderSide(
                                         color: (data.id == 0)
                                             ? Colors.blue
-                                            : Colors.grey[400]),
+                                            : Colors.grey[300]),
                                     borderRadius: new BorderRadius.circular(
                                       10.0,
                                     )))),
                       ),
-                      (data.id == 0)
-                          ? Icon(
-                              Icons.date_range,
+                      (data.sapGoodsIssueId == 0)
+                          ? IconButton(
+                              icon: Icon(Icons.date_range),
+                              onPressed: () {
+                                _selectTransDate(context);
+                              },
                             )
                           : Container(width: 0, height: 0),
                     ],
@@ -797,7 +884,7 @@ class _GoodsIssueMixingDetailPageState
                           context,
                           MaterialPageRoute<cflTransferProduction.Data>(
                               builder: (BuildContext context) =>
-                                  CflTransferProductionPage("M")));
+                                  CflTransferProductionPage("C")));
 
                       wo.then((cflTransferProduction.Data wo) {
                         if (wo != null) {

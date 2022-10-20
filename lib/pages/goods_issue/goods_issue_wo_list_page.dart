@@ -101,12 +101,7 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
       );
     } else {
       return AppBar(
-        title: Column(
-          children: <Widget>[
-            Text("List Issue Production"),
-            Text("by WO/SPK"),
-          ],
-        ),
+        title: Text("List  by SPK"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: bgGradientAppBar,
@@ -123,9 +118,11 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(GoodsIssueWOListEvent(
-                event: GoodsIssueWOListEventType.activedSearch,
-              ));
+              bloc.emitEvent(
+                GoodsIssueWOListEvent(
+                  event: GoodsIssueWOListEventType.activedSearch,
+                ),
+              );
             },
           ),
           (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
@@ -229,7 +226,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => GoodsIssueListPage(0),
+                      builder: (BuildContext context) =>
+                          GoodsIssueListPage(data[index].id),
                     ),
                   );
                 },

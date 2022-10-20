@@ -156,6 +156,162 @@ class GoodsIssueDetailBloc
           );
         }
       }
+    } else if (event is GoodsIssueDetailEventRefreshAfter) {
+      var id = event.id;
+      var newData = currentState.data;
+      var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsIssueDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueDetailResponse response =
+              await _repository.goodsIssueDetail_RefreshAfter(id);
+          if (response == null) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is GoodsIssueDetailEventResetData) {
+      var id = event.id;
+      var woId = event.woId;
+      // var newData = currentState.data;
+      // var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsIssueDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueDetailResponse response =
+              await _repository.goodsIssueDetail_ResetData(id, woId);
+          if (response == null) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    }else if (event is GoodsIssueDetailEventPost) {
+      yield GoodsIssueDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailResponse response =
+            await _repository.goodsIssueDetail_Post(event.data);
+        if (response == null) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is GoodsIssueDetailEventCancel) {
+      if (event.id == 0) {
+        yield GoodsIssueDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueDetailResponse response =
+              await _repository.goodsIssueDetail_Cancel(event.data);
+          if (response == null) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else if (event is GoodsIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);

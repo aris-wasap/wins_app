@@ -728,6 +728,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     ? TextFormField(
                         controller: _sapGoodsReceiptNoController,
                         enabled: false,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
                         decoration: InputDecoration(
                             hintText: "Receipt No.",
                             labelText: "Receipt No.",
@@ -755,6 +756,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     ? TextFormField(
                         controller: _sapGoodsIssueNoController,
                         enabled: false,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
                         decoration: InputDecoration(
                             hintText: "Issue No.",
                             labelText: "Issue No.",

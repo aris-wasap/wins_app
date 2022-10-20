@@ -9,6 +9,7 @@ class GoodsIssueDetailItemDetailState extends BlocState {
     this.isSuccess: false,
     this.isFailure: false,
     this.errorMessage: '',
+    this.newData,
   });
 
   final Item data;
@@ -16,6 +17,7 @@ class GoodsIssueDetailItemDetailState extends BlocState {
   final bool isSuccess;
   final bool isFailure;
   final String errorMessage;
+  final Data newData;
 
   factory GoodsIssueDetailItemDetailState.noAction({
     @required Item data,
@@ -36,11 +38,14 @@ class GoodsIssueDetailItemDetailState extends BlocState {
   }
 
   factory GoodsIssueDetailItemDetailState.success({
-    @required Item data,
+    Item data,
+    Data newData,
+    String errorMessage,
   }) {
     return GoodsIssueDetailItemDetailState(
       isSuccess: true,
       data: data,
+      newData: newData,
     );
   }
 
