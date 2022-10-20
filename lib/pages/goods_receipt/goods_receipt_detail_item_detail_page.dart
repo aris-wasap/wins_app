@@ -473,7 +473,7 @@ class _GoodsReceiptDetailItemDetailPageState
         ]);
   }
 
-  Widget _rowDetail(int index) {
+  Widget _rowDetail(int index, Item newData) {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -484,13 +484,14 @@ class _GoodsReceiptDetailItemDetailPageState
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("No. $index"),
+          title: Text("Batch No. : ${newData.batchs[index].batchNo}"),
           subtitle: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Batch No. :'),
-              Text("Qty Batch :"),
+              // Text("Batch No. : ${newData.batchs[index].batchNo}"),
+              Text(
+                  "Qty Batch : ${NumberFormat("#,###.##").format(newData.batchs[index].quantity)}"),
             ],
           ),
         ),
@@ -509,7 +510,7 @@ class _GoodsReceiptDetailItemDetailPageState
         itemCount: 1,
         itemBuilder: (contex, index) {
           if (data != null) {
-            return _rowDetail(index);
+            return _rowDetail(index, data);
             // return Dismissible(
             //   // key: Key(data[index].hashCode.toString()),
             //   onDismissed: (direction) {

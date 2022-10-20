@@ -40,6 +40,7 @@ dependencies:
   flutter_masked_text: any
   flutter_launcher_icons: ^0.7.0
   flutter_money_formatter: ^0.8.3
+  confirm_dialog: ^0.1.1
 
 dev_dependencies:
   flutter_test:

@@ -50,6 +50,12 @@ class Data {
   @JsonKey(name: 'WoNo')
   String woNo;
 
+   @JsonKey(name: 'BaseId')
+  int baseId;
+
+   @JsonKey(name: 'BaseNo')
+  String baseNo;
+
   @JsonKey(name: 'WoDate')
   DateTime woDate;
 
@@ -77,6 +83,15 @@ class Data {
   @JsonKey(name: 'SapGoodsIssueNo')
   String sapGoodsIssueNo;
 
+  @JsonKey(name: 'SapGoodsReceiptId')
+  int sapGoodsReceiptId;
+
+  @JsonKey(name: 'SapGoodsReceiptNo')
+  String sapGoodsReceiptNo;
+
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -85,11 +100,16 @@ class Data {
     this.woNo,
     this.id: 0,
     this.transNo,
+    this.baseId:0,
+    this.baseNo,
     this.transDate,
     this.seriesNameWo,
     this.seriesName,
     this.sapGoodsIssueId = 0,
     this.sapGoodsIssueNo,
+    this.sapGoodsReceiptId = 0,
+    this.sapGoodsReceiptNo,
+    this.status,
     this.items,
   });
 
@@ -111,6 +131,12 @@ class Item {
 
   @JsonKey(name: 'Id')
   int id;
+
+  @JsonKey(name: 'DetId')
+  int detId;
+
+  @JsonKey(name: 'DetDetId')
+  int detDetId;
 
   @JsonKey(name: 'LineNo')
   int lineNo;
@@ -177,6 +203,8 @@ class Item {
     this.woLineNo: 0,
     this.woVisOrder: 0,
     this.id: 0,
+    this.detId: 0,
+    this.detDetId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
@@ -187,7 +215,7 @@ class Item {
     this.uom,
     this.whsCode,
     this.whsName,
-    this.binAbs:0,
+    this.binAbs: 0,
     this.binCode,
     this.toWhsCode,
     this.toWhsName,
@@ -238,10 +266,10 @@ class ItemBatch {
   double qty;
   @JsonKey(name: 'OpenQty')
   double openQty;
-  @JsonKey(name: 'UomCode')
-  String uomCode;
-  @JsonKey(name: 'UomName')
-  String uomName;
+  @JsonKey(name: 'UomEntry')
+  int uomEntry;
+  @JsonKey(name: 'Uom')
+  String uom;
   @JsonKey(name: 'ManufacturingDate')
   DateTime manufacturingDate;
   @JsonKey(name: 'ExpirationDate')
@@ -293,13 +321,13 @@ class ItemBatch {
     this.whsName,
     this.toWhsCode,
     this.toWhsName,
-    this.toBinAbs : 0,
+    this.toBinAbs: 0,
     this.toBinCode,
     this.woQty: 0,
     this.qty: 0,
     this.openQty: 0,
-    this.uomCode,
-    this.uomName,
+    this.uomEntry:0,
+    this.uom,
     this.manufacturingDate,
     this.expirationDate,
     this.length: 0,

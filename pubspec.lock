@@ -148,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.14.11"
+  confirm_dialog:
+    dependency: "direct main"
+    description:
+      name: confirm_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   convert:
     dependency: transitive
     description:
@@ -626,5 +633,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.5.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.9.1+hotfix.5 <2.0.0"

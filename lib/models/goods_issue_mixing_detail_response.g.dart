@@ -31,6 +31,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     woNo: json['WoNo'] as String,
     id: json['Id'] as int,
     transNo: json['TransNo'] as String,
+    baseId: json['BaseId'] as int,
+    baseNo: json['BaseNo'] as String,
     transDate: json['TransDate'] == null
         ? null
         : DateTime.parse(json['TransDate'] as String),
@@ -38,6 +40,9 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     seriesName: json['SeriesName'] as String,
     sapGoodsIssueId: json['SapGoodsIssueId'] as int,
     sapGoodsIssueNo: json['SapGoodsIssueNo'] as String,
+    sapGoodsReceiptId: json['SapGoodsReceiptId'] as int,
+    sapGoodsReceiptNo: json['SapGoodsReceiptNo'] as String,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -53,6 +58,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'Id': instance.id,
       'WoId': instance.woId,
       'WoNo': instance.woNo,
+      'BaseId': instance.baseId,
+      'BaseNo': instance.baseNo,
       'WoDate': instance.woDate?.toIso8601String(),
       'ProductCode': instance.productCode,
       'ProductName': instance.productName,
@@ -62,6 +69,9 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SeriesName': instance.seriesName,
       'SapGoodsIssueId': instance.sapGoodsIssueId,
       'SapGoodsIssueNo': instance.sapGoodsIssueNo,
+      'SapGoodsReceiptId': instance.sapGoodsReceiptId,
+      'SapGoodsReceiptNo': instance.sapGoodsReceiptNo,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
@@ -71,6 +81,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     woLineNo: json['WoLineNo'] as int,
     woVisOrder: json['WoVisOrder'] as int,
     id: json['Id'] as int,
+    detId: json['DetId'] as int,
+    detDetId: json['DetDetId'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
@@ -102,6 +114,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WoLineNo': instance.woLineNo,
       'WoVisOrder': instance.woVisOrder,
       'Id': instance.id,
+      'DetId': instance.detId,
+      'DetDetId': instance.detDetId,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
@@ -142,8 +156,8 @@ ItemBatch _$ItemBatchFromJson(Map<String, dynamic> json) {
     woQty: (json['WoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
     openQty: (json['OpenQty'] as num)?.toDouble(),
-    uomCode: json['UomCode'] as String,
-    uomName: json['UomName'] as String,
+    uomEntry: json['UomEntry'] as int,
+    uom: json['Uom'] as String,
     manufacturingDate: json['ManufacturingDate'] == null
         ? null
         : DateTime.parse(json['ManufacturingDate'] as String),
@@ -191,8 +205,8 @@ Map<String, dynamic> _$ItemBatchToJson(ItemBatch instance) => <String, dynamic>{
       'WoQty': instance.woQty,
       'Qty': instance.qty,
       'OpenQty': instance.openQty,
-      'UomCode': instance.uomCode,
-      'UomName': instance.uomName,
+      'UomEntry': instance.uomEntry,
+      'Uom': instance.uom,
       'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
       'ExpirationDate': instance.expirationDate?.toIso8601String(),
       'Length': instance.length,

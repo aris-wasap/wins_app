@@ -56,6 +56,12 @@ class Data {
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebNo')
+  String webNo;
+
   @JsonKey(name: 'VendorCode')
   String vendorCode;
 
@@ -104,6 +110,8 @@ class Data {
     this.id: 0,
     this.transNo,
     this.transDate,
+    this.webId : 0,
+    this.webNo,
     this.vendorCode,
     this.vendorName,
     this.contactPerson,

@@ -43,7 +43,7 @@ class GoodsIssueListBloc
           try {
             var _repository = Repository();
             GoodsIssueListResponse response =
-                await _repository.goodsIssueList_FetchNextPage(0, "");
+                await _repository.goodsIssueList_FetchNextPage(0, "", 0);
             if (response == null) {
               yield GoodsIssueListState.failure(
                   errorMessage: 'Response null',
@@ -86,7 +86,7 @@ class GoodsIssueListBloc
           try {
             var _repository = Repository();
             GoodsIssueListResponse response = await _repository
-                .goodsIssueList_FetchNextPage(0, event.searchQuery);
+                .goodsIssueList_FetchNextPage(0, event.searchQuery, event.woId);
             if (response == null) {
               yield GoodsIssueListState.failure(
                   errorMessage: 'Response null',
@@ -130,7 +130,10 @@ class GoodsIssueListBloc
             var _repository = Repository();
             GoodsIssueListResponse response =
                 await _repository.goodsIssueList_FetchNextPage(
-                    _lastIdController.value, event.searchQuery);
+              _lastIdController.value,
+              event.searchQuery,
+              event.woId,
+            );
             if (response == null) {
               yield GoodsIssueListState.failure(
                   errorMessage: 'Response null',

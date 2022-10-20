@@ -37,6 +37,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     productName: json['ProductName'] as String,
     whsCode: json['WhsCode'] as String,
     whsName: json['WhsName'] as String,
+    plannedQty: (json['PlannedQty'] as num)?.toDouble(),
+    uom: json['Uom'] as String,
     status: json['Status'] as String,
   );
 }
@@ -49,5 +51,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ProductName': instance.productName,
       'WhsCode': instance.whsCode,
       'WhsName': instance.whsName,
+      'PlannedQty': instance.plannedQty,
+      'Uom': instance.uom,
       'Status': instance.status,
     };

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:wins_app/pages/cfl/cfl_purchase_order_label_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_order_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_reference_page.dart';
 import 'package:wins_app/pages/receipt_order/receipt_order_detail_item_detail_page.dart';
@@ -18,6 +19,8 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart'
     as cflPurchaseOrder;
+import 'package:wins_app/models/cfl_purchase_order_label_response.dart'
+    as cflPurchaseOrderLabel;
 import 'package:wins_app/models/cfl_purchase_reference_response.dart'
     as cflPurchaseReference;
 import 'package:wins_app/pages/barcode_scan.dart';
@@ -41,6 +44,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _idTxController = TextEditingController();
   final _poIdController = TextEditingController();
   final _poNoController = TextEditingController();
+  final _webIdController = TextEditingController();
+  final _webNoController = TextEditingController();
   final _sapReceiptOrderNoController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
@@ -88,6 +93,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _idTxController?.dispose();
     _poIdController?.dispose();
     _poNoController?.dispose();
+    _webIdController?.dispose();
+    _webNoController?.dispose();
     _sapReceiptOrderNoController?.dispose();
     _transNoController?.dispose();
     _transDateController?.dispose();
@@ -109,6 +116,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
     data.poNo = _poNoController.text;
+    data.webNo = _webNoController.text;
     data.transDate = transDate;
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
@@ -123,6 +131,11 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     } else if (["", null].contains(data.poNo)) {
       ValidateDialogWidget(
           context: context, message: "Purchase Order No. harus di isi");
+      return;
+    } else if (["", null].contains(data.webNo)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Labeling Purchase Order No. harus di isi");
       return;
     } else if (["", null].contains(data.refNo)) {
       ValidateDialogWidget(
@@ -143,6 +156,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
 
     data.id = _id;
     data.poId = int.parse(_poIdController.text);
+    data.webId = int.parse(_webIdController.text);
     data.seriesName = _seriesNameController.text;
     data.seriesNamePo = _seriesNamePoController.text;
 
@@ -157,6 +171,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     data.id = int.parse(_idTxController.text);
     data.poId = int.parse(_poIdController.text);
     data.poNo = _poNoController.text;
+    data.webId = int.parse(_webIdController.text);
+    data.webNo = _webNoController.text;
     data.transDate = transDate;
     data.vendorCode = _vendorCodeController.text;
     data.vendorName = _vendorNameController.text;
@@ -462,8 +478,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       }
 
       bloc.emitEvent(ReceiptOrderDetailEventScan(
-          poId: int.parse(_poIdController.text),
-          poNo: _poNoController.text,
+          webId: int.parse(_webIdController.text),
+          webNo: _webNoController.text,
           qrResult: qrResult,
           data: data));
 
@@ -647,6 +663,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       _idTxController.text = data.id.toString();
       _poIdController.text = data.poId.toString();
       _poNoController.text = data.poNo;
+      _webIdController.text = data.webId.toString();
+      _webNoController.text = data.webNo;
       _refNoController.text = data.refNo;
       _scaleNoController.text = data.scaleNo;
       _sapReceiptOrderNoController.text = data.sapReceiptOrderNo;
@@ -674,28 +692,32 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _sapReceiptOrderNoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      hintText: "Receipt No.",
-                      labelText: "Receipt No.",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
+                (data.sapReceiptOrderId > 0)
+                    ? TextFormField(
+                        controller: _sapReceiptOrderNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Receipt No.",
+                            labelText: "Receipt No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                (_getState().data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -747,24 +769,40 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
                     if (data.id == 0) {
-                      Future<cflPurchaseOrder.Data> po = Navigator.push(
+                      Future<cflPurchaseOrderLabel.Data> po = Navigator.push(
                           context,
-                          MaterialPageRoute<cflPurchaseOrder.Data>(
+                          MaterialPageRoute<cflPurchaseOrderLabel.Data>(
                               builder: (BuildContext context) =>
-                                  CflPurchaseOrderPage()));
+                                  CflPurchaseOrderLabelPage()));
 
-                      po.then((cflPurchaseOrder.Data po) {
+                      po.then((cflPurchaseOrderLabel.Data po) {
                         setState(() {
                           if (po != null) {
-                            _poIdController.text = po.id.toString();
-                            _poNoController.text = po.transNo;
-                            _vendorCodeController.text = po.vendorCode;
-                            _vendorNameController.text = po.vendorName;
-                            _refNoController.text = "";
-                            _scaleNoController.text = "";
-                            _branchIdController.text = po.branchId.toString();
-                            _branchNameController.text = po.branchName;
-                            _seriesNamePoController.text = po.seriesName;
+                            if (data.id == 0) {
+                              _poIdController.text = po.docEntry.toString();
+                              _poNoController.text = po.docNum;
+                              _webIdController.text = po.id.toString(); //webId
+                              _webNoController.text = po.transNo; // WebNo
+                              _vendorCodeController.text = po.vendorCode;
+                              _vendorNameController.text = po.vendorName;
+                              _refNoController.text = po.refNo;
+                              _scaleNoController.text = po.scaleNo;
+                              _branchIdController.text = po.branchId.toString();
+                              _branchNameController.text = po.branchName;
+                              _seriesNamePoController.text = po.seriesName;
+                            }
+                          } else {
+                            _getState().data.poId = po.docEntry;
+                            _getState().data.poNo = po.docNum;
+                            _getState().data.webId = po.id; //webId
+                            _getState().data.webNo = po.transNo; // WebNo
+                            _getState().data.vendorCode = po.vendorCode;
+                            _getState().data.vendorName = po.vendorName;
+                            _getState().data.refNo = po.refNo;
+                            _getState().data.scaleNo = po.scaleNo;
+                            _getState().data.branchId = po.branchId;
+                            _getState().data.branchName = po.branchName;
+                            _getState().data.seriesNamePo = po.seriesName;
                           }
                         });
                       });
@@ -786,17 +824,24 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Purchase Order No.",
+                                "Purchase Order No. : ",
                                 style: TextStyle(
                                     color: Colors.blue, fontSize: 12.0),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_poNoController.text),
+                                title: Text(_webNoController.text,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal)),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_branchNameController.text),
+                                    Text(_poNoController.text),
+                                    Text(_refNoController.text),
+                                    Text(_scaleNoController.text),
+                                    // Text(_branchNameController.text),
                                   ],
                                 ),
                               )
@@ -812,6 +857,143 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                // TextFormField(
+                //   controller: _poNoController,
+                //   autofocus: false,
+                //   enabled: data.id == 0 ? true : false,
+                //   decoration: InputDecoration(
+                //     hintText: "Purchase Order No.",
+                //     labelText: "Purchase Order No.",
+                //     contentPadding: new EdgeInsets.symmetric(
+                //         vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //         borderRadius: new BorderRadius.circular(10.0)),
+                //     disabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: new BorderRadius.circular(
+                //         10.0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (int.parse(_poIdController.text) > 0) {
+                //       Future<cflPurchaseReference.Data> po = Navigator.push(
+                //           context,
+                //           MaterialPageRoute<cflPurchaseReference.Data>(
+                //               builder: (BuildContext context) =>
+                //                   CflPurchaseReferencePage(
+                //                       int.parse(_poIdController.text))));
+
+                //       po.then((cflPurchaseReference.Data po) {
+                //         setState(() {
+                //           if (po != null) {
+                //             //_poIdController.text = po.id.toString();
+                //             //_poNoController.text = po.transNo;
+                //             //_vendorCodeController.text = po.vendorCode;
+                //             //_vendorNameController.text = po.vendorName;
+                //             _refNoController.text = po.refNo;
+                //             _scaleNoController.text = po.scaleNo;
+                //             //_branchIdController.text = po.branchId.toString();
+                //             //_branchNameController.text = po.branchName;
+                //             //_seriesNamePoController.text = po.seriesName;
+                //           }
+                //         });
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "Reference No.",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_refNoController.text),
+                //                 // subtitle: Column(
+                //                 //   crossAxisAlignment: CrossAxisAlignment.start,
+                //                 //   // children: <Widget>[
+                //                 //   //   Text(_branchNameController.text),
+                //                 //   // ],
+                //                 // ),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 5)),
+                // TextFormField(
+                //   controller: _refNoController,
+                //   autofocus: false,
+                //   enabled: data.id == 0 ? true : false,
+                //   decoration: InputDecoration(
+                //     hintText: 'Ref No.',
+                //     labelText: "Ref No.",
+                //     contentPadding: new EdgeInsets.symmetric(
+                //         vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //         borderRadius: new BorderRadius.circular(10.0)),
+                //     disabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: new BorderRadius.circular(
+                //         10.0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 5)),
+                // TextFormField(
+                //   controller: _scaleNoController,
+                //   autofocus: false,
+                //   enabled: data.id == 0 ? true : false,
+                //   decoration: InputDecoration(
+                //     hintText: 'Scale No.',
+                //     labelText: "Scale No.",
+                //     contentPadding: new EdgeInsets.symmetric(
+                //         vertical: 15.0, horizontal: 10.0),
+                //     border: new OutlineInputBorder(
+                //         borderRadius: new BorderRadius.circular(10.0)),
+                //     disabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //           color:
+                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
+                //       borderRadius: new BorderRadius.circular(
+                //         10.0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -855,98 +1037,6 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (int.parse(_poIdController.text) > 0) {
-                      Future<cflPurchaseReference.Data> po = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflPurchaseReference.Data>(
-                              builder: (BuildContext context) =>
-                                  CflPurchaseReferencePage(
-                                      int.parse(_poIdController.text))));
-
-                      po.then((cflPurchaseReference.Data po) {
-                        setState(() {
-                          if (po != null) {
-                            //_poIdController.text = po.id.toString();
-                            //_poNoController.text = po.transNo;
-                            //_vendorCodeController.text = po.vendorCode;
-                            //_vendorNameController.text = po.vendorName;
-                            _refNoController.text = po.refNo;
-                            _scaleNoController.text = po.scaleNo;
-                            //_branchIdController.text = po.branchId.toString();
-                            //_branchNameController.text = po.branchName;
-                            //_seriesNamePoController.text = po.seriesName;
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Reference No.",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_refNoController.text),
-                                // subtitle: Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   // children: <Widget>[
-                                //   //   Text(_branchNameController.text),
-                                //   // ],
-                                // ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                  controller: _scaleNoController,
-                  autofocus: false,
-                  enabled: data.id == 0 ? true : false,
-                  decoration: InputDecoration(
-                    hintText: 'Scale No.',
-                    labelText: "Scale No.",
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 10.0),
-                    border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(10.0)),
-                    disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color:
-                              (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                      borderRadius: new BorderRadius.circular(
-                        10.0,
-                      ),
                     ),
                   ),
                 ),
