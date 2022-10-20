@@ -306,43 +306,15 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: const Text('Submit'),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
-                ),
-                onPressed: () {
-                  showAlertDialogSubmit(context);
-                },
-              )),
-        ],
-      );
-    } else if (_getState().data.sapGoodsIssueId > 0 &&
-        _getState().data.sapGoodsReceiptId == 0) {
-      return AppBar(
-        title: Text("Create Receipt"),
-        backgroundColor: bgBlue,
-        bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
-            preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: const Text('Post'),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
-              ),
-              onPressed: () {
-                showAlertDialogPostSap(context);
-              },
-            ),
-          ),
+          FlatButton.icon(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              _refreshDetailItem();
+              _create();
+            },
+            textColor: Colors.white,
+            label: Text("Submit"),
+          )
         ],
       );
     } else {

@@ -426,6 +426,7 @@ class _InventoryTransferDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -1169,14 +1170,11 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
-                            if (data.id == 0) {
-                              _toAbsEntryController.text =
-                                  bin.absEntry.toString();
-                              _toBinCodeController.text = bin.binCode;
-                            } else {
-                              _getState().data.toAbsEntry = bin.absEntry;
-                              _getState().data.toBinCode = bin.binCode;
-                            }
+                            _toAbsEntryController.text =
+                                bin.absEntry.toString();
+                            _toBinCodeController.text = bin.binCode;
+                            // _getState().data.toAbsEntry = bin.absEntry;
+                            // _getState().data.toBinCode = bin.binCode;
                           }
                         });
                       });

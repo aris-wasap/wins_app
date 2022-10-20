@@ -91,6 +91,39 @@ class _RequestIssueDetailItemDetailPageState
     Navigator.pop(context, _getState().data);
   }
 
+  showAlertDialogUpdate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _done();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan Batch Number?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   RequestIssueDetailItemDetailState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
@@ -117,7 +150,8 @@ class _RequestIssueDetailItemDetailPageState
                 _data.id == 0
                     ? FlatButton(
                         onPressed: () {
-                          _done();
+                          //_done();
+                          showAlertDialogUpdate(context);
                         },
                         textColor: Colors.white,
                         child: Row(

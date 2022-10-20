@@ -14,6 +14,7 @@ import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/transfer_production_detail_response.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
@@ -43,6 +44,7 @@ class _TransferProductionDetailPageState
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
 
+  final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
   final _woDateController = TextEditingController();
@@ -58,6 +60,7 @@ class _TransferProductionDetailPageState
   final _toWhsNameController = TextEditingController();
   final _toAbsEntryController = TextEditingController();
   final _toBinCodeController = TextEditingController();
+  final _sapTransferProductionNoController = TextEditingController();
 
   DateTime transDate; // = DateTime.now();
 
@@ -92,6 +95,7 @@ class _TransferProductionDetailPageState
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _woDateController?.dispose();
@@ -105,6 +109,7 @@ class _TransferProductionDetailPageState
     _toWhsNameController?.dispose();
     _toAbsEntryController?.dispose();
     _toBinCodeController?.dispose();
+    _sapTransferProductionNoController?.dispose();
 
     bloc?.dispose();
 
@@ -114,6 +119,98 @@ class _TransferProductionDetailPageState
   void _create() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.woNo = _woNoController.text;
+    data.productCode = _productCodeController.text;
+    data.productName = _productNameController.text;
+    data.transDate = transDate;
+    data.fromWhsCode = _fromWhsCodeController.text;
+    data.fromWhsName = _fromWhsNameController.text;
+    //data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
+    //data.fromBinCode = _fromBinCodeController.text;
+    data.toWhsCode = _toWhsCodeController.text;
+    data.toWhsName = _toWhsNameController.text;
+    data.toBinCode = _toBinCodeController.text;
+    data.sapTransferProductionNo = _sapTransferProductionNoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null, ""].contains(data.fromWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "Warehouse from harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "Warehouse to harus di isi");
+      return;
+    }
+
+    data.woId = int.parse(_woIdController.text);
+    data.toAbsEntry = int.parse(_toAbsEntryController.text);
+    //data.woDate =  DateFormat("dd-MM-yyyy").format(DateTime.parse(_woDateController.text));
+
+    bloc.emitEvent(TransferProductionDetailEventAdd(
+      data: data,
+    ));
+
+    // _submitMessage(data);
+  }
+
+  void _update() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
+    data.woNo = _woNoController.text;
+    data.productCode = _productCodeController.text;
+    data.productName = _productNameController.text;
+    data.transDate = transDate;
+    data.fromWhsCode = _fromWhsCodeController.text;
+    data.fromWhsName = _fromWhsNameController.text;
+    //data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
+    //data.fromBinCode = _fromBinCodeController.text;
+    data.toWhsCode = _toWhsCodeController.text;
+    data.toWhsName = _toWhsNameController.text;
+    data.toBinCode = _toBinCodeController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null, ""].contains(data.fromWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "Warehouse from harus di isi");
+      return;
+    } else if ([null, ""].contains(data.toWhsCode)) {
+      ValidateDialogWidget(
+          context: context, message: "Warehouse to harus di isi");
+      return;
+    }
+
+    data.woId = int.parse(_woIdController.text);
+    data.toAbsEntry = int.parse(_toAbsEntryController.text);
+
+    bloc.emitEvent(TransferProductionDetailEventUpdate(
+      data: data,
+    ));
+
+    // _submitMessage(data);
+  }
+
+  void _submit() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.id = int.parse(_idTxController.text);
     data.woNo = _woNoController.text;
     data.productCode = _productCodeController.text;
     data.productName = _productNameController.text;
@@ -156,11 +253,77 @@ class _TransferProductionDetailPageState
     data.woId = int.parse(_woIdController.text);
     data.toAbsEntry = int.parse(_toAbsEntryController.text);
 
-    bloc.emitEvent(TransferProductionDetailEventAdd(
+    bloc.emitEvent(TransferProductionDetailEventPost(
       data: data,
     ));
 
     // _submitMessage(data);
+  }
+
+  showAlertDialogCreate(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _create();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin simpan document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogSubmit(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _submit();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _newTrans() {
@@ -287,14 +450,71 @@ class _TransferProductionDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+        _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
 
   PreferredSizeWidget _appBar() {
+    // if (_getState().data.id == 0) {
+    //   return AppBar(
+    //     title: Text("Create Transfer Production"),
+    //     backgroundColor: bgBlue,
+    //     bottom: PreferredSize(
+    //         child: Container(
+    //           color: bgOrange,
+    //           height: 5.0,
+    //         ),
+    //         preferredSize: Size.fromHeight(5.0)),
+    //     actions: <Widget>[
+    //       FlatButton.icon(
+    //           icon: Icon(Icons.check),
+    //           onPressed: () {
+    //             _create();
+    //           },
+    //           textColor: Colors.white,
+    //           label: Text("Submit"))
+    //     ],
+    //   );
+    // }
     if (_getState().data.id == 0) {
       return AppBar(
-        title: Text("Create Transfer Production"),
+        title: Text("Draft Transfer Production"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Container(
+              color: bgOrange,
+              height: 5.0,
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+        actions: <Widget>[
+          // FlatButton.icon(
+          //   icon: Icon(
+          //     Icons.save,
+          //     color: Colors.yellowAccent,
+          //   ),
+          //   onPressed: () {
+          //     showAlertDialogCreate(context);
+          //   },
+          //   textColor: Colors.white,
+          //   label: Text("Save"),
+          // )
+        ],
+      );
+    } else if (_getState().data.sapTransferProductionId == 0 &&
+        _getState().data.id > 0) {
+      return AppBar(
+        title: Text(
+          "Create Transfer Production",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        // leading: new IconButton(
+        //   icon: new Icon(Icons.ac_unit),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -304,12 +524,24 @@ class _TransferProductionDetailPageState
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           FlatButton.icon(
-              icon: Icon(Icons.check),
-              onPressed: () {
-                _create();
-              },
-              textColor: Colors.white,
-              label: Text("Submit"))
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.greenAccent,
+            ),
+            onPressed: () {
+              showAlertDialogSubmit(context);
+            },
+            textColor: Colors.white,
+            label: Text(
+              "Submit",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          )
         ],
       );
     } else {
@@ -370,7 +602,9 @@ class _TransferProductionDetailPageState
         //if (("${item.itemCode}-${item.batchNo}" == qrResult)) {
         if (("${item.batchNo}" == qrResult)) {
           ValidateDialogWidget(
-              context: context, message: 'Batch No. sudah pernah di scan');
+              context: context,
+              message:
+                  'Item Batch Number : ${item.batchNo} sudah pernah di scan');
           return;
         }
       }
@@ -449,6 +683,12 @@ class _TransferProductionDetailPageState
             bloc.emitEvent(TransferProductionDetailEventItemAdd(
               item: item,
             ));
+
+            if (_getState().data.id > 0) {
+              _update();
+            } else {
+              _create();
+            }
           }
         });
       }
@@ -480,16 +720,17 @@ class _TransferProductionDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.id == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: bgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
-                    )
-                  : null,
+              floatingActionButton:
+                  _getState().data.sapTransferProductionId == 0
+                      ? FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: bgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        )
+                      : null,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               // bottomNavigationBar: data.id == 0
@@ -544,6 +785,8 @@ class _TransferProductionDetailPageState
           item: item,
           itemIndex: itemIndex,
         ));
+
+        _update();
       }
     });
   }
@@ -559,25 +802,29 @@ class _TransferProductionDetailPageState
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _woIdController.text = data.woId.toString();
+      _woNoController.text = data.woNo;
+      _sapTransferProductionNoController.text = data.sapTransferProductionNo;
       transDate = data.transDate;
       if (transDate != null) {
         _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
       } else {
         _transDateController.text = null;
       }
-      _woNoController.text = data.woNo;
       if (data.woDate != null) {
         _woDateController.text = DateFormat("dd-MM-yyyy").format(data.woDate);
       } else {
         _woDateController.text = "";
       }
 
+      _idTxController.text = data.id.toString();
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
       _fromWhsCodeController.text = data.fromWhsCode;
       _fromWhsNameController.text = data.fromWhsName;
       _toWhsCodeController.text = data.toWhsCode;
       _toWhsNameController.text = data.toWhsName;
+      _toAbsEntryController.text = data.toAbsEntry.toString();
       _toBinCodeController.text = data.toBinCode;
     }
     // else {
@@ -601,24 +848,42 @@ class _TransferProductionDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _transNoController,
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Transfer No.",
-                        labelText: "Transfer No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                (data.sapTransferProductionId > 0)
+                    ? TextFormField(
+                        controller: _sapTransferProductionNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Transfer No.",
+                            labelText: "Transfer No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.sapTransferProductionId == 0) {
                       _selectTransDate(context);
                     }
                   },
+                  
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -632,7 +897,7 @@ class _TransferProductionDetailPageState
                                   vertical: 15.0, horizontal: 10.0),
                               disabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: (data.id == 0)
+                                      color: (data.sapTransferProductionId == 0)
                                           ? Colors.blue
                                           : Colors.grey[400]),
                                   borderRadius: new BorderRadius.circular(
@@ -640,7 +905,7 @@ class _TransferProductionDetailPageState
                                   ))),
                         ),
                       ),
-                      (data.id == 0)
+                      (data.sapTransferProductionId == 0)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -669,6 +934,8 @@ class _TransferProductionDetailPageState
                           _productNameController.text = prodOrder.productName;
                           _fromWhsCodeController.text = prodOrder.whsCode;
                           _fromWhsNameController.text = prodOrder.whsName;
+                          _toWhsCodeController.text = prodOrder.whsCode;
+                          _toWhsNameController.text = prodOrder.whsName;
                         }
                       });
                     }
@@ -761,7 +1028,7 @@ class _TransferProductionDetailPageState
                     ),
                   ),
                 ),
-                 Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -786,7 +1053,7 @@ class _TransferProductionDetailPageState
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                        border: Border.all(      
+                        border: Border.all(
                             color: (data.id == 0)
                                 ? Colors.blue
                                 : Colors.grey[400]),
@@ -804,7 +1071,7 @@ class _TransferProductionDetailPageState
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.only(left: 5),
-                                title: Text( _fromWhsCodeController.text),
+                                title: Text(_fromWhsCodeController.text),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -1020,8 +1287,8 @@ class _TransferProductionDetailPageState
                       whs.then((cflWarehouse.Data whs) {
                         setState(() {
                           if (whs != null) {
-                           _toWhsCodeController.text = whs.whsCode;
-                           _toWhsNameController.text = whs.whsName;
+                            _toWhsCodeController.text = whs.whsCode;
+                            _toWhsNameController.text = whs.whsName;
                           }
                         });
                       });
@@ -1187,19 +1454,15 @@ class _TransferProductionDetailPageState
         child: ListTile(
           title: Text("${data[index].itemName}"),
           subtitle: Column(
-            //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Text(data[index].itemCode),
-              // Text("Qty : ${NumberFormat("#,###.00").format(data[index].qty)}"),
-              // Text(data[index].batchNo ?? ''),
-              Text("Item Code : ${data[index].itemCode}", ),
+              Text(
+                "Item Code : ${data[index].itemCode}",
+              ),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
                   "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
                       " ${data[index].uom}"),
-              // Text(data[index].whsCode ?? ''),
-              //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
           trailing: IconButton(
@@ -1224,12 +1487,15 @@ class _TransferProductionDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.sapTransferProductionId == 0) {
           return Dismissible(
-            key: Key(data[index].hashCode.toString()),
+            key: UniqueKey(),//Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  TransferProductionDetailEventItemRemove(itemIndex: index));
+              bloc.emitEvent(TransferProductionDetailEventRemoveItem(
+                  id: data[index].id, detId: data[index].detId));
+              //bloc.emitEvent(
+              //    TransferProductionDetailEventItemRemove(itemIndex: index));
+              //_update();
             },
             background: Container(
                 color: Colors.red,

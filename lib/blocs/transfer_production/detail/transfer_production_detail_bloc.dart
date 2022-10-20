@@ -167,6 +167,109 @@ class TransferProductionDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    }
+    else if (event is TransferProductionDetailEventUpdate) {
+      yield TransferProductionDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        TransferProductionDetailResponse response =
+            await _repository.transferProductionDetail_Update(event.data);
+        if (response == null) {
+          yield TransferProductionDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield TransferProductionDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield TransferProductionDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<transferProductionDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield TransferProductionDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }
+    else if (event is TransferProductionDetailEventPost) {
+      yield TransferProductionDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        TransferProductionDetailResponse response =
+            await _repository.transferProductionDetail_Post(event.data);
+        if (response == null) {
+          yield TransferProductionDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield TransferProductionDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield TransferProductionDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<transferProductionDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield TransferProductionDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    }else if (event is TransferProductionDetailEventRemoveItem) {
+      yield TransferProductionDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        TransferProductionDetailResponse response = await _repository
+            .transferProductionDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield TransferProductionDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield TransferProductionDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield TransferProductionDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield TransferProductionDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
+      }
     } else if (event is TransferProductionDetailEventCancel) {
       yield TransferProductionDetailState.busy(
         data: currentState.data,

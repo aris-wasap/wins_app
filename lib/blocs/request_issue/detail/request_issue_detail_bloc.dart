@@ -165,6 +165,40 @@ class RequestIssueDetailBloc extends BlocEventStateBase<RequestIssueDetailEvent,
           data: event.data,
         );
       }
+    } else if (event is RequestIssueDetailEventUpdate) {
+      yield RequestIssueDetailState.busy(
+        data: event.data,
+      );
+      try {
+        var _repository = Repository();
+        RequestIssueDetailResponse response =
+            await _repository.requestIssueDetail_Update(event.data);
+        if (response == null) {
+          yield RequestIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield RequestIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield RequestIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data:
+                  response.data ?? Data(items: List<requestIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield RequestIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is RequestIssueDetailEventPost) {
       yield RequestIssueDetailState.busy(
         data: event.data,
@@ -197,6 +231,39 @@ class RequestIssueDetailBloc extends BlocEventStateBase<RequestIssueDetailEvent,
         yield RequestIssueDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
+        );
+      }
+    }else if (event is RequestIssueDetailEventRemoveItem) {
+      yield RequestIssueDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        RequestIssueDetailResponse response = await _repository
+            .requestIssueDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield RequestIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield RequestIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield RequestIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield RequestIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
         );
       }
     } else if (event is RequestIssueDetailEventCancel) {

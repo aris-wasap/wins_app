@@ -51,6 +51,15 @@ class Data {
   @JsonKey(name: 'SeriesName')
   String seriesName;
 
+  @JsonKey(name: 'WoNo')
+  String woNo;
+
+  @JsonKey(name: 'SeriesNameWo')
+  String seriesNameWo;
+
+  @JsonKey(name: 'SapTransferProductionNo')
+  String sapTransferProductionNo;
+
   @JsonKey(name: 'TransDate')
   DateTime transDate;
 
@@ -78,6 +87,9 @@ class Data {
     this.userId,
     this.transNo,
     this.seriesName,
+    this.woNo,
+    this.seriesNameWo,
+    this.sapTransferProductionNo,
     this.transDate,
     this.status,
     this.fromWhsCode,

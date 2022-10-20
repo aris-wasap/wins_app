@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 class ReceiptIssueDetailEvent extends BlocEvent {
   ReceiptIssueDetailEvent({
     this.id,
+    this.detId,
     this.data,
     this.item,
     this.issueId,
@@ -14,6 +15,7 @@ class ReceiptIssueDetailEvent extends BlocEvent {
   });
 
   final int id;
+  final int detId;
   final Data data;
   final Item item;
   final int issueId;
@@ -82,6 +84,14 @@ class ReceiptIssueDetailEventAdd extends ReceiptIssueDetailEvent {
         );
 }
 
+class ReceiptIssueDetailEventUpdate extends ReceiptIssueDetailEvent {
+  ReceiptIssueDetailEventUpdate({
+    @required Data data,
+  }) : super(
+          data: data,
+        );
+}
+
 class ReceiptIssueDetailEventPost extends ReceiptIssueDetailEvent {
   ReceiptIssueDetailEventPost({
     @required Data data,
@@ -95,5 +105,15 @@ class ReceiptIssueDetailEventCancel extends ReceiptIssueDetailEvent {
     @required int id,
   }) : super(
           id: id,
+        );
+}
+
+class ReceiptIssueDetailEventRemoveItem extends ReceiptIssueDetailEvent {
+  ReceiptIssueDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(
+          id: id,
+          detId: detId
         );
 }
