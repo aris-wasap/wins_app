@@ -633,7 +633,8 @@ class ApiProvider {
             'transferProductionDetail_RemoveItem:Failed to remove TransferProduction(2)');
       }
     } catch (e) {
-      throw Exception('transferProductionDetail_RemoveItem:Failed to load post(1)');
+      throw Exception(
+          'transferProductionDetail_RemoveItem:Failed to load post(1)');
     }
   }
 
@@ -908,8 +909,10 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/DeliveryOrderDetailApi/Update",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/DeliveryOrderDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
@@ -1754,6 +1757,31 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_UpdateDetailBatch(
+      goodsIssueDetail.Item item) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Data": item.toJson()
+      });
+ 
+      final response = await http.post(
+          "${_url}api/GoodsIssueDetailApi/UpdateDetailBatch",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_Cancel:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_Cancel:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsIssueDetailScanResponse> goodsIssueDetail_Scan(
       int woId, String qrResult) async {
     try {
@@ -1938,12 +1966,13 @@ class ApiProvider {
 
   // Refresh Detail
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
-      int detId, int woLineNo) async {
+      int id, int detId, double qtyItem ) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
+        "Id": id,
         "DetId": detId,
-        "WoLineNo": woLineNo,
+        "QtyItem": qtyItem,
         "BranchId": globalBloc.branchId,
       });
 
@@ -2925,14 +2954,17 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/RequestIssueDetailApi/Update",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/RequestIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
         return compute(requestIssueDetailResponseFromJson, response.body);
       } else {
-        throw Exception('requestIssueDetail_Update:Failed to update RequestIssue(2)');
+        throw Exception(
+            'requestIssueDetail_Update:Failed to update RequestIssue(2)');
       }
     } catch (e) {
       throw Exception('requestIssueDetail_Update:Failed to load post(1)');
@@ -3267,14 +3299,17 @@ class ApiProvider {
         "Data": data.toJson()
       });
 
-      final response = await http.post("${_url}api/ReceiptIssueDetailApi/Update",
-          headers: {'Content-type': 'application/json'}, body: body);
+      final response = await http.post(
+          "${_url}api/ReceiptIssueDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
 
       if (response.statusCode == 200) {
         //print(response.body);
         return compute(receiptIssueDetailResponseFromJson, response.body);
       } else {
-        throw Exception('receiptIssueDetail_Update:Failed to update ReceiptIssue(2)');
+        throw Exception(
+            'receiptIssueDetail_Update:Failed to update ReceiptIssue(2)');
       }
     } catch (e) {
       throw Exception('receiptIssueDetail_Update:Failed to load post(1)');

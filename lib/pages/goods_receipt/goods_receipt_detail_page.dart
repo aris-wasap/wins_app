@@ -433,7 +433,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Receipt For Production"),
+        title: Text("Receipt From Production"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -550,13 +550,14 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   void _showScanNewItemDetail() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
+      var newData = _getState().data;
       if (newItem != null) {
         bloc.emitEvent(GoodsReceiptDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                GoodsReceiptDetailItemDetailPage(newItem),
+                GoodsReceiptDetailItemDetailPage(newItem, 0, newData),
           ),
         );
 
@@ -588,12 +589,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   }
 
   void _showItemDetail(int itemIndex) {
+    final newData = _getState().data;
     final items = _getState().data.items;
     Future<Item> item = Navigator.push(
       context,
       MaterialPageRoute<Item>(
-        builder: (BuildContext context) =>
-            GoodsReceiptDetailItemDetailPage(items[itemIndex]),
+        builder: (BuildContext context) => GoodsReceiptDetailItemDetailPage(
+            items[itemIndex], itemIndex, newData),
       ),
     );
 

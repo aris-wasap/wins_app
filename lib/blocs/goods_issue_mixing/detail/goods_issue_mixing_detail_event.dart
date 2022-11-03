@@ -125,5 +125,6 @@ class GoodsIssueMixingDetailEventCancel extends GoodsIssueMixingDetailEvent {
     @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

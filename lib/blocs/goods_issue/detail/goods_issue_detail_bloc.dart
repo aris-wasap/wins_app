@@ -241,7 +241,7 @@ class GoodsIssueDetailBloc
           );
         }
       }
-    }else if (event is GoodsIssueDetailEventPost) {
+    } else if (event is GoodsIssueDetailEventPost) {
       yield GoodsIssueDetailState.busy(
         data: event.data,
       );
@@ -315,8 +315,8 @@ class GoodsIssueDetailBloc
     } else if (event is GoodsIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
-      yield GoodsIssueDetailState.success(
-        data: newData,
+      yield GoodsIssueDetailState.busy(
+        data: currentState.data,
       );
     } else if (event is GoodsIssueDetailEventItemUpdate) {
       var newData = currentState.data;
@@ -324,6 +324,7 @@ class GoodsIssueDetailBloc
       yield GoodsIssueDetailState.success(
         data: newData,
       );
+     
     } else if (event is GoodsIssueDetailEventItemRemove) {
       var newData = currentState.data;
       newData.items.removeAt(event.itemIndex);

@@ -299,10 +299,27 @@ class _GoodsIssueMixingDetailItemDetailPageState
     // _qtyWoController.text = data.woQty.toString();
     // _qtyController.text = data.qty.toString();
 
+    // if (data != null) {
+    //   if (data.batchs == null) {
+    //     _qtyController.text = "0";
+    //   } else {
+    //     _qtyController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.qty.toString()));
+    //     //data.qty = double.parse(_qtyController.text);
+    //   }
+    // }
+
+    
     if (data != null) {
       if (data.batchs == null) {
         _qtyController.text = "0";
       } else {
+        double sumIssueQty = 0;
+
+        for (var item in data.batchs) {
+          sumIssueQty += item.quantity;
+        }
+        _data.qty = sumIssueQty;
         _qtyController.text = NumberFormat("###,###.####")
             .format(double.parse(data.qty.toString()));
         //data.qty = double.parse(_qtyController.text);
@@ -556,7 +573,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
           ),
           Container(
               //color: Colors.brown,
-              child: (data != null)
+              child: (data.batchs != null)
                   ? _buildList()
                   : Container(
                       padding: EdgeInsets.all(10.0),

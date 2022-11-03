@@ -213,6 +213,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
+                    Text("Status : ${data[index].status}"),
                   ],
                 ),
                 // leading: ClipOval(

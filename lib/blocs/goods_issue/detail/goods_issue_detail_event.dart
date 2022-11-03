@@ -122,5 +122,6 @@ class GoodsIssueDetailEventCancel extends GoodsIssueDetailEvent {
     @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

@@ -296,7 +296,7 @@ class Repository {
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
-  
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
           id, detId) =>
       apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
@@ -455,6 +455,10 @@ class Repository {
           goodsIssueDetail.Data data) =>
       apiProvider.goodsIssueDetail_Cancel(data);
 
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_UpdateDetailBatch(
+          goodsIssueDetail.Item item) =>
+      apiProvider.goodsIssueDetail_UpdateDetailBatch(item);
+
   Future<GoodsIssueDetailScanResponse> goodsIssueDetail_Scan(
           int woId, String qrResult) =>
       apiProvider.goodsIssueDetail_Scan(woId, qrResult);
@@ -466,8 +470,8 @@ class Repository {
       apiProvider.goodsIssueDetail_RefreshAfter(id);
 
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
-          int detId, int woLineNo) =>
-      apiProvider.goodsIssueDetailItemDetail_RefreshDetail(detId, woLineNo);
+          int id, int detId, double qtyItem) =>
+      apiProvider.goodsIssueDetailItemDetail_RefreshDetail(id, detId, qtyItem);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ResetData(
           int id, int woId) =>
@@ -673,8 +677,7 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
 
-  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
-          id, detId) =>
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(id, detId) =>
       apiProvider.requestIssueDetail_RemoveItem(id, detId);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
@@ -739,10 +742,9 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Post(data);
 
-  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
-          id, detId) =>
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(id, detId) =>
       apiProvider.receiptIssueDetail_RemoveItem(id, detId);
-      
+
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);

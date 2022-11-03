@@ -16,18 +16,23 @@ import 'package:wins_app/models/cfl_binlocation_response.dart'
 import 'dart:math' as math;
 
 class GoodsReceiptDetailItemDetailPage extends StatefulWidget {
-  GoodsReceiptDetailItemDetailPage(this._data);
+  GoodsReceiptDetailItemDetailPage(this._data, this._index, this._newData);
+  final int _index;
   final Item _data;
+  final Data _newData;
   @override
   _GoodsReceiptDetailItemDetailPageState createState() =>
-      _GoodsReceiptDetailItemDetailPageState(_data);
+      _GoodsReceiptDetailItemDetailPageState(_data, _index, _newData);
 }
 
 class _GoodsReceiptDetailItemDetailPageState
     extends State<GoodsReceiptDetailItemDetailPage> {
-  _GoodsReceiptDetailItemDetailPageState(this._data);
+  _GoodsReceiptDetailItemDetailPageState(
+      this._data, this._index, this._newData);
 
+  final int _index;
   final Item _data;
+  final Data _newData;
   GoodsReceiptDetailItemDetailBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
@@ -150,18 +155,18 @@ class _GoodsReceiptDetailItemDetailPageState
               body: SingleChildScrollView(
                 child: _buildForm(),
               ),
-              floatingActionButton: _getState().data.id != 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        //_refreshDetailItem();
-                      },
-                    )
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+              // floatingActionButton: _newData.sapGoodsReceiptId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           //_refreshDetailItem();
+              //         },
+              //       )
+              //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
