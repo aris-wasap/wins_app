@@ -911,7 +911,6 @@ class ApiProvider {
         "BranchId": globalBloc.branchId,
         "Data": data.toJson()
       });
-
       final response = await http.post(
           "${_url}api/DeliveryOrderDetailApi/Update",
           headers: {'Content-type': 'application/json'},
@@ -3087,7 +3086,6 @@ class ApiProvider {
         "BranchId": globalBloc.branchId,
         "Data": data.toJson()
       });
-
       final response = await http.post(
           "${_url}api/RequestIssueDetailApi/Update",
           headers: {'Content-type': 'application/json'},

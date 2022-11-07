@@ -1170,11 +1170,14 @@ class _InventoryTransferDetailPageState
                       bin.then((cflBinLocation.Data bin) {
                         setState(() {
                           if (bin != null) {
-                            _toAbsEntryController.text =
-                                bin.absEntry.toString();
-                            _toBinCodeController.text = bin.binCode;
-                            // _getState().data.toAbsEntry = bin.absEntry;
-                            // _getState().data.toBinCode = bin.binCode;
+                            if (data.id == 0) {
+                              _toAbsEntryController.text =
+                                  bin.absEntry.toString();
+                              _toBinCodeController.text = bin.binCode;
+                            } else {
+                              _getState().data.toAbsEntry = bin.absEntry;
+                              _getState().data.toBinCode = bin.binCode;
+                            }
                           }
                         });
                       });
