@@ -8,6 +8,7 @@ class GoodsIssueMixingDetailEvent extends BlocEvent {
     this.data,
     this.item,
     this.woId,
+    this.transDate,
     this.woNo,
     this.itemIndex,
     this.qrResult,
@@ -17,6 +18,7 @@ class GoodsIssueMixingDetailEvent extends BlocEvent {
   final Data data;
   final Item item;
   final int woId;
+  final DateTime transDate;
   final String woNo;
   final int itemIndex;
   final String qrResult;
@@ -49,8 +51,10 @@ class GoodsIssueMixingDetailEventScan extends GoodsIssueMixingDetailEvent {
 class GoodsIssueMixingDetailEventRefresh extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventRefresh({
     @required int woId,
+    @required DateTime transDate,
   }) : super(
           woId: woId,
+          transDate: transDate,
         );
 }
 

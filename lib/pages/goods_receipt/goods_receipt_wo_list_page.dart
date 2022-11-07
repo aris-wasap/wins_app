@@ -7,6 +7,7 @@ import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_bloc.
 import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_event.dart';
 import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
@@ -74,6 +75,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -130,7 +132,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptListPage(0);
+                      return GoodsReceiptDetailPage(0);
                     }));
                   },
                 )
@@ -203,7 +205,8 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                   children: <Widget>[
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                    Text(
+                        "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
                     Text("Production Type : ${data[index].productionType}"),
                     Text("Status : ${data[index].status}"),
                   ],

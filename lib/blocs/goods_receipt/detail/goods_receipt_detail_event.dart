@@ -5,19 +5,23 @@ import 'package:meta/meta.dart';
 class GoodsReceiptDetailEvent extends BlocEvent {
   GoodsReceiptDetailEvent({
     this.id,
+    this.transDate,
     this.data,
     this.item,
     this.woId,
     this.woNo,
+    this.webId,
     this.itemIndex,
     this.qrResult,
   });
 
   final int id;
+  final String transDate;
   final Data data;
   final Item item;
   final int woId;
   final String woNo;
+  final int webId;
   final int itemIndex;
   final String qrResult;
 }
@@ -37,20 +41,22 @@ class GoodsReceiptDetailEventGetId extends GoodsReceiptDetailEvent {
 class GoodsReceiptDetailEventScan extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventScan({
     @required Data data,
-    @required int woId,
+    @required int webId,
     @required String qrResult,
   }) : super(
           data: data,
-          woId: woId,
+          webId: webId,
           qrResult: qrResult,
         );
 }
 
 class GoodsReceiptDetailEventRefresh extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventRefresh({
-    @required int woId,
+    @required int webId,
+    @required String transDate,
   }) : super(
-          woId: woId,
+          webId: webId,
+          transDate:transDate,
         );
 }
 

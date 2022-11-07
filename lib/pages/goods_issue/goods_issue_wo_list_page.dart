@@ -75,6 +75,7 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",

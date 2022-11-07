@@ -1,14 +1,15 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
-import 'package:wins_app/models/goods_receipt_detail_response.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:meta/meta.dart';
 
-class GoodsReceiptDetailItemDetailState extends BlocState {
-  GoodsReceiptDetailItemDetailState({
+class GoodsIssueDetailItemAdditionalDetailState extends BlocState {
+  GoodsIssueDetailItemAdditionalDetailState({
     @required this.data,
     this.isBusy: false,
     this.isSuccess: false,
     this.isFailure: false,
     this.errorMessage: '',
+    this.newData,
   });
 
   final Item data;
@@ -16,41 +17,43 @@ class GoodsReceiptDetailItemDetailState extends BlocState {
   final bool isSuccess;
   final bool isFailure;
   final String errorMessage;
+  final Data newData;
 
-  factory GoodsReceiptDetailItemDetailState.noAction({
+  factory GoodsIssueDetailItemAdditionalDetailState.noAction({
     @required Item data,
   }) {
-    return GoodsReceiptDetailItemDetailState(
+    return GoodsIssueDetailItemAdditionalDetailState(
       // data: Data(items: List<Item>()),
       data: data,
     );
   }
 
-  factory GoodsReceiptDetailItemDetailState.busy({
+  factory GoodsIssueDetailItemAdditionalDetailState.busy({
     @required Item data,
   }) {
-    return GoodsReceiptDetailItemDetailState(
+    return GoodsIssueDetailItemAdditionalDetailState(
       data: data,
       isBusy: true,
     );
   }
 
-  factory GoodsReceiptDetailItemDetailState.success({
-    @required Item data,
+  factory GoodsIssueDetailItemAdditionalDetailState.success({
+    Item data,
     Data newData,
     String errorMessage,
   }) {
-    return GoodsReceiptDetailItemDetailState(
+    return GoodsIssueDetailItemAdditionalDetailState(
       isSuccess: true,
       data: data,
+      newData: newData,
     );
   }
 
-  factory GoodsReceiptDetailItemDetailState.failure({
+  factory GoodsIssueDetailItemAdditionalDetailState.failure({
     @required Item data,
     @required String errorMessage,
   }) {
-    return GoodsReceiptDetailItemDetailState(
+    return GoodsIssueDetailItemAdditionalDetailState(
       data: data,
       isFailure: true,
       errorMessage: errorMessage,

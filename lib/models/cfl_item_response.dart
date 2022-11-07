@@ -45,9 +45,13 @@ class Data {
   @JsonKey(name: 'ItemName')
   String itemName;
 
+  @JsonKey(name: 'Uom')
+  String uom;
+
   Data({
     this.itemCode,
     this.itemName,
+    this.uom,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);

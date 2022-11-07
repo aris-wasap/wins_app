@@ -116,6 +116,7 @@ class GoodsIssueDetailBloc
       }
     } else if (event is GoodsIssueDetailEventRefresh) {
       var woId = event.woId;
+      var transDate = event.transDate;
       //var newData = currentState.data;
       //var listData = currentState.data.items;
 
@@ -130,7 +131,7 @@ class GoodsIssueDetailBloc
         try {
           var _repository = Repository();
           GoodsIssueDetailResponse response =
-              await _repository.goodsIssueDetail_ViewDetailItem(woId);
+              await _repository.goodsIssueDetail_ViewDetailItem(woId, transDate);
           if (response == null) {
             yield GoodsIssueDetailState.failure(
               errorMessage: 'Response null',
@@ -324,7 +325,6 @@ class GoodsIssueDetailBloc
       yield GoodsIssueDetailState.success(
         data: newData,
       );
-     
     } else if (event is GoodsIssueDetailEventItemRemove) {
       var newData = currentState.data;
       newData.items.removeAt(event.itemIndex);

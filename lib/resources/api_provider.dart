@@ -15,6 +15,7 @@ import 'package:wins_app/models/cfl_purchase_order_label_response.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_reference_response.dart';
 import 'package:wins_app/models/cfl_purchase_supplier_response.dart';
+import 'package:wins_app/models/cfl_receipt_production_label_response.dart';
 import 'package:wins_app/models/cfl_receipt_production_response.dart';
 import 'package:wins_app/models/cfl_request_branch_response.dart';
 import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
@@ -36,7 +37,9 @@ import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_batch_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
+import 'package:wins_app/models/goods_receipt_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
+import 'package:wins_app/models/goods_receipt_detail_scan_batch_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_scan_response.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
 import 'package:wins_app/models/inventory_transfer_detail_response.dart';
@@ -1765,7 +1768,7 @@ class ApiProvider {
         "BranchId": globalBloc.branchId,
         "Data": item.toJson()
       });
- 
+
       final response = await http.post(
           "${_url}api/GoodsIssueDetailApi/UpdateDetailBatch",
           headers: {'Content-type': 'application/json'},
@@ -1831,35 +1834,35 @@ class ApiProvider {
     }
   }
 
-  Future<GoodsIssueDetailScanBatchResponse> goodsIssueDetail_ScanBatch(
-      int id, int detId, int woId, int woLineNo, String qrResult) async {
-    try {
-      var body = json.encode({
-        "UserId": globalBloc.userId,
-        "BranchId": globalBloc.branchId,
-        "Id": id,
-        "DetId": detId,
-        "WoId": woId,
-        "WoLineNo": woLineNo,
-        "QrResult": qrResult,
-      });
+  // Future<GoodsIssueDetailScanBatchResponse> goodsIssueDetail_ScanBatch(
+  //     int id, int detId, int woId, int woLineNo, String qrResult) async {
+  //   try {
+  //     var body = json.encode({
+  //       "UserId": globalBloc.userId,
+  //       "BranchId": globalBloc.branchId,
+  //       "Id": id,
+  //       "DetId": detId,
+  //       "WoId": woId,
+  //       "WoLineNo": woLineNo,
+  //       "QrResult": qrResult,
+  //     });
 
-      final response = await http.post(
-          "${_url}api/GoodsIssueDetailApi/ScanBatch",
-          headers: {'Content-type': 'application/json'},
-          body: body);
+  //     final response = await http.post(
+  //         "${_url}api/GoodsIssueDetailApi/ScanBatch",
+  //         headers: {'Content-type': 'application/json'},
+  //         body: body);
 
-      if (response.statusCode == 200) {
-        //print(response.body);
-        return compute(
-            goodsIssueDetailScanBatchResponseFromJson, response.body);
-      } else {
-        throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(2)');
-      }
-    } catch (e) {
-      throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(1)');
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       //print(response.body);
+  //       return compute(
+  //           goodsIssueDetailScanBatchResponseFromJson, response.body);
+  //     } else {
+  //       throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(2)');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('goodsIssueDetail_ScanBatch:Failed to load post(1)');
+  //   }
+  // }
 
   Future<GoodsIssueDetailScanResponse> goodsIssueDetail_RemoveContent(
       int id, int detId, int detDetId) async {
@@ -1889,11 +1892,12 @@ class ApiProvider {
   }
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(
-      int woId) async {
+      int woId, DateTime transDate) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "WoId": woId,
+        "TransDate": transDate,
         "BranchId": globalBloc.branchId,
       });
 
@@ -1964,9 +1968,50 @@ class ApiProvider {
     }
   }
 
+  // Create Additional Item Detail
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_CreateAdditionalItem(
+      int woId,
+      int id,
+      int detId,
+      String itemCode,
+      double plannedQty,
+      String whsCode,
+      int binAbs,
+      String binCode) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WoId": woId,
+        "Id": id,
+        "ItemCode": detId,
+        "PlannedQty": plannedQty,
+        "WhsCode": whsCode,
+        "BinAbs": binAbs,
+        "BinCode": binCode,
+        "BranchId": globalBloc.branchId,
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueDetailApi/CreateAdditionalItem",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'goodsIssueDetail_CreateAdditionalItem:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'goodsIssueDetail_CreateAdditionalItem:Failed to load post(1)');
+    }
+  }
+
   // Refresh Detail
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
-      int id, int detId, double qtyItem ) async {
+      int id, int detId, double qtyItem) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
@@ -2260,38 +2305,38 @@ class ApiProvider {
     }
   }
 
-  Future<GoodsIssueMixingDetailScanBatchResponse>
-      goodsIssueMixingDetail_ScanBatch(
-          int id, int detId, int woId, int woLineNo, String qrResult) async {
-    try {
-      var body = json.encode({
-        "UserId": globalBloc.userId,
-        "BranchId": globalBloc.branchId,
-        "Id": id,
-        "DetId": detId,
-        "WoId": woId,
-        "WoLineNo": woLineNo,
-        "QrResult": qrResult,
-      });
+  // Future<GoodsIssueMixingDetailScanBatchResponse>
+  //     goodsIssueMixingDetail_ScanBatch(
+  //         int id, int detId, int woId, int woLineNo, String qrResult) async {
+  //   try {
+  //     var body = json.encode({
+  //       "UserId": globalBloc.userId,
+  //       "BranchId": globalBloc.branchId,
+  //       "Id": id,
+  //       "DetId": detId,
+  //       "WoId": woId,
+  //       "WoLineNo": woLineNo,
+  //       "QrResult": qrResult,
+  //     });
 
-      final response = await http.post(
-          "${_url}api/GoodsIssueMixingDetailApi/ScanBatch",
-          headers: {'Content-type': 'application/json'},
-          body: body);
+  //     final response = await http.post(
+  //         "${_url}api/GoodsIssueMixingDetailApi/ScanBatch",
+  //         headers: {'Content-type': 'application/json'},
+  //         body: body);
 
-      if (response.statusCode == 200) {
-        //print(response.body);
-        return compute(
-            goodsIssueMixingDetailScanBatchResponseFromJson, response.body);
-      } else {
-        throw Exception(
-            'goodsIssueMixingDetail_ScanBatch:Failed to load post(2)');
-      }
-    } catch (e) {
-      throw Exception(
-          'goodsIssueMixingDetail_ScanBatch:Failed to load post(1)');
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       //print(response.body);
+  //       return compute(
+  //           goodsIssueMixingDetailScanBatchResponseFromJson, response.body);
+  //     } else {
+  //       throw Exception(
+  //           'goodsIssueMixingDetail_ScanBatch:Failed to load post(2)');
+  //     }
+  //   } catch (e) {
+  //     throw Exception(
+  //         'goodsIssueMixingDetail_ScanBatch:Failed to load post(1)');
+  //   }
+  // }
 
   Future<GoodsIssueMixingDetailScanResponse>
       goodsIssueMixingDetail_RemoveContent(
@@ -2323,11 +2368,12 @@ class ApiProvider {
   }
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
-      int woId) async {
+      int woId, DateTime transDate) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
         "WoId": woId,
+        "TransDate": transDate,
         "BranchId": globalBloc.branchId,
       });
 
@@ -2662,12 +2708,100 @@ class ApiProvider {
     }
   }
 
-  Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(
-      int woId) async {
+  Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_ScanItemBatch(
+      int id, int detId, int webId, int woId, int woLineNo, String qrResult) async {
     try {
       var body = json.encode({
         "UserId": globalBloc.userId,
-        "WoId": woId,
+        "BranchId": globalBloc.branchId,
+        "Id": id,
+        "DetId": detId,
+        "WebId": webId,
+        // "WoId": woId,
+        // "WoLineNo": woLineNo,
+        "QrResult": qrResult,
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/ScanBatch",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsReceiptDetailScanResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsReceiptDetail_ScanBatch:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_ScanBatch:Failed to load post(1)');
+    }
+  }
+
+  // Future<GoodsReceiptDetailScanBatchResponse> goodsReceiptDetail_ScanBatch(
+  //     int id, int detId, int woId, int woLineNo, String qrResult) async {
+  //   try {
+  //     var body = json.encode({
+  //       "UserId": globalBloc.userId,
+  //       "BranchId": globalBloc.branchId,
+  //       "Id": id,
+  //       "DetId": detId,
+  //       "WoId": woId,
+  //       "WoLineNo": woLineNo,
+  //       "QrResult": qrResult,
+  //     });
+
+  //     final response = await http.post(
+  //         "${_url}api/GoodsReceiptDetailApi/ScanBatch",
+  //         headers: {'Content-type': 'application/json'},
+  //         body: body);
+
+  //     if (response.statusCode == 200) {
+  //       //print(response.body);
+  //       return compute(
+  //           goodsReceiptDetailScanBatchResponseFromJson, response.body);
+  //     } else {
+  //       throw Exception('goodsReceiptDetail_ScanBatch:Failed to load post(2)');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('goodsReceiptDetail_ScanBatch:Failed to load post(1)');
+  //   }
+  // }
+
+  Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_RemoveContent(
+      int id, int detId, int detDetId) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "Id": id,
+        "DetId": detId,
+        "DetDetId": detDetId
+      });
+
+      final response = await http.post(
+          "${_url}Api/GoodsReceiptDetailApi/Delete_Content",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return goodsReceiptDetailScanResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'goodsReceiptDetail_RemoveContent:Failed to remove batch detail(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_RemoveContent:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_ViewDetailItem(
+      int webId, String transDate) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "WebId": webId,
+        "TransDate": transDate,
         "BranchId": globalBloc.branchId,
       });
 
@@ -2678,7 +2812,7 @@ class ApiProvider {
 
       if (response.statusCode == 200) {
         //print(response.body);
-        return compute(goodsIssueDetailRefreshResponseFromJson, response.body);
+        return compute(goodsReceiptDetailResponseFromJson, response.body);
       } else {
         throw Exception(
             'goodsReceiptDetail_ViewDetailItem:Failed to load post(2)');
@@ -4491,6 +4625,40 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('cflGoodsIssue_FetchNextPage:Failed to load post(1)');
+    }
+  }
+
+  //-----------------------------
+  //CflReceiptProductionLabel
+  //-----------------------------
+  Future<CflReceiptProductionLabelResponse>
+      cflReceiptProductionLabel_FetchNextPage(
+          int rowStart, String searchQuery) async {
+    try {
+      var body = json.encode({
+        "userId": globalBloc.userId,
+        "rowStart": rowStart,
+        "pageSize": 10,
+        "searchQuery": searchQuery,
+        "branchId": globalBloc.branchId
+      });
+
+      final response = await http.post(
+          "${_url}api/CflReceiptProductionLabelApi/FetchNextPage",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            cflReceiptProductionLabelResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'cflReceiptProductionLabel_FetchNextPage:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'cflReceiptProductionLabel_FetchNextPage:Failed to load post(1)');
     }
   }
 

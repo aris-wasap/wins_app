@@ -115,6 +115,7 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
       }
     } else if (event is GoodsIssueMixingDetailEventRefresh) {
       var woId = event.woId;
+      var transDate = event.transDate;
       var newData = currentState.data;
       var listData = currentState.data.items;
 
@@ -128,8 +129,8 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
         );
         try {
           var _repository = Repository();
-          GoodsIssueMixingDetailResponse response =
-              await _repository.goodsIssueMixingDetail_ViewDetailItem(woId);
+          GoodsIssueMixingDetailResponse response = await _repository
+              .goodsIssueMixingDetail_ViewDetailItem(woId, transDate);
           if (response == null) {
             yield GoodsIssueMixingDetailState.failure(
               errorMessage: 'Response null',

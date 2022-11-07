@@ -52,6 +52,12 @@ class Data {
   @JsonKey(name: 'WoDate')
   DateTime woDate;
 
+  @JsonKey(name: 'WebId')
+  int webId;
+
+  @JsonKey(name: 'WebNo')
+  String webNo;
+
   @JsonKey(name: 'BaseId')
   int baseId;
 
@@ -94,6 +100,9 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -102,6 +111,8 @@ class Data {
     this.woNo,
     this.id: 0,
     this.transNo,
+    this.webId: 0,
+    this.webNo,
     this.baseId: 0,
     this.baseNo,
     this.transDate,
@@ -113,6 +124,7 @@ class Data {
     this.sapGoodsIssueNo,
     this.branchId,
     this.branchName,
+    this.status,
     this.items,
   });
 
@@ -138,6 +150,12 @@ class Item {
   @JsonKey(name: 'Id')
   int id;
 
+  @JsonKey(name: 'DetId')
+  int detId;
+
+  @JsonKey(name: 'DetDetId')
+  int detDetId;
+
   @JsonKey(name: 'LineNo')
   int lineNo;
 
@@ -155,6 +173,9 @@ class Item {
 
   @JsonKey(name: 'Qty')
   double qty;
+
+  @JsonKey(name: 'OpenQty')
+  double openQty;
 
   @JsonKey(name: 'Uom')
   String uom;
@@ -213,6 +234,12 @@ class Item {
   @JsonKey(name: 'Shift')
   String shift;
 
+  @JsonKey(name: 'ProductionType')
+  String productionType;
+
+  @JsonKey(name: 'ValuationMethod')
+  String valuationMethod;
+
   @JsonKey(name: 'Batchs')
   List<ItemBatch> batchs;
 
@@ -222,12 +249,15 @@ class Item {
     this.webId: 0,
     this.webDetId: 0,
     this.id: 0,
+    this.detId: 0,
+    this.detDetId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
     this.itemName,
     this.woQty: 0,
     this.qty: 0,
+    this.openQty: 0,
     this.uom,
     this.itemCostTc,
     this.whsCode,
@@ -247,6 +277,8 @@ class Item {
     this.group,
     this.machine,
     this.shift,
+    this.productionType,
+    this.valuationMethod,
     this.batchs,
   });
 

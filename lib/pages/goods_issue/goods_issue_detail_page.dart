@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_additional_detail_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
@@ -392,8 +393,10 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     //     }
     //   }
     try {
-      bloc.emitEvent(
-          GoodsIssueDetailEventRefresh(woId: int.parse(_woIdController.text)));
+      bloc.emitEvent(GoodsIssueDetailEventRefresh(
+        woId: int.parse(_woIdController.text),
+        transDate: transDate,
+      ));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -544,7 +547,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         context,
         MaterialPageRoute(
           builder: (BuildContext context) =>
-              GoodsIssueDetailItemDetailPage(newItem, 0, newData),
+              GoodsIssueDetailItemAdditionalDetailPage(newItem, 0, newData),
         ),
       );
 
@@ -607,9 +610,10 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                 ? FloatingActionButton(
                                     heroTag: "btnCreateNew",
                                     backgroundColor: Colors.blue,
-                                    child: Icon(Icons.add),
+                                    child: Icon(Icons.add_shopping_cart),
                                     onPressed: () {
-                                      showAlertDialogCreateNew(context);
+                                      // showAlertDialogCreateNew(context);
+                                      _showAddNewItemDetail();
                                     },
                                   )
                                 : null),

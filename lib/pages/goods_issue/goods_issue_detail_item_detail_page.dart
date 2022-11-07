@@ -271,12 +271,12 @@ class _GoodsIssueDetailItemDetailPageState
 
   @override
   Widget build(BuildContext context) {
-    // var items;
-    // if (_newData.items[_index].batchs.length > _getState().data.batchs.length) {
-    //   items = _newData.items[_index];
-    // } else {
-    //   items = _getState().data;
-    // }
+    var items;
+    if (_newData.items[_index].batchs.length > _getState().data.batchs.length) {
+      items = _newData.items[_index];
+    } else {
+      items = _getState().data;
+    }
     return BlocEventStateBuilder<GoodsIssueDetailItemDetailState>(
         bloc: bloc,
         builder: (BuildContext context, GoodsIssueDetailItemDetailState state) {
@@ -673,7 +673,7 @@ class _GoodsIssueDetailItemDetailPageState
           ),
           Container(
               //color: Colors.brown,
-              child: (data.batchs != null)
+              child: (data.batchs.length > 0)
                   ? _buildList()
                   : Container(
                       padding: EdgeInsets.all(10.0),

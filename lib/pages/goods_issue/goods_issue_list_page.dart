@@ -82,6 +82,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -202,13 +203,12 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
+                    Text("Production No. : ${data[index].woNo}"),
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),

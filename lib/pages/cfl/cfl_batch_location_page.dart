@@ -85,13 +85,14 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
             hintText: "Search Batch Location",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
               color: bgOrange,
@@ -189,7 +190,7 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text("Warehouse. ${data[index].whsCode}"),
+                title: Text("Batch Number : ${data[index].batchNumber}"),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
@@ -197,8 +198,10 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Warehouse : ${data[index].whsCode}"),
                     Text("Bin Location : ${data[index].binCode}"),
                     Text("Stock Qty : ${data[index].availableQty}"),
+                    Text("Uom : ${data[index].uom}"),
                   ],
                 ),
               ),

@@ -394,7 +394,9 @@ class _GoodsIssueMixingDetailPageState
     //   }
     try {
       bloc.emitEvent(GoodsIssueMixingDetailEventRefresh(
-          woId: int.parse(_woIdController.text)));
+        woId: int.parse(_woIdController.text),
+        transDate: transDate,
+      ));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -1040,9 +1042,10 @@ class _GoodsIssueMixingDetailPageState
               //Text("Warehouse : ${data[index].whsName}"),
             ],
           ),
-          trailing: items[index].valuationMethod == 'FIFO' && data.sapGoodsIssueId == 0 &&
-                      data.sapGoodsReceiptId == 0 &&
-                      data.status != "Cancel"
+          trailing: items[index].valuationMethod == 'FIFO' &&
+                  data.sapGoodsIssueId == 0 &&
+                  data.sapGoodsReceiptId == 0 &&
+                  data.status != "Cancel"
               // ? IconButton(
               //     icon: Icon(Icons.keyboard_arrow_right),
               //     iconSize: 30.0,
@@ -1051,18 +1054,18 @@ class _GoodsIssueMixingDetailPageState
               //     },
               //   )
               ? RaisedButton(
-                      onPressed: () {
-                        _showItemDetail(index);
-                      },
-                      color: bgBlue,
-                      child: Text(
-                        "ADD",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    )
+                  onPressed: () {
+                    _showItemDetail(index);
+                  },
+                  color: bgBlue,
+                  child: Text(
+                    "ADD",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
               : data.sapGoodsIssueId == 0 &&
                       data.sapGoodsReceiptId == 0 &&
                       data.status != "Cancel"

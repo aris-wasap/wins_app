@@ -2,21 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/global_bloc.dart';
-import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_bloc.dart';
-import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_event.dart';
-import 'package:wins_app/blocs/receipt_order/list/receipt_order_list_state.dart';
-import 'package:wins_app/pages/receipt_order/receipt_order_detail_page.dart';
+import 'package:wins_app/blocs/cfl_receipt_production_label/cfl_receipt_production_label_bloc.dart';
+import 'package:wins_app/blocs/cfl_receipt_production_label/cfl_receipt_production_label_event.dart';
+import 'package:wins_app/blocs/cfl_receipt_production_label/cfl_receipt_production_label_state.dart';
 import 'package:intl/intl.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
-class ReceiptOrderListPage extends StatefulWidget {
+class CflReceiptProductionLabelPage extends StatefulWidget {
   @override
-  _ReceiptOrderListPageState createState() => _ReceiptOrderListPageState();
+  _CflReceiptProductionLabelPageState createState() =>
+      _CflReceiptProductionLabelPageState();
 }
 
-class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
-  ReceiptOrderListBloc bloc = ReceiptOrderListBloc();
+class _CflReceiptProductionLabelPageState
+    extends State<CflReceiptProductionLabelPage> {
+  CflReceiptProductionLabelBloc bloc = CflReceiptProductionLabelBloc();
+
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -28,9 +29,8 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 2000), () {
-      var state = bloc.lastState ?? bloc.initialState;
-      bloc.emitEvent(ReceiptOrderListEvent(
-        event: ReceiptOrderListEventType.firstPage,
+      bloc.emitEvent(CflReceiptProductionLabelEvent(
+        event: CflReceiptProductionLabelEventType.firstPage,
         searchQuery: _searchQueryController.text,
       ));
     });
@@ -39,8 +39,8 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
   void _onScroll() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      bloc.emitEvent(ReceiptOrderListEvent(
-        event: ReceiptOrderListEventType.nextPage,
+      bloc.emitEvent(CflReceiptProductionLabelEvent(
+        event: CflReceiptProductionLabelEventType.nextPage,
         searchQuery: _searchQueryController.text,
       ));
     }
@@ -50,13 +50,12 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      bloc.emitEvent(ReceiptOrderListEvent(
-        event: ReceiptOrderListEventType.firstPage,
-      ));
-    });
+    bloc.emitEvent(CflReceiptProductionLabelEvent(
+      event: CflReceiptProductionLabelEventType.firstPage,
+    ));
 
     _scrollController = ScrollController()..addListener(_onScroll);
+
     _searchQueryController.addListener(_onSearchChanged);
   }
 
@@ -69,21 +68,20 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _appBar() {
-    var state = bloc.lastState ?? bloc.initialState;
+  PreferredSizeWidget _appBar(CflReceiptProductionLabelState state) {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
-          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Receipt",
-              hintStyle: TextStyle(color: Colors.white)),
+            hintText: "Search Purchase Order",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
-              color: Colors.orange[500],
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -92,8 +90,8 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
               icon: Icon(Icons.close),
               onPressed: () {
                 _searchQueryController.text = "";
-                bloc.emitEvent(ReceiptOrderListEvent(
-                  event: ReceiptOrderListEventType.deactivedSearch,
+                bloc.emitEvent(CflReceiptProductionLabelEvent(
+                  event: CflReceiptProductionLabelEventType.deactivedSearch,
                   searchQuery: _searchQueryController.text,
                 ));
               }),
@@ -101,16 +99,11 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
       );
     } else {
       return AppBar(
-        title: Text("List Receipt"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradientAppBar,
-          ),
-        ),
-        //ackgroundColor: Colors.blue[500],
+        title: Text("Choose Receipt Production Label"),
+        backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
-              color: bgBlue,
+              color: bgOrange,
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
@@ -118,22 +111,11 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              bloc.emitEvent(ReceiptOrderListEvent(
-                event: ReceiptOrderListEventType.activedSearch,
+              bloc.emitEvent(CflReceiptProductionLabelEvent(
+                event: CflReceiptProductionLabelEventType.activedSearch,
               ));
             },
           ),
-          (globalBloc.loginResponse.data.receiptOrder_Auth_Add == 'Y')
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ReceiptOrderDetailPage(0);
-                    }));
-                  },
-                )
-              : Container(),
         ],
       );
     }
@@ -141,21 +123,21 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
 
   //kalau langsung di inline gak mau karena functionnya harus future
   Future<void> _handleRefresh() async {
-    bloc.emitEvent(ReceiptOrderListEvent(
-      event: ReceiptOrderListEventType.refresh,
+    bloc.emitEvent(CflReceiptProductionLabelEvent(
+      event: CflReceiptProductionLabelEventType.refresh,
       searchQuery: _searchQueryController.text,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<ReceiptOrderListState>(
+    return BlocEventStateBuilder<CflReceiptProductionLabelState>(
         bloc: bloc,
-        builder: (BuildContext context, ReceiptOrderListState state) {
+        builder: (BuildContext context, CflReceiptProductionLabelState state) {
           return SafeArea(
             child: Scaffold(
               key: _scaffoldKey,
-              appBar: _appBar(),
+              appBar: _appBar(state),
               body: RefreshIndicator(
                 onRefresh: _handleRefresh,
                 child: Container(
@@ -163,7 +145,7 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
                     gradient: bgGradientPageWhite,
                   ),
                   constraints: BoxConstraints.expand(),
-                  child: _buildList(),
+                  child: buildList(state),
                 ),
               ),
             ),
@@ -171,9 +153,7 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
         });
   }
 
-  Widget _buildList() {
-    var state = bloc.lastState ?? bloc.initialState;
-
+  Widget buildList(CflReceiptProductionLabelState state) {
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -188,47 +168,30 @@ class _ReceiptOrderListPageState extends State<ReceiptOrderListPage> {
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
             ),
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(0),
             // decoration:
             //     BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Scan No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                        "Receipt No. : ${data[index].sapReceiptOrderNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
-                    Text("PO No. : ${data[index].poNo}"),
-                    Text("Depo : ${data[index].branchName}"),
-                    Text(
-                        "Supplier : ${data[index].vendorCode} - ${data[index].vendorName}"),
-                    Text("Status : ${data[index].status}"),
-                    Text("User : ${data[index].createdUser}"),
+                    Text("Label No. : ${data[index].transNo ?? ''}"),
+                    Text("Issue No. : ${data[index].docNum ?? ''}"),
+                    Text("WO No. : ${data[index].woNo ?? ''}"),
+                    Text("Product Code : ${data[index].productCode ?? ''}"),
+                    Text("Product Name : ${data[index].productName ?? ''}"),
+                    // Text("Status : ${data[index].status ?? ''}"),
+                    // Text("Branch : ${data[index].branchName ?? ''}"),
                   ],
                 ),
-                // leading: ClipOval(
-                //   child: Image.network(
-                //     globalBloc.getUrl() +
-                //         "api/UserApi/GetImage?id=${data[index].userId}",
-                //     width: 50.0,
-                //     height: 50.0,
-                //   ),
-                // ),
-
-                trailing: Icon(Icons.keyboard_arrow_right),
-                //color: Colors.white, size: 30.0),
+                leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReceiptOrderDetailPage(data[index].id),
-                    ),
-                  );
+                  Navigator.pop(context, data[index]);
                 },
               ),
             ),
