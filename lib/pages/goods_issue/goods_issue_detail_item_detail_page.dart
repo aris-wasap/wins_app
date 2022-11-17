@@ -622,14 +622,25 @@ class _GoodsIssueDetailItemDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Issue Qty",
-                          valueText:
-                              "${NumberFormat("#,###.##").format(data.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Issue Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
+
+                // : Padding(
+                //     padding: EdgeInsets.only(left: 10),
+                //     child: LabelFieldWidget(
+                //       labelText: "Issue Qty",
+                //       valueText:
+                //           "${NumberFormat("#,###.##").format(data.qty)}",
+                //     ),
+                //   ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _uomController,
@@ -736,14 +747,16 @@ class _GoodsIssueDetailItemDetailPageState
                         "Qty Batch : ${NumberFormat("#,###.##").format(newData.batchs[index].quantity)}"),
                   ],
                 ),
-                trailing: IconButton(
-                  color: Colors.black,
-                  icon: Icon(Icons.edit),
-                  iconSize: 30.0,
-                  onPressed: () {
-                    _showItemDetail(index);
-                  },
-                ),
+                trailing: _newData.sapGoodsIssueId == 0
+                    ? IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.edit),
+                        iconSize: 30.0,
+                        onPressed: () {
+                          _showItemDetail(index);
+                        },
+                      )
+                    : null,
               ),
             ),
           )

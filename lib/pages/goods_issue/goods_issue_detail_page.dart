@@ -49,6 +49,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   final _seriesNameController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
+  final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -82,6 +83,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
   @override
   void dispose() {
+    _statusController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _productCodeController?.dispose();
@@ -393,9 +395,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     //     }
     //   }
     try {
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
       bloc.emitEvent(GoodsIssueDetailEventRefresh(
         woId: int.parse(_woIdController.text),
-        transDate: transDate,
+        transDate: setTransDate,
       ));
     } catch (ex) {
       ValidateDialogWidget(
@@ -436,15 +440,35 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       return;
     }
 
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
     var data = _getState().data;
 
-    try {
-      bloc.emitEvent(
-        GoodsIssueDetailEventResetData(id: data.id, woId: data.woId),
-      );
-    } catch (ex) {
+    if (data.sapGoodsIssueId == 0 && data.id > 0 && data.status == 'Draft') {
+      try {
+        bloc.emitEvent(
+          GoodsIssueDetailEventResetData(id: data.id, woId: data.woId),
+        );
+      } catch (ex) {
+        ValidateDialogWidget(
+            context: context, message: "Refresh : Unknown error $ex");
+        return;
+      }
+    } else {
       ValidateDialogWidget(
-          context: context, message: "Refresh : Unknown error $ex");
+          context: context, message: "Refresh : Data is not valid");
       return;
     }
   }
@@ -453,6 +477,20 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
           context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
       return;
     }
 
@@ -513,32 +551,38 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //   }
   // }
 
-  void _showScanNewItemDetail() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var newItem = _getState().newItem;
-      var newData = _getState().data;
-      if (newItem != null) {
-        bloc.emitEvent(GoodsIssueDetailEventNormal());
-        Future<Item> item = Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                GoodsIssueDetailItemDetailPage(newItem, 0, newData),
-          ),
-        );
+  // void _showScanNewItemDetail() async {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     var newItem = _getState().newItem;
+  //     var newData = _getState().data;
+  //     if (newItem != null) {
+  //       bloc.emitEvent(GoodsIssueDetailEventNormal());
+  //       Future<Item> item = Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (BuildContext context) =>
+  //               GoodsIssueDetailItemDetailPage(newItem, 0, newData),
+  //         ),
+  //       );
 
-        item.then((Item item) {
-          if (item != null) {
-            bloc.emitEvent(GoodsIssueDetailEventItemAdd(
-              item: item,
-            ));
-          }
-        });
-      }
-    });
-  }
+  //       item.then((Item item) {
+  //         if (item != null) {
+  //           bloc.emitEvent(GoodsIssueDetailEventItemAdd(
+  //             item: item,
+  //           ));
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   void _showAddNewItemDetail() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
     var newItem = _getState().newItem;
     var newData = _getState().data;
     if (newItem == null) {
@@ -547,7 +591,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         context,
         MaterialPageRoute(
           builder: (BuildContext context) =>
-              GoodsIssueDetailItemAdditionalDetailPage(newItem, 0, newData),
+              GoodsIssueDetailItemAdditionalDetailPage(newItem, -1, newData),
         ),
       );
 
@@ -564,7 +608,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    var data = _getState().data;
+    var getData = _getState().data;
 
     return BlocEventStateBuilder<GoodsIssueDetailState>(
         bloc: bloc,
@@ -584,76 +628,49 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: _getState().data.sapGoodsIssueId == 0 &&
-                                    _getState().data.id > 0 &&
-                                    _getState().data.status != "Cancel"
-                                ? FloatingActionButton(
-                                    heroTag: "btnReset",
-                                    backgroundColor: Colors.green,
-                                    child: Icon(Icons.autorenew),
-                                    onPressed: () {
-                                      showAlertDialogReset(context);
-                                    },
-                                  )
-                                : null),
-                        Align(
-                            alignment: Alignment.bottomCenter,
-                            child: _getState().data.sapGoodsIssueId == 0 &&
-                                    _getState().data.id > 0 &&
-                                    _getState().data.status != "Cancel"
-                                ? FloatingActionButton(
-                                    heroTag: "btnCreateNew",
-                                    backgroundColor: Colors.blue,
-                                    child: Icon(Icons.add_shopping_cart),
-                                    onPressed: () {
-                                      // showAlertDialogCreateNew(context);
-                                      _showAddNewItemDetail();
-                                    },
-                                  )
-                                : null),
-                        // Align(
-                        //   alignment: Alignment.bottomRight,
-                        //   child: _getState().data.sapGoodsIssueId == 0 &&
-                        //           _getState().data.status == "Draft" //Tidak dipakai
-                        //       ? FloatingActionButton(
-                        //           heroTag: "btnRefresh",
-                        //           backgroundColor: Colors.green,
-                        //           child: Icon(Icons.autorenew),
-                        //           onPressed: () {
-                        //             showAlertDialogRefresh(context);
-                        //           },
-                        //         )
-                        //       : null,
-                        // ),
-
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: _getState().data.sapGoodsIssueId == 0 &&
-                                  _getState().data.id > 0 &&
-                                  _getState().data.status != "Cancel"
-                              ? FloatingActionButton(
-                                  heroTag: "btnDelete",
-                                  backgroundColor: Colors.red,
-                                  child: Icon(Icons.delete_outline),
-                                  onPressed: () {
-                                    showAlertDialogDelete(context);
-                                  },
-                                )
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
                   _showCircularProgress(),
                 ]),
               ),
               //Floating Button
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: "btnReset",
+                    backgroundColor: Colors.green,
+                    tooltip: "Reset",
+                    child: Icon(Icons.autorenew),
+                    onPressed: () {
+                      showAlertDialogReset(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnCreateNew",
+                    backgroundColor: Colors.blue,
+                    tooltip: "Add New Item",
+                    child: Icon(Icons.add_shopping_cart),
+                    onPressed: () {
+                      _showAddNewItemDetail();
+                      // showAlertDialogCreateNew(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnDelete",
+                    backgroundColor: Colors.red,
+                    tooltip: "Delete",
+                    child: Icon(Icons.delete_outline),
+                    onPressed: () {
+                      showAlertDialogDelete(context);
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -684,9 +701,36 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
-          item: item,
-          itemIndex: itemIndex,
+        // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        //   item: item,
+        //   itemIndex: itemIndex,
+        // ));
+      }
+    });
+  }
+
+  void _showItemAdditionalDetail(int itemIndex) {
+    final newData = _getState().data;
+    final items = _getState().data.items;
+
+    Future<Item> item = Navigator.push(
+      context,
+      MaterialPageRoute<Item>(
+        builder: (BuildContext context) =>
+            GoodsIssueDetailItemAdditionalDetailPage(
+                items[itemIndex], itemIndex, newData),
+      ),
+    );
+
+    item.then((Item item) {
+      if (item != null) {
+        // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        //   item: item,
+        //   itemIndex: itemIndex,
+        // ));
+
+        bloc.emitEvent(GoodsIssueDetailEventGetId(
+          id: _id,
         ));
       }
     });
@@ -695,11 +739,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   Widget _buildForm() {
     _errorMessage();
     _successMessage();
-    _showScanNewItemDetail();
+    // _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
+    _transNoController.text = data.transNo;
 
     if (transDate != null) {
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -862,20 +907,6 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                         ),
                       )
                     : Container(width: 0, height: 0),
-                // Padding(padding: EdgeInsets.only(top: 5)),
-                // (data.baseId > 0)
-                //     ? TextFormField(
-                //         controller: _baseNoController,
-                //         enabled: false,
-                //         decoration: InputDecoration(
-                //             hintText: "Scan No.",
-                //             labelText: "Scan No.",
-                //             contentPadding: new EdgeInsets.symmetric(
-                //                 vertical: 15.0, horizontal: 10.0),
-                //             border: new OutlineInputBorder(
-                //                 borderRadius: new BorderRadius.circular(10.0))))
-                //     : Container(width: 0, height: 0),
-
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -1009,20 +1040,19 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           ),
           Container(
               //color: Colors.brown,
-              child:
-                  (state.data.items != null ? state.data.items.length : 0) > 0
-                      ? _buildList()
-                      : Container(
-                          padding: EdgeInsets.all(10.0),
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Text("Item Empty"),
-                        )),
+              child: state.data.items.length > 0
+                  ? _buildList()
+                  : Container(
+                      padding: EdgeInsets.all(10.0),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Text("Item Empty"),
+                    )),
           Container(
             height: 5,
             color: Colors.grey,
           ),
           SizedBox(
-            height: 65,
+            height: 70,
           )
         ]);
   }
@@ -1038,83 +1068,99 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("${items[index].itemName}"),
-          subtitle: Column(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('No. ' + "${items[index].woVisOrder}"),
-              Text("Item Code : ${items[index].itemCode}"),
+            title: Text("${items[index].itemName}"),
+            subtitle: Column(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('No. ' + "${items[index].woVisOrder}"),
+                Text("Item Code : ${items[index].itemCode}"),
 
-              //Text(data[index].itemCode),
-              //Text(data[index].whsCode ?? '-'),
-              //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
-              Text(
-                  "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
-                      " ${items[index].uom}"),
-              Text(
-                  "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
-                      " ${items[index].uom}"),
-              //Text('Uom : ' + "${data[index].uom}"),
-              // Text(data[index].whsCode ?? ''),
+                //Text(data[index].itemCode),
+                //Text(data[index].whsCode ?? '-'),
+                //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                Text(
+                    "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
+                        " ${items[index].uom}"),
+                Text(
+                    "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
+                        " ${items[index].uom}"),
+                //Text('Uom : ' + "${data[index].uom}"),
+                // Text(data[index].whsCode ?? ''),
 
-              //Text("Batch No. : ${data[index].batchNo}"),
-              Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
-                      " ${items[index].uom}"),
-              // Text(data[index].whsCode ?? ''),
-              //Text("Warehouse : ${data[index].whsName}"),
-            ],
-          ),
-          trailing: items[index].valuationMethod == 'FIFO' &&
-                  data.sapGoodsIssueId == 0 &&
-                  data.sapGoodsReceiptId == 0 &&
-                  data.status != "Cancel"
-              // ? IconButton(
-              //     icon: Icon(Icons.keyboard_arrow_right),
-              //     iconSize: 30.0,
-              //     onPressed: () {
-              //       _showItemDetail(index);
-              //     },
+                //Text("Batch No. : ${data[index].batchNo}"),
+                Text(
+                    "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
+                        " ${items[index].uom}"),
+                // Text(data[index].whsCode ?? ''),
+                //Text("Warehouse : ${data[index].whsName}"),
+              ],
+            ),
+            trailing: items[index].valuationMethod == 'FIFO' &&
+                    data.sapGoodsIssueId == 0 &&
+                    data.sapGoodsReceiptId == 0 &&
+                    data.status != "Cancel"
+                // ? IconButton(
+                //     icon: Icon(Icons.keyboard_arrow_right),
+                //     iconSize: 30.0,
+                //     onPressed: () {
+                //       _showItemDetail(index);
+                //     },
 
-              //   )
-              ? RaisedButton(
-                  onPressed: () {
-                    _showItemDetail(index);
-                  },
-                  color: bgBlue,
-                  child: Text(
-                    "ADD",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                )
-              : data.sapGoodsIssueId == 0 &&
-                      data.sapGoodsReceiptId == 0 &&
-                      data.status != "Cancel"
-                  ? RaisedButton(
-                      onPressed: () {
-                        _showItemDetail(index);
-                      },
-                      color: bgOrange,
-                      child: Text(
-                        "SCAN",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                //   )
+                ? RaisedButton(
+                    onPressed: () {
+                      _showItemDetail(index);
+                    },
+                    color: bgBlue,
+                    child: Text(
+                      "FIFO",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                       ),
-                    )
-                  : IconButton(
-                      icon: Icon(Icons.keyboard_arrow_right),
-                      iconSize: 30.0,
-                      onPressed: () {
-                        _showItemDetail(index);
-                      },
                     ),
-        ),
+                  )
+                : items[index].valuationMethod == 'SCAN' &&
+                        data.sapGoodsIssueId == 0 &&
+                        data.sapGoodsReceiptId == 0 &&
+                        data.status != "Cancel"
+                    ? RaisedButton(
+                        onPressed: () {
+                          _showItemDetail(index);
+                        },
+                        color: bgOrange,
+                        child: Text(
+                          "SCAN",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                    : items[index].valuationMethod == 'ADD' &&
+                            data.sapGoodsIssueId == 0 &&
+                            data.sapGoodsReceiptId == 0 &&
+                            data.status != "Cancel"
+                        ? RaisedButton(
+                            onPressed: () {
+                              _showItemAdditionalDetail(index);
+                            },
+                            color: bgBlue,
+                            child: Text(
+                              "ADD",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.keyboard_arrow_right),
+                            iconSize: 30.0,
+                            onPressed: () {
+                              _showItemDetail(index);
+                            })),
       ),
     );
   }
@@ -1132,10 +1178,13 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           if (data.sapGoodsIssueId == 0 && data.id > 0) {
             // return _rowDetail(data, index);
             return Dismissible(
-              key: Key(data.items[index].hashCode.toString()),
+              key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
               onDismissed: (direction) {
-                bloc.emitEvent(
-                    GoodsIssueDetailEventItemRemove(itemIndex: index));
+                // bloc.emitEvent(
+                //     GoodsIssueDetailEventItemRemove(itemIndex: index));
+
+                bloc.emitEvent(GoodsIssueDetailEventRemoveItem(
+                    id: data.items[index].id, detId: data.items[index].detId));
               },
               background: Container(
                   color: Colors.red,

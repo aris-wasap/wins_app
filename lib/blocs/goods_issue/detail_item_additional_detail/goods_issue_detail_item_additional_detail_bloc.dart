@@ -3,6 +3,9 @@ import 'package:wins_app/blocs/goods_issue/detail_item_additional_detail/goods_i
 import 'package:wins_app/blocs/goods_issue/detail_item_additional_detail/goods_issue_detail_item_additional_detail_state.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/models/goods_issue_detail_scan_response.dart';
+import 'package:wins_app/models/goods_issue_detail_response.dart'
+    as goodsIssueDetail;
+
 import 'package:wins_app/resources/repository.dart';
 //import 'package:wins_app/models/goods_issue_detail_response.dart' ;
 
@@ -28,14 +31,17 @@ class GoodsIssueDetailItemAdditionalDetailBloc extends BlocEventStateBase<
       GoodsIssueDetailItemAdditionalDetailState currentState) async* {
     if (event is GoodsIssueDetailItemAdditionalDetailEventQty) {
       var newData = currentState.data;
-      newData.qty = event.qty;
-      newData.binAbs = event.binAbs;
-      newData.binCode = event.binCode;
+      if (newData != null) {
+        newData.qty = event.qty;
+        newData.woQty = event.qty;
+        newData.binAbs = event.binAbs;
+        newData.binCode = event.binCode;
+      }
       yield GoodsIssueDetailItemAdditionalDetailState.success(
-        data: newData,
+        data: newData ?? Item(batchs: List<goodsIssueDetail.ItemBatch>()),
       );
     } else if (event
-        is GoodsIssueDetailItemAdditionalDetailEventPlannedQtyDetail) {
+        is GoodsIssueDetailItemAdditionalDetailEventCreateAdditionalItemDetail) {
       var woId = event.woId;
       var id = event.id;
       var detId = event.detId;
@@ -44,11 +50,11 @@ class GoodsIssueDetailItemAdditionalDetailBloc extends BlocEventStateBase<
       var whsCode = event.whsCode;
       var binAbs = event.binAbs;
       var binCode = event.binCode;
-      var newData = currentState.data;
+      // var newData = currentState.data;
 
-      if (newData.batchs == null) {
-        newData.batchs = [];
-      }
+      // if (detId != null) {
+
+      // }
       yield GoodsIssueDetailItemAdditionalDetailState.busy(
         data: currentState.data,
       );
@@ -78,18 +84,10 @@ class GoodsIssueDetailItemAdditionalDetailBloc extends BlocEventStateBase<
               data: event.data,
             );
           } else {
-            if (response.data == null) {
-              yield GoodsIssueDetailItemAdditionalDetailState.failure(
-                errorMessage:
-                    '${itemCode} tidak di temukan di gudang ${whsCode}  (1)',
-                data: event.data,
-              );
-            } else {
-              yield GoodsIssueDetailItemAdditionalDetailState.success(
-                data: response.data,
-                // newData : response.data,
-              );
-            }
+            yield GoodsIssueDetailItemAdditionalDetailState.success(
+              data: response.data ??
+                  Item(batchs: List<goodsIssueDetail.ItemBatch>()),
+            );
           }
         }
       } catch (e) {
@@ -186,7 +184,7 @@ class GoodsIssueDetailItemAdditionalDetailBloc extends BlocEventStateBase<
         );
       }
     } else if (event
-        is GoodsIssueDetailItemAdditionalDetailEventRefreshDetail) {
+        is GoodsIssueDetailItemAdditionalDetailEventRefreshDetailAdditional) {
       var id = event.id;
       var detId = event.detId;
       var qty = event.qty;
@@ -204,7 +202,8 @@ class GoodsIssueDetailItemAdditionalDetailBloc extends BlocEventStateBase<
         try {
           var _repository = Repository();
           GoodsIssueDetailScanResponse response = await _repository
-              .goodsIssueDetailItemDetail_RefreshDetail(id, detId, qty);
+              .goodsIssueDetailItemDetail_RefreshDetailAdditional(
+                  id, detId, qty);
           if (response == null) {
             yield GoodsIssueDetailItemAdditionalDetailState.failure(
               errorMessage: 'Response null',

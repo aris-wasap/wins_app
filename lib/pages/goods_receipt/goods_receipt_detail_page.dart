@@ -53,6 +53,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   final _transDateController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -102,7 +103,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     _baseNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
-
+    _statusController?.dispose();
     bloc?.dispose();
 
     super.dispose();
@@ -148,6 +149,76 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     bloc.emitEvent(GoodsReceiptDetailEventAdd(
       data: data,
     ));
+  }
+
+  Future _resetData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsReceiptNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message:
+              "Document tidak dapat diproses, sudah terbuat Goods Receipt");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsReceiptDetailEventResetData(id: data.id, woId: data.woId),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _deleteData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsReceiptNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message:
+              "Document tidak dapat diproses, sudah terbuat Goods Receipt");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsReceiptDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
   }
 
   showAlertDialogCreate(BuildContext context) {
@@ -203,6 +274,106 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       title: Text("Perhatian !!!"),
       content: Text(
           "Apakah anda yakin Submit document ? Jika menyimpan dokumen ini akan otomatis membuat Goods Receipt"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogReset(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _resetData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Data Item akan di reset, Batch Number yang sudah di scan akan dihapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Cancel dokumen ini ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogCreateNew(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _newTrans();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda ingin membuat Dokumen Baru ?"),
       actions: [
         cancelButton,
         continueButton,
@@ -492,15 +663,17 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: const Text('Post'),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
-              ),
-              onPressed: () {
-                showAlertDialogPostSap(context);
-              },
-            ),
+            child: _getState().data.status != 'Cancel'
+                ? RaisedButton(
+                    child: const Text('Post'),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
+                    ),
+                    onPressed: () {
+                      showAlertDialogPostSap(context);
+                    },
+                  )
+                : null,
           ),
         ],
       );
@@ -553,6 +726,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
 
       bloc.emitEvent(GoodsReceiptDetailEventRefresh(
         webId: int.parse(_webIdController.text),
+        sapGoodsIssueId: int.parse(_sapGoodsIssueIdController.text),
         transDate: setTransDate,
       ));
     } catch (ex) {
@@ -670,7 +844,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    var data = _getState().data;
+    var getData = _getState().data;
 
     return BlocEventStateBuilder<GoodsReceiptDetailState>(
         bloc: bloc,
@@ -690,42 +864,107 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
+                  //   child: Stack(
+                  //     children: <Widget>[
+                  //       Align(
+                  //           alignment: Alignment.bottomRight,
+                  //           child: getData.sapGoodsReceiptId == 0 && getData.id > 0
+                  //               ? FloatingActionButton(
+                  //                   heroTag: "btnReset",
+                  //                   backgroundColor: Colors.green,
+                  //                   child: Icon(Icons.autorenew),
+                  //                   onPressed: () {
+                  //                     showAlertDialogReset(context);
+                  //                   },
+                  //                 )
+                  //               : null),
+                  //       Align(
+                  //           alignment: Alignment.bottomCenter,
+                  //           child:  getData.status != "Cancel"
+                  //               ? FloatingActionButton(
+                  //                   heroTag: "btnCreateNew",
+                  //                   backgroundColor: Colors.blue,
+                  //                   child: Icon(Icons.add),
+                  //                   onPressed: () {
+                  //                     showAlertDialogCreateNew(context);
+                  //                     // _showAddNewItemDetail();
+                  //                   },
+                  //                 )
+                  //               : null),
+                  //       // Align(
+                  //       //   alignment: Alignment.bottomRight,
+                  //       //   child: _getState().data.sapGoodsIssueId == 0 &&
+                  //       //           _getState().data.status == "Draft" //Tidak dipakai
+                  //       //       ? FloatingActionButton(
+                  //       //           heroTag: "btnRefresh",
+                  //       //           backgroundColor: Colors.green,
+                  //       //           child: Icon(Icons.autorenew),
+                  //       //           onPressed: () {
+                  //       //             showAlertDialogRefresh(context);
+                  //       //           },
+                  //       //         )
+                  //       //       : null,
+                  //       // ),
+
+                  //       Align(
+                  //         alignment: Alignment.bottomLeft,
+                  //         child: getData.sapGoodsReceiptId == 0 && getData.id > 0
+                  //             ? FloatingActionButton(
+                  //                 heroTag: "btnDelete",
+                  //                 backgroundColor: Colors.red,
+                  //                 child: Icon(Icons.delete_outline),
+                  //                 onPressed: () {
+                  //                   showAlertDialogDelete(context);
+                  //                 },
+                  //               )
+                  //             : null,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   _showCircularProgress(),
                 ]),
               ),
-              // floatingActionButton: _getState().data.sapGoodsReceiptId != 0
-              //     ? FloatingActionButton.extended(
-              //         icon: Icon(Icons.camera_alt),
-              //         backgroundColor: btnBgOrange,
-              //         label: Text("Scan"),
-              //         onPressed: () {
-              //           _scanQR();
-              //           //_refreshDetailItem();
-              //         },
-              //       )
-              //     : null,
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       )
-              //     : null,
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: "btnReset",
+                    backgroundColor: Colors.green,
+                    tooltip: "Reset",
+                    child: Icon(Icons.autorenew),
+                    onPressed: () {
+                      showAlertDialogReset(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnCreateNew",
+                    backgroundColor: Colors.blue,
+                    tooltip: "New Document",
+                    child: Icon(Icons.create),
+                    onPressed: () {
+                      showAlertDialogCreateNew(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnDelete",
+                    backgroundColor: Colors.red,
+                    tooltip: "Delete",
+                    child: Icon(Icons.delete_outline),
+                    onPressed: () {
+                      showAlertDialogDelete(context);
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -753,7 +992,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _statusController.text = data.status;
       _idTxController.text = data.id.toString();
+      _transNoController.text =
+          data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
@@ -891,6 +1133,9 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                           _webNoController.text = wo.transNo; // WebNo
                           _woIdController.text = wo.woId.toString();
                           _woNoController.text = wo.woNo;
+                          _sapGoodsIssueIdController.text =
+                              wo.docEntry.toString();
+                          _sapGoodsIssueNoController.text = wo.docNum;
                           _productCodeController.text = wo.productCode;
                           _productNameController.text = wo.productName;
                           _refreshDetailItem();
@@ -924,6 +1169,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                    // Text(_sapGoodsIssueNoController.text),
                                     Text(_webNoController.text),
                                     Text(_productCodeController.text),
                                     Text(_productNameController.text),
@@ -1045,9 +1291,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     ),
                   ),
                 )
-              : data.sapGoodsIssueId == 0 &&
-                      data.sapGoodsReceiptId == 0 &&
-                      data.status != "Cancel"
+              : data.sapGoodsReceiptId == 0 && data.status != "Cancel"
                   ? RaisedButton(
                       onPressed: () {
                         _showItemDetail(index);
@@ -1085,10 +1329,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       itemBuilder: (contex, index) {
         if (_getState().data.sapGoodsReceiptId == 0) {
           return Dismissible(
-            key: Key(data.items[index].hashCode.toString()),
+            key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  GoodsReceiptDetailEventItemRemove(itemIndex: index));
+              // bloc.emitEvent(
+              //     GoodsReceiptDetailEventItemRemove(itemIndex: index));
+
+              bloc.emitEvent(GoodsReceiptDetailEventRemoveItem(
+                  id: data.items[index].id, detId: data.items[index].detId));
             },
             background: Container(
                 color: Colors.red,

@@ -121,6 +121,7 @@ class _GoodsReceiptDetailItemDetailPageState
           id: _data.id,
           detId: _data.detId,
           webId: _newData.webId,
+          sapGoodsIssueId: _newData.sapGoodsIssueId,
           woId: _newData.woId,
           woLineNo: 0,
           qrResult: qrResult,
@@ -614,7 +615,7 @@ class _GoodsReceiptDetailItemDetailPageState
     final data = state.data;
     if (data != null) {
       return ListView.builder(
-        controller: _scrollController, 
+        controller: _scrollController,
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         itemCount: data.batchs.length,

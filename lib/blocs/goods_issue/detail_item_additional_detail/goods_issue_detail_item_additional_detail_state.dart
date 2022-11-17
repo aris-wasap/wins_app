@@ -44,6 +44,7 @@ class GoodsIssueDetailItemAdditionalDetailState extends BlocState {
   }) {
     return GoodsIssueDetailItemAdditionalDetailState(
       isSuccess: true,
+      isBusy: false,
       data: data,
       newData: newData,
     );

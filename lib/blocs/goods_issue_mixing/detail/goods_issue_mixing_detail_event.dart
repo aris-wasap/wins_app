@@ -5,6 +5,7 @@ import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 class GoodsIssueMixingDetailEvent extends BlocEvent {
   GoodsIssueMixingDetailEvent({
     this.id,
+    this.detId,
     this.data,
     this.item,
     this.woId,
@@ -15,10 +16,11 @@ class GoodsIssueMixingDetailEvent extends BlocEvent {
   });
 
   final int id;
+  final int detId;
   final Data data;
   final Item item;
   final int woId;
-  final DateTime transDate;
+  final String transDate;
   final String woNo;
   final int itemIndex;
   final String qrResult;
@@ -51,7 +53,7 @@ class GoodsIssueMixingDetailEventScan extends GoodsIssueMixingDetailEvent {
 class GoodsIssueMixingDetailEventRefresh extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventRefresh({
     @required int woId,
-    @required DateTime transDate,
+    @required String transDate,
   }) : super(
           woId: woId,
           transDate: transDate,
@@ -131,4 +133,11 @@ class GoodsIssueMixingDetailEventCancel extends GoodsIssueMixingDetailEvent {
           id: id,
           data: data,
         );
+}
+
+class GoodsIssueMixingDetailEventRemoveItem extends GoodsIssueMixingDetailEvent {
+  GoodsIssueMixingDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(id: id, detId: detId);
 }

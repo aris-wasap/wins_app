@@ -5,6 +5,7 @@ import 'package:wins_app/models/goods_issue_detail_response.dart';
 class GoodsIssueDetailEvent extends BlocEvent {
   GoodsIssueDetailEvent({
     this.id,
+    this.detId,
     this.data,
     this.item,
     this.woId,
@@ -15,10 +16,11 @@ class GoodsIssueDetailEvent extends BlocEvent {
   });
 
   final int id;
+  final int detId;
   final Data data;
   final Item item;
   final int woId;
-  final DateTime transDate;
+  final String transDate;
   final String woNo;
   final int itemIndex;
   final String qrResult;
@@ -51,7 +53,7 @@ class GoodsIssueDetailEventScan extends GoodsIssueDetailEvent {
 class GoodsIssueDetailEventRefresh extends GoodsIssueDetailEvent {
   GoodsIssueDetailEventRefresh({
     @required int woId,
-    @required DateTime transDate,
+    @required String transDate,
   }) : super(
           woId: woId,
           transDate: transDate,
@@ -128,4 +130,11 @@ class GoodsIssueDetailEventCancel extends GoodsIssueDetailEvent {
           id: id,
           data: data,
         );
+}
+
+class GoodsIssueDetailEventRemoveItem extends GoodsIssueDetailEvent {
+  GoodsIssueDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(id: id, detId: detId);
 }

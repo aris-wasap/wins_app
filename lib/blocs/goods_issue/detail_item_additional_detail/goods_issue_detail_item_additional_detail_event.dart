@@ -73,9 +73,9 @@ class GoodsIssueDetailItemAdditionalDetailEventRemoveContent
       : super(id: id, detId: detId, detDetId: detDetId);
 }
 
-class GoodsIssueDetailItemAdditionalDetailEventRefreshDetail
+class GoodsIssueDetailItemAdditionalDetailEventRefreshDetailAdditional
     extends GoodsIssueDetailItemAdditionalDetailEvent {
-  GoodsIssueDetailItemAdditionalDetailEventRefreshDetail({
+  GoodsIssueDetailItemAdditionalDetailEventRefreshDetailAdditional({
     @required int id,
     @required int detId,
     @required double qtyItem,
@@ -91,6 +91,29 @@ class GoodsIssueDetailItemAdditionalDetailEventRefreshDetail
 class GoodsIssueDetailItemAdditionalDetailEventPlannedQtyDetail
     extends GoodsIssueDetailItemAdditionalDetailEvent {
   GoodsIssueDetailItemAdditionalDetailEventPlannedQtyDetail({
+    @required int woId,
+    @required int id,
+    @required int detId,
+    @required String itemCode,
+    @required double plannedQty,
+    @required String whsCode,
+    @required int binAbs,
+    @required String binCode,
+  }) : super(
+          woId: woId,
+          id: id,
+          detId: detId,
+          itemCode: itemCode,
+          plannedQty: plannedQty,
+          whsCode: whsCode,
+          binAbs: binAbs,
+          binCode: binCode,
+        );
+}
+
+class GoodsIssueDetailItemAdditionalDetailEventCreateAdditionalItemDetail
+    extends GoodsIssueDetailItemAdditionalDetailEvent {
+  GoodsIssueDetailItemAdditionalDetailEventCreateAdditionalItemDetail({
     @required int woId,
     @required int id,
     @required int detId,

@@ -476,7 +476,7 @@ class Repository {
       apiProvider.goodsIssueDetail_RemoveContent(id, detId, detDetId);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(
-          int woId, DateTime transDate) =>
+          int woId, String transDate) =>
       apiProvider.goodsIssueDetail_ViewDetailItem(woId, transDate);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_RefreshAfter(int id) =>
@@ -494,6 +494,12 @@ class Repository {
       apiProvider.goodsIssueDetail_CreateAdditionalItem(
           woId, id, detId, itemCode, plannedQty, whsCode, binAbs, binCode);
 
+  Future<GoodsIssueDetailScanResponse>
+      goodsIssueDetailItemDetail_RefreshDetailAdditional(
+              int id, int detId, double qtyItem) =>
+          apiProvider.goodsIssueDetailItemDetail_RefreshDetailAdditional(
+              id, detId, qtyItem);
+
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
           int id, int detId, double qtyItem) =>
       apiProvider.goodsIssueDetailItemDetail_RefreshDetail(id, detId, qtyItem);
@@ -501,6 +507,9 @@ class Repository {
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ResetData(
           int id, int woId) =>
       apiProvider.goodsIssueDetail_ResetData(id, woId);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_RemoveItem(id, detId) =>
+      apiProvider.goodsIssueDetail_RemoveItem(id, detId);
 
   //-----------------------------
   //GoodsIssueMixingProductionList
@@ -566,7 +575,7 @@ class Repository {
           apiProvider.goodsIssueMixingDetail_RemoveContent(id, detId, detDetId);
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
-          int woId, DateTime transDate) =>
+          int woId, String transDate) =>
       apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId, transDate);
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_RefreshAfter(
@@ -581,6 +590,10 @@ class Repository {
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ResetData(
           int id, int woId) =>
       apiProvider.goodsIssueMixingDetail_ResetData(id, woId);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.goodsIssueMixingDetail_RemoveItem(id, detId);
 
 //-----------------------------
   //GoodsReceiptProductionList
@@ -617,6 +630,9 @@ class Repository {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Update(data);
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Cancel(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Cancel(data);
 
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
           goodsReceiptDetail.Data data) =>
@@ -630,11 +646,12 @@ class Repository {
           int id,
           int detId,
           int webId,
+          int sapGoodsIssueId,
           int woId,
           int woLineNo,
           String qrResult) =>
       apiProvider.goodsReceiptDetail_ScanItemBatch(
-          id, detId, webId, woId, woLineNo, qrResult);
+          id, detId, webId, sapGoodsIssueId, woId, woLineNo, qrResult);
 
   // Future<GoodsReceiptDetailScanBatchResponse> goodsReceiptDetail_ScanBatch(
   //         int id, int detId, int woId, int woLineNo, String qrResult) =>
@@ -646,8 +663,16 @@ class Repository {
       apiProvider.goodsReceiptDetail_RemoveContent(id, detId, detDetId);
 
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_ViewDetailItem(
-          int webId, String transDate) =>
-      apiProvider.goodsReceiptDetail_ViewDetailItem(webId, transDate);
+          int webId, int sapGoodsIssueId, String transDate) =>
+      apiProvider.goodsReceiptDetail_ViewDetailItem(
+          webId, sapGoodsIssueId, transDate);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_ResetData(
+          int id, int woId) =>
+      apiProvider.goodsReceiptDetail_ResetData(id, woId);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_RemoveItem(id, detId) =>
+      apiProvider.goodsReceiptDetail_RemoveItem(id, detId);
 
   //-----------------------------
   //TransferBranchList

@@ -124,6 +124,51 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
     Navigator.pop(context, _getState().data);
   }
 
+  void _save() {
+    if (_qtyController.text == "0" || _qtyController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Issue Qty harus lebih besar dari 0");
+      return;
+    }
+    // if (double.parse(_qtyController.text.replaceAll(new RegExp(','), '')) >
+    //     double.parse(_qtyWoController.text.replaceAll(new RegExp(','), ''))) {
+    //   ValidateDialogWidget(
+    //       context: context,
+    //       message: "Issue Qty tidak boleh melebihi Planned Qty");
+    //   return;
+    // }
+
+    try {
+      var newDetId = 0;
+      if (int.parse(_detIdController.text) == 0) {
+        newDetId = 0;
+      } else {
+        newDetId =
+            int.parse(_detIdController.text); //_newData.items[_index].detId;
+      }
+
+      bloc.emitEvent(
+        GoodsIssueDetailItemAdditionalDetailEventCreateAdditionalItemDetail(
+          woId: _newData.woId,
+          id: _newData.id,
+          detId: newDetId,
+          itemCode: _itemCodeController.text,
+          plannedQty:
+              double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
+          whsCode: _whsCodeController.text,
+          binAbs: int.parse(_binAbsController.text),
+          binCode: _binCodeController.text,
+        ),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Unknown error $ex");
+      return;
+    }
+
+    // Navigator.pop(context, _getState().newData);
+  }
+
   Future _scanQR() async {
     if (["", null].contains(_itemCodeController.text)) {
       ValidateDialogWidget(
@@ -248,12 +293,13 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
       ));
 
       bloc.emitEvent(
-        GoodsIssueDetailItemAdditionalDetailEventRefreshDetail(
-            id: _data.id,
-            detId: _data.detId,
-            qtyItem: double.parse(
-                _qtyController.text.replaceAll(new RegExp(','), '')),
-            newDataItem: _data),
+        GoodsIssueDetailItemAdditionalDetailEventRefreshDetailAdditional(
+          id: _data.id,
+          detId: _data.detId,
+          qtyItem:
+              double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
+          newDataItem: _data,
+        ),
       );
     } catch (ex) {
       ValidateDialogWidget(
@@ -262,62 +308,7 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
     }
   }
 
-  Future _setPlannedQtyDetail() async {
-    var dataItem = _getState().data;
-
-    if (_qtyWoController.text == "0" || _qtyWoController.text == "") {
-      ValidateDialogWidget(
-          context: context, message: "Planned Qty harus lebih besar dari 0");
-      return;
-    }
-    // if (double.parse(_qtyController.text.replaceAll(new RegExp(','), '')) <
-    //     double.parse(_qtyWoController.text.replaceAll(new RegExp(','), ''))) {
-    //   ValidateDialogWidget(
-    //       context: context,
-    //       message: "Planned Qty harus sama dengan Issue Qty ");
-    //   return;
-    // }
-
-    try {
-      // bloc.emitEvent(GoodsIssueDetailItemAdditionalDetailEventQty(
-      //   qty:
-      //       double.parse(_qtyWoController.text.replaceAll(new RegExp(','), '')),
-      //   binAbs: int.parse(_binAbsController.text),
-      //   binCode: _binCodeController.text,
-      // ));
-
-      if (dataItem != null) {
-        //Update
-        // bloc.emitEvent(
-        //   GoodsIssueDetailItemAdditionalDetailEventRefreshDetail(
-        //       id: _data.id,
-        //       detId: _data.detId,
-        //       qtyItem: double.parse(
-        //           _qtyWoController.text.replaceAll(new RegExp(','), '')),
-        //       newDataItem: _data),
-        // );
-      } else {
-        //Add New Line Item
-        bloc.emitEvent(
-          GoodsIssueDetailItemAdditionalDetailEventPlannedQtyDetail(
-            woId: _newData.woId,
-            id: _newData.id,
-            detId: 0,
-            itemCode: _itemCodeController.text,
-            plannedQty: double.parse(
-                _qtyWoController.text.replaceAll(new RegExp(','), '')),
-            whsCode: _whsCodeController.text,
-            binAbs: int.parse(_binAbsController.text),
-            binCode: _binCodeController.text,
-          ),
-        );
-      }
-    } catch (ex) {
-      ValidateDialogWidget(
-          context: context, message: "Refresh : Unknown error $ex");
-      return;
-    }
-  }
+  Future _setIssueQtyDetail() async {}
 
   Widget _showCircularProgress() {
     var state = bloc.lastState ?? bloc.initialState;
@@ -343,7 +334,8 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
       child: Text("Yes"),
       onPressed: () {
         Navigator.of(context).pop();
-        _refreshDetail();
+        // _refreshDetail();
+        _save();
       },
     );
     // set up the AlertDialog
@@ -405,25 +397,25 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                       ),
                       preferredSize: Size.fromHeight(5.0)),
                   actions: <Widget>[
-                    // _newData.sapGoodsIssueId == 0
-                    //     ? Row(
-                    //         children: <Widget>[
-                    //           Padding(
-                    //             padding: const EdgeInsets.all(8.0),
-                    //             child: RaisedButton(
-                    //               child: const Text('Save'),
-                    //               shape: const RoundedRectangleBorder(
-                    //                 borderRadius: BorderRadius.all(
-                    //                     Radius.elliptical(15, 15)),
-                    //               ),
-                    //               onPressed: () {
-                    //                 showAlertDialogSave(context);
-                    //               },
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       )
-                    //     : Container(),
+                    _newData.sapGoodsIssueId == 0
+                        ? Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                  child: const Text('Save'),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.elliptical(15, 15)),
+                                  ),
+                                  onPressed: () {
+                                    showAlertDialogSave(context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
                 body: SingleChildScrollView(
@@ -433,7 +425,7 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                     // _newData.items[_index].valuationMethod !=
                     //         'FIFO' //_data.id != 0
                     //     ?
-                    items != null
+                    _newData.sapGoodsIssueId == 0
                         ? FloatingActionButton.extended(
                             icon: Icon(Icons.camera_alt),
                             backgroundColor: bgOrange,
@@ -474,8 +466,8 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
       _toBinCodeController.text = dataItem.toBinCode;
 
       // _qtyWoController.text = data.woQty.toString();
-      _qtyController.text = NumberFormat("###,###.####")
-          .format(double.parse(dataItem.qty.toString()));
+      // _qtyController.text = NumberFormat("###,###.####")
+      // .format(double.parse(dataItem.qty.toString()));
 
       // if (data != null) {
       //   if (data.batchs.length > 0) {
@@ -493,12 +485,12 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
       //   }
       // }
 
-      if (_data.qty != 0) {
+      if (dataItem.qty != 0) {
         if (_qtyController.text == "") {
           _qtyController.text = NumberFormat("###,###.####")
               .format(double.parse(dataItem.qty.toString()));
         } else {
-          if (_data.qty ==
+          if (dataItem.qty ==
               double.parse(
                   _qtyController.text.replaceAll(new RegExp(','), ''))) {
             _qtyController.text = NumberFormat("###,###.####")
@@ -521,16 +513,19 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
         }
       }
 
-      if (_data.woQty != 0) {
+      if (dataItem.woQty != 0) {
         if (_qtyWoController.text == "") {
           _qtyWoController.text = NumberFormat("###,###.####")
               .format(double.parse(dataItem.woQty.toString()));
         } else {
-          if (_data.woQty ==
+          if (dataItem.woQty ==
               double.parse(
                   _qtyWoController.text.replaceAll(new RegExp(','), ''))) {
             _qtyWoController.text = NumberFormat("###,###.####")
                 .format(double.parse(dataItem.woQty.toString()));
+          } else {
+            _qtyWoController.text = NumberFormat("###,###.####")
+                .format(double.parse(dataItem.qty.toString()));
           }
         }
       }
@@ -828,26 +823,17 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                // TextField(
-                //   controller: _qtyWoController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Planned Qty",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
                 _newData.sapGoodsIssueId == 0
                     ? TextField(
                         autofocus: false,
+                        enabled: false, //dataItem == null ? false :
                         textInputAction: TextInputAction.done,
                         controller: _qtyWoController,
                         focusNode: _focusNodeWoQty,
                         onEditingComplete: () {
                           setState(() {
                             String newValue = NumberFormat("###,###.####")
-                                .format(double.parse(_qtyWoController.text
+                                .format(double.parse(_qtyController.text
                                     .replaceAll(new RegExp(','), '')
                                     .replaceAll(new RegExp('-'), '')
                                     .replaceAll(new RegExp(' '), '')));
@@ -857,7 +843,7 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                                     offset: newValue.length);
                           });
                           _focusNodeWoQty.unfocus();
-                          _setPlannedQtyDetail();
+                          // _refreshDetail();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -874,20 +860,23 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Planned Qty",
-                          valueText:
-                              "${NumberFormat("#,###.##").format(dataItem.woQty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyWoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Planned Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 10)),
+                // Padding(padding: EdgeInsets.only(top: 10)),
                 // TextField(
-                //   controller: _qtyController,
+                //   controller: _qtyWoController,
                 //   enabled: false,
                 //   decoration: InputDecoration(
-                //       labelText: "Issue Qty",
+                //       labelText: "Planned Qty",
                 //       contentPadding: new EdgeInsets.symmetric(
                 //           vertical: 15.0, horizontal: 10.0),
                 //       border: new OutlineInputBorder(
@@ -896,7 +885,6 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                 _newData.sapGoodsIssueId == 0
                     ? TextField(
                         autofocus: false,
-                        enabled: dataItem == null ? false : true,
                         textInputAction: TextInputAction.done,
                         controller: _qtyController,
                         focusNode: _focusNode,
@@ -912,7 +900,8 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                                 offset: newValue.length);
                           });
                           _focusNode.unfocus();
-                          _refreshDetail();
+                          // _setPlannedQtyDetail();
+                          // _save();
                         },
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 4)
@@ -929,15 +918,28 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                               borderSide: BorderSide(color: Colors.blue),
                               borderRadius: new BorderRadius.circular(10.0)),
                         ))
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: LabelFieldWidget(
-                          labelText: "Issue Qty",
-                          valueText:
-                              "${NumberFormat("#,###.##").format(dataItem.qty)}",
-                        ),
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Issue Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
                       ),
                 Padding(padding: EdgeInsets.only(top: 10)),
+                // TextField(
+                //   controller: _qtyController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Issue Qty",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+
                 // TextFormField(
                 //   controller: _uomController,
                 //   enabled: false,
@@ -1043,14 +1045,16 @@ class _GoodsIssueDetailItemAdditionalDetailPageState
                         "Qty Batch : ${NumberFormat("#,###.##").format(newData.batchs[index].quantity)}"),
                   ],
                 ),
-                trailing: IconButton(
-                  color: Colors.black,
-                  icon: Icon(Icons.edit),
-                  iconSize: 30.0,
-                  onPressed: () {
-                    _showItemDetail(index);
-                  },
-                ),
+                trailing: _newData.sapGoodsIssueId == 0
+                    ? IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.edit),
+                        iconSize: 30.0,
+                        onPressed: () {
+                          _showItemDetail(index);
+                        },
+                      )
+                    : null,
               ),
             ),
           )

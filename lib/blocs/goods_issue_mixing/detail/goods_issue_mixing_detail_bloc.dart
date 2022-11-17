@@ -363,6 +363,39 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
           );
         }
       }
+    } else if (event is GoodsIssueMixingDetailEventRemoveItem) {
+      yield GoodsIssueMixingDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueMixingDetailResponse response = await _repository
+            .goodsIssueMixingDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield GoodsIssueMixingDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueMixingDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
+      }
     } else {}
   }
 }

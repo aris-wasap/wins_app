@@ -50,6 +50,7 @@ class _GoodsIssueMixingDetailPageState
   final _seriesNameController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
+  final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -83,6 +84,7 @@ class _GoodsIssueMixingDetailPageState
 
   @override
   void dispose() {
+    _statusController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _productCodeController?.dispose();
@@ -393,9 +395,11 @@ class _GoodsIssueMixingDetailPageState
     //     }
     //   }
     try {
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
       bloc.emitEvent(GoodsIssueMixingDetailEventRefresh(
         woId: int.parse(_woIdController.text),
-        transDate: transDate,
+        transDate: setTransDate,
       ));
     } catch (ex) {
       ValidateDialogWidget(
@@ -437,6 +441,20 @@ class _GoodsIssueMixingDetailPageState
       return;
     }
 
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
     var data = _getState().data;
 
     try {
@@ -454,6 +472,20 @@ class _GoodsIssueMixingDetailPageState
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
           context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
       return;
     }
 
@@ -542,7 +574,7 @@ class _GoodsIssueMixingDetailPageState
   @override
   Widget build(BuildContext context) {
     _context = context;
-    var data = _getState().data;
+    var getData = _getState().data;
 
     return BlocEventStateBuilder<GoodsIssueMixingDetailState>(
         bloc: bloc,
@@ -562,74 +594,111 @@ class _GoodsIssueMixingDetailPageState
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: _getState().data.sapGoodsIssueId == 0 &&
-                                    _getState().data.id > 0 &&
-                                    _getState().data.status != "Cancel"
-                                ? FloatingActionButton(
-                                    heroTag: "btnReset",
-                                    backgroundColor: Colors.green,
-                                    child: Icon(Icons.autorenew),
-                                    onPressed: () {
-                                      showAlertDialogReset(context);
-                                    },
-                                  )
-                                : null),
-                        // Align(
-                        //     alignment: Alignment.bottomCenter,
-                        //     child: _getState().data.sapGoodsIssueId == 0 &&
-                        //             _getState().data.status == "Draft" //Tidak dipakai
-                        //         ? FloatingActionButton(
-                        //             heroTag: "btnCreateNew",
-                        //             backgroundColor: Colors.blue,
-                        //             child: Icon(Icons.add),
-                        //             onPressed: () {
-                        //               showAlertDialogCreateNew(context);
-                        //             },
-                        //           )
-                        //         : null),
-                        // Align(
-                        //   alignment: Alignment.bottomRight,
-                        //   child: _getState().data.sapGoodsIssueId == 0 &&
-                        //           _getState().data.status == "Draft" //Tidak dipakai
-                        //       ? FloatingActionButton(
-                        //           heroTag: "btnRefresh",
-                        //           backgroundColor: Colors.green,
-                        //           child: Icon(Icons.autorenew),
-                        //           onPressed: () {
-                        //             showAlertDialogRefresh(context);
-                        //           },
-                        //         )
-                        //       : null,
-                        // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
+                  //   child: Stack(
+                  //     children: <Widget>[
+                  //       Align(
+                  //           alignment: Alignment.bottomRight,
+                  //           child: getData.sapGoodsIssueId == 0 &&
+                  //                   getData.id > 0 &&
+                  //                   getData != "Cancel"
+                  //               ? FloatingActionButton(
+                  //                   heroTag: "btnReset",
+                  //                   backgroundColor: Colors.green,
+                  //                   child: Icon(Icons.autorenew),
+                  //                   onPressed: () {
+                  //                     showAlertDialogReset(context);
+                  //                   },
+                  //                 )
+                  //               : null),
+                  //       Align(
+                  //           alignment: Alignment.bottomCenter,
+                  //           child: getData.status != "Cancel"
+                  //               ? FloatingActionButton(
+                  //                   heroTag: "btnCreateNew",
+                  //                   backgroundColor: Colors.blue,
+                  //                   child: Icon(Icons.add),
+                  //                   onPressed: () {
+                  //                     showAlertDialogCreateNew(context);
+                  //                   },
+                  //                 )
+                  //               : null),
+                  //       // Align(
+                  //       //   alignment: Alignment.bottomRight,
+                  //       //   child: _getState().data.sapGoodsIssueId == 0 &&
+                  //       //           _getState().data.status == "Draft" //Tidak dipakai
+                  //       //       ? FloatingActionButton(
+                  //       //           heroTag: "btnRefresh",
+                  //       //           backgroundColor: Colors.green,
+                  //       //           child: Icon(Icons.autorenew),
+                  //       //           onPressed: () {
+                  //       //             showAlertDialogRefresh(context);
+                  //       //           },
+                  //       //         )
+                  //       //       : null,
+                  //       // ),
 
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: _getState().data.sapGoodsIssueId == 0 &&
-                                  _getState().data.id > 0 &&
-                                  _getState().data.status != "Cancel"
-                              ? FloatingActionButton(
-                                  heroTag: "btnDelete",
-                                  backgroundColor: Colors.red,
-                                  child: Icon(Icons.delete_outline),
-                                  onPressed: () {
-                                    showAlertDialogDelete(context);
-                                  },
-                                )
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
+                  //       Align(
+                  //         alignment: Alignment.bottomLeft,
+                  //         child: getData.sapGoodsIssueId == 0 &&
+                  //                getData.id > 0 &&
+                  //                getData.status != "Cancel"
+                  //             ? FloatingActionButton(
+                  //                 heroTag: "btnDelete",
+                  //                 backgroundColor: Colors.red,
+                  //                 child: Icon(Icons.delete_outline),
+                  //                 onPressed: () {
+                  //                   showAlertDialogDelete(context);
+                  //                 },
+                  //               )
+                  //             : null,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   _showCircularProgress(),
                 ]),
               ),
               //Floating Button
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: "btnReset",
+                    backgroundColor: Colors.green,
+                    tooltip: "Reset",
+                    child: Icon(Icons.autorenew),
+                    onPressed: () {
+                      showAlertDialogReset(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnCreateNew",
+                    backgroundColor: Colors.blue,
+                    tooltip: "New Document",
+                    child: Icon(Icons.create),
+                    onPressed: () {
+                      showAlertDialogCreateNew(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnDelete",
+                    backgroundColor: Colors.red,
+                    tooltip: "Delete",
+                    child: Icon(Icons.delete_outline),
+                    onPressed: () {
+                      showAlertDialogDelete(context);
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -676,6 +745,7 @@ class _GoodsIssueMixingDetailPageState
     var data = state.data;
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
+    _transNoController.text = data.transNo;
 
     if (transDate != null) {
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -687,6 +757,7 @@ class _GoodsIssueMixingDetailPageState
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
     }
     if (data.id != 0) {
+      _statusController.text = data.status;
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
@@ -1059,7 +1130,7 @@ class _GoodsIssueMixingDetailPageState
                   },
                   color: bgBlue,
                   child: Text(
-                    "ADD",
+                    "FIFO",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -1107,10 +1178,12 @@ class _GoodsIssueMixingDetailPageState
           if (data.sapGoodsIssueId == 0 && data.id > 0) {
             // return _rowDetail(data, index);
             return Dismissible(
-              key: Key(data.items[index].hashCode.toString()),
+              key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
               onDismissed: (direction) {
-                bloc.emitEvent(
-                    GoodsIssueMixingDetailEventItemRemove(itemIndex: index));
+                // bloc.emitEvent(
+                //     GoodsIssueMixingDetailEventItemRemove(itemIndex: index));
+                bloc.emitEvent(GoodsIssueMixingDetailEventRemoveItem(
+                    id: data.items[index].id, detId: data.items[index].detId));
               },
               background: Container(
                   color: Colors.red,

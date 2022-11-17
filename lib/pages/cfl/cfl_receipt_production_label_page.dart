@@ -175,13 +175,13 @@ class _CflReceiptProductionLabelPageState
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "No. ${data[index].transNo}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
+                    "Goods Issue No.  ${data[index].docNum ?? ''}  -  ${DateFormat('dd/MM/yyyy').format(data[index].transDate)} "),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Label No. : ${data[index].transNo ?? ''}"),
-                    Text("Issue No. : ${data[index].docNum ?? ''}"),
+                    // Text("Issue No. : ${data[index].docNum ?? ''}"),
                     Text("WO No. : ${data[index].woNo ?? ''}"),
                     Text("Product Code : ${data[index].productCode ?? ''}"),
                     Text("Product Name : ${data[index].productName ?? ''}"),

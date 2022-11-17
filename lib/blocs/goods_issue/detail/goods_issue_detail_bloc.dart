@@ -130,8 +130,8 @@ class GoodsIssueDetailBloc
         );
         try {
           var _repository = Repository();
-          GoodsIssueDetailResponse response =
-              await _repository.goodsIssueDetail_ViewDetailItem(woId, transDate);
+          GoodsIssueDetailResponse response = await _repository
+              .goodsIssueDetail_ViewDetailItem(woId, transDate);
           if (response == null) {
             yield GoodsIssueDetailState.failure(
               errorMessage: 'Response null',
@@ -313,10 +313,43 @@ class GoodsIssueDetailBloc
           );
         }
       }
+    } else if (event is GoodsIssueDetailEventRemoveItem) {
+      yield GoodsIssueDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailResponse response = await _repository
+            .goodsIssueDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield GoodsIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
+      }
     } else if (event is GoodsIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
-      yield GoodsIssueDetailState.busy(
+      yield GoodsIssueDetailState.success(
         data: currentState.data,
       );
     } else if (event is GoodsIssueDetailEventItemUpdate) {

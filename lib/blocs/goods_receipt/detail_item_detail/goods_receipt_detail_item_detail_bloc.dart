@@ -35,6 +35,7 @@ class GoodsReceiptDetailItemDetailBloc extends BlocEventStateBase<
       var id = event.id;
       var detId = event.detId;
       var webId = event.webId;
+      var sapGoodsIssueId = event.sapGoodsIssueId;
       var woId = event.woId;
       var woLineNo = event.woLineNo;
       var qrResult = event.qrResult;
@@ -49,7 +50,7 @@ class GoodsReceiptDetailItemDetailBloc extends BlocEventStateBase<
         var _repository = Repository();
         GoodsReceiptDetailScanResponse response =
             await _repository.goodsReceiptDetail_ScanItemBatch(
-                id, detId, webId, woId, woLineNo, qrResult);
+                id, detId, webId, sapGoodsIssueId, woId, woLineNo, qrResult);
         if (response == null) {
           yield GoodsReceiptDetailItemDetailState.failure(
             errorMessage: 'Response null',

@@ -5,23 +5,27 @@ import 'package:meta/meta.dart';
 class GoodsReceiptDetailEvent extends BlocEvent {
   GoodsReceiptDetailEvent({
     this.id,
+    this.detId,
     this.transDate,
     this.data,
     this.item,
     this.woId,
     this.woNo,
     this.webId,
+    this.sapGoodsIssueId,
     this.itemIndex,
     this.qrResult,
   });
 
   final int id;
+  final int detId;
   final String transDate;
   final Data data;
   final Item item;
   final int woId;
   final String woNo;
   final int webId;
+  final int sapGoodsIssueId;
   final int itemIndex;
   final String qrResult;
 }
@@ -53,10 +57,22 @@ class GoodsReceiptDetailEventScan extends GoodsReceiptDetailEvent {
 class GoodsReceiptDetailEventRefresh extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventRefresh({
     @required int webId,
+    @required int sapGoodsIssueId,
     @required String transDate,
   }) : super(
           webId: webId,
-          transDate:transDate,
+          sapGoodsIssueId: sapGoodsIssueId,
+          transDate: transDate,
+        );
+}
+
+class GoodsReceiptDetailEventResetData extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventResetData({
+    @required int id,
+    @required int woId,
+  }) : super(
+          id: id,
+          woId: woId,
         );
 }
 
@@ -113,7 +129,19 @@ class GoodsReceiptDetailEventPost extends GoodsReceiptDetailEvent {
 class GoodsReceiptDetailEventCancel extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
+        );
+}
+
+class GoodsReceiptDetailEventRemoveItem extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(
+          id: id,
+          detId: detId,
         );
 }

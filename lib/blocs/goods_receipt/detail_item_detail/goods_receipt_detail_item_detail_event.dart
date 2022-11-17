@@ -10,6 +10,7 @@ class GoodsReceiptDetailItemDetailEvent extends BlocEvent {
     this.detId,
     this.detDetId,
     this.webId,
+    this.sapGoodsIssueId,
     this.woId,
     this.woLineNo,
     this.qty,
@@ -25,6 +26,7 @@ class GoodsReceiptDetailItemDetailEvent extends BlocEvent {
   final int detId;
   final int detDetId;
   final int webId;
+  final int sapGoodsIssueId;
   final int woId;
   final int woLineNo;
   final double qty;
@@ -50,6 +52,7 @@ class GoodsReceiptDetailItemDetailEventScan
       @required int id,
       @required int detId,
       @required int webId,
+      @required int sapGoodsIssueId,
       @required int woId,
       @required int woLineNo,
       @required String qrResult})
@@ -58,6 +61,7 @@ class GoodsReceiptDetailItemDetailEventScan
           id: id,
           detId: detId,
           webId: webId,
+          sapGoodsIssueId: sapGoodsIssueId,
           woId: woId,
           woLineNo: woLineNo,
           qrResult: qrResult,
