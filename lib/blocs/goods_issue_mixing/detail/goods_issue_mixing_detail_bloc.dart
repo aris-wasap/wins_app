@@ -1,7 +1,7 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_state.dart';
-import 'package:wins_app/models/goods_issue_mixing_detail_refresh_response.dart';
+// import 'package:wins_app/models/goods_issue_mixing_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
 import 'package:wins_app/resources/repository.dart';
