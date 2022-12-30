@@ -38,7 +38,7 @@ class _GoodsIssueMixingDetailPageState
   //final Data _newData;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
   final _productCodeController = TextEditingController();
@@ -85,6 +85,7 @@ class _GoodsIssueMixingDetailPageState
   @override
   void dispose() {
     _statusController?.dispose();
+    _idTxController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _productCodeController?.dispose();
@@ -160,6 +161,45 @@ class _GoodsIssueMixingDetailPageState
     bloc.emitEvent(GoodsIssueMixingDetailEventAdd(
       data: data,
     ));
+  }
+
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
+
+    data.id = int.parse(_idTxController.text);
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNameWoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+    bloc.emitEvent(
+      GoodsIssueMixingDetailEventUpdateTransDate(
+        id: int.parse(_idTxController.text),
+        transDate: setTransDate,
+      ),
+    );
   }
 
   void _post() {
@@ -293,6 +333,7 @@ class _GoodsIssueMixingDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -594,69 +635,6 @@ class _GoodsIssueMixingDetailPageState
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
-                  //   child: Stack(
-                  //     children: <Widget>[
-                  //       Align(
-                  //           alignment: Alignment.bottomRight,
-                  //           child: getData.sapGoodsIssueId == 0 &&
-                  //                   getData.id > 0 &&
-                  //                   getData != "Cancel"
-                  //               ? FloatingActionButton(
-                  //                   heroTag: "btnReset",
-                  //                   backgroundColor: Colors.green,
-                  //                   child: Icon(Icons.autorenew),
-                  //                   onPressed: () {
-                  //                     showAlertDialogReset(context);
-                  //                   },
-                  //                 )
-                  //               : null),
-                  //       Align(
-                  //           alignment: Alignment.bottomCenter,
-                  //           child: getData.status != "Cancel"
-                  //               ? FloatingActionButton(
-                  //                   heroTag: "btnCreateNew",
-                  //                   backgroundColor: Colors.blue,
-                  //                   child: Icon(Icons.add),
-                  //                   onPressed: () {
-                  //                     showAlertDialogCreateNew(context);
-                  //                   },
-                  //                 )
-                  //               : null),
-                  //       // Align(
-                  //       //   alignment: Alignment.bottomRight,
-                  //       //   child: _getState().data.sapGoodsIssueId == 0 &&
-                  //       //           _getState().data.status == "Draft" //Tidak dipakai
-                  //       //       ? FloatingActionButton(
-                  //       //           heroTag: "btnRefresh",
-                  //       //           backgroundColor: Colors.green,
-                  //       //           child: Icon(Icons.autorenew),
-                  //       //           onPressed: () {
-                  //       //             showAlertDialogRefresh(context);
-                  //       //           },
-                  //       //         )
-                  //       //       : null,
-                  //       // ),
-
-                  //       Align(
-                  //         alignment: Alignment.bottomLeft,
-                  //         child: getData.sapGoodsIssueId == 0 &&
-                  //                getData.id > 0 &&
-                  //                getData.status != "Cancel"
-                  //             ? FloatingActionButton(
-                  //                 heroTag: "btnDelete",
-                  //                 backgroundColor: Colors.red,
-                  //                 child: Icon(Icons.delete_outline),
-                  //                 onPressed: () {
-                  //                   showAlertDialogDelete(context);
-                  //                 },
-                  //               )
-                  //             : null,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   _showCircularProgress(),
                 ]),
               ),
@@ -758,6 +736,7 @@ class _GoodsIssueMixingDetailPageState
     }
     if (data.id != 0) {
       _statusController.text = data.status;
+      _idTxController.text = data.id.toString();
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;

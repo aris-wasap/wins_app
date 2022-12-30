@@ -242,6 +242,42 @@ class GoodsIssueDetailBloc
           );
         }
       }
+    } else if (event is GoodsIssueDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield GoodsIssueDetailState.busy(
+        // data: event.data,
+         data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailResponse response =
+            await _repository.goodsIssueDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is GoodsIssueDetailEventPost) {
       yield GoodsIssueDetailState.busy(
         data: event.data,

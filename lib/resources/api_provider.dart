@@ -1713,6 +1713,33 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_UpdateTransDate(
+      int id, String transDate) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Id": id,
+        "TransDate": transDate,
+        // "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueDetailApi/UpdateTransDate",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_Add:Failed to add GoodsIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_Add:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsIssueDetailResponse> goodsIssueDetail_Post(
       goodsIssueDetail.Data data) async {
     try {
@@ -2277,6 +2304,34 @@ class ApiProvider {
     }
   }
 
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_UpdateTransDate(
+      int id, String transDate) async {
+    //goodsIssueMixingDetail.Data data
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Id": id,
+        "TransDate": transDate,
+        // "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsIssueMixingDetailApi/UpdateTransDate",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsIssueMixingDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsIssueDetail_Add:Failed to add GoodsIssue(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsIssueDetail_Add:Failed to load post(1)');
+    }
+  }
+
   Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
       int woId, String qrResult) async {
     try {
@@ -2664,6 +2719,33 @@ class ApiProvider {
 
       final response = await http.post(
           "${_url}api/GoodsReceiptDetailApi/Update",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(goodsReceiptDetailResponseFromJson, response.body);
+      } else {
+        throw Exception('goodsReceiptDetail_Add:Failed to add GoodsReceipt(2)');
+      }
+    } catch (e) {
+      throw Exception('goodsReceiptDetail_Add:Failed to load post(1)');
+    }
+  }
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_UpdateTransDate(
+      int id, String transDate) async {
+    try {
+      var body = json.encode({
+        "UserId": globalBloc.userId,
+        "BranchId": globalBloc.branchId,
+        "Id": id,
+        "TransDate": transDate,
+        // "Data": data.toJson()
+      });
+
+      final response = await http.post(
+          "${_url}api/GoodsReceiptDetailApi/UpdateTransDate",
           headers: {'Content-type': 'application/json'},
           body: body);
 
@@ -5167,7 +5249,7 @@ class ApiProvider {
         "rowStart": rowStart,
         "pageSize": 10,
         "searchQuery": searchQuery,
-        "branchId": branchId
+        "branchId": globalBloc.branchId,
       });
 
       final response = await http.post(

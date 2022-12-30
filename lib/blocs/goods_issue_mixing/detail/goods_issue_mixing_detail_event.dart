@@ -125,6 +125,17 @@ class GoodsIssueMixingDetailEventPost extends GoodsIssueMixingDetailEvent {
         );
 }
 
+class GoodsIssueMixingDetailEventUpdateTransDate
+    extends GoodsIssueMixingDetailEvent {
+  GoodsIssueMixingDetailEventUpdateTransDate({
+    @required int id,
+    @required String transDate,
+  }) : super(
+          id: id,
+          transDate: transDate,
+        );
+}
+
 class GoodsIssueMixingDetailEventCancel extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventCancel({
     @required int id,
@@ -135,7 +146,8 @@ class GoodsIssueMixingDetailEventCancel extends GoodsIssueMixingDetailEvent {
         );
 }
 
-class GoodsIssueMixingDetailEventRemoveItem extends GoodsIssueMixingDetailEvent {
+class GoodsIssueMixingDetailEventRemoveItem
+    extends GoodsIssueMixingDetailEvent {
   GoodsIssueMixingDetailEventRemoveItem({
     @required int id,
     @required int detId,

@@ -454,6 +454,10 @@ class Repository {
           goodsIssueDetail.Data data) =>
       apiProvider.goodsIssueDetail_Post(data);
 
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsIssueDetail_UpdateTransDate(id, transDate);
+
   Future<GoodsIssueDetailResponse> goodsIssueDetail_Cancel(
           goodsIssueDetail.Data data) =>
       apiProvider.goodsIssueDetail_Cancel(data);
@@ -554,6 +558,10 @@ class Repository {
           goodsIssueMixingDetail.Data data) =>
       apiProvider.goodsIssueMixingDetail_Post(data);
 
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsIssueMixingDetail_UpdateTransDate(id, transDate);
+
   Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
           int woId, String qrResult) =>
       apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
@@ -630,6 +638,11 @@ class Repository {
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Update(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Update(data);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsReceiptDetail_UpdateTransDate(id, transDate);
+
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Cancel(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Cancel(data);

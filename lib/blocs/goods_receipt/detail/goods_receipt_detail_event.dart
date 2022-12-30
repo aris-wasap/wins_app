@@ -118,6 +118,16 @@ class GoodsReceiptDetailEventUpdate extends GoodsReceiptDetailEvent {
         );
 }
 
+class GoodsReceiptDetailEventUpdateTransDate extends GoodsReceiptDetailEvent {
+  GoodsReceiptDetailEventUpdateTransDate({
+    @required int id,
+    @required String transDate,
+  }) : super(
+          id: id,
+          transDate: transDate,
+        );
+}
+
 class GoodsReceiptDetailEventPost extends GoodsReceiptDetailEvent {
   GoodsReceiptDetailEventPost({
     @required Data data,

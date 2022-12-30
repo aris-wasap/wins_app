@@ -122,6 +122,16 @@ class GoodsIssueDetailEventPost extends GoodsIssueDetailEvent {
         );
 }
 
+class GoodsIssueDetailEventUpdateTransDate extends GoodsIssueDetailEvent {
+  GoodsIssueDetailEventUpdateTransDate({
+    @required int id,
+    @required String transDate,
+  }) : super(
+          id: id,
+          transDate: transDate,
+        );
+}
+
 class GoodsIssueDetailEventCancel extends GoodsIssueDetailEvent {
   GoodsIssueDetailEventCancel({
     @required int id,

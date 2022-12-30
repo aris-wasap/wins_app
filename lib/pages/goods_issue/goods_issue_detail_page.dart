@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_additional_detail_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
@@ -37,7 +38,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //final Data _newData;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
   final _productCodeController = TextEditingController();
@@ -83,6 +84,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
     _statusController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
@@ -159,6 +161,46 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     bloc.emitEvent(GoodsIssueDetailEventAdd(
       data: data,
     ));
+  }
+
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
+
+    data.id = int.parse(_idTxController.text);
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNameWoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
+    bloc.emitEvent(
+      GoodsIssueDetailEventUpdateTransDate(
+        id: int.parse(_idTxController.text),
+        transDate: setTransDate,
+      ),
+    );
   }
 
   void _post() {
@@ -292,6 +334,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -583,6 +626,20 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       return;
     }
 
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
     var newItem = _getState().newItem;
     var newData = _getState().data;
     if (newItem == null) {
@@ -756,6 +813,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
     }
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;

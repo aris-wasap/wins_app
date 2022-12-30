@@ -5,6 +5,8 @@ import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/login_response.dart';
 import 'package:wins_app/resources/repository.dart';
 
+import '../../list_menu.dart';
+
 class AuthenticationBloc
     extends BlocEventStateBase<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc()

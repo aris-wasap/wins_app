@@ -245,6 +245,43 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
           data: event.data,
         );
       }
+    } else if (event is GoodsReceiptDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield GoodsReceiptDetailState.busy(
+        // data: event.data,
+         data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsReceiptDetailResponse response =
+            await _repository.goodsReceiptDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsReceiptDetailState.success(
+              succesMessage: response.errorMessage,
+              data:
+                  response.data ?? Data(items: List<goodsReceiptDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsReceiptDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is GoodsReceiptDetailEventPost) {
       yield GoodsReceiptDetailState.busy(
         data: event.data,

@@ -433,33 +433,38 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     ));
   }
 
-  // void _update() {
-  //   var state = (bloc.lastState ?? bloc.initialState);
-  //   var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-  //   data.id = int.parse(_idTxController.text);
-  //   data.woNo = _woNoController.text;
-  //   data.woId = int.parse(_woIdController.text);
-  //   data.productCode = _productCodeController.text;
-  //   data.productName = _productNameController.text;
-  //   data.transDate = transDate;
-  //   data.seriesName = _seriesNameController.text;
-  //   data.seriesNameWo = _seriesNamePoController.text;
-  //   data.items = state.data.items;
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
 
-  //   if ([null].contains(data.transDate)) {
-  //     ValidateDialogWidget(
-  //         context: context, message: "Production Date harus di isi");
-  //     return;
-  //   } else if (["", null].contains(data.woNo)) {
-  //     ValidateDialogWidget(
-  //         context: context, message: "Production Order No harus di isi");
-  //     return;
-  //   }
+    data.id = int.parse(_idTxController.text);
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.productCode = _productCodeController.text;
+    data.productName = _productNameController.text;
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNamePoController.text;
+    data.items = state.data.items;
 
-  //   bloc.emitEvent(GoodsReceiptDetailEventUpdate(
-  //     data: data,
-  //   ));
-  // }
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+    bloc.emitEvent(
+      GoodsReceiptDetailEventUpdateTransDate(
+        id: int.parse(_idTxController.text),
+        transDate: setTransDate,
+      ),
+    );
+  }
 
   void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
@@ -620,6 +625,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
