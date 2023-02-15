@@ -271,7 +271,41 @@ class _GoodsReceiptDetailItemDetailPageState
     );
   }
 
+   void _errorMessage() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
+      if ((errorMessage != null) && (errorMessage != "")) {
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error : '),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text("${errorMessage}"),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    bloc.emitEvent(GoodsReceiptDetailItemEventNormal());
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
+
   Widget _buildForm() {
+     _errorMessage();
     var data = _getState().data;
 
     _itemCodeController.text = data.itemCode;

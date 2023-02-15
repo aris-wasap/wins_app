@@ -207,8 +207,8 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // Text(
-                    //     "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
+                    Text(
+                        "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
                     Text("Production No. : ${data[index].woNo}"),
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),

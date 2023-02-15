@@ -13,6 +13,7 @@ class GoodsIssueDetailEvent extends BlocEvent {
     this.woNo,
     this.itemIndex,
     this.qrResult,
+    this.weightProd,
   });
 
   final int id;
@@ -24,6 +25,7 @@ class GoodsIssueDetailEvent extends BlocEvent {
   final String woNo;
   final int itemIndex;
   final String qrResult;
+  final double weightProd;
 }
 
 class GoodsIssueDetailEventNormal extends GoodsIssueDetailEvent {
@@ -57,6 +59,18 @@ class GoodsIssueDetailEventRefresh extends GoodsIssueDetailEvent {
   }) : super(
           woId: woId,
           transDate: transDate,
+        );
+}
+
+class GoodsIssueDetailEventGetWeightProduction extends GoodsIssueDetailEvent {
+  GoodsIssueDetailEventGetWeightProduction({
+    @required int id,
+    @required int woId,
+    @required double weightProd,
+  }) : super(
+          id: id,
+          woId: woId,
+          weightProd: weightProd,
         );
 }
 

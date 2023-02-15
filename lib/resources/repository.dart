@@ -300,6 +300,10 @@ class Repository {
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
 
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Cancel(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Cancel(data);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
           id, detId) =>
       apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
@@ -333,6 +337,10 @@ class Repository {
           returnSalesDetail.Data data) =>
       apiProvider.returnSalesDetail_Post(data);
 
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Cancel(
+          returnSalesDetail.Data data) =>
+      apiProvider.returnSalesDetail_Cancel(data);
+
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
           int doId, String qrResult) =>
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
@@ -362,6 +370,10 @@ class Repository {
   Future<ReceivableCreditDetailResponse> receivableCreditDetail_Post(
           receivableCreditDetail.Data data) =>
       apiProvider.receivableCreditDetail_Post(data);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Cancel(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Cancel(data);
 
   Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
           int returnRequestId, String qrResult) =>
@@ -507,6 +519,10 @@ class Repository {
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
           int id, int detId, double qtyItem) =>
       apiProvider.goodsIssueDetailItemDetail_RefreshDetail(id, detId, qtyItem);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_GetWeightProduction(
+          int id, int woId, double weightProd) =>
+      apiProvider.goodsIssueDetail_GetWeightProduction(id, woId, weightProd);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ResetData(
           int id, int woId) =>
@@ -842,6 +858,10 @@ class Repository {
           receiptOrderDetail.Data data) =>
       apiProvider.receiptOrderDetail_Post(data);
 
+  Future<ReceiptOrderDetailResponse> receiptOrderDetail_Cancel(
+          receiptOrderDetail.Data data) =>
+      apiProvider.receiptOrderDetail_Cancel(data);
+
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
           int webId, String qrResult) =>
       apiProvider.receiptOrderDetail_Scan(webId, qrResult);
@@ -870,6 +890,10 @@ class Repository {
   Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Post(
           receiptSupplierDetail.Data data) =>
       apiProvider.receiptSupplierDetail_Post(data);
+
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Cancel(
+          receiptSupplierDetail.Data data) =>
+      apiProvider.receiptSupplierDetail_Cancel(data);
 
   Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
           int poId, String qrResult) =>
@@ -900,6 +924,10 @@ class Repository {
           purchaseReturnsDetail.Data data) =>
       apiProvider.purchaseReturnsDetail_Post(data);
 
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Cancel(
+          purchaseReturnsDetail.Data data) =>
+      apiProvider.purchaseReturnsDetail_Cancel(data);
+
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
           int grpoId, String qrResult) =>
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
@@ -928,6 +956,10 @@ class Repository {
   Future<PayableCreditDetailResponse> payableCreditDetail_Post(
           payableCreditDetail.Data data) =>
       apiProvider.payableCreditDetail_Post(data);
+
+  Future<PayableCreditDetailResponse> payableCreditDetail_Cancel(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Cancel(data);
 
   Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
           int grpoId, String qrResult) =>
@@ -962,6 +994,12 @@ class Repository {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Post(data);
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Cancel(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Cancel(data);
+  Future<InventoryTransferDetailResponse>
+      inventoryTransferDetail_UpdateTransDate(int id, String transDate) =>
+          apiProvider.inventoryTransferDetail_UpdateTransDate(id, transDate);
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
           int requestId,

@@ -744,7 +744,7 @@ class _GoodsIssueDetailItemDetailPageState
                   children: <Widget>[
                     // Text("Batch No. : ${_data.batchs[index].batchNo}"),
                     Text(
-                        "Qty Batch : ${NumberFormat("#,###.##").format(newData.batchs[index].quantity)}"),
+                        "Qty Batch : ${NumberFormat("#,###.####").format(newData.batchs[index].quantity)}"),
                   ],
                 ),
                 trailing: _newData.sapGoodsIssueId == 0

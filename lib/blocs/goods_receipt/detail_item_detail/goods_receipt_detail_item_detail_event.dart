@@ -45,6 +45,10 @@ class GoodsReceiptDetailItemDetailEventQty
   }) : super(qty: qty, binAbs: binAbs, binCode: binCode);
 }
 
+class GoodsReceiptDetailItemEventNormal extends GoodsReceiptDetailItemDetailEvent {
+  GoodsReceiptDetailItemEventNormal() : super();
+}
+
 class GoodsReceiptDetailItemDetailEventScan
     extends GoodsReceiptDetailItemDetailEvent {
   GoodsReceiptDetailItemDetailEventScan(

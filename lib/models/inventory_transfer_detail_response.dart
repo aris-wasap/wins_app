@@ -117,6 +117,9 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
+  @JsonKey(name: 'Comments')
+  String comments;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 

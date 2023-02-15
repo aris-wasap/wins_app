@@ -21,6 +21,7 @@ import 'package:wins_app/models/cfl_transfer_production_response.dart'
     as cflTransferProduction;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'dart:math' as math;
 
 class GoodsIssueDetailPage extends StatefulWidget {
   GoodsIssueDetailPage(this._id);
@@ -43,6 +44,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   final _woNoController = TextEditingController();
   final _productCodeController = TextEditingController();
   final _productNameController = TextEditingController();
+  final _weightProductionController = TextEditingController();
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
   final _baseNoController = TextEditingController();
@@ -52,11 +54,13 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   final _sapGoodsReceiptNoController = TextEditingController();
   final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _focusNode = FocusNode();
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -96,6 +100,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _seriesNameWoController?.dispose();
     _seriesNameController?.dispose();
     _sapGoodsIssueNoController?.dispose();
+    _weightProductionController?.dispose();
+    _focusNode?.dispose();
 
     bloc?.dispose();
 
@@ -476,6 +482,57 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     }
   }
 
+  Future _getWeightProduction() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    // if (["0", null].contains(_weightProductionController.text)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Weight Production harus lebih besar dari 0");
+    //   return;
+    // }
+
+    var data = _getState().data;
+//data.sapGoodsIssueId == 0 &&
+    if (data.id > 0 && data.status == 'Draft') {
+      try {
+        bloc.emitEvent(
+          GoodsIssueDetailEventGetWeightProduction(
+            id: data.id,
+            woId: data.woId,
+            weightProd: double.parse(_weightProductionController.text
+                .replaceAll(new RegExp(','), '')),
+          ),
+        );
+      } catch (ex) {
+        ValidateDialogWidget(
+            context: context, message: "Refresh : Unknown error $ex");
+        return;
+      }
+    } else {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Data is not valid");
+      return;
+    }
+  }
+
   Future _resetData() async {
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
@@ -748,6 +805,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     final newData = _getState().data;
     final items = _getState().data.items;
 
+    if ((items[itemIndex].woQty == 0)) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan masukan Weight Production");
+      return;
+    }
+
     Future<Item> item = Navigator.push(
       context,
       MaterialPageRoute<Item>(
@@ -830,6 +893,22 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       }
       _seriesNameWoController.text = data.seriesNameWo;
       _seriesNameController.text = data.seriesName;
+    }
+
+    // _weightProductionController.text = NumberFormat("###,###.####")
+    //     .format(double.parse(data.weight.toString()));
+    if (data.weight != 0) {
+      if (_weightProductionController.text == "") {
+        _weightProductionController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.weight.toString()));
+      } else {
+        if (data.weight ==
+            double.parse(_weightProductionController.text
+                .replaceAll(new RegExp(','), ''))) {
+          _weightProductionController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.weight.toString()));
+        }
+      }
     }
 
     return Column(
@@ -1067,6 +1146,78 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                Stack(
+                  alignment: Alignment(0.95, -0.5),
+                  children: <Widget>[
+                    (data.status == "Draft")
+                        ? TextFormField(
+                            autofocus: false,
+                            textInputAction: TextInputAction.done,
+                            controller: _weightProductionController,
+                            focusNode: _focusNode,
+                            onEditingComplete: () {
+                              setState(() {
+                                String newValue = NumberFormat("###,###.####")
+                                    .format(double.parse(
+                                        _weightProductionController.text
+                                            .replaceAll(new RegExp(','), '')
+                                            .replaceAll(new RegExp('-'), '')
+                                            .replaceAll(new RegExp(' '), '')));
+                                _weightProductionController.text = newValue;
+                                _weightProductionController.selection =
+                                    TextSelection.collapsed(
+                                        offset: newValue.length);
+                              });
+                              _focusNode.unfocus();
+                              showAlertDialogGetWeight(context);
+                            },
+                            inputFormatters: [
+                              DecimalTextInputFormatter(decimalRange: 4)
+                            ],
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: "Weight (Kg)",
+                              labelText: "Weight Production",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                            ),
+                          )
+                        : TextFormField(
+                            controller: _weightProductionController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Weight (Kg)",
+                                labelText: "Weight Production",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0)))),
+                    (data.status == "Draft")
+                        ? FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            color: bgOrange,
+                            onPressed: () {
+                              // Logic untuk menghitung hasil perhitungan di sini
+                              showAlertDialogGetWeight(context);
+                            },
+                            child: Text("Get Weight (%)"),
+                          )
+                        : Container(width: 0, height: 0),
+                  ],
+                ),
               ],
             ),
           ),
@@ -1138,17 +1289,17 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 //Text(data[index].whsCode ?? '-'),
                 //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
                 Text(
-                    "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
+                    "Open Qty : ${NumberFormat("#,###.####").format(items[index].openQty)}" +
                         " ${items[index].uom}"),
                 Text(
-                    "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
+                    "Planned Qty : ${NumberFormat("#,###.####").format(items[index].woQty)}" +
                         " ${items[index].uom}"),
                 //Text('Uom : ' + "${data[index].uom}"),
                 // Text(data[index].whsCode ?? ''),
 
                 //Text("Batch No. : ${data[index].batchNo}"),
                 Text(
-                    "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
+                    "Quantity : ${NumberFormat("#,###.####").format(items[index].qty)}" +
                         " ${items[index].uom}"),
                 // Text(data[index].whsCode ?? ''),
                 //Text("Warehouse : ${data[index].whsName}"),
@@ -1399,6 +1550,40 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     );
   }
 
+  showAlertDialogGetWeight(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _getWeightProduction();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Data Item akan di reset, perhitungan berat akan dihitung ulang"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   showAlertDialogReset(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -1464,5 +1649,44 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         return alert;
       },
     );
+  }
+}
+
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
+
+  final int decimalRange;
+  final money = NumberFormat("###,###,###", "en_US");
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    if (decimalRange != null) {
+      String value = newValue.text;
+
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
+        truncated = oldValue.text;
+        newSelection = oldValue.selection;
+      } else if (value == ".") {
+        truncated = "0.";
+
+        newSelection = newValue.selection.copyWith(
+          baseOffset: math.min(truncated.length, truncated.length + 1),
+          extentOffset: math.min(truncated.length, truncated.length + 1),
+        );
+      }
+
+      return TextEditingValue(
+        text: truncated,
+        selection: newSelection,
+        composing: TextRange.empty,
+      );
+    }
+    return newValue;
   }
 }

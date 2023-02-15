@@ -250,7 +250,7 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
       var transDate = event.transDate;
       yield GoodsReceiptDetailState.busy(
         // data: event.data,
-         data: currentState.data,
+        data: currentState.data,
       );
       try {
         var _repository = Repository();

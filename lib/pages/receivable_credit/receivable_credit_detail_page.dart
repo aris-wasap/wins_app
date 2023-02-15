@@ -548,37 +548,44 @@ class _ReceivableCreditDetailPageState
                 ]),
               ),
               floatingActionButton: _getState().data.sapReceivableCreditId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: btnBgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                        FloatingActionButton(
+                          heroTag: "btnDelete",
+                          backgroundColor: Colors.red,
+                          tooltip: "Delete",
+                          child: Icon(Icons.delete_outline),
+                          onPressed: () {
+                            // showAlertDialogDelete(context);
+                          },
+                        )
+                      ],
                     )
                   : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              // floatingActionButton: _getState().data.sapReceivableCreditId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });

@@ -71,6 +71,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       final SharedPreferences prefs = await _prefs;
       var url = prefs.getString(globalBloc.getPrefApiUrl());
       globalBloc.setUrl(url);
+
+      var switchMode = prefs.getString(globalBloc.getSwitchMode());
+      globalBloc.setSwitchMode(switchMode);
+
+      var databaseName = prefs.getString(globalBloc.getDatabase());
+      globalBloc.setDatabaseName(databaseName);
     });
   }
 
@@ -397,10 +403,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           ),
           onTap: () {
             if (_validateAndSave()) {
-              bloc.emitEvent(AuthenticationEventLogin(
-                userName: controllerUserName.text,
-                pwd: controllerPwd.text,
-              ),);
+              bloc.emitEvent(
+                AuthenticationEventLogin(
+                  userName: controllerUserName.text,
+                  pwd: controllerPwd.text,
+                ),
+              );
             } else {}
           },
         ),

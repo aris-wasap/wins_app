@@ -58,7 +58,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  );
+  )..comments = json['Comments'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -87,6 +87,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SapInventoryTransferNo': instance.sapInventoryTransferNo,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
+      'Comments': instance.comments,
       'Items': instance.items,
     };
 
