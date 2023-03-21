@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_goods_return_request_response.dart'
     as cflGoodsReturnRequest;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class PurchaseReturnsDetailPage extends StatefulWidget {
   PurchaseReturnsDetailPage(this._id);
@@ -48,6 +49,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -508,6 +510,10 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(PurchaseReturnsDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -887,6 +893,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -902,6 +909,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

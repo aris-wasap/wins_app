@@ -21,6 +21,7 @@ import 'package:wins_app/models/cfl_sales_order_response.dart' as cflSalesOrder;
 import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class DeliveryOrderDetailPage extends StatefulWidget {
   DeliveryOrderDetailPage(this._id);
@@ -51,6 +52,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _branchNameController = TextEditingController();
   final _whsCodeController = TextEditingController();
   final _whsNameController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -315,6 +317,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
       if ((errorMessage != null) && (errorMessage != "")) {
+        // _player.play(
+        //   'sounds/error-sound-effect.mp3',
+        //   volume: 10.0,
+        // );
         return showDialog<void>(
           context: context,
           barrierDismissible: false, // user must tap button!
@@ -567,6 +573,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(DeliveryOrderDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -702,7 +712,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
+    _transNoController.text = data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;//data.transNo;
 
     //jika nama signature berbah di kasih tanda
 
@@ -1030,6 +1040,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
+
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -1045,6 +1057,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

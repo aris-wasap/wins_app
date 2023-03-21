@@ -28,6 +28,7 @@ import 'package:wins_app/models/cfl_transfer_request_response.dart'
 import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
+import 'package:audioplayers/audio_cache.dart';
 
 class InventoryTransferDetailPage extends StatefulWidget {
   InventoryTransferDetailPage(this._id);
@@ -62,6 +63,8 @@ class _InventoryTransferDetailPageState
   final _toAbsEntryController = TextEditingController();
   final _toBinCodeController = TextEditingController();
   final _commentsController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -111,6 +114,7 @@ class _InventoryTransferDetailPageState
     _toAbsEntryController?.dispose();
     _toBinCodeController?.dispose();
     _commentsController?.dispose();
+    _statusController?.dispose();
 
     bloc?.dispose();
 
@@ -322,6 +326,34 @@ class _InventoryTransferDetailPageState
     ));
   }
 
+  Future _deleteData() async {
+    if ((_sapInventoryTransferNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   showAlertDialogCreate(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -388,6 +420,39 @@ class _InventoryTransferDetailPageState
     );
   }
 
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => InventoryTransferDetailPage(0));
@@ -398,6 +463,10 @@ class _InventoryTransferDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
       if ((errorMessage != null) && (errorMessage != "")) {
+        // _player.play(
+        //   'sounds/error-sound-effect.mp3',
+        //   volume: 10.0,
+        // );
         return showDialog<void>(
           context: context,
           barrierDismissible: false, // user must tap button!
@@ -633,33 +702,6 @@ class _InventoryTransferDetailPageState
           qrResult: qrResult,
           data: data));
 
-      // bloc
-      //     .eventHandler(
-      //         InventoryTransferDetailEventScan(
-      //             requestId: int.parse(_requestIdController.text),
-      //             whsCodeFrom: _fromWhsCodeController.text,
-      //             qrResult: qrResult,
-      //             data: data),
-      //         _getState())
-      //     .listen((onData) {
-      //   if (onData.newItem != null) {
-      //     Future<Item> item = Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (BuildContext context) =>
-      //             InventoryTransferDetailItemDetailPage(onData.newItem),
-      //       ),
-      //     );
-
-      //     item.then((Item item) {
-      //       if (item != null) {
-      //         bloc.emitEvent(InventoryTransferDetailEventItemAdd(
-      //           item: item,
-      //         ));
-      //       }
-      //     });
-      //   }
-      // });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
@@ -686,6 +728,10 @@ class _InventoryTransferDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(InventoryTransferDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -735,7 +781,7 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapInventoryTransferId == 0
+              floatingActionButton: _getState().data.sapInventoryTransferId == 0 &&  _getState().data.status != "Cancel"
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -756,7 +802,7 @@ class _InventoryTransferDetailPageState
                           tooltip: "Delete",
                           child: Icon(Icons.delete_outline),
                           onPressed: () {
-                            // showAlertDialogDelete(context);
+                            showAlertDialogDelete(context);
                           },
                         )
                       ],
@@ -818,7 +864,7 @@ class _InventoryTransferDetailPageState
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
+    _transNoController.text = data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;//data.transNo;
 
     var cekData = _getState().data;
     //jika nama signature berbah di kasih tanda
@@ -1394,7 +1440,7 @@ class _InventoryTransferDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('No. ' + "${rowIndex}"),
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

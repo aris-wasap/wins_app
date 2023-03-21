@@ -351,6 +351,7 @@ class _DeliveryOrderDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 _data.id == 0
                     ? TextField(
+                        enabled: false,
                         autofocus: true,
                         textInputAction: TextInputAction.done,
                         focusNode: _focusNode,

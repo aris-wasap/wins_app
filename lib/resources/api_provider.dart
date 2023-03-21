@@ -50,6 +50,7 @@ import 'package:wins_app/models/inventory_transfer_detail_response.dart'
 import 'package:wins_app/models/issue_production_detail_response.dart';
 import 'package:wins_app/models/issue_production_detail_scan_response.dart';
 import 'package:wins_app/models/issue_production_list_response.dart';
+import 'package:wins_app/models/item_detail_scan_serial_batch_number_response.dart';
 import 'package:wins_app/models/login_response.dart';
 import 'package:wins_app/models/payable_credit_detail_response.dart';
 import 'package:wins_app/models/payable_credit_detail_scan_response.dart';
@@ -4683,7 +4684,7 @@ class ApiProvider {
       });
 
       final response = await http.post(
-          "${_url}api/InventoryTransferDetailApi/Cancel",
+          "${_url}api/InventoryTransferDetailApi/CancelDoc",
           headers: {'Content-type': 'application/json'},
           body: body);
 
@@ -4763,9 +4764,15 @@ class ApiProvider {
   //ItemDetail
   //-----------------------------
 
-  Future<ItemDetailScanResponse> itemDetail_Scan(String qrResult) async {
+  Future<ItemDetailScanResponse> itemDetail_Scan(
+    String itemCode,
+    String qrResult,
+  ) async {
     try {
-      var body = json.encode({"QrResult": qrResult});
+      var body = json.encode({
+        "ItemCode": itemCode,
+        "QrResult": qrResult,
+      });
 
       final response = await http.post("${_url}api/MasterApi/Item_Scan",
           headers: {'Content-type': 'application/json'}, body: body);
@@ -4778,6 +4785,30 @@ class ApiProvider {
       }
     } catch (e) {
       throw Exception('itemDetail_Scan:Failed to load post(1)');
+    }
+  }
+
+  Future<ItemDetailScanSerialBatchNumberResponse> itemDetail_ScanSnB(
+      String whsCode, String itemCode, String qrResult) async {
+    try {
+      var body = json.encode({
+        "WhsCode": whsCode,
+        "ItemCode": itemCode,
+        "QrResult": qrResult,
+      });
+
+      final response = await http.post("${_url}api/MasterApi/Item_ScanSnB",
+          headers: {'Content-type': 'application/json'}, body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(
+            itemDetailScanSerialBatchNumberResponseFromJson, response.body);
+      } else {
+        throw Exception('itemDetail_ScanSnB:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('itemDetail_ScanSnB:Failed to load post(1)');
     }
   }
 

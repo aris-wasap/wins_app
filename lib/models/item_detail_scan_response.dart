@@ -75,28 +75,32 @@ class Data {
   @JsonKey(name: 'Details')
   List<Item> details;
 
-  Data({
-    this.itemCode,
-    this.itemName,
-    this.distNumber,
-    this.totalStock,
-    this.length,
-    this.length2,
-    this.width,
-    this.weight,
-    this.itemType,
-    this.micron,
-    this.uom,
-    this.details
-  });
+  Data(
+      {this.itemCode,
+      this.itemName,
+      this.distNumber,
+      this.totalStock,
+      this.length,
+      this.length2,
+      this.width,
+      this.weight,
+      this.itemType,
+      this.micron,
+      this.uom,
+      this.details});
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
-} 
+}
 
 @JsonSerializable()
-class Item { 
+class Item {
+  @JsonKey(name: 'ItemCode')
+  String itemCode;
+
+  @JsonKey(name: 'ItemName')
+  String itemName;
 
   @JsonKey(name: 'InDate')
   String inDate;
@@ -133,13 +137,15 @@ class Item {
 
   @JsonKey(name: 'Uom')
   String uom;
-  
+
   Item({
+    this.itemCode,
+    this.itemName,
     this.inDate,
-    this.mnfDate, 
-    this.expDate, 
-    this.whsCode, 
-    this.whsName, 
+    this.mnfDate,
+    this.expDate,
+    this.whsCode,
+    this.whsName,
     this.stock: 0,
     this.length,
     this.width,
@@ -153,4 +159,3 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
- 

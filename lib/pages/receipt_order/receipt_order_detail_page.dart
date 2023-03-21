@@ -25,6 +25,7 @@ import 'package:wins_app/models/cfl_purchase_reference_response.dart'
     as cflPurchaseReference;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptOrderDetailPage extends StatefulWidget {
   ReceiptOrderDetailPage(this._id);
@@ -57,6 +58,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -535,6 +537,10 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptOrderDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -1097,6 +1103,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -1112,6 +1119,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

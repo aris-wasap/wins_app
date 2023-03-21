@@ -20,6 +20,7 @@ import 'package:wins_app/models/cfl_payable_return_request_response.dart'
     as cflPayableReturnRequest;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class PayableCreditDetailPage extends StatefulWidget {
   PayableCreditDetailPage(this._id);
@@ -50,6 +51,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -510,6 +512,11 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
+
         bloc.emitEvent(PayableCreditDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -920,6 +927,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -935,6 +943,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

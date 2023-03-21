@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_return_request_response.dart'
     as cflReturnRequest;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceivableCreditDetailPage extends StatefulWidget {
   ReceivableCreditDetailPage(this._id);
@@ -47,6 +48,7 @@ class _ReceivableCreditDetailPageState
   final _refNoController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -501,6 +503,10 @@ class _ReceivableCreditDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceivableCreditDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -888,6 +894,7 @@ class _ReceivableCreditDetailPageState
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -903,6 +910,7 @@ class _ReceivableCreditDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

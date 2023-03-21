@@ -16,8 +16,8 @@ import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-
 import 'dart:math' as math;
+import 'package:audioplayers/audio_cache.dart';
 
 class GoodsIssueMixingDetailItemDetailPage extends StatefulWidget {
   GoodsIssueMixingDetailItemDetailPage(this._data, this._index, this._newData);
@@ -55,6 +55,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
   final _toBinCodeController = TextEditingController();
   final _qtyWoController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _player = AudioCache();
   ScrollController _scrollController;
 
   @override
@@ -137,7 +138,10 @@ class _GoodsIssueMixingDetailItemDetailPageState
           data: data,
         ),
       );
-
+      _player.play(
+        'sounds/store-scanner-beep-sound-effect.mp3',
+        volume: 10.0,
+      );
       //_newData.items[_index] = _data;
 
     } on PlatformException catch (ex) {
@@ -309,7 +313,6 @@ class _GoodsIssueMixingDetailItemDetailPageState
     //   }
     // }
 
-    
     if (data != null) {
       if (data.batchs == null) {
         _qtyController.text = "0";

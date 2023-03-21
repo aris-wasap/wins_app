@@ -49,6 +49,7 @@ import 'package:wins_app/models/inventory_transfer_detail_response.dart'
 import 'package:wins_app/models/issue_production_detail_response.dart';
 import 'package:wins_app/models/issue_production_detail_scan_response.dart';
 import 'package:wins_app/models/issue_production_list_response.dart';
+import 'package:wins_app/models/item_detail_scan_serial_batch_number_response.dart';
 import 'package:wins_app/models/login_response.dart';
 import 'package:wins_app/models/payable_credit_detail_response.dart';
 import 'package:wins_app/models/payable_credit_detail_scan_response.dart';
@@ -1013,8 +1014,17 @@ class Repository {
   //-----------------------------
   //ItemDetail
   //-----------------------------
-  Future<ItemDetailScanResponse> itemDetail_Scan(String qrResult) =>
-      apiProvider.itemDetail_Scan(qrResult);
+  Future<ItemDetailScanResponse> itemDetail_Scan(
+          String itemCode, String qrResult) =>
+      apiProvider.itemDetail_Scan(itemCode, qrResult);
+
+  Future<ItemDetailScanSerialBatchNumberResponse> itemDetail_ScanSnB(
+          String whsCode, String itemCode, String qrResult) =>
+      apiProvider.itemDetail_ScanSnB(
+        whsCode,
+        itemCode,
+        qrResult,
+      );
 
   //-----------------------------
   //CflProductionOrder

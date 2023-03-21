@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/models/cfl_request_branch_response.dart'
     as cflRequestBranch;
+import 'package:audioplayers/audio_cache.dart';
 
 class TransferBranchDetailPage extends StatefulWidget {
   TransferBranchDetailPage(this._id);
@@ -55,6 +56,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   final _branchNameController = TextEditingController();
   final _toBranchIdController = TextEditingController();
   final _toBranchNameController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -518,6 +520,10 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(TransferBranchDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -679,19 +685,19 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 (data.sapTransferBranchId > 0)
-                          ? TextFormField(
-                  controller: _sapTransferBranchNoController,
-                  style: TextStyle(fontSize: 16, color: Colors.red),
-                  enabled: false,
-                  decoration: InputDecoration(
-                      hintText: "Transfer No.",
-                      labelText: "Transfer No.",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                )
-                          : Container(width: 0, height: 0),
+                    ? TextFormField(
+                        controller: _sapTransferBranchNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Transfer No.",
+                            labelText: "Transfer No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
+                    : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
@@ -934,6 +940,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -949,6 +956,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

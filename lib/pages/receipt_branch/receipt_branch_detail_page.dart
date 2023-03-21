@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_transfer_branch_response.dart'
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/widgets/set_colors.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptBranchDetailPage extends StatefulWidget {
   ReceiptBranchDetailPage(this._id);
@@ -48,6 +49,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   final _branchNameController = TextEditingController();
   final _fromBranchIdController = TextEditingController();
   final _fromBranchNameController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -500,6 +502,10 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptBranchDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -661,20 +667,20 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 (data.sapReceiptBranchId > 0)
-                          ? TextFormField(
-                  controller: _sapReceiptBranchNoController,
-                  style: TextStyle(fontSize: 16, color: Colors.red),
-                  enabled: false,
-                  decoration: InputDecoration(
-                      hintText: "Receipt No.",
-                      labelText: "Receipt No.",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                )
-                          : Container(width: 0, height: 0),
-                
+                    ? TextFormField(
+                        controller: _sapReceiptBranchNoController,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Receipt No.",
+                            labelText: "Receipt No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
+                    : Container(width: 0, height: 0),
+
                 Padding(padding: EdgeInsets.only(top: 5)),
                 TextFormField(
                     controller: _transNoController,
@@ -885,6 +891,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -900,6 +907,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

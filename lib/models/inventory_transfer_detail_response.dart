@@ -226,6 +226,9 @@ class Item {
   @JsonKey(name: 'Micron')
   double micron;
 
+  @JsonKey(name: 'Type')
+  String type;
+
   @JsonKey(name: 'ManufacturingDate')
   DateTime manufacturingDate;
 
@@ -259,6 +262,7 @@ class Item {
     this.width,
     this.weight,
     this.micron,
+    this.type,
     this.manufacturingDate,
     this.expirationDate,
     this.itemType,

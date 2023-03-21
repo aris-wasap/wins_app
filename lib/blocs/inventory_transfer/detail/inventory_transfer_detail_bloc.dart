@@ -313,6 +313,14 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           );
         }
       }
+    } else if (event is InventoryTransferDetailEventCancel) {
+      yield InventoryTransferDetailState.busy(
+        data: currentState.data,
+      );
+
+      yield InventoryTransferDetailState.success(
+        data: currentState.data,
+      );
     } else {}
   }
 }

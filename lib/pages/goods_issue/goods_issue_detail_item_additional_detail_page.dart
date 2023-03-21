@@ -25,6 +25,7 @@ import 'package:wins_app/models/cfl_item_response.dart' as cflItem;
 import 'package:wins_app/models/cfl_batch_location_response.dart'
     as cflBatchLocation;
 import 'dart:math' as math;
+import 'package:audioplayers/audio_cache.dart';
 
 class GoodsIssueDetailItemAdditionalDetailPage extends StatefulWidget {
   GoodsIssueDetailItemAdditionalDetailPage(

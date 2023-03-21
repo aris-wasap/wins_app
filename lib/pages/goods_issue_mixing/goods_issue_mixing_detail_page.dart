@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_transfer_production_response.dart'
     as cflTransferProduction;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class GoodsIssueMixingDetailPage extends StatefulWidget {
   GoodsIssueMixingDetailPage(this._id);
@@ -51,6 +52,7 @@ class _GoodsIssueMixingDetailPageState
   final _sapGoodsIssueNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
   final _statusController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override

@@ -19,6 +19,7 @@ import 'package:wins_app/models/cfl_purchase_supplier_response.dart'
     as cflPurchaseSupplier;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptSupplierDetailPage extends StatefulWidget {
   ReceiptSupplierDetailPage(this._id);
@@ -48,6 +49,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -511,6 +513,10 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptSupplierDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -917,6 +923,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -932,6 +939,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Line : " + data[index].poLineNo.toString() ?? '0'),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
