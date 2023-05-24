@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 class InventoryTransferDetailEvent extends BlocEvent {
   InventoryTransferDetailEvent(
       {this.id,
+      this.detId,
       this.data,
       this.requestId,
       this.requestNo,
@@ -17,6 +18,7 @@ class InventoryTransferDetailEvent extends BlocEvent {
       this.transDate});
 
   final int id;
+  final int detId;
   final Data data;
   final int requestId;
   final String requestNo;
@@ -129,6 +131,14 @@ class InventoryTransferDetailEventCancel extends InventoryTransferDetailEvent {
           id: id,
           data: data,
         );
+}
+
+class InventoryTransferDetailEventRemoveItem
+    extends InventoryTransferDetailEvent {
+  InventoryTransferDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(id: id, detId: detId);
 }
 
 class InventoryTransferDetailEventUpdateTransDate

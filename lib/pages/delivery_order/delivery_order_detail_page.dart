@@ -1122,6 +1122,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('No. ' + "$rowIndex"),
+              // Text("DetId : ${data[index].detId}"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
