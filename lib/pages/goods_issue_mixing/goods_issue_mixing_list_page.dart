@@ -83,6 +83,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -131,7 +132,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
               ));
             },
           ),
-          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.goodsIssueMixing_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
@@ -213,6 +214,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
                     Text(
                         "Product : ${data[index].productCode} - ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
+                    Text("Status : ${data[index].status}"),
                   ],
                 ),
                 // leading: ClipOval(

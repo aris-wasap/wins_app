@@ -25,6 +25,7 @@ import 'package:wins_app/models/cfl_purchase_reference_response.dart'
     as cflPurchaseReference;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptOrderDetailPage extends StatefulWidget {
   ReceiptOrderDetailPage(this._id);
@@ -57,6 +58,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -106,6 +109,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
+    _statusController?.dispose();
 
     bloc?.dispose();
 
@@ -272,6 +276,66 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
         return alert;
       },
     );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future _deleteData() async {
+    if ((_sapReceiptOrderNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        ReceiptOrderDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
   }
 
   void _newTrans() {
@@ -535,6 +599,10 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptOrderDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -582,37 +650,44 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                 ]),
               ),
               floatingActionButton: _getState().data.sapReceiptOrderId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: btnBgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                        FloatingActionButton(
+                          heroTag: "btnDelete",
+                          backgroundColor: Colors.red,
+                          tooltip: "Delete",
+                          child: Icon(Icons.delete_outline),
+                          onPressed: () {
+                            showAlertDialogDelete(context);
+                          },
+                        )
+                      ],
                     )
                   : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              // floatingActionButton: _getState().data.sapReceiptOrderId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
@@ -1090,6 +1165,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -1105,6 +1181,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

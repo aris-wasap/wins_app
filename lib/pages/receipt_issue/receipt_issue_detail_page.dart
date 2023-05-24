@@ -18,6 +18,7 @@ import 'package:wins_app/models/cfl_goods_issue_response.dart' as cflGoodsIssue;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/widgets/set_colors.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptIssueDetailPage extends StatefulWidget {
   ReceiptIssueDetailPage(this._id);
@@ -45,6 +46,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   final _customerCodeController = TextEditingController();
   final _customerNameController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -111,7 +113,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     } else if (["", null].contains(data.issueNo)) {
       ValidateDialogWidget(context: context, message: "Issue No harus di isi");
       return;
-    } 
+    }
     // else if ([null].contains(data.items)) {
     //   ValidateDialogWidget(
     //       context: context, message: "Item detail harus di isi");
@@ -148,7 +150,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     } else if (["", null].contains(data.issueNo)) {
       ValidateDialogWidget(context: context, message: "Issue No harus di isi");
       return;
-    } 
+    }
     // else if ([null].contains(data.items)) {
     //   ValidateDialogWidget(
     //       context: context, message: "Item detail harus di isi");
@@ -349,7 +351,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
-        _update();
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
@@ -526,6 +528,10 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptIssueDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -541,7 +547,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               item: item,
             ));
 
-             if (_getState().data.id > 0) {
+            if (_getState().data.id > 0) {
               _update();
             } else {
               _create();
@@ -682,33 +688,32 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                 (data.sapReceiptIssueId > 0)
-                    ?
-                TextFormField(
-                    controller: _sapReceiptIssueNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Receipt No.",
-                        labelText: "Receipt No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))) 
-                            : Container(width: 0, height: 0),
-                            
-                Padding(padding: EdgeInsets.only(top: 5)),
-                 (data.id > 0)
+                (data.sapReceiptIssueId > 0)
                     ? TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0))))
-                            : Container(width: 0, height: 0),
+                        controller: _sapReceiptIssueNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Receipt No.",
+                            labelText: "Receipt No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
 
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
@@ -896,6 +901,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -911,6 +917,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text("Ref Batch No. : ${data[index].mnfBatchNo}"),

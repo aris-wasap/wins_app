@@ -54,6 +54,9 @@ class Data {
   @JsonKey(name: 'WoStatus')
   String woStatus;
 
+  @JsonKey(name: 'Status')
+  String status;
+
   @JsonKey(name: 'CreatedUser')
   String createdUser;
 
@@ -87,6 +90,7 @@ class Data {
     this.transNo,
     this.transDate,
     this.woStatus,
+    this.status,
     this.createdUser,
     this.seriesName,
     this.woNo,

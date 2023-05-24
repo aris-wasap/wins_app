@@ -28,6 +28,7 @@ import 'package:wins_app/models/cfl_transfer_request_response.dart'
 import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
+import 'package:audioplayers/audio_cache.dart';
 
 class InventoryTransferDetailPage extends StatefulWidget {
   InventoryTransferDetailPage(this._id);
@@ -61,6 +62,9 @@ class _InventoryTransferDetailPageState
   final _toWhsNameController = TextEditingController();
   final _toAbsEntryController = TextEditingController();
   final _toBinCodeController = TextEditingController();
+  final _commentsController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -109,6 +113,8 @@ class _InventoryTransferDetailPageState
     _toWhsNameController?.dispose();
     _toAbsEntryController?.dispose();
     _toBinCodeController?.dispose();
+    _commentsController?.dispose();
+    _statusController?.dispose();
 
     bloc?.dispose();
 
@@ -127,6 +133,8 @@ class _InventoryTransferDetailPageState
     data.toWhsCode = _toWhsCodeController.text;
     data.toWhsName = _toWhsNameController.text;
     data.toBinCode = _toBinCodeController.text;
+    data.comments = _commentsController.text;
+
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -179,9 +187,10 @@ class _InventoryTransferDetailPageState
   void _update() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
+    data.transDate = transDate;
+    //data.id = _id;
     data.id = int.parse(_idTxController.text);
     data.requestNo = _requestNoController.text;
-    data.transDate = transDate;
     data.fromWhsCode = _fromWhsCodeController.text;
     data.fromWhsName = _fromWhsNameController.text;
     data.fromBinCode = _fromBinCodeController.text;
@@ -189,6 +198,7 @@ class _InventoryTransferDetailPageState
     data.toWhsCode = _toWhsCodeController.text;
     data.toWhsName = _toWhsNameController.text;
     data.toBinCode = _toBinCodeController.text;
+    data.comments = _commentsController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -212,7 +222,6 @@ class _InventoryTransferDetailPageState
           context: context, message: "To Bin Location harus di isi");
       return;
     }
-    //data.id = _id;
 
     data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
     data.toAbsEntry = int.parse(_toAbsEntryController.text);
@@ -227,6 +236,47 @@ class _InventoryTransferDetailPageState
     bloc.emitEvent(InventoryTransferDetailEventUpdate(
       data: data,
     ));
+  }
+
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
+
+    data.id = int.parse(_idTxController.text);
+    data.transDate = transDate;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Transfer Date harus di isi");
+      return;
+    }
+    //else if ([null, ""].contains(data.fromWhsCode)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "From Warehouse harus di isi");
+    //   return;
+    // } else if ([null, ""].contains(data.fromBinCode)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "From Bin Location harus di isi");
+    //   return;
+    // } else if ([null, ""].contains(data.toWhsCode)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "To Warehouse harus di isi");
+    //   return;
+    // } else if ([null, ""].contains(data.toBinCode)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "To Bin Location harus di isi");
+    //   return;
+    // }
+
+    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
+    bloc.emitEvent(
+      InventoryTransferDetailEventUpdateTransDate(
+        id: int.parse(_idTxController.text),
+        transDate: setTransDate,
+      ),
+    );
   }
 
   void _submit() {
@@ -245,6 +295,8 @@ class _InventoryTransferDetailPageState
     data.fromAbsEntry = int.parse(_fromAbsEntryController.text);
     data.toAbsEntry = int.parse(_toAbsEntryController.text);
     data.toBinCode = _toBinCodeController.text;
+    data.comments = _commentsController.text;
+
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -272,6 +324,34 @@ class _InventoryTransferDetailPageState
     bloc.emitEvent(InventoryTransferDetailEventPost(
       data: data,
     ));
+  }
+
+  Future _deleteData() async {
+    if ((_sapInventoryTransferNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
   }
 
   showAlertDialogCreate(BuildContext context) {
@@ -340,6 +420,39 @@ class _InventoryTransferDetailPageState
     );
   }
 
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => InventoryTransferDetailPage(0));
@@ -350,6 +463,10 @@ class _InventoryTransferDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
       if ((errorMessage != null) && (errorMessage != "")) {
+        // _player.play(
+        //   'sounds/error-sound-effect.mp3',
+        //   volume: 10.0,
+        // );
         return showDialog<void>(
           context: context,
           barrierDismissible: false, // user must tap button!
@@ -426,8 +543,12 @@ class _InventoryTransferDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
-      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      var state = bloc.lastState ?? bloc.initialState;
+      var data = state.data;
+      if (data.id > 0) {
+        _update();
+      }
     }
   }
 
@@ -581,33 +702,6 @@ class _InventoryTransferDetailPageState
           qrResult: qrResult,
           data: data));
 
-      // bloc
-      //     .eventHandler(
-      //         InventoryTransferDetailEventScan(
-      //             requestId: int.parse(_requestIdController.text),
-      //             whsCodeFrom: _fromWhsCodeController.text,
-      //             qrResult: qrResult,
-      //             data: data),
-      //         _getState())
-      //     .listen((onData) {
-      //   if (onData.newItem != null) {
-      //     Future<Item> item = Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (BuildContext context) =>
-      //             InventoryTransferDetailItemDetailPage(onData.newItem),
-      //       ),
-      //     );
-
-      //     item.then((Item item) {
-      //       if (item != null) {
-      //         bloc.emitEvent(InventoryTransferDetailEventItemAdd(
-      //           item: item,
-      //         ));
-      //       }
-      //     });
-      //   }
-      // });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
@@ -634,6 +728,10 @@ class _InventoryTransferDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(InventoryTransferDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -683,38 +781,45 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapInventoryTransferId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
+              floatingActionButton: _getState().data.sapInventoryTransferId == 0 &&  _getState().data.status != "Cancel"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: btnBgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                        FloatingActionButton(
+                          heroTag: "btnDelete",
+                          backgroundColor: Colors.red,
+                          tooltip: "Delete",
+                          child: Icon(Icons.delete_outline),
+                          onPressed: () {
+                            showAlertDialogDelete(context);
+                          },
+                        )
+                      ],
                     )
                   : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              // floatingActionButton: _getState().data.sapInventoryTransferId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
@@ -759,7 +864,7 @@ class _InventoryTransferDetailPageState
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
+    _transNoController.text = data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;//data.transNo;
 
     var cekData = _getState().data;
     //jika nama signature berbah di kasih tanda
@@ -785,6 +890,7 @@ class _InventoryTransferDetailPageState
       _toBinCodeController.text = data.toBinCode;
       _toBranchIdController.text = data.toBranchId.toString();
       _toBranchNameController.text = data.toBranchName;
+      _commentsController.text = data.comments;
     }
 
     return Column(
@@ -898,7 +1004,6 @@ class _InventoryTransferDetailPageState
                                 }
                               });
                             });
-
                           }
                         },
                         child: Container(
@@ -1179,7 +1284,6 @@ class _InventoryTransferDetailPageState
                               _getState().data.toAbsEntry = bin.absEntry;
                               _getState().data.toBinCode = bin.binCode;
                             }
-
                           }
                         });
                       });
@@ -1221,246 +1325,53 @@ class _InventoryTransferDetailPageState
                     ),
                   ),
                 ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                //           Navigator.push(
-                //               context,
-                //               MaterialPageRoute<
-                //                       cflDbWarehouse.CflDbWarehouseModel>(
-                //                   builder: (BuildContext context) =>
-                //                       CflDbWarehousePage()));
-
-                //       warehouse
-                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                //         if (warehouse != null) {
-                //           _fromWhsCodeController.text = warehouse.whsCode;
-                //           _fromWhsNameController.text = warehouse.whsName;
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     height: 100,
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: (data.id == 0)
-                //                 ? Colors.blue
-                //                 : Colors.grey[400]),
-                //         borderRadius: BorderRadius.all(Radius.circular(10))),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "From Warehouse",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_fromWhsCodeController.text),
-                //                 subtitle: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: <Widget>[
-                //                     Text(_fromWhsNameController.text),
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflBinLocation.Data> bin = Navigator.push(
-                //           context,
-                //           MaterialPageRoute<cflBinLocation.Data>(
-                //               builder: (BuildContext context) =>
-                //                   CflBinLocationPage(
-                //                       _fromWhsCodeController.text)));
-
-                //       bin.then((cflBinLocation.Data bin) {
-                //         if (bin != null) {
-                //           _fromAbsEntryController.text =
-                //               bin.absEntry.toString();
-                //           _fromBinCodeController.text = bin.binCode;
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: (data.id == 0)
-                //                 ? Colors.blue
-                //                 : Colors.grey[400]),
-                //         borderRadius: BorderRadius.all(Radius.circular(10))),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "From Bin Location",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_fromBinCodeController.text),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflDbWarehouse.CflDbWarehouseModel> warehouse =
-                //           Navigator.push(
-                //               context,
-                //               MaterialPageRoute<
-                //                       cflDbWarehouse.CflDbWarehouseModel>(
-                //                   builder: (BuildContext context) =>
-                //                       CflDbWarehousePage()));
-
-                //       warehouse
-                //           .then((cflDbWarehouse.CflDbWarehouseModel warehouse) {
-                //         if (warehouse != null) {
-                //           _toBranchIdController.text = warehouse.branchId.toString();
-                //           _toBranchNameController.text = warehouse.branchName;
-                //           _toWhsCodeController.text = warehouse.whsCode;
-                //           _toWhsNameController.text = warehouse.whsName;
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //       border: Border.all(
-                //           color:
-                //               (data.id == 0) ? Colors.blue : Colors.grey[400]),
-                //       borderRadius: BorderRadius.all(Radius.circular(10)),
-                //     ),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "To Warehouse",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_toWhsCodeController.text),
-                //                 subtitle: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: <Widget>[
-                //                     Text(_toWhsNameController.text),
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflBinLocation.Data> bin = Navigator.push(
-                //           context,
-                //           MaterialPageRoute<cflBinLocation.Data>(
-                //               builder: (BuildContext context) =>
-                //                   CflBinLocationPage(
-                //                       _toWhsCodeController.text)));
-
-                //       bin.then((cflBinLocation.Data bin) {
-                //         if (bin != null) {
-                //           _toAbsEntryController.text = bin.absEntry.toString();
-                //           _toBinCodeController.text = bin.binCode;
-                //         }
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: (data.id == 0)
-                //                 ? Colors.blue
-                //                 : Colors.grey[400]),
-                //         borderRadius: BorderRadius.all(Radius.circular(10))),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "To Bin Location",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_toBinCodeController.text),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.sapInventoryTransferId == 0)
+                    ? TextField(
+                        maxLength: 254,
+                        enabled: true,
+                        controller: _commentsController,
+                        textAlign: TextAlign.left,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            hintText: "",
+                            labelText: "Comments",
+                            alignLabelWithHint: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: (data.id == 0)
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                borderRadius: new BorderRadius.circular(
+                                  10.0,
+                                ))),
+                      )
+                    : TextField(
+                        enabled: false,
+                        controller: _commentsController,
+                        textAlign: TextAlign.left,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            hintText: "",
+                            labelText: "Comments",
+                            alignLabelWithHint: true,
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: (data.id == 0)
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                borderRadius: new BorderRadius.circular(
+                                  10.0,
+                                ))),
+                      ),
               ],
             ),
           ),
@@ -1512,6 +1423,8 @@ class _InventoryTransferDetailPageState
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
+
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -1527,6 +1440,7 @@ class _InventoryTransferDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

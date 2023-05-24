@@ -16,8 +16,8 @@ import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-
 import 'dart:math' as math;
+import 'package:audioplayers/audio_cache.dart';
 
 class GoodsIssueDetailItemDetailPage extends StatefulWidget {
   GoodsIssueDetailItemDetailPage(this._data, this._index, this._newData);
@@ -54,12 +54,15 @@ class _GoodsIssueDetailItemDetailPageState
   final _toBinCodeController = TextEditingController();
   final _qtyWoController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _player = AudioCache();
   ScrollController _scrollController;
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _focusNode = FocusNode();
     bloc = GoodsIssueDetailItemDetailBloc(this._data);
   }
 
@@ -82,7 +85,7 @@ class _GoodsIssueDetailItemDetailPageState
     _toBinCodeController?.dispose();
     _qtyWoController?.dispose();
     _qtyController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -104,7 +107,7 @@ class _GoodsIssueDetailItemDetailPageState
       binAbs: int.parse(_binAbsController.text),
       binCode: _binCodeController.text,
     ));
-    // _refreshDetail();
+
     Navigator.pop(context, _getState().data);
   }
 
@@ -137,6 +140,11 @@ class _GoodsIssueDetailItemDetailPageState
         ),
       );
 
+      _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
+
       //_newData.items[_index] = _data;
 
     } on PlatformException catch (ex) {
@@ -166,16 +174,16 @@ class _GoodsIssueDetailItemDetailPageState
       var data = _getState().data;
       if (data != null) {
         // bloc.emitEvent(GoodsIssueDetailEventNormal());
-        Future<Item> item = Navigator.push(
+        Future<ItemBatch> itemBatchs = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                GoodsIssueDetailScanDetailPage(data),
+                GoodsIssueDetailScanDetailPage(data.batchs[0]),
           ),
         );
 
-        item.then((Item item) {
-          if (item != null) {
+        itemBatchs.then((ItemBatch itemBatchs) {
+          if (itemBatchs != null) {
             // bloc.emitEvent(GoodsIssueDetailEventItemAdd(
             //   item: item,
             // ));
@@ -186,16 +194,85 @@ class _GoodsIssueDetailItemDetailPageState
   }
 
   Future _refreshDetail() async {
+    if (_qtyController.text == "0" || _qtyController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Qty harus lebih besar dari 0");
+      return;
+    }
+    if (double.parse(_qtyController.text.replaceAll(new RegExp(','), '')) >
+        double.parse(_qtyWoController.text.replaceAll(new RegExp(','), ''))) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Issue Qty tidak boleh melebihi Planned Qty");
+      return;
+    }
+
     try {
+      bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(
+        qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
+        binAbs: int.parse(_binAbsController.text),
+        binCode: _binCodeController.text,
+      ));
+
       bloc.emitEvent(
         GoodsIssueDetailItemDetailEventRefreshDetail(
-            detId: _data.detId, woLineNo: _data.woLineNo, newDataItem: _data),
+            id: _data.id,
+            detId: _data.detId,
+            qtyItem: double.parse(
+                _qtyController.text.replaceAll(new RegExp(','), '')),
+            newDataItem: _data),
       );
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
       return;
     }
+  }
+
+  Widget _showCircularProgress() {
+    var state = bloc.lastState ?? bloc.initialState;
+    if (state.isBusy) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
+
+  // Show Dialog Button
+  showAlertDialogSave(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _refreshDetail();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Apakah anda yakin simpan document? Jika menyimpan dokumen ini akan otomatis mengambil Batch Number secara FIFO"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -216,6 +293,7 @@ class _GoodsIssueDetailItemDetailPageState
                   // items.id = _newData.id;
                   // Navigator.pop(context, items);
                   _done();
+                  // _refreshDetail();
                 } else {
                   return;
                 }
@@ -236,35 +314,43 @@ class _GoodsIssueDetailItemDetailPageState
                       ),
                       preferredSize: Size.fromHeight(5.0)),
                   actions: <Widget>[
-                    _data.id != 0
-                        ? FlatButton(
-                            onPressed: () {
-                              _done();
-                            },
-                            textColor: Colors.white,
-                            child: Row(
-                              children: <Widget>[Text("DONE")],
-                            ),
-                          )
-                        : Container(),
+                    // _newData.sapGoodsIssueId == 0
+                    //     ? Row(
+                    //         children: <Widget>[
+                    //           Padding(
+                    //             padding: const EdgeInsets.all(8.0),
+                    //             child: RaisedButton(
+                    //               child: const Text('Save'),
+                    //               shape: const RoundedRectangleBorder(
+                    //                 borderRadius: BorderRadius.all(
+                    //                     Radius.elliptical(15, 15)),
+                    //               ),
+                    //               onPressed: () {
+                    //                 showAlertDialogSave(context);
+                    //               },
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       )
+                    //     : Container(),
                   ],
                 ),
                 body: SingleChildScrollView(
                   child: _buildForm(),
                 ),
-                floatingActionButton:
-                    _newData.sapGoodsIssueId == 0 //_data.id != 0
-                        ? FloatingActionButton.extended(
-                            icon: Icon(Icons.camera_alt),
-                            backgroundColor: bgOrange,
-                            label: Text("Scan"),
-                            onPressed: () {
-                              // do something here
-                              _scanQR();
-                              //_showScanNewItemDetail('');
-                            },
-                          )
-                        : null,
+                floatingActionButton: _newData.items[_index].valuationMethod !=
+                        'FIFO' //_data.id != 0
+                    ? FloatingActionButton.extended(
+                        icon: Icon(Icons.camera_alt),
+                        backgroundColor: bgOrange,
+                        label: Text("Scan"),
+                        onPressed: () {
+                          // do something here
+                          _scanQR();
+                          //_showScanNewItemDetail('');
+                        },
+                      )
+                    : null,
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
               ),
@@ -295,15 +381,49 @@ class _GoodsIssueDetailItemDetailPageState
     _toBinCodeController.text = data.toBinCode;
 
     // _qtyWoController.text = data.woQty.toString();
-    // _qtyController.text = data.qty.toString();
+    _qtyController.text =
+        NumberFormat("###,###.####").format(double.parse(data.qty.toString()));
 
-    if (data != null) {
-      if (data.batchs == null) {
-        _qtyController.text = "0";
-      } else {
+    // if (data != null) {
+    //   if (data.batchs.length > 0) {
+    //     double sumIssueQty = 0;
+
+    //     for (var itemBatchs in data.batchs) {
+    //       sumIssueQty += itemBatchs.quantity;
+    //     }
+    //     _data.qty = sumIssueQty;
+    //     _qtyController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.qty.toString()));
+    //     data.qty = double.parse(_qtyController.text);
+    //   } else {
+    //     _qtyController.text = "0";
+    //   }
+    // }
+
+    if (_data.qty != 0) {
+      if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.####")
             .format(double.parse(data.qty.toString()));
-        //data.qty = double.parse(_qtyController.text);
+      } else {
+        if (_data.qty ==
+            double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
+          _qtyController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.qty.toString()));
+        }
+      }
+    } else {
+      if (data.batchs.length > 0) {
+        double sumIssueQty = 0;
+
+        for (var itemBatchs in data.batchs) {
+          sumIssueQty += itemBatchs.quantity;
+        }
+        _data.qty = sumIssueQty;
+        _qtyController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.qty.toString()));
+        data.qty = double.parse(_qtyController.text);
+      } else {
+        _qtyController.text = "0";
       }
     }
 
@@ -463,55 +583,70 @@ class _GoodsIssueDetailItemDetailPageState
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                TextField(
-                  controller: _qtyController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Issue Qty",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                // _data.id == 0
-                //     ? TextField(
-                //         autofocus: true,
-                //         controller: _qtyController,
-                //         onEditingComplete: () {
-                //           setState(() {
-                //             String newValue = NumberFormat("###,###.####")
-                //                 .format(double.parse(_qtyController.text
-                //                     .replaceAll(new RegExp(','), '')
-                //                     .replaceAll(new RegExp('-'), '')
-                //                     .replaceAll(new RegExp(' '), '')));
-                //             _qtyController.text = newValue;
-                //             _qtyController.selection = TextSelection.collapsed(
-                //                 offset: newValue.length);
-                //           });
-                //         },
-                //         inputFormatters: [
-                //           DecimalTextInputFormatter(decimalRange: 4)
-                //         ],
-                //         keyboardType:
-                //             TextInputType.numberWithOptions(decimal: true),
-                //         decoration: InputDecoration(
-                //           labelText: "Issue Qty",
-                //           contentPadding: new EdgeInsets.symmetric(
-                //               vertical: 15.0, horizontal: 10.0),
-                //           border: new OutlineInputBorder(
-                //               borderRadius: new BorderRadius.circular(10.0)),
-                //           enabledBorder: OutlineInputBorder(
-                //               borderSide: BorderSide(color: Colors.blue),
-                //               borderRadius: new BorderRadius.circular(10.0)),
-                //         ))
-                //     : Padding(
-                //         padding: EdgeInsets.only(left: 10),
-                //         child: LabelFieldWidget(
-                //           labelText: "Issue Qty",
-                //           valueText:
-                //               "${NumberFormat("#,###.##").format(data.qty)}",
-                //         ),
-                //       ),
+                // TextField(
+                //   controller: _qtyController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Issue Qty",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                _newData.sapGoodsIssueId == 0
+                    ? TextField(
+                        autofocus: false,
+                        textInputAction: TextInputAction.done,
+                        controller: _qtyController,
+                        focusNode: _focusNode,
+                        onEditingComplete: () {
+                          setState(() {
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
+                            _qtyController.text = newValue;
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
+                          });
+                          _focusNode.unfocus();
+                          _refreshDetail();
+                        },
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          labelText: "Issue Qty",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            labelText: "Issue Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
+
+                // : Padding(
+                //     padding: EdgeInsets.only(left: 10),
+                //     child: LabelFieldWidget(
+                //       labelText: "Issue Qty",
+                //       valueText:
+                //           "${NumberFormat("#,###.##").format(data.qty)}",
+                //     ),
+                //   ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   controller: _uomController,
@@ -526,6 +661,7 @@ class _GoodsIssueDetailItemDetailPageState
               ],
             ),
           ),
+          _showCircularProgress(),
           Container(
             padding: EdgeInsets.all(10.0),
             child: Container(
@@ -554,7 +690,7 @@ class _GoodsIssueDetailItemDetailPageState
           ),
           Container(
               //color: Colors.brown,
-              child: (data != null)
+              child: (data.batchs.length > 0)
                   ? _buildList()
                   : Container(
                       padding: EdgeInsets.all(10.0),
@@ -567,8 +703,32 @@ class _GoodsIssueDetailItemDetailPageState
           ),
           SizedBox(
             height: 65,
-          )
+          ),
         ]);
+  }
+
+  void _showItemDetail(int itemIndex) {
+    final itemBatchs = _getState().data.batchs;
+    Future<ItemBatch> itemBatch = Navigator.push(
+      context,
+      MaterialPageRoute<ItemBatch>(
+        builder: (BuildContext context) =>
+            GoodsIssueDetailScanDetailPage(itemBatchs[itemIndex]),
+      ),
+    );
+
+    itemBatch.then(
+      (ItemBatch itemBatch) {
+        if (itemBatch != null) {
+          bloc.emitEvent(
+            GoodsIssueDetailItemDetailEventItemUpdate(
+              itemBatch: itemBatch,
+              itemIndex: itemIndex,
+            ),
+          );
+        }
+      },
+    );
   }
 
   Widget _rowDetail(int index, Item newData) {
@@ -590,9 +750,19 @@ class _GoodsIssueDetailItemDetailPageState
                   children: <Widget>[
                     // Text("Batch No. : ${_data.batchs[index].batchNo}"),
                     Text(
-                        "Qty Batch : ${NumberFormat("#,###.##").format(newData.batchs[index].quantity)}"),
+                        "Qty Batch : ${NumberFormat("#,###.####").format(newData.batchs[index].quantity)}"),
                   ],
                 ),
+                trailing: _newData.sapGoodsIssueId == 0
+                    ? IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.edit),
+                        iconSize: 30.0,
+                        onPressed: () {
+                          _showItemDetail(index);
+                        },
+                      )
+                    : null,
               ),
             ),
           )

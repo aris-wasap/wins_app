@@ -201,13 +201,43 @@ class PurchaseReturnsDetailBloc extends BlocEventStateBase<
         );
       }
     } else if (event is PurchaseReturnsDetailEventCancel) {
-      yield PurchaseReturnsDetailState.busy(
-        data: currentState.data,
-      );
-
-      yield PurchaseReturnsDetailState.success(
-        data: currentState.data,
-      );
+      if (event.id == 0) {
+        yield PurchaseReturnsDetailState.success(
+          data: Data(items: List<purchaseReturnsDetail.Item>()),
+        );
+      } else {
+        yield PurchaseReturnsDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          PurchaseReturnsDetailResponse response =
+              await _repository.purchaseReturnsDetail_Cancel(event.data);
+          if (response == null) {
+            yield PurchaseReturnsDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield PurchaseReturnsDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield PurchaseReturnsDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield PurchaseReturnsDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }

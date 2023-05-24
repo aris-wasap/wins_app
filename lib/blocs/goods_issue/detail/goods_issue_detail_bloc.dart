@@ -116,6 +116,7 @@ class GoodsIssueDetailBloc
       }
     } else if (event is GoodsIssueDetailEventRefresh) {
       var woId = event.woId;
+      var transDate = event.transDate;
       //var newData = currentState.data;
       //var listData = currentState.data.items;
 
@@ -129,8 +130,8 @@ class GoodsIssueDetailBloc
         );
         try {
           var _repository = Repository();
-          GoodsIssueDetailResponse response =
-              await _repository.goodsIssueDetail_ViewDetailItem(woId);
+          GoodsIssueDetailResponse response = await _repository
+              .goodsIssueDetail_ViewDetailItem(woId, transDate);
           if (response == null) {
             yield GoodsIssueDetailState.failure(
               errorMessage: 'Response null',
@@ -173,6 +174,50 @@ class GoodsIssueDetailBloc
           var _repository = Repository();
           GoodsIssueDetailResponse response =
               await _repository.goodsIssueDetail_RefreshAfter(id);
+          if (response == null) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsIssueDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsIssueDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is GoodsIssueDetailEventGetWeightProduction) {
+      var id = event.id;
+      var woId = event.woId;
+      var weightProd = event.weightProd;
+      // var newData = currentState.data;
+      // var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsIssueDetailState.success(
+          data: Data(items: List<goodsIssueDetail.Item>()),
+        );
+      } else {
+        yield GoodsIssueDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsIssueDetailResponse response = await _repository
+              .goodsIssueDetail_GetWeightProduction(id, woId, weightProd);
           if (response == null) {
             yield GoodsIssueDetailState.failure(
               errorMessage: 'Response null',
@@ -241,7 +286,43 @@ class GoodsIssueDetailBloc
           );
         }
       }
-    }else if (event is GoodsIssueDetailEventPost) {
+    } else if (event is GoodsIssueDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield GoodsIssueDetailState.busy(
+        // data: event.data,
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailResponse response =
+            await _repository.goodsIssueDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is GoodsIssueDetailEventPost) {
       yield GoodsIssueDetailState.busy(
         data: event.data,
       );
@@ -312,11 +393,44 @@ class GoodsIssueDetailBloc
           );
         }
       }
+    } else if (event is GoodsIssueDetailEventRemoveItem) {
+      yield GoodsIssueDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailResponse response = await _repository
+            .goodsIssueDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield GoodsIssueDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield GoodsIssueDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
+      }
     } else if (event is GoodsIssueDetailEventItemAdd) {
       var newData = currentState.data;
       newData.items.add(event.item);
       yield GoodsIssueDetailState.success(
-        data: newData,
+        data: currentState.data,
       );
     } else if (event is GoodsIssueDetailEventItemUpdate) {
       var newData = currentState.data;

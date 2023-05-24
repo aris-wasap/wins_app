@@ -77,13 +77,14 @@ class _CflWarehousePageState extends State<CflWarehousePage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
             hintText: "Search Warehouse",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
               color: bgOrange,

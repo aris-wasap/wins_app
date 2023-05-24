@@ -201,13 +201,43 @@ class ReceiptSupplierDetailBloc extends BlocEventStateBase<
         );
       }
     } else if (event is ReceiptSupplierDetailEventCancel) {
-      yield ReceiptSupplierDetailState.busy(
-        data: currentState.data,
-      );
-
-      yield ReceiptSupplierDetailState.success(
-        data: currentState.data,
-      );
+      if (event.id == 0) {
+        yield ReceiptSupplierDetailState.success(
+          data: Data(items: List<receiptSupplierDetail.Item>()),
+        );
+      } else {
+        yield ReceiptSupplierDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          ReceiptSupplierDetailResponse response =
+              await _repository.receiptSupplierDetail_Cancel(event.data);
+          if (response == null) {
+            yield ReceiptSupplierDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield ReceiptSupplierDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield ReceiptSupplierDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield ReceiptSupplierDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }

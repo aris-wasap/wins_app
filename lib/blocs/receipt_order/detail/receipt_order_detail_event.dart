@@ -97,7 +97,9 @@ class ReceiptOrderDetailEventPost extends ReceiptOrderDetailEvent {
 class ReceiptOrderDetailEventCancel extends ReceiptOrderDetailEvent {
   ReceiptOrderDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

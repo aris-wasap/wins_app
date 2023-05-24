@@ -93,7 +93,9 @@ class ReturnSalesDetailEventPost extends ReturnSalesDetailEvent {
 class ReturnSalesDetailEventCancel extends ReturnSalesDetailEvent {
   ReturnSalesDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

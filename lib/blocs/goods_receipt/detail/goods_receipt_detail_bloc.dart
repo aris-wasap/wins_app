@@ -59,9 +59,55 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
           );
         }
       }
+    } else if (event is GoodsReceiptDetailEventRefresh) {
+      var webId = event.webId;
+      var sapGoodsIssueId = event.sapGoodsIssueId;
+      var transDate = event.transDate;
+      var newData = currentState.data;
+      var listData = currentState.data.items;
+
+      if (webId == 0) {
+        yield GoodsReceiptDetailState.success(
+          data: Data(items: List<goodsReceiptDetail.Item>()),
+        );
+      } else {
+        yield GoodsReceiptDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsReceiptDetailResponse response =
+              await _repository.goodsReceiptDetail_ViewDetailItem(
+                  webId, sapGoodsIssueId, transDate);
+          if (response == null) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsReceiptDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsReceiptDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else if (event is GoodsReceiptDetailEventScan) {
       var woId = event.woId;
       var woNo = event.woNo;
+      var webId = event.webId;
       var qrResult = event.qrResult;
       var newData = currentState.data;
 
@@ -71,7 +117,7 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
       try {
         var _repository = Repository();
         GoodsReceiptDetailScanResponse response =
-            await _repository.goodsReceiptDetail_Scan(woId, qrResult);
+            await _repository.goodsReceiptDetail_Scan(webId, qrResult);
         if (response == null) {
           yield GoodsReceiptDetailState.failure(
             errorMessage: 'Response null',
@@ -165,8 +211,7 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
           data: event.data,
         );
       }
-    }
-    else if (event is GoodsReceiptDetailEventUpdate) {
+    } else if (event is GoodsReceiptDetailEventUpdate) {
       yield GoodsReceiptDetailState.busy(
         data: event.data,
       );
@@ -200,8 +245,44 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
           data: event.data,
         );
       }
-    }
-    else if (event is GoodsReceiptDetailEventPost) {
+    } else if (event is GoodsReceiptDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield GoodsReceiptDetailState.busy(
+        // data: event.data,
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsReceiptDetailResponse response =
+            await _repository.goodsReceiptDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsReceiptDetailState.success(
+              succesMessage: response.errorMessage,
+              data:
+                  response.data ?? Data(items: List<goodsReceiptDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsReceiptDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is GoodsReceiptDetailEventPost) {
       yield GoodsReceiptDetailState.busy(
         data: event.data,
       );
@@ -235,14 +316,130 @@ class GoodsReceiptDetailBloc extends BlocEventStateBase<GoodsReceiptDetailEvent,
           data: event.data,
         );
       }
-    } else if (event is GoodsReceiptDetailEventCancel) {
+    } else if (event is GoodsReceiptDetailEventResetData) {
+      var id = event.id;
+      var woId = event.woId;
+      // var newData = currentState.data;
+      // var listData = currentState.data.items;
+
+      if (id == 0) {
+        yield GoodsReceiptDetailState.success(
+          data: Data(items: List<goodsReceiptDetail.Item>()),
+        );
+      } else {
+        yield GoodsReceiptDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsReceiptDetailResponse response =
+              await _repository.goodsReceiptDetail_ResetData(id, woId);
+          if (response == null) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsReceiptDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsReceiptDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    }
+    // else if (event is GoodsReceiptDetailEventCancel) {
+    //   yield GoodsReceiptDetailState.busy(
+    //     data: currentState.data,
+    //   );
+
+    //   yield GoodsReceiptDetailState.success(
+    //     data: currentState.data,
+    //   );
+    // }
+    else if (event is GoodsReceiptDetailEventCancel) {
+      if (event.id == 0) {
+        yield GoodsReceiptDetailState.success(
+          data: Data(items: List<goodsReceiptDetail.Item>()),
+        );
+      } else {
+        yield GoodsReceiptDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          GoodsReceiptDetailResponse response =
+              await _repository.goodsReceiptDetail_Cancel(event.data);
+          if (response == null) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield GoodsReceiptDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield GoodsReceiptDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is GoodsReceiptDetailEventRemoveItem) {
       yield GoodsReceiptDetailState.busy(
         data: currentState.data,
       );
-
-      yield GoodsReceiptDetailState.success(
-        data: currentState.data,
-      );
+      try {
+        var _repository = Repository();
+        GoodsReceiptDetailResponse response = await _repository
+            .goodsReceiptDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield GoodsReceiptDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsReceiptDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield GoodsReceiptDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsReceiptDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
+      }
     } else {}
   }
 }

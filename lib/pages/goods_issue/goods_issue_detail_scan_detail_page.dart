@@ -1,9 +1,10 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_bloc.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_event.dart';
-import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_state.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail_batch/goods_issue_detail_item_detail_batch_bloc.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail_batch/goods_issue_detail_item_detail_batch_event.dart';
+import 'package:wins_app/blocs/goods_issue/detail_item_detail_batch/goods_issue_detail_item_detail_batch_state.dart';
 import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
@@ -18,7 +19,7 @@ import 'dart:math' as math;
 
 class GoodsIssueDetailScanDetailPage extends StatefulWidget {
   GoodsIssueDetailScanDetailPage(this._data);
-  final Item _data;
+  final ItemBatch _data;
   @override
   _GoodsIssueDetailScanDetailPageState createState() =>
       _GoodsIssueDetailScanDetailPageState(_data);
@@ -28,8 +29,8 @@ class _GoodsIssueDetailScanDetailPageState
     extends State<GoodsIssueDetailScanDetailPage> {
   _GoodsIssueDetailScanDetailPageState(this._data);
 
-  final Item _data;
-  GoodsIssueDetailItemDetailBloc bloc;
+  final ItemBatch _data;
+  GoodsIssueDetailItemDetailBatchBloc bloc;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _itemCodeController = TextEditingController();
   final _itemNameController = TextEditingController();
@@ -41,13 +42,14 @@ class _GoodsIssueDetailScanDetailPageState
   final _qtyController = TextEditingController();
   final _qtyPoController = TextEditingController();
   final _batchNoController = TextEditingController();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    bloc = GoodsIssueDetailItemDetailBloc(this._data);
+    _focusNode = FocusNode();
+    bloc = GoodsIssueDetailItemDetailBatchBloc(this._data);
   }
 
   @override
@@ -55,7 +57,7 @@ class _GoodsIssueDetailScanDetailPageState
     _qtyController?.dispose();
     _binAbsController?.dispose();
     _binCodeController?.dispose();
-
+    _focusNode?.dispose();
     bloc?.dispose();
 
     // TODO: implement dispose
@@ -68,7 +70,7 @@ class _GoodsIssueDetailScanDetailPageState
   //         context: context, message: "Qty harus lebih besar dari 0");
   //     return;
   //   }
-  //   bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(
+  //   bloc.emitEvent(GoodsIssueDetailItemDetailBatchEventQty(
   //     qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
   //     binAbs: int.parse(_binAbsController.text),
   //     binCode: _binCodeController.text,
@@ -78,7 +80,7 @@ class _GoodsIssueDetailScanDetailPageState
   //     context,
   //     MaterialPageRoute<Item>(
   //       builder: (BuildContext context) =>
-  //           GoodsIssueDetailItemDetailPage(_getState().data),
+  //           GoodsIssueDetailItemDetailBatchPage(_getState().data),
   //     ),
   //   );
   // }
@@ -89,53 +91,67 @@ class _GoodsIssueDetailScanDetailPageState
           context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
-    bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(
+    bloc.emitEvent(GoodsIssueDetailItemDetailBatchEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
-      binAbs: int.parse(_binAbsController.text),
-      binCode: _binCodeController.text,
     ));
     Navigator.pop(context, _getState().data);
   }
 
-  GoodsIssueDetailItemDetailState _getState() {
+  GoodsIssueDetailItemDetailBatchState _getState() {
     return bloc.lastState ?? bloc.initialState;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocEventStateBuilder<GoodsIssueDetailItemDetailState>(
+    return BlocEventStateBuilder<GoodsIssueDetailItemDetailBatchState>(
         bloc: bloc,
-        builder: (BuildContext context, GoodsIssueDetailItemDetailState state) {
-          return SafeArea(
-              child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text("Item Detail"),
-              backgroundColor: bgBlue,
-              bottom: PreferredSize(
-                  child: Container(
-                    color: bgOrange,
-                    height: 5.0,
-                  ),
-                  preferredSize: Size.fromHeight(5.0)),
-              actions: <Widget>[
-                _data.id != 0
-                    ? FlatButton(
-                        onPressed: () {
-                          _done();
-                        },
-                        textColor: Colors.white,
-                        child: Row(
-                          children: <Widget>[Text("ADD")],
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: _buildForm(),
-            ),
-          ));
+        builder:
+            (BuildContext context, GoodsIssueDetailItemDetailBatchState state) {
+          return WillPopScope(
+            onWillPop: () async {
+              if (_data.detId > 0) {
+                if (await confirm(context)) {
+                  // items.id = _newData.id;
+                  // Navigator.pop(context, items);
+                  _done();
+                } else {
+                  return;
+                }
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            child: SafeArea(
+                child: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                title: Text("Batch Number Detail"),
+                backgroundColor: bgBlue,
+                bottom: PreferredSize(
+                    child: Container(
+                      color: bgOrange,
+                      height: 5.0,
+                    ),
+                    preferredSize: Size.fromHeight(5.0)),
+                actions: <Widget>[
+                  _data.detDetId != 0
+                      ? FlatButton(
+                          onPressed: () {
+                            _done();
+                          },
+                          textColor: Colors.white,
+                          child: Row(
+                              // children: <Widget>[Text("Update")],
+                              ),
+                        )
+                      : Container(),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: _buildForm(),
+              ),
+            )),
+          );
         });
   }
 
@@ -149,18 +165,18 @@ class _GoodsIssueDetailScanDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyPoController.text = data.woQty.toString();
-    _batchNoController.text = "xxx";
+    _qtyPoController.text = data.quantity.toString();
+    _batchNoController.text = data.batchNo;
 
-    if (_data.qty != 0) {
+    if (_data.quantity != 0) {
       if (_qtyController.text == "") {
         _qtyController.text = NumberFormat("###,###.##")
-            .format(double.parse(data.qty.toString()));
+            .format(double.parse(data.quantity.toString()));
       } else {
-        if (_data.qty ==
+        if (_data.quantity ==
             double.parse(_qtyController.text.replaceAll(new RegExp(','), ''))) {
           _qtyController.text = NumberFormat("###,###.##")
-              .format(double.parse(data.qty.toString()));
+              .format(double.parse(data.quantity.toString()));
         }
       }
     }
@@ -180,120 +196,167 @@ class _GoodsIssueDetailScanDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
-                  controller: _itemCodeController,
+                  controller: _batchNoController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "Item Code",
+                      labelText: "Batch Number",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _itemNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Item Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _whsCodeController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "To Warehouse Code",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: _whsNameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "To Warehouse Name",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      setState(() {
-                        Future<cflBinLocation.Data> bin = Navigator.push(
-                            context,
-                            MaterialPageRoute<cflBinLocation.Data>(
-                                builder: (BuildContext context) =>
-                                    CflBinLocationPage(
-                                        _whsCodeController.text)));
+                // TextFormField(
+                //   controller: _itemCodeController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Code",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _itemNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Item Name",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _whsCodeController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "To Warehouse Code",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _whsNameController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "To Warehouse Name",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // FlatButton(
+                //   padding: EdgeInsets.only(top: 5),
+                //   onPressed: () {
+                //     if (data.id == 0) {
+                //       setState(() {
+                //         Future<cflBinLocation.Data> bin = Navigator.push(
+                //             context,
+                //             MaterialPageRoute<cflBinLocation.Data>(
+                //                 builder: (BuildContext context) =>
+                //                     CflBinLocationPage(
+                //                         _whsCodeController.text)));
 
-                        bin.then((cflBinLocation.Data bin) {
-                          if (bin != null) {
-                            // _binAbsController.text = bin.absEntry.toString();
-                            // _binCodeController.text =  bin.binCode;
-                            _getState().data.binAbs = bin.absEntry;
-                            _getState().data.binCode = bin.binCode;
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "To Bin Location",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_binCodeController.text),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
+                //         bin.then((cflBinLocation.Data bin) {
+                //           if (bin != null) {
+                //             // _binAbsController.text = bin.absEntry.toString();
+                //             // _binCodeController.text =  bin.binCode;
+                //             _getState().data.binAbs = bin.absEntry;
+                //             _getState().data.binCode = bin.binCode;
+                //           }
+                //         });
+                //       });
+                //     }
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.only(left: 5, top: 5),
+                //     alignment: Alignment.centerLeft,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //             color: (data.id == 0)
+                //                 ? Colors.blue
+                //                 : Colors.grey[400]),
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       children: <Widget>[
+                //         Expanded(
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: <Widget>[
+                //               Text(
+                //                 "To Bin Location",
+                //                 style: TextStyle(
+                //                     color: Colors.blue, fontSize: 12.0),
+                //               ),
+                //               ListTile(
+                //                 contentPadding: EdgeInsets.only(left: 5),
+                //                 title: Text(_binCodeController.text),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         (data.id == 0)
+                //             ? Icon(
+                //                 Icons.keyboard_arrow_right,
+                //               )
+                //             : Container(width: 0, height: 0),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                _data.detId > 0
+                    ? TextField(
+                        autofocus: true,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _focusNode,
+                        controller: _qtyController,
+                        onEditingComplete: () {
+                          setState(() {
+                            String newValue = NumberFormat("###,###.####")
+                                .format(double.parse(_qtyController.text
+                                    .replaceAll(new RegExp(','), '')
+                                    .replaceAll(new RegExp('-'), '')
+                                    .replaceAll(new RegExp(' '), '')));
+                            _qtyController.text = newValue;
+                            _qtyController.selection = TextSelection.collapsed(
+                                offset: newValue.length);
+                          });
+                          _focusNode.unfocus();
+                        },
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 4)
+                        ],
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          labelText: "Issue Qty",
+                          contentPadding: new EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 10.0),
+                          border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: new BorderRadius.circular(10.0)),
+                        ))
+                    : TextField(
+                        controller: _qtyController,
+                        enabled: false,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                            labelText: "Issue Qty",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                TextField(
-                  controller: _qtyPoController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      labelText: "Qty",
-                      contentPadding: new EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
-                ),
-                Padding(padding: EdgeInsets.only(top: 15)),
                 TextFormField(
                   controller: _uomController,
                   enabled: false,

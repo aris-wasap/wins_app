@@ -72,13 +72,14 @@ class _CflItemPageState extends State<CflItemPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
             hintText: "Search Item",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
             child: Container(
               color: bgOrange,

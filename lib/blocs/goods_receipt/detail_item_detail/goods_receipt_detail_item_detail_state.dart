@@ -37,6 +37,8 @@ class GoodsReceiptDetailItemDetailState extends BlocState {
 
   factory GoodsReceiptDetailItemDetailState.success({
     @required Item data,
+    Data newData,
+    String errorMessage,
   }) {
     return GoodsReceiptDetailItemDetailState(
       isSuccess: true,

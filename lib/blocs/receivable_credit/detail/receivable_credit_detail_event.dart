@@ -95,7 +95,9 @@ class ReceivableCreditDetailEventPost extends ReceivableCreditDetailEvent {
 class ReceivableCreditDetailEventCancel extends ReceivableCreditDetailEvent {
   ReceivableCreditDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

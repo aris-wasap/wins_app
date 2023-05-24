@@ -34,66 +34,68 @@ class GoodsIssueMixingDetailItemBatchDetailBloc extends BlocEventStateBase<
       yield GoodsIssueMixingDetailItemBatchDetailState.success(
         data: newData,
       );
-    } else if (event is GoodsIssueMixingDetailItemBatchDetailEventScanBatch) {
-      var id = event.id;
-      var detId = event.detId;
-      var woId = event.woId;
-      var woLineNo = event.woLineNo;
-      var qrResult = event.qrResult;
-      var newData = currentState.data;
+    } 
+    // else if (event is GoodsIssueMixingDetailItemBatchDetailEventScanBatch) {
+    //   var id = event.id;
+    //   var detId = event.detId;
+    //   var woId = event.woId;
+    //   var woLineNo = event.woLineNo;
+    //   var qrResult = event.qrResult;
+    //   var newData = currentState.data;
 
-      yield GoodsIssueMixingDetailItemBatchDetailState.busy(
-        data: currentState.data,
-      );
-      try {
-        var _repository = Repository();
-        GoodsIssueMixingDetailScanBatchResponse response =
-            await _repository.goodsIssueMixingDetail_ScanBatch(
-          id,
-          detId,
-          woId,
-          woLineNo,
-          qrResult,
-        );
-        if (response == null) {
-          yield GoodsIssueMixingDetailItemBatchDetailState.failure(
-            errorMessage: 'Response null',
-            data: event.data,
-          );
-        } else {
-          bool error = response.error;
-          if (error) {
-            yield GoodsIssueMixingDetailItemBatchDetailState.failure(
-              errorMessage: 'Fetch fail ${response.errorMessage}',
-              data: event.data,
-            );
-          } else {
-            if (response.dataBatch == null) {
-              yield GoodsIssueMixingDetailItemBatchDetailState.failure(
-                errorMessage: '$qrResult tidak di temukan di gudang  (1)',
-                data: event.data,
-              );
-            } else {
-              if (response.dataBatch.batchNo == null) {
-                yield GoodsIssueMixingDetailItemBatchDetailState.failure(
-                  errorMessage: '$qrResult tidak di temukan di gudang (2)',
-                  data: event.data,
-                );
-              } else {
-                yield GoodsIssueMixingDetailItemBatchDetailState.success(
-                  data: newData,
-                  // newItem: response.data,
-                );
-              }
-            }
-          }
-        }
-      } catch (e) {
-        yield GoodsIssueMixingDetailItemBatchDetailState.failure(
-          errorMessage: "fail ${event.toString()}",
-          data: event.data,
-        );
-      }
-    } else {}
+    //   yield GoodsIssueMixingDetailItemBatchDetailState.busy(
+    //     data: currentState.data,
+    //   );
+    //   try {
+    //     var _repository = Repository();
+    //     GoodsIssueMixingDetailScanBatchResponse response =
+    //         await _repository.goodsIssueMixingDetail_ScanBatch(
+    //       id,
+    //       detId,
+    //       woId,
+    //       woLineNo,
+    //       qrResult,
+    //     );
+    //     if (response == null) {
+    //       yield GoodsIssueMixingDetailItemBatchDetailState.failure(
+    //         errorMessage: 'Response null',
+    //         data: event.data,
+    //       );
+    //     } else {
+    //       bool error = response.error;
+    //       if (error) {
+    //         yield GoodsIssueMixingDetailItemBatchDetailState.failure(
+    //           errorMessage: 'Fetch fail ${response.errorMessage}',
+    //           data: event.data,
+    //         );
+    //       } else {
+    //         if (response.dataBatch == null) {
+    //           yield GoodsIssueMixingDetailItemBatchDetailState.failure(
+    //             errorMessage: '$qrResult tidak di temukan di gudang  (1)',
+    //             data: event.data,
+    //           );
+    //         } else {
+    //           if (response.dataBatch.batchNo == null) {
+    //             yield GoodsIssueMixingDetailItemBatchDetailState.failure(
+    //               errorMessage: '$qrResult tidak di temukan di gudang (2)',
+    //               data: event.data,
+    //             );
+    //           } else {
+    //             yield GoodsIssueMixingDetailItemBatchDetailState.success(
+    //               data: newData,
+    //               // newItem: response.data,
+    //             );
+    //           }
+    //         }
+    //       }
+    //     }
+    //   } catch (e) {
+    //     yield GoodsIssueMixingDetailItemBatchDetailState.failure(
+    //       errorMessage: "fail ${event.toString()}",
+    //       data: event.data,
+    //     );
+    //   }
+    // }
+     else {}
   }
 }

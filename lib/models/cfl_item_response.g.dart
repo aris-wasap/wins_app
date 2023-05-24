@@ -28,10 +28,12 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
+    uom: json['Uom'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
+      'Uom': instance.uom,
     };

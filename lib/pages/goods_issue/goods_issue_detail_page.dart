@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
+import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_additional_detail_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
@@ -19,7 +21,7 @@ import 'package:wins_app/models/cfl_transfer_production_response.dart'
     as cflTransferProduction;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_item_detail_page.dart';
+import 'dart:math' as math;
 
 class GoodsIssueDetailPage extends StatefulWidget {
   GoodsIssueDetailPage(this._id);
@@ -37,24 +39,28 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //final Data _newData;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController _scrollController;
-
+  final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
   final _productCodeController = TextEditingController();
   final _productNameController = TextEditingController();
+  final _weightProductionController = TextEditingController();
   final _transNoController = TextEditingController();
-  final _baseNoController = TextEditingController();
   final _transDateController = TextEditingController();
+  final _baseNoController = TextEditingController();
   final _seriesNameWoController = TextEditingController();
   final _seriesNameController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
+  final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
+  FocusNode _focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _focusNode = FocusNode();
 
     if (_id != 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,6 +88,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
   @override
   void dispose() {
+    _idTxController?.dispose();
+    _statusController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
     _productCodeController?.dispose();
@@ -92,6 +100,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     _seriesNameWoController?.dispose();
     _seriesNameController?.dispose();
     _sapGoodsIssueNoController?.dispose();
+    _weightProductionController?.dispose();
+    _focusNode?.dispose();
 
     bloc?.dispose();
 
@@ -157,6 +167,46 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     bloc.emitEvent(GoodsIssueDetailEventAdd(
       data: data,
     ));
+  }
+
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
+
+    data.id = int.parse(_idTxController.text);
+    data.woNo = _woNoController.text;
+    data.woId = int.parse(_woIdController.text);
+    data.transDate = transDate;
+    data.seriesName = _seriesNameController.text;
+    data.seriesNameWo = _seriesNameWoController.text;
+    data.items = state.data.items;
+
+    if ([null].contains(data.transDate)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Date harus di isi");
+      return;
+    } else if (["", null].contains(data.woNo)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    }
+
+    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
+    bloc.emitEvent(
+      GoodsIssueDetailEventUpdateTransDate(
+        id: int.parse(_idTxController.text),
+        transDate: setTransDate,
+      ),
+    );
   }
 
   void _post() {
@@ -291,39 +341,16 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     if (picked != null && picked != transDate) {
       transDate = picked;
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      _updateTransDate();
     }
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.sapGoodsIssueId == 0 && _getState().data.id > 0) {
+    if (_getState().data.sapGoodsIssueId == 0 &&
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel") {
       return AppBar(
         title: Text("Create Issue"),
-        backgroundColor: bgBlue,
-        bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
-            preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: const Text('Submit'),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
-                ),
-                onPressed: () {
-                  showAlertDialogSubmit(context);
-                },
-              )),
-        ],
-      );
-    } else if (_getState().data.sapGoodsIssueId > 0 &&
-        _getState().data.sapGoodsReceiptId == 0) {
-      return AppBar(
-        title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -335,18 +362,43 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
-              child: const Text('Post'),
+              child: const Text('Submit'),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
               ),
               onPressed: () {
-                showAlertDialogPostSap(context);
+                showAlertDialogSubmit(context);
               },
             ),
           ),
-
         ],
       );
+      // } else if (_getState().data.sapGoodsIssueId > 0 &&
+      //     _getState().data.sapGoodsReceiptId == 0) {
+      //   return AppBar(
+      //     title: Text("Create Receipt"),
+      //     backgroundColor: bgBlue,
+      //     bottom: PreferredSize(
+      //         child: Container(
+      //           color: bgOrange,
+      //           height: 5.0,
+      //         ),
+      //         preferredSize: Size.fromHeight(5.0)),
+      //     actions: <Widget>[
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: RaisedButton(
+      //           child: const Text('Post'),
+      //           shape: const RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
+      //           ),
+      //           onPressed: () {
+      //             showAlertDialogPostSap(context);
+      //           },
+      //         ),
+      //       ),
+      //     ],
+      //   );
     } else {
       return AppBar(
         title: Text("Issue For Production"),
@@ -392,8 +444,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     //     }
     //   }
     try {
-      bloc.emitEvent(
-          GoodsIssueDetailEventRefresh(woId: int.parse(_woIdController.text)));
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
+      bloc.emitEvent(GoodsIssueDetailEventRefresh(
+        woId: int.parse(_woIdController.text),
+        transDate: setTransDate,
+      ));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -426,6 +482,57 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     }
   }
 
+  Future _getWeightProduction() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    // if (["0", null].contains(_weightProductionController.text)) {
+    //   ValidateDialogWidget(
+    //       context: context, message: "Weight Production harus lebih besar dari 0");
+    //   return;
+    // }
+
+    var data = _getState().data;
+//data.sapGoodsIssueId == 0 &&
+    if (data.id > 0 && data.status == 'Draft') {
+      try {
+        bloc.emitEvent(
+          GoodsIssueDetailEventGetWeightProduction(
+            id: data.id,
+            woId: data.woId,
+            weightProd: double.parse(_weightProductionController.text
+                .replaceAll(new RegExp(','), '')),
+          ),
+        );
+      } catch (ex) {
+        ValidateDialogWidget(
+            context: context, message: "Refresh : Unknown error $ex");
+        return;
+      }
+    } else {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Data is not valid");
+      return;
+    }
+  }
+
   Future _resetData() async {
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
@@ -433,15 +540,35 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       return;
     }
 
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
     var data = _getState().data;
 
-    try {
-      bloc.emitEvent(
-        GoodsIssueDetailEventResetData(id: data.id, woId: data.woId),
-      );
-    } catch (ex) {
+    if (data.sapGoodsIssueId == 0 && data.id > 0 && data.status == 'Draft') {
+      try {
+        bloc.emitEvent(
+          GoodsIssueDetailEventResetData(id: data.id, woId: data.woId),
+        );
+      } catch (ex) {
+        ValidateDialogWidget(
+            context: context, message: "Refresh : Unknown error $ex");
+        return;
+      }
+    } else {
       ValidateDialogWidget(
-          context: context, message: "Refresh : Unknown error $ex");
+          context: context, message: "Refresh : Data is not valid");
       return;
     }
   }
@@ -450,6 +577,20 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     if (["", null].contains(_woNoController.text)) {
       ValidateDialogWidget(
           context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
       return;
     }
 
@@ -510,35 +651,78 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   //   }
   // }
 
-  void _showScanNewItemDetail() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var newItem = _getState().newItem;
-      var newData = _getState().data;
-      if (newItem != null) {
-        bloc.emitEvent(GoodsIssueDetailEventNormal());
-        Future<Item> item = Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                GoodsIssueDetailItemDetailPage(newItem, 0, newData),
-          ),
-        );
+  // void _showScanNewItemDetail() async {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     var newItem = _getState().newItem;
+  //     var newData = _getState().data;
+  //     if (newItem != null) {
+  //       bloc.emitEvent(GoodsIssueDetailEventNormal());
+  //       Future<Item> item = Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (BuildContext context) =>
+  //               GoodsIssueDetailItemDetailPage(newItem, 0, newData),
+  //         ),
+  //       );
 
-        item.then((Item item) {
-          if (item != null) {
-            bloc.emitEvent(GoodsIssueDetailEventItemAdd(
-              item: item,
-            ));
-          }
-        });
-      }
-    });
+  //       item.then((Item item) {
+  //         if (item != null) {
+  //           bloc.emitEvent(GoodsIssueDetailEventItemAdd(
+  //             item: item,
+  //           ));
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+
+  void _showAddNewItemDetail() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsIssueNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var newItem = _getState().newItem;
+    var newData = _getState().data;
+    if (newItem == null) {
+      bloc.emitEvent(GoodsIssueDetailEventNormal());
+      Future<Item> item = Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              GoodsIssueDetailItemAdditionalDetailPage(newItem, -1, newData),
+        ),
+      );
+
+      item.then((Item item) {
+        if (item != null) {
+          bloc.emitEvent(GoodsIssueDetailEventItemAdd(
+            item: item,
+          ));
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     _context = context;
-    var data = _getState().data;
+    var getData = _getState().data;
 
     return BlocEventStateBuilder<GoodsIssueDetailState>(
         bloc: bloc,
@@ -558,72 +742,49 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: _getState().data.sapGoodsIssueId == 0 &&
-                                    _getState().data.id > 0
-                                ? FloatingActionButton(
-                                    heroTag: "btnReset",
-                                    backgroundColor: Colors.green,
-                                    child: Icon(Icons.autorenew),
-                                    onPressed: () {
-                                      showAlertDialogReset(context);
-                                    },
-                                  )
-                                : null),
-                        // Align(
-                        //     alignment: Alignment.bottomCenter,
-                        //     child: _getState().data.sapGoodsIssueId == 0 &&
-                        //             _getState().data.status == "Draft" //Tidak dipakai
-                        //         ? FloatingActionButton(
-                        //             heroTag: "btnCreateNew",
-                        //             backgroundColor: Colors.blue,
-                        //             child: Icon(Icons.add),
-                        //             onPressed: () {
-                        //               showAlertDialogCreateNew(context);
-                        //             },
-                        //           )
-                        //         : null),
-                        // Align(
-                        //   alignment: Alignment.bottomRight,
-                        //   child: _getState().data.sapGoodsIssueId == 0 &&
-                        //           _getState().data.status == "Draft" //Tidak dipakai
-                        //       ? FloatingActionButton(
-                        //           heroTag: "btnRefresh",
-                        //           backgroundColor: Colors.green,
-                        //           child: Icon(Icons.autorenew),
-                        //           onPressed: () {
-                        //             showAlertDialogRefresh(context);
-                        //           },
-                        //         )
-                        //       : null,
-                        // ),
-
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: _getState().data.sapGoodsIssueId == 0 &&
-                                  _getState().data.id > 0
-                              ? FloatingActionButton(
-                                  heroTag: "btnDelete",
-                                  backgroundColor: Colors.red,
-                                  child: Icon(Icons.delete_outline),
-                                  onPressed: () {
-                                    showAlertDialogDelete(context);
-                                  },
-                                )
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
                   _showCircularProgress(),
                 ]),
               ),
               //Floating Button
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: "btnReset",
+                    backgroundColor: Colors.green,
+                    tooltip: "Reset",
+                    child: Icon(Icons.autorenew),
+                    onPressed: () {
+                      showAlertDialogReset(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnCreateNew",
+                    backgroundColor: Colors.blue,
+                    tooltip: "Add New Item",
+                    child: Icon(Icons.add_shopping_cart),
+                    onPressed: () {
+                      _showAddNewItemDetail();
+                      // showAlertDialogCreateNew(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  FloatingActionButton(
+                    heroTag: "btnDelete",
+                    backgroundColor: Colors.red,
+                    tooltip: "Delete",
+                    child: Icon(Icons.delete_outline),
+                    onPressed: () {
+                      showAlertDialogDelete(context);
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -644,6 +805,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     final newData = _getState().data;
     final items = _getState().data.items;
 
+    if ((items[itemIndex].woQty == 0)) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan masukan Weight Production");
+      return;
+    }
+
     Future<Item> item = Navigator.push(
       context,
       MaterialPageRoute<Item>(
@@ -654,9 +821,36 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
-          item: item,
-          itemIndex: itemIndex,
+        // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        //   item: item,
+        //   itemIndex: itemIndex,
+        // ));
+      }
+    });
+  }
+
+  void _showItemAdditionalDetail(int itemIndex) {
+    final newData = _getState().data;
+    final items = _getState().data.items;
+
+    Future<Item> item = Navigator.push(
+      context,
+      MaterialPageRoute<Item>(
+        builder: (BuildContext context) =>
+            GoodsIssueDetailItemAdditionalDetailPage(
+                items[itemIndex], itemIndex, newData),
+      ),
+    );
+
+    item.then((Item item) {
+      if (item != null) {
+        // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
+        //   item: item,
+        //   itemIndex: itemIndex,
+        // ));
+
+        bloc.emitEvent(GoodsIssueDetailEventGetId(
+          id: _id,
         ));
       }
     });
@@ -665,11 +859,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   Widget _buildForm() {
     _errorMessage();
     _successMessage();
-    _showScanNewItemDetail();
+    // _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
     _woIdController.text = data.woId.toString();
     _woNoController.text = data.woNo;
+    _transNoController.text = data.transNo;
 
     if (transDate != null) {
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
@@ -681,12 +876,14 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
     }
     if (data.id != 0) {
+      _idTxController.text = data.id.toString();
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
-      _transNoController.text = data.transNo;
+      _transNoController.text =
+          data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;
       _baseNoController.text = data.baseNo;
       transDate = data.transDate;
       if (transDate != null) {
@@ -696,6 +893,22 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       }
       _seriesNameWoController.text = data.seriesNameWo;
       _seriesNameController.text = data.seriesName;
+    }
+
+    // _weightProductionController.text = NumberFormat("###,###.####")
+    //     .format(double.parse(data.weight.toString()));
+    if (data.weight != 0) {
+      if (_weightProductionController.text == "") {
+        _weightProductionController.text = NumberFormat("###,###.####")
+            .format(double.parse(data.weight.toString()));
+      } else {
+        if (data.weight ==
+            double.parse(_weightProductionController.text
+                .replaceAll(new RegExp(','), ''))) {
+          _weightProductionController.text = NumberFormat("###,###.####")
+              .format(double.parse(data.weight.toString()));
+        }
+      }
     }
 
     return Column(
@@ -733,111 +946,104 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))))
-                    : Container(width: 0, height: 0),                
-                 (data.sapGoodsReceiptId > 0) ?
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {},
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                            controller: _sapGoodsReceiptNoController,
-                            enabled: false,
-                            style: TextStyle(fontSize: 16, color: Colors.red),
-                            decoration: InputDecoration(
-                                hintText: "Goods Receipt Production No.",
-                                labelText: "Goods Receipt Production No.",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[300]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))),
-                      ),
-                      (data.sapGoodsReceiptId > 0)
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.view_list,
-                                color: bgOrange,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        GoodsReceiptDetailPage(data.baseId),
-                                  ),
-                                );
-                              },
-                            )
-                          : Container(width: 0, height: 0),
-                    ],
-                  ),
-                ) : Container(width: 0, height: 0),
-                (data.baseId > 0) ?
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {},
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                            controller: _baseNoController,
-                            enabled: false,
-                            // style: TextStyle(fontSize: 16, color: Colors.red),
-                            decoration: InputDecoration(
-                                hintText: "Ref No.",
-                                labelText: "Ref No.",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[300]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))),
-                      ),
-                      (data.baseId > 0)
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.view_list,
-                                color: Colors.green,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        GoodsReceiptDetailPage(data.baseId),
-                                  ),
-                                );
-                              },
-                            )
-                          : Container(width: 0, height: 0),
-                    ],
-                  ),
-                ) : Container(width: 0, height: 0),
-                // Padding(padding: EdgeInsets.only(top: 5)),
-                // (data.baseId > 0)
-                //     ? TextFormField(
-                //         controller: _baseNoController,
-                //         enabled: false,
-                //         decoration: InputDecoration(
-                //             hintText: "Scan No.",
-                //             labelText: "Scan No.",
-                //             contentPadding: new EdgeInsets.symmetric(
-                //                 vertical: 15.0, horizontal: 10.0),
-                //             border: new OutlineInputBorder(
-                //                 borderRadius: new BorderRadius.circular(10.0))))
-                //     : Container(width: 0, height: 0),
-
+                    : Container(width: 0, height: 0),
+                (data.sapGoodsReceiptId > 0)
+                    ? FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {},
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextFormField(
+                                  controller: _sapGoodsReceiptNoController,
+                                  enabled: false,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.red),
+                                  decoration: InputDecoration(
+                                      hintText: "Goods Receipt Production No.",
+                                      labelText: "Goods Receipt Production No.",
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      disabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: (data.id == 0)
+                                                  ? Colors.blue
+                                                  : Colors.grey[300]),
+                                          borderRadius:
+                                              new BorderRadius.circular(
+                                            10.0,
+                                          )))),
+                            ),
+                            (data.sapGoodsReceiptId > 0)
+                                ? IconButton(
+                                    icon: Icon(
+                                      Icons.view_list,
+                                      color: bgOrange,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              GoodsReceiptDetailPage(
+                                                  data.baseId),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(width: 0, height: 0),
+                          ],
+                        ),
+                      )
+                    : Container(width: 0, height: 0),
+                (data.baseId > 0)
+                    ? FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {},
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextFormField(
+                                  controller: _baseNoController,
+                                  enabled: false,
+                                  // style: TextStyle(fontSize: 16, color: Colors.red),
+                                  decoration: InputDecoration(
+                                      hintText: "Ref No.",
+                                      labelText: "Ref No.",
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      disabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: (data.id == 0)
+                                                  ? Colors.blue
+                                                  : Colors.grey[300]),
+                                          borderRadius:
+                                              new BorderRadius.circular(
+                                            10.0,
+                                          )))),
+                            ),
+                            (data.baseId > 0)
+                                ? IconButton(
+                                    icon: Icon(
+                                      Icons.view_list,
+                                      color: Colors.green,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              GoodsReceiptDetailPage(
+                                                  data.baseId),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(width: 0, height: 0),
+                          ],
+                        ),
+                      )
+                    : Container(width: 0, height: 0),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -940,6 +1146,78 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                     ),
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                Stack(
+                  alignment: Alignment(0.95, -0.5),
+                  children: <Widget>[
+                    (data.status == "Draft")
+                        ? TextFormField(
+                            autofocus: false,
+                            textInputAction: TextInputAction.done,
+                            controller: _weightProductionController,
+                            focusNode: _focusNode,
+                            onEditingComplete: () {
+                              setState(() {
+                                String newValue = NumberFormat("###,###.####")
+                                    .format(double.parse(
+                                        _weightProductionController.text
+                                            .replaceAll(new RegExp(','), '')
+                                            .replaceAll(new RegExp('-'), '')
+                                            .replaceAll(new RegExp(' '), '')));
+                                _weightProductionController.text = newValue;
+                                _weightProductionController.selection =
+                                    TextSelection.collapsed(
+                                        offset: newValue.length);
+                              });
+                              _focusNode.unfocus();
+                              showAlertDialogGetWeight(context);
+                            },
+                            inputFormatters: [
+                              DecimalTextInputFormatter(decimalRange: 4)
+                            ],
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            enabled: true,
+                            decoration: InputDecoration(
+                              hintText: "Weight (Kg)",
+                              labelText: "Weight Production",
+                              contentPadding: new EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              border: new OutlineInputBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                            ),
+                          )
+                        : TextFormField(
+                            controller: _weightProductionController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Weight (Kg)",
+                                labelText: "Weight Production",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                border: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0)))),
+                    (data.status == "Draft")
+                        ? FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            color: bgOrange,
+                            onPressed: () {
+                              // Logic untuk menghitung hasil perhitungan di sini
+                              showAlertDialogGetWeight(context);
+                            },
+                            child: Text("Get Weight (%)"),
+                          )
+                        : Container(width: 0, height: 0),
+                  ],
+                ),
               ],
             ),
           ),
@@ -971,20 +1249,19 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           ),
           Container(
               //color: Colors.brown,
-              child:
-                  (state.data.items != null ? state.data.items.length : 0) > 0
-                      ? _buildList()
-                      : Container(
-                          padding: EdgeInsets.all(10.0),
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Text("Item Empty"),
-                        )),
+              child: state.data.items.length > 0
+                  ? _buildList()
+                  : Container(
+                      padding: EdgeInsets.all(10.0),
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Text("Item Empty"),
+                    )),
           Container(
             height: 5,
             color: Colors.grey,
           ),
           SizedBox(
-            height: 65,
+            height: 70,
           )
         ]);
   }
@@ -1000,64 +1277,99 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("${items[index].itemName}"),
-          subtitle: Column(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('No. ' + "${items[index].woVisOrder}"),
-              Text("Item Code : ${items[index].itemCode}"),
+            title: Text("${items[index].itemName}"),
+            subtitle: Column(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('No. ' + "${items[index].woVisOrder}"),
+                Text("Item Code : ${items[index].itemCode}"),
 
-              //Text(data[index].itemCode),
-              //Text(data[index].whsCode ?? '-'),
-              //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
-              Text(
-                  "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
-                      " ${items[index].uom}"),
-              Text(
-                  "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
-                      " ${items[index].uom}"),
-              //Text('Uom : ' + "${data[index].uom}"),
-              // Text(data[index].whsCode ?? ''),
+                //Text(data[index].itemCode),
+                //Text(data[index].whsCode ?? '-'),
+                //Text("Qty : ${NumberFormat("#,###.##").format(data[index].qty)}"),
+                Text(
+                    "Open Qty : ${NumberFormat("#,###.####").format(items[index].openQty)}" +
+                        " ${items[index].uom}"),
+                Text(
+                    "Planned Qty : ${NumberFormat("#,###.####").format(items[index].woQty)}" +
+                        " ${items[index].uom}"),
+                //Text('Uom : ' + "${data[index].uom}"),
+                // Text(data[index].whsCode ?? ''),
 
-              //Text("Batch No. : ${data[index].batchNo}"),
-              Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
-                      " ${items[index].uom}"),
-              // Text(data[index].whsCode ?? ''),
-              //Text("Warehouse : ${data[index].whsName}"),
-            ],
-          ),
-          trailing: items[index].valuationMethod == 'FIFO'
-              ? IconButton(
-                  icon: Icon(Icons.keyboard_arrow_right),
-                  iconSize: 30.0,
-                  onPressed: () {
-                    _showItemDetail(index);
-                  },
-                )
-              : data.sapGoodsIssueId == 0 && data.sapGoodsReceiptId == 0
-                  ? RaisedButton(
-                      onPressed: () {
-                        _showItemDetail(index);
-                      },
-                      color: bgOrange,
-                      child: Text(
-                        "ADD",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                //Text("Batch No. : ${data[index].batchNo}"),
+                Text(
+                    "Quantity : ${NumberFormat("#,###.####").format(items[index].qty)}" +
+                        " ${items[index].uom}"),
+                // Text(data[index].whsCode ?? ''),
+                //Text("Warehouse : ${data[index].whsName}"),
+              ],
+            ),
+            trailing: items[index].valuationMethod == 'FIFO' &&
+                    data.sapGoodsIssueId == 0 &&
+                    data.sapGoodsReceiptId == 0 &&
+                    data.status != "Cancel"
+                // ? IconButton(
+                //     icon: Icon(Icons.keyboard_arrow_right),
+                //     iconSize: 30.0,
+                //     onPressed: () {
+                //       _showItemDetail(index);
+                //     },
+
+                //   )
+                ? RaisedButton(
+                    onPressed: () {
+                      _showItemDetail(index);
+                    },
+                    color: bgBlue,
+                    child: Text(
+                      "FIFO",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                       ),
-                    )
-                  : IconButton(
-                      icon: Icon(Icons.keyboard_arrow_right),
-                      iconSize: 30.0,
-                      onPressed: () {
-                        _showItemDetail(index);
-                      },
                     ),
-        ),
+                  )
+                : items[index].valuationMethod == 'SCAN' &&
+                        data.sapGoodsIssueId == 0 &&
+                        data.sapGoodsReceiptId == 0 &&
+                        data.status != "Cancel"
+                    ? RaisedButton(
+                        onPressed: () {
+                          _showItemDetail(index);
+                        },
+                        color: bgOrange,
+                        child: Text(
+                          "SCAN",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                    : items[index].valuationMethod == 'ADD' &&
+                            data.sapGoodsIssueId == 0 &&
+                            data.sapGoodsReceiptId == 0 &&
+                            data.status != "Cancel"
+                        ? RaisedButton(
+                            onPressed: () {
+                              _showItemAdditionalDetail(index);
+                            },
+                            color: bgBlue,
+                            child: Text(
+                              "ADD",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.keyboard_arrow_right),
+                            iconSize: 30.0,
+                            onPressed: () {
+                              _showItemDetail(index);
+                            })),
       ),
     );
   }
@@ -1075,10 +1387,13 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
           if (data.sapGoodsIssueId == 0 && data.id > 0) {
             // return _rowDetail(data, index);
             return Dismissible(
-              key: Key(data.items[index].hashCode.toString()),
+              key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
               onDismissed: (direction) {
-                bloc.emitEvent(
-                    GoodsIssueDetailEventItemRemove(itemIndex: index));
+                // bloc.emitEvent(
+                //     GoodsIssueDetailEventItemRemove(itemIndex: index));
+
+                bloc.emitEvent(GoodsIssueDetailEventRemoveItem(
+                    id: data.items[index].id, detId: data.items[index].detId));
               },
               background: Container(
                   color: Colors.red,
@@ -1179,8 +1494,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     Widget continueButton = FlatButton(
       child: Text("Yes"),
       onPressed: () {
-        Navigator.of(context).pop();
-        _newTrans();
+        // Navigator.of(context).push();
+        // _newTrans();
+        _showAddNewItemDetail();
       },
     );
     // set up the AlertDialog
@@ -1220,6 +1536,40 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
       content: Text("Apakah anda ingin Refresh Data ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogGetWeight(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _getWeightProduction();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Data Item akan di reset, perhitungan berat akan dihitung ulang"),
       actions: [
         cancelButton,
         continueButton,
@@ -1299,5 +1649,44 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         return alert;
       },
     );
+  }
+}
+
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
+
+  final int decimalRange;
+  final money = NumberFormat("###,###,###", "en_US");
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    if (decimalRange != null) {
+      String value = newValue.text;
+
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
+        truncated = oldValue.text;
+        newSelection = oldValue.selection;
+      } else if (value == ".") {
+        truncated = "0.";
+
+        newSelection = newValue.selection.copyWith(
+          baseOffset: math.min(truncated.length, truncated.length + 1),
+          extentOffset: math.min(truncated.length, truncated.length + 1),
+        );
+      }
+
+      return TextEditingValue(
+        text: truncated,
+        selection: newSelection,
+        composing: TextRange.empty,
+      );
+    }
+    return newValue;
   }
 }

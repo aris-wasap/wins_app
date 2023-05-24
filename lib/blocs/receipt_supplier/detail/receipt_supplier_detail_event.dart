@@ -93,7 +93,9 @@ class ReceiptSupplierDetailEventPost extends ReceiptSupplierDetailEvent {
 class ReceiptSupplierDetailEventCancel extends ReceiptSupplierDetailEvent {
   ReceiptSupplierDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

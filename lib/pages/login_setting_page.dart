@@ -10,6 +10,14 @@ class LoginSettingPage extends StatefulWidget {
 
 class _LoginSettingPageState extends State<LoginSettingPage> {
   final _urlController = TextEditingController();
+  final _switchController = TextEditingController();
+  final _databaseController = TextEditingController();
+
+  bool _demoMode = false;
+  String _selectedOption;
+  String _apiUrl = "http://116.254.101.55:8080/[nama database]/";
+  List<String> _demoOptions = ['NCF_UAT', 'ADMART_UAT', 'WINS_APP'];
+  List<String> _normalOptions = ['NCF_API', 'ADMART_API'];
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -20,7 +28,12 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await _prefs;
-      _urlController.text = prefs.getString(globalBloc.getPrefApiUrl());
+      setState(() {
+        _urlController.text = prefs.getString(globalBloc.getPrefApiUrl());
+        _switchController.text = prefs.getString(globalBloc.getSwitchMode());
+        _switchController.text == "Demo" ? _demoMode = true : _demoMode = false;
+        _databaseController.text = prefs.getString(globalBloc.getDatabase());
+      });
     });
   }
 
@@ -54,6 +67,14 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                     globalBloc.getPrefApiUrl(), _urlController.text);
                 globalBloc.setUrl(_urlController.text);
 
+                prefs.setString(
+                    globalBloc.getSwitchMode(), _switchController.text);
+                globalBloc.setSwitchMode(_switchController.text);
+
+                prefs.setString(
+                    globalBloc.getDatabase(), _databaseController.text);
+                globalBloc.setDatabaseName(_databaseController.text);
+
                 Navigator.pop(context);
               },
               textColor: Colors.white,
@@ -66,7 +87,11 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
             child: Container(
               alignment: Alignment.bottomCenter,
               height: 500,
-              child: buildForm(),
+              child: Column(
+                children: <Widget>[
+                  buildForm(),
+                ],
+              ),
             ),
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(gradient: bgGradientPage)),
@@ -85,15 +110,87 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _urlController,
-                  decoration: InputDecoration(
+                Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Mode : "),
+                      ),
+                      Switch(
+                        value: _demoMode,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _demoMode = value;
+                            _switchController.text =
+                                _demoMode ? 'Demo' : 'Live';
+                            _urlController.text = "";
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      _demoMode ? Text("Demo") : Text("Live"),
+                    ],
+                  ),
+                ),
+                Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Database : "),
+                      ),
+                      DropdownButton(
+                        value: _selectedOption,
+                        items: _demoMode
+                            ? _demoOptions.map((database) {
+                                _selectedOption = null;
+                                _databaseController.text = database;
+                                return DropdownMenuItem(
+                                  value: database,
+                                  child: Text(database),
+                                );
+                              }).toList()
+                            : _normalOptions.map((database) {
+                                _selectedOption = null;
+                                _databaseController.text = database;
+                                return DropdownMenuItem(
+                                  value: database,
+                                  child: Text(database),
+                                );
+                              }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _selectedOption = newValue;
+                            _urlController.text =
+                                _apiUrl.replaceAll('[nama database]', newValue);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: TextFormField(
+                    enabled: false,
+                    controller: _urlController,
+                    decoration: InputDecoration(
                       hintText: "URL",
-                      labelText: "URL",
+                      labelText: "",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0))),
+                          borderRadius: new BorderRadius.circular(0.0)),
+                    ),
+                  ),
                 ),
               ],
             ),

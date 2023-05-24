@@ -200,13 +200,43 @@ class ReceiptOrderDetailBloc extends BlocEventStateBase<ReceiptOrderDetailEvent,
         );
       }
     } else if (event is ReceiptOrderDetailEventCancel) {
-      yield ReceiptOrderDetailState.busy(
-        data: currentState.data,
-      );
-
-      yield ReceiptOrderDetailState.success(
-        data: currentState.data,
-      );
+      if (event.id == 0) {
+        yield ReceiptOrderDetailState.success(
+          data: Data(items: List<receiptOrderDetail.Item>()),
+        );
+      } else {
+        yield ReceiptOrderDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          ReceiptOrderDetailResponse response =
+              await _repository.receiptOrderDetail_Cancel(event.data);
+          if (response == null) {
+            yield ReceiptOrderDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield ReceiptOrderDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield ReceiptOrderDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield ReceiptOrderDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }

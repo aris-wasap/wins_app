@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // the unique ID of the application
-const String _applicationId = "admartMantap";
+const String _applicationId = "winsMantap";
 
 // the storage key for the token
 const String _storageKeyMobileToken = "token";

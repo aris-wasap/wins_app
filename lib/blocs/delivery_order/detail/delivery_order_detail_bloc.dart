@@ -166,8 +166,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }
-    else if (event is DeliveryOrderDetailEventUpdate) {
+    } else if (event is DeliveryOrderDetailEventUpdate) {
       yield DeliveryOrderDetailState.busy(
         data: event.data,
       );
@@ -235,7 +234,7 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }else if (event is DeliveryOrderDetailEventRemoveItem) {
+    } else if (event is DeliveryOrderDetailEventRemoveItem) {
       yield DeliveryOrderDetailState.busy(
         data: currentState.data,
       );
@@ -269,13 +268,43 @@ class DeliveryOrderDetailBloc extends BlocEventStateBase<
         );
       }
     } else if (event is DeliveryOrderDetailEventCancel) {
-      yield DeliveryOrderDetailState.busy(
-        data: currentState.data,
-      );
-
-      yield DeliveryOrderDetailState.success(
-        data: currentState.data,
-      );
+      if (event.id == 0) {
+        yield DeliveryOrderDetailState.success(
+          data: Data(items: List<deliveryOrderDetail.Item>()),
+        );
+      } else {
+        yield DeliveryOrderDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          DeliveryOrderDetailResponse response =
+              await _repository.deliveryOrderDetail_Cancel(event.data);
+          if (response == null) {
+            yield DeliveryOrderDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield DeliveryOrderDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield DeliveryOrderDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield DeliveryOrderDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }
