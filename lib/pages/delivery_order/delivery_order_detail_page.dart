@@ -52,6 +52,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _branchNameController = TextEditingController();
   final _whsCodeController = TextEditingController();
   final _whsNameController = TextEditingController();
+  final _statusController = TextEditingController();
   final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
@@ -201,6 +202,33 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     ));
   }
 
+  Future _deleteData() async {
+    if ((_sapDeliveryNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
@@ -293,6 +321,39 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
       content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
       actions: [
         cancelButton,
         continueButton,
@@ -629,7 +690,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapDeliveryId == 0
+              floatingActionButton: _getState().data.sapDeliveryId == 0 &&
+                      _getState().data.status != "Cancel"
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -650,7 +712,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                           tooltip: "Delete",
                           child: Icon(Icons.delete_outline),
                           onPressed: () {
-                            // showAlertDialogDelete(context);
+                            showAlertDialogDelete(context);
                           },
                         )
                       ],
@@ -712,7 +774,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;//data.transNo;
+    _transNoController.text = data.status == "Cancel"
+        ? data.transNo + " [Canceled]"
+        : data.transNo; //data.transNo;
 
     //jika nama signature berbah di kasih tanda
 

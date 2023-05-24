@@ -411,31 +411,32 @@ class _DeliveryOrderDetailItemDetailPageState
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
-                      Future<cflWarehouse.Data> whs = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflWarehouse.Data>(
-                              builder: (BuildContext context) =>
-                                  CflWarehousePage(globalBloc.branchId)));
+                    // if (data.id == 0) {
+                    //   Future<cflWarehouse.Data> whs = Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute<cflWarehouse.Data>(
+                    //           builder: (BuildContext context) =>
+                    //               CflWarehousePage(globalBloc.branchId)));
 
-                      whs.then((cflWarehouse.Data whs) {
-                        setState(() {
-                          if (whs != null) {
-                            _getState().data.whsCode = whs.whsCode;
-                            _getState().data.whsName = whs.whsName;
-                          }
-                        });
-                      });
-                    }
+                    //   whs.then((cflWarehouse.Data whs) {
+                    //     setState(() {
+                    //       if (whs != null) {
+                    //         _getState().data.whsCode = whs.whsCode;
+                    //         _getState().data.whsName = whs.whsName;
+                    //       }
+                    //     });
+                    //   });
+                    // }
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
+                            // color: (data.id == 0)
+                            //     ? Colors.blue
+                            //     : Colors.grey[400]
+                            color: Colors.grey[400]),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
@@ -461,11 +462,11 @@ class _DeliveryOrderDetailItemDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
+                        // (data.id == 0)
+                        //     ? Icon(
+                        //         Icons.keyboard_arrow_right,
+                        //       )
+                        //     : Container(width: 0, height: 0),
                       ],
                     ),
                   ),
@@ -497,9 +498,10 @@ class _DeliveryOrderDetailItemDetailPageState
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: (data.id == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
+                            // color: (data.id == 0)
+                            //     ? Colors.blue
+                            //     : Colors.grey[400]),
+                            color: Colors.grey[400]),
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Row(
                       children: <Widget>[
@@ -519,11 +521,11 @@ class _DeliveryOrderDetailItemDetailPageState
                             ],
                           ),
                         ),
-                        (data.id == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
+                        // (data.id == 0)
+                        //     ? Icon(
+                        //         Icons.keyboard_arrow_right,
+                        //       )
+                        //     : Container(width: 0, height: 0),
                       ],
                     ),
                   ),

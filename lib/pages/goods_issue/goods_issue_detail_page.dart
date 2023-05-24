@@ -340,8 +340,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
-      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      _updateTransDate();
     }
   }
 

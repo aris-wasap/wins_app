@@ -128,7 +128,7 @@ class _GoodsIssueMixingWOListPageState
               );
             },
           ),
-          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.goodsIssueMixing_Auth_Add == 'Y')
               ? IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {

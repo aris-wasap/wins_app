@@ -51,6 +51,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _statusController = TextEditingController();
   final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
@@ -98,6 +99,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
+    _statusController?.dispose();
 
     bloc?.dispose();
 
@@ -249,6 +251,66 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
         return alert;
       },
     );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future _deleteData() async {
+    if ((_sapReturnNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        PayableCreditDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
   }
 
   void _newTrans() {
@@ -590,7 +652,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                           tooltip: "Delete",
                           child: Icon(Icons.delete_outline),
                           onPressed: () {
-                            // showAlertDialogDelete(context);
+                            showAlertDialogDelete(context);
                           },
                         )
                       ],

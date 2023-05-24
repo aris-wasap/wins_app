@@ -330,7 +330,7 @@ class _InventoryTransferDetailPageState
     if ((_sapInventoryTransferNoController.text.isNotEmpty)) {
       ValidateDialogWidget(
           context: context,
-          message: "Document tidak dapat diproses, sudah terbuat Goods Issue");
+          message: "Document tidak dapat diproses");
       return;
     }
 

@@ -335,8 +335,8 @@ class _GoodsIssueMixingDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
-      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
+      _updateTransDate();
     }
   }
 
@@ -404,7 +404,7 @@ class _GoodsIssueMixingDetailPageState
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          (globalBloc.loginResponse.data.goodsIssue_Auth_Add == 'Y')
+          (globalBloc.loginResponse.data.goodsIssueMixing_Auth_Add == 'Y')
               ? IconButton(
                   onPressed: () {
                     _newTrans();
