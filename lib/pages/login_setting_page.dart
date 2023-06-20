@@ -16,6 +16,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
   bool _demoMode = false;
   String _selectedOption;
   String _apiUrl = "http://116.254.101.55:8080/[nama database]/";
+  // String _apiUrl = "http://192.168.16.136/[nama database]/";
   List<String> _demoOptions = ['NCF_UAT', 'ADMART_UAT', 'WINS_APP'];
   List<String> _normalOptions = ['NCF_API', 'ADMART_API'];
 

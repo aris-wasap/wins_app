@@ -96,11 +96,11 @@ class _GoodsIssueMixingDetailItemDetailPageState
   }
 
   void _done() {
-    // if (_qtyController.text == "0" || _qtyController.text == "") {
-    //   ValidateDialogWidget(
-    //       context: context, message: "Qty harus lebih besar dari 0");
-    //   return;
-    // }
+    if (_qtyController.text == "0" || _qtyController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Qty harus lebih besar dari 0");
+      return;
+    }
     bloc.emitEvent(GoodsIssueMixingDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text),

@@ -329,8 +329,7 @@ class _InventoryTransferDetailPageState
   Future _deleteData() async {
     if ((_sapInventoryTransferNoController.text.isNotEmpty)) {
       ValidateDialogWidget(
-          context: context,
-          message: "Document tidak dapat diproses");
+          context: context, message: "Document tidak dapat diproses");
       return;
     }
 
@@ -578,7 +577,8 @@ class _InventoryTransferDetailPageState
         ],
       );
     } else if (_getState().data.sapInventoryTransferId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel") {
       return AppBar(
         title: Text(
           "Create Transfer",
@@ -701,7 +701,6 @@ class _InventoryTransferDetailPageState
           binCodeFrom: _fromBinCodeController.text,
           qrResult: qrResult,
           data: data));
-
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         ValidateDialogWidget(
@@ -781,33 +780,35 @@ class _InventoryTransferDetailPageState
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapInventoryTransferId == 0 &&  _getState().data.status != "Cancel"
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FloatingActionButton.extended(
-                          icon: Icon(Icons.camera_alt),
-                          backgroundColor: btnBgOrange,
-                          label: Text("Scan"),
-                          onPressed: () {
-                            _scanQR();
-                          },
-                        ),
-                        SizedBox(
-                          width: 70,
-                        ),
-                        FloatingActionButton(
-                          heroTag: "btnDelete",
-                          backgroundColor: Colors.red,
-                          tooltip: "Delete",
-                          child: Icon(Icons.delete_outline),
-                          onPressed: () {
-                            showAlertDialogDelete(context);
-                          },
+              floatingActionButton:
+                  _getState().data.sapInventoryTransferId == 0 &&
+                          _getState().data.status != "Cancel"
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FloatingActionButton.extended(
+                              icon: Icon(Icons.camera_alt),
+                              backgroundColor: btnBgOrange,
+                              label: Text("Scan"),
+                              onPressed: () {
+                                _scanQR();
+                              },
+                            ),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            FloatingActionButton(
+                              heroTag: "btnDelete",
+                              backgroundColor: Colors.red,
+                              tooltip: "Delete",
+                              child: Icon(Icons.delete_outline),
+                              onPressed: () {
+                                showAlertDialogDelete(context);
+                              },
+                            )
+                          ],
                         )
-                      ],
-                    )
-                  : null,
+                      : null,
               // floatingActionButton: _getState().data.sapInventoryTransferId == 0
               //     ? FloatingActionButton.extended(
               //         icon: Icon(Icons.camera_alt),
@@ -864,7 +865,9 @@ class _InventoryTransferDetailPageState
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;//data.transNo;
+    _transNoController.text = data.status == "Cancel"
+        ? data.transNo + " [Canceled]"
+        : data.transNo; //data.transNo;
 
     var cekData = _getState().data;
     //jika nama signature berbah di kasih tanda
@@ -1441,6 +1444,7 @@ class _InventoryTransferDetailPageState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('No. ' + "$rowIndex"),
+              // Text("DetId : ${data[index].detId}"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
@@ -1473,11 +1477,14 @@ class _InventoryTransferDetailPageState
       itemBuilder: (contex, index) {
         if (_getState().data.sapInventoryTransferId == 0) {
           return Dismissible(
-            key: Key(data[index].hashCode.toString()),
+            // key: Key(data[index].hashCode.toString()),
+            key: UniqueKey(),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  InventoryTransferDetailEventItemRemove(itemIndex: index));
-              _update();
+              bloc.emitEvent(InventoryTransferDetailEventRemoveItem(
+                  id: data[index].id, detId: data[index].detId));
+              // bloc.emitEvent(
+              //     InventoryTransferDetailEventItemRemove(itemIndex: index));
+              // _update();
             },
             background: Container(
                 color: Colors.red,

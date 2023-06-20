@@ -4674,6 +4674,30 @@ class ApiProvider {
     }
   }
 
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_RemoveItem(
+      int id, int detId) async {
+    try {
+      var body =
+          json.encode({"UserId": globalBloc.userId, "Id": id, "DetId": detId});
+
+      final response = await http.post(
+          "${_url}Api/InventoryTransferDetailApi/Delete_Item",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return inventoryTransferDetailResponseFromJson(response.body);
+      } else {
+        throw Exception(
+            'inventoryTransferDetail_RemoveItem:Failed to add InventoryTransfer(2)');
+      }
+    } catch (e) {
+      throw Exception(
+          'inventoryTransferDetail_RemoveItem:Failed to load post(1)');
+    }
+  }
+
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Cancel(
       inventoryTransferDetail.Data data) async {
     try {

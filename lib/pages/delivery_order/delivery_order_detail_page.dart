@@ -488,7 +488,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           // )
         ],
       );
-    } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapDeliveryId == 0 &&
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel") {
       return AppBar(
         title: Text(
           "Create Delivery Order",
@@ -1122,6 +1124,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('No. ' + "$rowIndex"),
+              // Text("DetId : ${data[index].detId}"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(

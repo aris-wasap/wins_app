@@ -998,6 +998,9 @@ class Repository {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Cancel(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Cancel(data);
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.inventoryTransferDetail_RemoveItem(id, detId);
   Future<InventoryTransferDetailResponse>
       inventoryTransferDetail_UpdateTransDate(int id, String transDate) =>
           apiProvider.inventoryTransferDetail_UpdateTransDate(id, transDate);

@@ -182,7 +182,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
 
   Widget _buildList() {
     var state = bloc.lastState ?? bloc.initialState;
-    
+
     final data = state.data;
     final isBusy = state.isBusy;
     final isFailure = state.isFailure;
@@ -192,6 +192,7 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
       controller: _scrollController,
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
+        // int rowIndex = data.length - index;
         if (index < data.length) {
           return (Container(
             decoration: BoxDecoration(
@@ -203,16 +204,21 @@ class _GoodsIssueMixingListPageState extends State<GoodsIssueMixingListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: data[index].recordNo > 0
+                    ? Text("No. ${data[index].recordNo}")
+                    : Text(
+                        ""), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text("Scan No. : ${data[index].transNo}"),
                     Text(
-                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
+                        "Issue Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("Production No. : ${data[index].woNo}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
                     Text("Status : ${data[index].status}"),
                   ],

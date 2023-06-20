@@ -159,8 +159,7 @@ class Data {
 
 @JsonSerializable()
 class Item {
-
-   @JsonKey(name: 'RequestId')
+  @JsonKey(name: 'RequestId')
   int requestId;
 
   @JsonKey(name: 'RequestLineNo')
@@ -168,6 +167,9 @@ class Item {
 
   @JsonKey(name: 'Id')
   int id;
+
+  @JsonKey(name: 'DetId')
+  int detId;
 
   @JsonKey(name: 'LineNo')
   int lineNo;
@@ -214,7 +216,7 @@ class Item {
   @JsonKey(name: 'Length')
   double length;
 
-   @JsonKey(name: 'Length2')
+  @JsonKey(name: 'Length2')
   double length2;
 
   @JsonKey(name: 'Width')
@@ -246,6 +248,7 @@ class Item {
 
   Item({
     this.id: 0,
+    this.detId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,

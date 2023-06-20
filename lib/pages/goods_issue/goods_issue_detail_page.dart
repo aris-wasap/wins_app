@@ -910,6 +910,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         }
       }
     }
+    // else if (data.weight == 0) {
+    //   if (_weightProductionController.text != "") {
+    //     _weightProductionController.text =
+    //         NumberFormat("###,###.####").format(0);
+    //   }
+    // }
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -921,6 +927,19 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 (data.sapGoodsIssueId > 0)
                     ? TextFormField(
                         controller: _sapGoodsIssueNoController,
@@ -934,19 +953,44 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                (data.id > 0)
-                    ? TextFormField(
-                        controller: _transNoController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            hintText: "Scan No.",
-                            labelText: "Scan No.",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))))
-                    : Container(width: 0, height: 0),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.id == 0) {
+                      _selectTransDate(context);
+                    }
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Issue Date",
+                                labelText: "Issue Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[300]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))),
+                      ),
+                      (data.sapGoodsIssueId == 0)
+                          ? IconButton(
+                              icon: Icon(Icons.date_range),
+                              onPressed: () {
+                                _selectTransDate(context);
+                              },
+                            )
+                          : Container(width: 0, height: 0),
+                    ],
+                  ),
+                ),
                 (data.sapGoodsReceiptId > 0)
                     ? FlatButton(
                         padding: EdgeInsets.only(top: 5),
@@ -1044,44 +1088,6 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                         ),
                       )
                     : Container(width: 0, height: 0),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.id == 0) {
-                      _selectTransDate(context);
-                    }
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                            controller: _transDateController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Issue Date",
-                                labelText: "Issue Date",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[300]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))),
-                      ),
-                      (data.sapGoodsIssueId == 0)
-                          ? IconButton(
-                              icon: Icon(Icons.date_range),
-                              onPressed: () {
-                                _selectTransDate(context);
-                              },
-                            )
-                          : Container(width: 0, height: 0),
-                    ],
-                  ),
-                ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -1551,6 +1557,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   }
 
   showAlertDialogGetWeight(BuildContext context) {
+    if (["", null].contains(_weightProductionController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Silahkan masukan Weight Production");
+      return;
+    }
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("No"),

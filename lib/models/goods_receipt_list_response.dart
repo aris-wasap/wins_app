@@ -39,6 +39,9 @@ class GoodsReceiptListResponse {
 
 @JsonSerializable()
 class Data {
+  @JsonKey(name: 'RecordNo')
+  int recordNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -91,7 +94,9 @@ class Data {
   String branchName;
 
   Data(
-      {this.id,
+      {
+      this.recordNo,
+      this.id,
       this.userId,
       this.transNo,
       this.transDate,
