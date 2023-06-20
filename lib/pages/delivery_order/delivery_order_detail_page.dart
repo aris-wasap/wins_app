@@ -488,7 +488,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           // )
         ],
       );
-    } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapDeliveryId == 0 &&
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel") {
       return AppBar(
         title: Text(
           "Create Delivery Order",

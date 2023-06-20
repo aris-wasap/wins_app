@@ -201,20 +201,25 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                title: data[index].recordNo > 0
+                    ? Text("No. ${data[index].recordNo}")
+                    : Text(""),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text("Scan No. : ${data[index].transNo}"),
+                    Text(
+                        "Receipt Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
                     Text(
                         "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
                     Text("Production No. : ${data[index].woNo}"),
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Depo : ${data[index].branchName}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
+                    Text("Depo : ${data[index].branchName}"),
                   ],
                 ),
                 // leading: ClipOval(

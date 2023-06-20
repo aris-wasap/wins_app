@@ -1032,21 +1032,6 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                (data.sapGoodsReceiptId > 0)
-                    ? TextFormField(
-                        controller: _sapGoodsReceiptNoController,
-                        enabled: false,
-                        style: TextStyle(fontSize: 16, color: Colors.red),
-                        decoration: InputDecoration(
-                            hintText: "Receipt No.",
-                            labelText: "Receipt No.",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                      )
-                    : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
                 (data.id > 0)
                     ? TextFormField(
                         controller: _transNoController,
@@ -1060,32 +1045,19 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                (data.sapGoodsIssueId > 0)
+                (data.sapGoodsReceiptId > 0)
                     ? TextFormField(
-                        controller: _sapGoodsIssueNoController,
+                        controller: _sapGoodsReceiptNoController,
                         enabled: false,
                         style: TextStyle(fontSize: 16, color: Colors.red),
                         decoration: InputDecoration(
-                            hintText: "Issue No.",
-                            labelText: "Issue No.",
+                            hintText: "Receipt No.",
+                            labelText: "Receipt No.",
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 10.0),
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))),
                       )
-                    : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                (data.baseId > 0)
-                    ? TextFormField(
-                        controller: _baseNoController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            hintText: "Base No.",
-                            labelText: "Base No.",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -1122,6 +1094,34 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     ],
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.sapGoodsIssueId > 0)
+                    ? TextFormField(
+                        controller: _sapGoodsIssueNoController,
+                        enabled: false,
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        decoration: InputDecoration(
+                            hintText: "Issue No.",
+                            labelText: "Issue No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))),
+                      )
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.baseId > 0)
+                    ? TextFormField(
+                        controller: _baseNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Base No.",
+                            labelText: "Base No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {

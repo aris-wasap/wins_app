@@ -28,6 +28,7 @@ Map<String, dynamic> _$GoodsIssueMixingListResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    recordNo: json['RecordNo'] as int,
     id: json['Id'] as int,
     userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
@@ -49,6 +50,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'RecordNo': instance.recordNo,
       'Id': instance.id,
       'UserId': instance.userId,
       'TransNo': instance.transNo,

@@ -199,13 +199,13 @@ class _GoodsIssueDetailItemDetailPageState
           context: context, message: "Qty harus lebih besar dari 0");
       return;
     }
-    if (double.parse(_qtyController.text.replaceAll(new RegExp(','), '')) >
-        double.parse(_qtyWoController.text.replaceAll(new RegExp(','), ''))) {
-      ValidateDialogWidget(
-          context: context,
-          message: "Issue Qty tidak boleh melebihi Planned Qty");
-      return;
-    }
+    // if (double.parse(_qtyController.text.replaceAll(new RegExp(','), '')) >
+    //     double.parse(_qtyWoController.text.replaceAll(new RegExp(','), ''))) {
+    //   ValidateDialogWidget(
+    //       context: context,
+    //       message: "Issue Qty tidak boleh melebihi Planned Qty");
+    //   return;
+    // }
 
     try {
       bloc.emitEvent(GoodsIssueDetailItemDetailEventQty(

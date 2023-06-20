@@ -577,7 +577,8 @@ class _InventoryTransferDetailPageState
         ],
       );
     } else if (_getState().data.sapInventoryTransferId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel") {
       return AppBar(
         title: Text(
           "Create Transfer",

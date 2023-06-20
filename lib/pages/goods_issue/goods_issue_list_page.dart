@@ -192,6 +192,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
+          int rowIndex = data.length - index;
           return (Container(
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
@@ -202,15 +203,21 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "No. ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: data[index].recordNo > 0
+                    ? Text("No. ${data[index].recordNo}")
+                    : Text(
+                        ""), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Production No. : ${data[index].woNo}"),
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text("Scan No. : ${data[index].transNo}"),
                     Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
+                        "Issue Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("Production No. : ${data[index].woNo}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
                     Text("Status : ${data[index].status}"),
                   ],

@@ -198,13 +198,18 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Production No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "Production No. ${data[index].seriesName} - ${data[index].transNo}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
                     Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
+                        "Trans Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text(
+                        "Product : ${data[index].productCode}"),
+                    Text(
+                        "Product Name : ${data[index].productName}"),
                     Text(
                         "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
                     Text("Production Type : ${data[index].productionType}"),
