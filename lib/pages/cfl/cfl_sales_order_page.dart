@@ -179,6 +179,7 @@ class _CflSalesOrderPageState extends State<CflSalesOrderPage> {
                     Text("${data[index].branchName ?? ''}"),
                     Text("${data[index].customerCode ?? ''}"),
                     Text("${data[index].customerName ?? ''}"),
+                    Text("${data[index].refNo ?? ''}"),
                     Text("${data[index].mobBaseType ?? ''}"),
                   ],
                 ),

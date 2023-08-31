@@ -55,6 +55,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
   FocusNode _focusNode;
+  bool _absordStatus = false;
 
   @override
   void initState() {
@@ -731,19 +732,22 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             child: Scaffold(
               key: _scaffoldKey,
               appBar: _appBar(),
-              body: Container(
-                // constraints: BoxConstraints.expand(),
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  gradient: bgGradientPageWhite,
-                ),
-                child: Stack(children: <Widget>[
-                  SingleChildScrollView(
-                    padding: EdgeInsets.all(0.0),
-                    child: _buildForm(),
+              body: AbsorbPointer(
+                absorbing: _absordStatus,
+                child: Container(
+                  // constraints: BoxConstraints.expand(),
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    gradient: bgGradientPageWhite,
                   ),
-                  _showCircularProgress(),
-                ]),
+                  child: Stack(children: <Widget>[
+                    SingleChildScrollView(
+                      padding: EdgeInsets.all(0.0),
+                      child: _buildForm(),
+                    ),
+                    _showCircularProgress(),
+                  ]),
+                ),
               ),
               //Floating Button
               floatingActionButton: Row(
@@ -793,7 +797,10 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   Widget _showCircularProgress() {
     var state = bloc.lastState ?? bloc.initialState;
     if (state.isBusy) {
+      _absordStatus = true;
       return Center(child: CircularProgressIndicator());
+    } else {
+      _absordStatus = false;
     }
     return Container(
       height: 0.0,
@@ -825,6 +832,12 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         //   item: item,
         //   itemIndex: itemIndex,
         // ));
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          bloc.emitEvent(GoodsIssueDetailEventGetId(
+            id: _id,
+          ));
+        });
       }
     });
   }
@@ -848,10 +861,11 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         //   item: item,
         //   itemIndex: itemIndex,
         // ));
-
-        bloc.emitEvent(GoodsIssueDetailEventGetId(
-          id: _id,
-        ));
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          bloc.emitEvent(GoodsIssueDetailEventGetId(
+            id: _id,
+          ));
+        });
       }
     });
   }

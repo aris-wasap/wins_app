@@ -797,6 +797,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       _customerNameController.text = data.customerName;
       _branchIdController.text = data.branchId.toString();
       _branchNameController.text = data.branchName;
+      // _refNoController.text = data.refNo;
     }
 
     return Column(
@@ -932,6 +933,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(_branchNameController.text),
+                                    Text(_refNoController.text),
                                   ],
                                 ),
                               )
