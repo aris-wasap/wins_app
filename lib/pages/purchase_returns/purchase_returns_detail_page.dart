@@ -401,7 +401,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -425,7 +425,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 &&
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",

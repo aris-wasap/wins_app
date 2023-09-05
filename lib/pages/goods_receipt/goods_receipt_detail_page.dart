@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_receipt_production_label_page.dart';
 import 'package:wins_app/pages/cfl/cfl_receipt_production_page.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_item_detail_page.dart';
@@ -436,34 +437,35 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   void _updateTransDate() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); //state.data;
+    if (!state.isBusy) {
+      data.id = int.parse(_idTxController.text);
+      data.woNo = _woNoController.text;
+      data.woId = int.parse(_woIdController.text);
+      data.productCode = _productCodeController.text;
+      data.productName = _productNameController.text;
+      data.transDate = transDate;
+      data.seriesName = _seriesNameController.text;
+      data.seriesNameWo = _seriesNamePoController.text;
+      data.items = state.data.items;
 
-    data.id = int.parse(_idTxController.text);
-    data.woNo = _woNoController.text;
-    data.woId = int.parse(_woIdController.text);
-    data.productCode = _productCodeController.text;
-    data.productName = _productNameController.text;
-    data.transDate = transDate;
-    data.seriesName = _seriesNameController.text;
-    data.seriesNameWo = _seriesNamePoController.text;
-    data.items = state.data.items;
+      if ([null].contains(data.transDate)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Date harus di isi");
+        return;
+      } else if (["", null].contains(data.woNo)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Order No harus di isi");
+        return;
+      }
 
-    if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(
-          context: context, message: "Production Date harus di isi");
-      return;
-    } else if (["", null].contains(data.woNo)) {
-      ValidateDialogWidget(
-          context: context, message: "Production Order No harus di isi");
-      return;
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+      bloc.emitEvent(
+        GoodsReceiptDetailEventUpdateTransDate(
+          id: int.parse(_idTxController.text),
+          transDate: setTransDate,
+        ),
+      );
     }
-
-    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
-    bloc.emitEvent(
-      GoodsReceiptDetailEventUpdateTransDate(
-        id: int.parse(_idTxController.text),
-        transDate: setTransDate,
-      ),
-    );
   }
 
   void _submit() {
@@ -631,7 +633,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
@@ -641,22 +643,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
       );
     } else if (_getState().data.sapGoodsReceiptId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
@@ -683,7 +673,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
           ),
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt From Production"),
         backgroundColor: bgBlue,
@@ -703,6 +693,22 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Receipt From Production"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -870,107 +876,54 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 15, right: 15, bottom: 8),
-                  //   child: Stack(
-                  //     children: <Widget>[
-                  //       Align(
-                  //           alignment: Alignment.bottomRight,
-                  //           child: getData.sapGoodsReceiptId == 0 && getData.id > 0
-                  //               ? FloatingActionButton(
-                  //                   heroTag: "btnReset",
-                  //                   backgroundColor: Colors.green,
-                  //                   child: Icon(Icons.autorenew),
-                  //                   onPressed: () {
-                  //                     showAlertDialogReset(context);
-                  //                   },
-                  //                 )
-                  //               : null),
-                  //       Align(
-                  //           alignment: Alignment.bottomCenter,
-                  //           child:  getData.status != "Cancel"
-                  //               ? FloatingActionButton(
-                  //                   heroTag: "btnCreateNew",
-                  //                   backgroundColor: Colors.blue,
-                  //                   child: Icon(Icons.add),
-                  //                   onPressed: () {
-                  //                     showAlertDialogCreateNew(context);
-                  //                     // _showAddNewItemDetail();
-                  //                   },
-                  //                 )
-                  //               : null),
-                  //       // Align(
-                  //       //   alignment: Alignment.bottomRight,
-                  //       //   child: _getState().data.sapGoodsIssueId == 0 &&
-                  //       //           _getState().data.status == "Draft" //Tidak dipakai
-                  //       //       ? FloatingActionButton(
-                  //       //           heroTag: "btnRefresh",
-                  //       //           backgroundColor: Colors.green,
-                  //       //           child: Icon(Icons.autorenew),
-                  //       //           onPressed: () {
-                  //       //             showAlertDialogRefresh(context);
-                  //       //           },
-                  //       //         )
-                  //       //       : null,
-                  //       // ),
-
-                  //       Align(
-                  //         alignment: Alignment.bottomLeft,
-                  //         child: getData.sapGoodsReceiptId == 0 && getData.id > 0
-                  //             ? FloatingActionButton(
-                  //                 heroTag: "btnDelete",
-                  //                 backgroundColor: Colors.red,
-                  //                 child: Icon(Icons.delete_outline),
-                  //                 onPressed: () {
-                  //                   showAlertDialogDelete(context);
-                  //                 },
-                  //               )
-                  //             : null,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  _showCircularProgress(),
+                  // _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FloatingActionButton(
-                    heroTag: "btnReset",
-                    backgroundColor: Colors.green,
-                    tooltip: "Reset",
-                    child: Icon(Icons.autorenew),
-                    onPressed: () {
-                      showAlertDialogReset(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  FloatingActionButton(
-                    heroTag: "btnCreateNew",
-                    backgroundColor: Colors.blue,
-                    tooltip: "New Document",
-                    child: Icon(Icons.create),
-                    onPressed: () {
-                      showAlertDialogCreateNew(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  FloatingActionButton(
-                    heroTag: "btnDelete",
-                    backgroundColor: Colors.red,
-                    tooltip: "Delete",
-                    child: Icon(Icons.delete_outline),
-                    onPressed: () {
-                      showAlertDialogDelete(context);
-                    },
-                  )
-                ],
-              ),
+              floatingActionButton: !_getState().isBusy
+                  ? Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: "btnReset",
+                            backgroundColor: Colors.green,
+                            tooltip: "Reset",
+                            child: Icon(Icons.autorenew),
+                            onPressed: () {
+                              showAlertDialogReset(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnCreateNew",
+                            backgroundColor: Colors.blue,
+                            tooltip: "New Document",
+                            child: Icon(Icons.create),
+                            onPressed: () {
+                              showAlertDialogCreateNew(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnDelete",
+                            backgroundColor: Colors.red,
+                            tooltip: "Delete",
+                            child: Icon(Icons.delete_outline),
+                            onPressed: () {
+                              showAlertDialogDelete(context);
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    ),
             ),
           );
         });
@@ -1062,7 +1015,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.sapGoodsReceiptId == 0) {
+                    if (data.sapGoodsReceiptId == 0 && !_getState().isBusy) {
                       _selectTransDate(context);
                     }
                   },
@@ -1086,7 +1039,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                       10.0,
                                     )))),
                       ),
-                      (data.sapGoodsReceiptId == 0)
+                      (data.sapGoodsReceiptId == 0 && !_getState().isBusy)
                           ? Icon(
                               Icons.date_range,
                             )
@@ -1286,7 +1239,9 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               //   )
               ? RaisedButton(
                   onPressed: () {
-                    _showItemDetail(index);
+                    if (!_getState().isBusy) {
+                      _showItemDetail(index);
+                    }
                   },
                   color: bgBlue,
                   child: Text(
@@ -1300,7 +1255,9 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               : data.sapGoodsReceiptId == 0 && data.status != "Cancel"
                   ? RaisedButton(
                       onPressed: () {
-                        _showItemDetail(index);
+                        if (!_getState().isBusy) {
+                          _showItemDetail(index);
+                        }
                       },
                       color: bgOrange,
                       child: Text(
@@ -1315,7 +1272,9 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                       icon: Icon(Icons.keyboard_arrow_right),
                       iconSize: 30.0,
                       onPressed: () {
-                        _showItemDetail(index);
+                        if (!_getState().isBusy) {
+                          _showItemDetail(index);
+                        }
                       },
                     ),
         ),
@@ -1333,7 +1292,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.items.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapGoodsReceiptId == 0) {
+        if (_getState().data.sapGoodsReceiptId == 0 && !state.isBusy) {
           return Dismissible(
             key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
             onDismissed: (direction) {

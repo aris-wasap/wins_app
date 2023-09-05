@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/blocs/transfer_branch/detail/transfer_branch_detail_bloc.dart';
 import 'package:wins_app/blocs/transfer_branch/detail/transfer_branch_detail_event.dart';
 import 'package:wins_app/blocs/transfer_branch/detail/transfer_branch_detail_state.dart';
@@ -348,7 +349,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
@@ -373,7 +374,8 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
         ],
       );
     } else if (_getState().data.sapTransferBranchId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Transfer",
@@ -411,7 +413,7 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Transfer To Branch"),
         backgroundColor: bgBlue,
@@ -431,6 +433,21 @@ class _TransferBranchDetailPageState extends State<TransferBranchDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Transfer To Branch"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_payable_return_request_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_order_page.dart';
 import 'package:wins_app/pages/payable_credit/payable_credit_detail_item_detail_page.dart';
@@ -404,7 +405,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -428,7 +429,9 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 &&
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -466,7 +469,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Payable Credit Memo"),
         backgroundColor: bgBlue,
@@ -486,6 +489,21 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Payable Credit Memo"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

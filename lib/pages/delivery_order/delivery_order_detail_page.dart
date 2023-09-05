@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_sales_order_page.dart';
 import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:wins_app/pages/delivery_order/delivery_order_detail_item_detail_page.dart';
@@ -464,7 +465,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Delivery Order"),
         backgroundColor: bgBlue,
@@ -474,23 +475,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
+        actions: <Widget>[],
       );
     } else if (_getState().data.sapDeliveryId == 0 &&
         _getState().data.id > 0 &&
-        _getState().data.status != "Cancel") {
+        _getState().data.status != "Cancel" &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Delivery Order",
@@ -528,7 +518,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Delivery Order"),
         backgroundColor: bgBlue,
@@ -548,6 +538,21 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Delivery Order"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

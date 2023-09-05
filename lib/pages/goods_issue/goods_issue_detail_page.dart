@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/pages/cfl/cfl_transfer_production_page.dart';
 import 'package:wins_app/pages/goods_issue/goods_issue_detail_item_additional_detail_page.dart';
@@ -173,41 +174,42 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   void _updateTransDate() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); //state.data;
+    if (!state.isBusy) {
+      data.id = int.parse(_idTxController.text);
+      data.woNo = _woNoController.text;
+      data.woId = int.parse(_woIdController.text);
+      data.transDate = transDate;
+      data.seriesName = _seriesNameController.text;
+      data.seriesNameWo = _seriesNameWoController.text;
+      data.items = state.data.items;
 
-    data.id = int.parse(_idTxController.text);
-    data.woNo = _woNoController.text;
-    data.woId = int.parse(_woIdController.text);
-    data.transDate = transDate;
-    data.seriesName = _seriesNameController.text;
-    data.seriesNameWo = _seriesNameWoController.text;
-    data.items = state.data.items;
+      if ([null].contains(data.transDate)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Date harus di isi");
+        return;
+      } else if (["", null].contains(data.woNo)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Order No harus di isi");
+        return;
+      } else if ([null].contains(data.items)) {
+        ValidateDialogWidget(
+            context: context, message: "Item detail harus di isi");
+        return;
+      } else if ([0].contains(data.items.length)) {
+        ValidateDialogWidget(
+            context: context, message: "Item detail harus di isi");
+        return;
+      }
 
-    if ([null].contains(data.transDate)) {
-      ValidateDialogWidget(
-          context: context, message: "Production Date harus di isi");
-      return;
-    } else if (["", null].contains(data.woNo)) {
-      ValidateDialogWidget(
-          context: context, message: "Production Order No harus di isi");
-      return;
-    } else if ([null].contains(data.items)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
-    } else if ([0].contains(data.items.length)) {
-      ValidateDialogWidget(
-          context: context, message: "Item detail harus di isi");
-      return;
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
+      bloc.emitEvent(
+        GoodsIssueDetailEventUpdateTransDate(
+          id: int.parse(_idTxController.text),
+          transDate: setTransDate,
+        ),
+      );
     }
-
-    String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
-
-    bloc.emitEvent(
-      GoodsIssueDetailEventUpdateTransDate(
-        id: int.parse(_idTxController.text),
-        transDate: setTransDate,
-      ),
-    );
   }
 
   void _post() {
@@ -349,7 +351,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
   PreferredSizeWidget _appBar() {
     if (_getState().data.sapGoodsIssueId == 0 &&
         _getState().data.id > 0 &&
-        _getState().data.status != "Cancel") {
+        _getState().data.status != "Cancel" &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text("Create Issue"),
         backgroundColor: bgBlue,
@@ -375,7 +378,8 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         ],
       );
       // } else if (_getState().data.sapGoodsIssueId > 0 &&
-      //     _getState().data.sapGoodsReceiptId == 0) {
+      //     _getState().data.sapGoodsReceiptId == 0 &&
+      //  !_getState().isBusy) {
       //   return AppBar(
       //     title: Text("Create Receipt"),
       //     backgroundColor: bgBlue,
@@ -400,7 +404,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
       //       ),
       //     ],
       //   );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Issue For Production"),
         backgroundColor: bgBlue,
@@ -420,6 +424,22 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Issue For Production"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -745,50 +765,57 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                       padding: EdgeInsets.all(0.0),
                       child: _buildForm(),
                     ),
-                    _showCircularProgress(),
+                    // _showCircularProgress(),
                   ]),
                 ),
               ),
               //Floating Button
-              floatingActionButton: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FloatingActionButton(
-                    heroTag: "btnReset",
-                    backgroundColor: Colors.green,
-                    tooltip: "Reset",
-                    child: Icon(Icons.autorenew),
-                    onPressed: () {
-                      showAlertDialogReset(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  FloatingActionButton(
-                    heroTag: "btnCreateNew",
-                    backgroundColor: Colors.blue,
-                    tooltip: "Add New Item",
-                    child: Icon(Icons.add_shopping_cart),
-                    onPressed: () {
-                      _showAddNewItemDetail();
-                      // showAlertDialogCreateNew(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  FloatingActionButton(
-                    heroTag: "btnDelete",
-                    backgroundColor: Colors.red,
-                    tooltip: "Delete",
-                    child: Icon(Icons.delete_outline),
-                    onPressed: () {
-                      showAlertDialogDelete(context);
-                    },
-                  )
-                ],
-              ),
+              floatingActionButton: !_getState().isBusy
+                  ? Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: "btnReset",
+                            backgroundColor: Colors.green,
+                            tooltip: "Reset",
+                            child: Icon(Icons.autorenew),
+                            onPressed: () {
+                              showAlertDialogReset(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnCreateNew",
+                            backgroundColor: Colors.blue,
+                            tooltip: "Add New Item",
+                            child: Icon(Icons.add_shopping_cart),
+                            onPressed: () {
+                              _showAddNewItemDetail();
+                              // showAlertDialogCreateNew(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnDelete",
+                            backgroundColor: Colors.red,
+                            tooltip: "Delete",
+                            child: Icon(Icons.delete_outline),
+                            onPressed: () {
+                              showAlertDialogDelete(context);
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    ),
             ),
           );
         });
@@ -970,7 +997,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.id == 0) {
+                    if (data.id == 0 && !_getState().isBusy) {
                       _selectTransDate(context);
                     }
                   },
@@ -994,7 +1021,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                       10.0,
                                     )))),
                       ),
-                      (data.sapGoodsIssueId == 0)
+                      (data.sapGoodsIssueId == 0 && !_getState().isBusy)
                           ? IconButton(
                               icon: Icon(Icons.date_range),
                               onPressed: () {
@@ -1032,7 +1059,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                             10.0,
                                           )))),
                             ),
-                            (data.sapGoodsReceiptId > 0)
+                            (data.sapGoodsReceiptId > 0 && !_getState().isBusy)
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.view_list,
@@ -1170,7 +1197,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 Stack(
                   alignment: Alignment(0.95, -0.5),
                   children: <Widget>[
-                    (data.status == "Draft")
+                    (data.status == "Draft" && !state.isBusy)
                         ? TextFormField(
                             autofocus: false,
                             textInputAction: TextInputAction.done,
@@ -1223,7 +1250,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                                 border: new OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(10.0)))),
-                    (data.status == "Draft")
+                    (data.status == "Draft" && !state.isBusy)
                         ? FlatButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -1233,7 +1260,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                               // Logic untuk menghitung hasil perhitungan di sini
                               showAlertDialogGetWeight(context);
                             },
-                            child: Text("Get Weight (%)"),
+                            child: Text("Get Weight"),
                           )
                         : Container(width: 0, height: 0),
                   ],
@@ -1339,7 +1366,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                 //   )
                 ? RaisedButton(
                     onPressed: () {
-                      _showItemDetail(index);
+                      if (!_getState().isBusy) {
+                        _showItemDetail(index);
+                      }
                     },
                     color: bgBlue,
                     child: Text(
@@ -1356,7 +1385,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                         data.status != "Cancel"
                     ? RaisedButton(
                         onPressed: () {
-                          _showItemDetail(index);
+                          if (!_getState().isBusy) {
+                            _showItemDetail(index);
+                          }
                         },
                         color: bgOrange,
                         child: Text(
@@ -1373,7 +1404,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                             data.status != "Cancel"
                         ? RaisedButton(
                             onPressed: () {
-                              _showItemAdditionalDetail(index);
+                              if (!_getState().isBusy) {
+                                _showItemAdditionalDetail(index);
+                              }
                             },
                             color: bgBlue,
                             child: Text(
@@ -1388,7 +1421,9 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
                             icon: Icon(Icons.keyboard_arrow_right),
                             iconSize: 30.0,
                             onPressed: () {
-                              _showItemDetail(index);
+                              if (!_getState().isBusy) {
+                                _showItemDetail(index);
+                              }
                             })),
       ),
     );
@@ -1404,7 +1439,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         physics: ClampingScrollPhysics(),
         itemCount: data.items.length,
         itemBuilder: (contex, index) {
-          if (data.sapGoodsIssueId == 0 && data.id > 0) {
+          if (data.sapGoodsIssueId == 0 && data.id > 0 && !_getState().isBusy) {
             // return _rowDetail(data, index);
             return Dismissible(
               key: UniqueKey(), //Key(data.items[index].hashCode.toString()),

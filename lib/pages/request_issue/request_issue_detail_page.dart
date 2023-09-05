@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/blocs/request_issue/detail/request_issue_detail_bloc.dart';
 import 'package:wins_app/blocs/request_issue/detail/request_issue_detail_event.dart';
 import 'package:wins_app/blocs/request_issue/detail/request_issue_detail_state.dart';
@@ -369,7 +370,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Draft Issue",
@@ -408,7 +409,8 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
         ],
       );
     } else if (_getState().data.sapRequestIssueId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Issue",
@@ -446,7 +448,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text(
           "Request Issue",
@@ -471,6 +473,27 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
                   icon: Icon(Icons.add))
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text(
+          "Request Issue",
+          style: GoogleFonts.openSans(
+            textStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/inventory_transfer/list/inventory_transfer_list_bloc.dart';
@@ -102,7 +103,7 @@ class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
       );
     } else {
       return AppBar(
-        title: Text("Inventory Transfer"),
+        title: Text("List Inventory Transfer"),
         //backgroundColor: bgBlue,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -110,10 +111,19 @@ class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
           ),
         ),
         bottom: PreferredSize(
-            child: Container(
-              color: bgBlue,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -201,9 +211,13 @@ class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                     (data[index].docStatus == 'C') ?
-                    Text("Request No : ${data[index].sapInventoryTransferReqNo} (Closed)", style: TextStyle(fontSize: 16, color: Colors.red),)
-                    : Text("Request No : ${data[index].sapInventoryTransferReqNo}"),
+                    (data[index].docStatus == 'C')
+                        ? Text(
+                            "Request No : ${data[index].sapInventoryTransferReqNo} (Closed)",
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                          )
+                        : Text(
+                            "Request No : ${data[index].sapInventoryTransferReqNo}"),
                     Text(
                         "IT No. : ${data[index].sapInventoryTransferNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
 

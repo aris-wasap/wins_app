@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/goods_issue/list_wo/goods_issue_wo_list_bloc.dart';
@@ -110,10 +112,19 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
         ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-            child: Container(
-              color: bgBlue,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -206,10 +217,8 @@ class _GoodsIssueWOListPageState extends State<GoodsIssueWOListPage> {
                     Padding(padding: EdgeInsets.only(top: 10)),
                     Text(
                         "Trans Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
-                    Text(
-                        "Product : ${data[index].productCode}"),
-                    Text(
-                        "Product Name : ${data[index].productName}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text(
                         "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
                     Text("Production Type : ${data[index].productionType}"),

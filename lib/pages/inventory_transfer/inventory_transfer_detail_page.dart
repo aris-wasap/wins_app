@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:wins_app/pages/cfl/cfl_transfer_request_page.dart';
@@ -552,7 +553,7 @@ class _InventoryTransferDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
@@ -562,23 +563,11 @@ class _InventoryTransferDetailPageState
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
       );
     } else if (_getState().data.sapInventoryTransferId == 0 &&
         _getState().data.id > 0 &&
-        _getState().data.status != "Cancel") {
+        _getState().data.status != "Cancel" &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Transfer",
@@ -620,7 +609,7 @@ class _InventoryTransferDetailPageState
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Inventory Transfer"),
         backgroundColor: bgBlue,
@@ -640,6 +629,21 @@ class _InventoryTransferDetailPageState
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Inventory Transfer"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

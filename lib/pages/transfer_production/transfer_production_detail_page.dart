@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_binlocation_page.dart';
 import 'package:wins_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:wins_app/pages/cfl/cfl_production_order_page.dart';
@@ -450,34 +451,13 @@ class _TransferProductionDetailPageState
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
-        _update();
+      _update();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
 
   PreferredSizeWidget _appBar() {
-    // if (_getState().data.id == 0) {
-    //   return AppBar(
-    //     title: Text("Create Transfer Production"),
-    //     backgroundColor: bgBlue,
-    //     bottom: PreferredSize(
-    //         child: Container(
-    //           color: bgOrange,
-    //           height: 5.0,
-    //         ),
-    //         preferredSize: Size.fromHeight(5.0)),
-    //     actions: <Widget>[
-    //       FlatButton.icon(
-    //           icon: Icon(Icons.check),
-    //           onPressed: () {
-    //             _create();
-    //           },
-    //           textColor: Colors.white,
-    //           label: Text("Submit"))
-    //     ],
-    //   );
-    // }
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Transfer Production"),
         backgroundColor: bgBlue,
@@ -502,7 +482,8 @@ class _TransferProductionDetailPageState
         ],
       );
     } else if (_getState().data.sapTransferProductionId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Transfer Production",
@@ -544,7 +525,7 @@ class _TransferProductionDetailPageState
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Transfer Production"),
         backgroundColor: bgBlue,
@@ -564,6 +545,21 @@ class _TransferProductionDetailPageState
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Transfer Production"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -883,7 +879,6 @@ class _TransferProductionDetailPageState
                       _selectTransDate(context);
                     }
                   },
-                  
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -1489,7 +1484,7 @@ class _TransferProductionDetailPageState
       itemBuilder: (contex, index) {
         if (_getState().data.sapTransferProductionId == 0) {
           return Dismissible(
-            key: UniqueKey(),//Key(data[index].hashCode.toString()),
+            key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
               bloc.emitEvent(TransferProductionDetailEventRemoveItem(
                   id: data[index].id, detId: data[index].detId));

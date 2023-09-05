@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_production_order_page.dart';
 import 'package:wins_app/pages/issue_production/issue_production_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +208,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Create Issue"),
         backgroundColor: bgBlue,
@@ -228,7 +229,7 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Issue From Production"),
         backgroundColor: bgBlue,
@@ -248,6 +249,21 @@ class _IssueProductionDetailPageState extends State<IssueProductionDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Issue From Production"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }

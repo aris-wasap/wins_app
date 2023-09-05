@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_supplier_page.dart';
 import 'package:wins_app/pages/receipt_supplier/receipt_supplier_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -404,7 +405,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && _getState().isBusy) {
       return AppBar(
         title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
@@ -429,7 +430,8 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
         ],
       );
     } else if (_getState().data.sapReceiptSupplierId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Receipt",
@@ -467,7 +469,7 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
@@ -487,6 +489,21 @@ class _ReceiptSupplierDetailPageState extends State<ReceiptSupplierDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Receipt From Purchase Order"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
