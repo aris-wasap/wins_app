@@ -1479,7 +1479,8 @@ class _InventoryTransferDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapInventoryTransferId == 0) {
+        if (_getState().data.sapInventoryTransferId == 0 &&
+            !_getState().isBusy) {
           return Dismissible(
             // key: Key(data[index].hashCode.toString()),
             key: UniqueKey(),

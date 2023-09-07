@@ -737,10 +737,16 @@ class _GoodsIssueMixingDetailPageState
 
     item.then((Item item) {
       if (item != null) {
-        bloc.emitEvent(GoodsIssueMixingDetailEventItemUpdate(
-          item: item,
-          itemIndex: itemIndex,
-        ));
+        // bloc.emitEvent(GoodsIssueMixingDetailEventItemUpdate(
+        //   item: item,
+        //   itemIndex: itemIndex,
+        // ));
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          bloc.emitEvent(GoodsIssueMixingDetailEventGetId(
+            id: _id,
+          ));
+        });
       }
     });
   }

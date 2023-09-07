@@ -954,7 +954,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceiptIssueId == 0) {
+        if (_getState().data.sapReceiptIssueId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

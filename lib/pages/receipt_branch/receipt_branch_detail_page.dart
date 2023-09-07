@@ -957,7 +957,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceiptBranchId == 0) {
+        if (_getState().data.sapReceiptBranchId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
