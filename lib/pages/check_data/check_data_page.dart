@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
@@ -330,7 +332,7 @@ class _CheckDataPageState extends State<CheckDataPage>
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(kToolbarHeight),
                 child: Container(
-                  color: Colors.blue,
+                  color: bgBlue,
                   child: TabBar(
                     controller: _tabController,
                     tabs: [
@@ -356,13 +358,20 @@ class _CheckDataPageState extends State<CheckDataPage>
                             fit: BoxFit.cover,
                             repeat: ImageRepeat.noRepeat),
                       ),
-                      child: Stack(children: <Widget>[
-                        SingleChildScrollView(
-                          padding: EdgeInsets.all(0.0),
-                          child: _buildForm(),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                        child: Container(
+                          decoration: new BoxDecoration(
+                              color: Colors.white.withOpacity(0.8)),
+                          child: Stack(children: <Widget>[
+                            SingleChildScrollView(
+                              padding: EdgeInsets.all(0.0),
+                              child: _buildForm(),
+                            ),
+                            _showCircularProgress(),
+                          ]),
                         ),
-                        _showCircularProgress(),
-                      ]),
+                      ),
                     ),
                   ),
                   Center(
@@ -374,13 +383,17 @@ class _CheckDataPageState extends State<CheckDataPage>
                             fit: BoxFit.cover,
                             repeat: ImageRepeat.noRepeat),
                       ),
-                      child: Stack(children: <Widget>[
-                        SingleChildScrollView(
-                          padding: EdgeInsets.all(0.0),
-                          child: _buildFormSnB(),
-                        ),
-                        _showCircularProgress(),
-                      ]),
+                      child: Container(
+                        decoration: new BoxDecoration(
+                            color: Colors.white.withOpacity(0.8)),
+                        child: Stack(children: <Widget>[
+                          SingleChildScrollView(
+                            padding: EdgeInsets.all(0.0),
+                            child: _buildFormSnB(),
+                          ),
+                          _showCircularProgress(),
+                        ]),
+                      ),
                     ),
                   ),
                 ],
@@ -590,299 +603,287 @@ class _CheckDataPageState extends State<CheckDataPage>
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Card(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Container(
-                      color: Colors.transparent,
-                      height: 50,
-                      child: Text(
-                        "Stock Item Master Data",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.white,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )),
-                  padding: EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      FlatButton(
-                        padding: EdgeInsets.only(top: 0),
-                        onPressed: () {
-                          // if (data == null) {
-                          Future<cflItem.Data> chooseItem = Navigator.push(
-                              context,
-                              MaterialPageRoute<cflItem.Data>(
-                                  builder: (BuildContext context) =>
-                                      CflItemPage()));
-
-                          chooseItem.then((cflItem.Data getItem) {
-                            if (getItem != null) {
-                              _itemCodeController.text = getItem.itemCode;
-                              _itemNameController.text = getItem.itemName;
-                              _uomController.text = getItem.uom;
-
-                              data.itemCode = getItem.itemCode;
-                              data.itemName = getItem.itemName;
-                              data.uom = getItem.uom;
-                              data.distNumber = "";
-                              data.width = 0.0;
-                              data.length = 0.0;
-                              data.length2 = 0.0;
-                              data.weight = 0.0;
-                              data.itemType = "";
-                              data.totalStock = 0.0;
-                              data.details.clear();
-                            }
-                          });
-                          // }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(left: 5, top: 5),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: (data == null)
-                                      ? Colors.blue
-                                      : Colors.grey[400]),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Item Code",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 12.0),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(left: 5),
-                                      title: Text(_itemCodeController.text),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(_itemNameController.text),
-                                          // Text(_uomController.text),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // TextFormField(
-                      //     controller: _itemCodeController,
-                      //     enabled: false,
-                      //     decoration: InputDecoration(
-                      //       hintText: "Item code",
-                      //       labelText: "Item code",
-                      //       contentPadding: new EdgeInsets.symmetric(
-                      //           vertical: 15.0, horizontal: 10.0),
-                      //       border: new OutlineInputBorder(
-                      //           borderRadius: new BorderRadius.circular(10.0)),
-                      //     )),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      // TextFormField(
-                      //     controller: _itemNameController,
-                      //     enabled: false,
-                      //     decoration: InputDecoration(
-                      //         hintText: "Item name",
-                      //         labelText: "Item name",
-                      //         contentPadding: new EdgeInsets.symmetric(
-                      //             vertical: 15.0, horizontal: 10.0),
-                      //         border: new OutlineInputBorder(
-                      //             borderRadius:
-                      //                 new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _batchController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "SN / Batch No.",
-                              labelText: "SN / Batch No.",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _widthController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Width",
-                              labelText: "Width",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _lengthController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Length",
-                              labelText: "Length",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _length2Controller,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Length Label",
-                              labelText: "Length Label",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _weightController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Weight",
-                              labelText: "Weight",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _typeController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Type",
-                              labelText: "Type",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _stockController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Stock",
-                              labelText: "Stock",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _uomController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Uom",
-                              labelText: "Uom",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.blue,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Break Stock"),
-                        ],
-                      ),
+                    color: Colors.transparent,
+                    height: 30,
+                    child: Text(
+                      "Stock Item Master Data",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-                Container(
-                    //color: Colors.brown,
-                    child: ((data != null) ? data.details.length : 0) > 0 &&
-                            _tabController.index == 0
-                        ? _buildList()
-                        : Container(
-                            padding: EdgeInsets.all(10.0),
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Text("Item Empty"),
-                          )),
-                Container(
-                  height: 5,
-                  color: Colors.grey,
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    FlatButton(
+                      padding: EdgeInsets.only(top: 0),
+                      onPressed: () {
+                        // if (data == null) {
+                        Future<cflItem.Data> chooseItem = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflItem.Data>(
+                                builder: (BuildContext context) =>
+                                    CflItemPage()));
+
+                        chooseItem.then((cflItem.Data getItem) {
+                          if (getItem != null) {
+                            _itemCodeController.text = getItem.itemCode;
+                            _itemNameController.text = getItem.itemName;
+                            _uomController.text = getItem.uom;
+
+                            data.itemCode = getItem.itemCode;
+                            data.itemName = getItem.itemName;
+                            data.uom = getItem.uom;
+                            data.distNumber = "";
+                            data.width = 0.0;
+                            data.length = 0.0;
+                            data.length2 = 0.0;
+                            data.weight = 0.0;
+                            data.itemType = "";
+                            data.totalStock = 0.0;
+                            data.details.clear();
+                          }
+                        });
+                        // }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 5, top: 5),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: (data == null)
+                                    ? Colors.blue
+                                    : Colors.grey[400]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Item Code",
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 12.0),
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 5),
+                                    title: Text(_itemCodeController.text),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(_itemNameController.text),
+                                        // Text(_uomController.text),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // TextFormField(
+                    //     controller: _itemCodeController,
+                    //     enabled: false,
+                    //     decoration: InputDecoration(
+                    //       hintText: "Item code",
+                    //       labelText: "Item code",
+                    //       contentPadding: new EdgeInsets.symmetric(
+                    //           vertical: 15.0, horizontal: 10.0),
+                    //       border: new OutlineInputBorder(
+                    //           borderRadius: new BorderRadius.circular(10.0)),
+                    //     )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    // TextFormField(
+                    //     controller: _itemNameController,
+                    //     enabled: false,
+                    //     decoration: InputDecoration(
+                    //         hintText: "Item name",
+                    //         labelText: "Item name",
+                    //         contentPadding: new EdgeInsets.symmetric(
+                    //             vertical: 15.0, horizontal: 10.0),
+                    //         border: new OutlineInputBorder(
+                    //             borderRadius:
+                    //                 new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _batchController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "SN / Batch No.",
+                            labelText: "SN / Batch No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _widthController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Width",
+                            labelText: "Width",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _lengthController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Length",
+                            labelText: "Length",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _length2Controller,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Length Label",
+                            labelText: "Length Label",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _weightController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Weight",
+                            labelText: "Weight",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _typeController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Type",
+                            labelText: "Type",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _stockController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Stock",
+                            labelText: "Stock",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _uomController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Uom",
+                            labelText: "Uom",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                  ],
                 ),
-                SizedBox(
-                  height: 60,
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Break Stock"),
+                      ],
+                    ),
+                  ),
                 ),
-              ]),
-        ),
+              ),
+              Container(
+                  //color: Colors.brown,
+                  child: ((data != null) ? data.details.length : 0) > 0 &&
+                          _tabController.index == 0
+                      ? _buildList()
+                      : Container(
+                          padding: EdgeInsets.all(10.0),
+                          alignment: AlignmentDirectional(0.0, 0.0),
+                          child: Text("Item Empty"),
+                        )),
+              Container(
+                height: 5,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                height: 60,
+              ),
+            ]),
       ),
     );
   }
@@ -925,135 +926,50 @@ class _CheckDataPageState extends State<CheckDataPage>
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Card(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Container(
-                      color: Colors.transparent,
-                      height: 50,
-                      child: Text(
-                        "Stock SN / Batch Number",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 30,
+                    child: Text(
+                      "Stock SN / Batch Number",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.white,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  )),
-                  padding: EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      FlatButton(
-                        padding: EdgeInsets.only(top: 5),
-                        onPressed: () {
-                          Future<cflWarehouse.Data> whs = Navigator.push(
-                              context,
-                              MaterialPageRoute<cflWarehouse.Data>(
-                                  builder: (BuildContext context) =>
-                                      CflWarehousePage(globalBloc.branchId)));
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FlatButton(
+                      padding: EdgeInsets.only(top: 5),
+                      onPressed: () {
+                        Future<cflWarehouse.Data> whs = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflWarehouse.Data>(
+                                builder: (BuildContext context) =>
+                                    CflWarehousePage(globalBloc.branchId)));
 
-                          whs.then((cflWarehouse.Data whs) {
-                            setState(() {
-                              if (whs != null) {
-                                _whsCodeSnBController.text = whs.whsCode;
-                                _whsNameSnBController.text = whs.whsName;
-                                dataSnB.whsCode = whs.whsCode;
-                                dataSnB.whsName = whs.whsName;
-                                dataSnB.itemCode = "";
-                                dataSnB.itemName = "";
-                                dataSnB.uom = "";
-                                dataSnB.distNumber = "";
-                                dataSnB.width = 0.0;
-                                dataSnB.length = 0.0;
-                                dataSnB.length2 = 0.0;
-                                dataSnB.weight = 0.0;
-                                dataSnB.itemType = "";
-                                dataSnB.totalStock = 0.0;
-                                dataSnB.details.clear();
-                              }
-                            });
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(left: 5, top: 5),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.blue,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Warehouse",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 12.0),
-                                    ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(left: 5),
-                                      title: Text(_whsCodeSnBController.text),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(_whsNameSnBController.text),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      FlatButton(
-                        padding: EdgeInsets.only(top: 0),
-                        onPressed: () {
-                          // if (dataSnB == null) {
-                          Future<cflItemSnB.Data> chooseItem = Navigator.push(
-                              context,
-                              MaterialPageRoute<cflItemSnB.Data>(
-                                  builder: (BuildContext context) =>
-                                      CflItemPage()));
-
-                          chooseItem.then((cflItemSnB.Data getItem) {
-                            if (getItem != null) {
-                              _itemCodeSnBController.text = getItem.itemCode;
-                              _itemNameSnBController.text = getItem.itemName;
-                              _uomSnBController.text = getItem.uom;
-                              dataSnB.itemCode = getItem.itemCode;
-                              dataSnB.itemName = getItem.itemName;
-                              dataSnB.uom = getItem.uom;
+                        whs.then((cflWarehouse.Data whs) {
+                          setState(() {
+                            if (whs != null) {
+                              _whsCodeSnBController.text = whs.whsCode;
+                              _whsNameSnBController.text = whs.whsName;
+                              dataSnB.whsCode = whs.whsCode;
+                              dataSnB.whsName = whs.whsName;
+                              dataSnB.itemCode = "";
+                              dataSnB.itemName = "";
+                              dataSnB.uom = "";
                               dataSnB.distNumber = "";
                               dataSnB.width = 0.0;
                               dataSnB.length = 0.0;
@@ -1064,232 +980,304 @@ class _CheckDataPageState extends State<CheckDataPage>
                               dataSnB.details.clear();
                             }
                           });
-                          // }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(left: 5, top: 5),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: (dataSnB == null)
-                                      ? Colors.blue
-                                      : Colors.grey[400]),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Item Code",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 12.0),
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 5, top: 5),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.blue,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Warehouse",
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 12.0),
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 5),
+                                    title: Text(_whsCodeSnBController.text),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(_whsNameSnBController.text),
+                                      ],
                                     ),
-                                    ListTile(
-                                      contentPadding: EdgeInsets.only(left: 5),
-                                      title: Text(_itemCodeSnBController.text),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(_itemNameSnBController.text),
-                                          // Text(_uomController.text),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            ],
-                          ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                            ),
+                          ],
                         ),
                       ),
-                      // TextFormField(
-                      //     controller: _itemCodeSnBController,
-                      //     enabled: false,
-                      //     decoration: InputDecoration(
-                      //       hintText: "Item code",
-                      //       labelText: "Item code",
-                      //       contentPadding: new EdgeInsets.symmetric(
-                      //           vertical: 15.0, horizontal: 10.0),
-                      //       border: new OutlineInputBorder(
-                      //           borderRadius: new BorderRadius.circular(10.0)),
-                      //     )),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    FlatButton(
+                      padding: EdgeInsets.only(top: 0),
+                      onPressed: () {
+                        // if (dataSnB == null) {
+                        Future<cflItemSnB.Data> chooseItem = Navigator.push(
+                            context,
+                            MaterialPageRoute<cflItemSnB.Data>(
+                                builder: (BuildContext context) =>
+                                    CflItemPage()));
+
+                        chooseItem.then((cflItemSnB.Data getItem) {
+                          if (getItem != null) {
+                            _itemCodeSnBController.text = getItem.itemCode;
+                            _itemNameSnBController.text = getItem.itemName;
+                            _uomSnBController.text = getItem.uom;
+                            dataSnB.itemCode = getItem.itemCode;
+                            dataSnB.itemName = getItem.itemName;
+                            dataSnB.uom = getItem.uom;
+                            dataSnB.distNumber = "";
+                            dataSnB.width = 0.0;
+                            dataSnB.length = 0.0;
+                            dataSnB.length2 = 0.0;
+                            dataSnB.weight = 0.0;
+                            dataSnB.itemType = "";
+                            dataSnB.totalStock = 0.0;
+                            dataSnB.details.clear();
+                          }
+                        });
+                        // }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 5, top: 5),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: (dataSnB == null)
+                                    ? Colors.blue
+                                    : Colors.grey[400]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Item Code",
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 12.0),
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 5),
+                                    title: Text(_itemCodeSnBController.text),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(_itemNameSnBController.text),
+                                        // Text(_uomController.text),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                            )
+                          ],
+                        ),
                       ),
-                      TextFormField(
-                          controller: _itemNameSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Item name",
-                              labelText: "Item name",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _serialBatchNumberController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "SN / Batch No.",
-                              labelText: "SN / Batch No.",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _widthSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Width",
-                              labelText: "Width",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _lengthSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Length",
-                              labelText: "Length",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _length2SnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Length Label",
-                              labelText: "Length Label",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _weightSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Weight",
-                              labelText: "Weight",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _typeSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Type",
-                              labelText: "Type",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _stockSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Stock",
-                              labelText: "Stock",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      TextFormField(
-                          controller: _uomSnBController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "Uom",
-                              labelText: "Uom",
-                              contentPadding: new EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)))),
-                    ],
-                  ),
+                    ),
+                    // TextFormField(
+                    //     controller: _itemCodeSnBController,
+                    //     enabled: false,
+                    //     decoration: InputDecoration(
+                    //       hintText: "Item code",
+                    //       labelText: "Item code",
+                    //       contentPadding: new EdgeInsets.symmetric(
+                    //           vertical: 15.0, horizontal: 10.0),
+                    //       border: new OutlineInputBorder(
+                    //           borderRadius: new BorderRadius.circular(10.0)),
+                    //     )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _itemNameSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Item name",
+                            labelText: "Item name",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _serialBatchNumberController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "SN / Batch No.",
+                            labelText: "SN / Batch No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _widthSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Width",
+                            labelText: "Width",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _lengthSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Length",
+                            labelText: "Length",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _length2SnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Length Label",
+                            labelText: "Length Label",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _weightSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Weight",
+                            labelText: "Weight",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _typeSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Type",
+                            labelText: "Type",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _stockSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Stock",
+                            labelText: "Stock",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    TextFormField(
+                        controller: _uomSnBController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Uom",
+                            labelText: "Uom",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius:
+                                    new BorderRadius.circular(10.0)))),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.blue,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Break Stock"),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Break Stock"),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                    //color: Colors.brown,
-                    child:
-                        ((dataSnB != null) ? dataSnB.details.length : 0) > 0 &&
-                                _tabController.index == 1
-                            ? _buildListSnB()
-                            : Container(
-                                padding: EdgeInsets.all(10.0),
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Text("Item Empty"),
-                              )),
-                Container(
-                  height: 5,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  height: 60,
-                )
-              ]),
-        ),
+              ),
+              Container(
+                  //color: Colors.brown,
+                  child: ((dataSnB != null) ? dataSnB.details.length : 0) > 0 &&
+                          _tabController.index == 1
+                      ? _buildListSnB()
+                      : Container(
+                          padding: EdgeInsets.all(10.0),
+                          alignment: AlignmentDirectional(0.0, 0.0),
+                          child: Text("Item Empty"),
+                        )),
+              Container(
+                height: 5,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                height: 60,
+              )
+            ]),
       ),
     );
   }

@@ -46,65 +46,19 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 Card(
                   margin: const EdgeInsets.only(top: 20.0),
                   child: SizedBox(
-                      height: 150,
+                      height: 200,
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 75.0, left: 20.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(height: 5),
                                 SizedBox(
                                   height: 10,
-                                ),
-                                Text(
-                                  "Url ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  "Role",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  "Branch ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 5),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  ": ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  ": ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  ": ",
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 5),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "${globalBloc.getDatabaseName()}",
-                                  style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
                                   "${globalBloc.roleName}",
@@ -112,6 +66,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
                                 ),
                                 Text(
                                   "${globalBloc.branchName}",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  'v.23.09.05',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  "${globalBloc.getDatabaseName()}",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ],
@@ -161,7 +123,8 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   top: .0,
                   left: .0,
                   right: .0,
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.topCenter,
                     child: Column(
                       children: <Widget>[
                         CircleAvatar(

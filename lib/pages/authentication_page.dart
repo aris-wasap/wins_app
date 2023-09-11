@@ -295,8 +295,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         child: TextFormField(
           controller: controllerUserName,
           maxLines: 1,
-          autofocus: false,
+          autofocus: true,
           decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 2, color: bgBlue),
+            ),
             hintText: 'Username',
             labelText: "Username",
             border: new OutlineInputBorder(
@@ -318,6 +324,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           obscureText: checkPass,
           autofocus: false,
           decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2, color: bgBlue),
+              ),
               hintText: 'Password',
               labelText: "Password",
               border: new OutlineInputBorder(

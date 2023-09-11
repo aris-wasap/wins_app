@@ -113,8 +113,8 @@ class _HomePageState extends State<HomePage> {
                 title: Text('Stock'),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.menu),
-                title: Text('Setting'),
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
               ),
             ],
           ),

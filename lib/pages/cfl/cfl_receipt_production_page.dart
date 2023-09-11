@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/cfl_receipt_production/cfl_receipt_production_bloc.dart';
 import 'package:wins_app/blocs/cfl_receipt_production/cfl_receipt_production_event.dart';
@@ -71,17 +72,38 @@ class _CflReceiptProductionPageState extends State<CflReceiptProductionPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          cursorColor: bgWhite,
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
-              hintText: "Search Production Order",
-              hintStyle: TextStyle(color: Colors.white)),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            hintText: "Search Production Order",
+            hintStyle: TextStyle(color: Colors.white),
+          ),
         ),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgOrange,
+                    highlightColor: bgWhite,
+                    child: Container(
+                      color: bgWhite,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -100,10 +122,19 @@ class _CflReceiptProductionPageState extends State<CflReceiptProductionPage> {
         title: Text("Choose Production Order"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(

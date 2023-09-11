@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/cfl_goods_return_request/cfl_goods_return_request_bloc.dart';
 import 'package:wins_app/blocs/cfl_goods_return_request/cfl_goods_return_request_event.dart';
@@ -71,18 +72,38 @@ class _CflGoodsReturnRequestPageState extends State<CflGoodsReturnRequestPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          cursorColor: bgWhite,
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
             hintText: "Search Return Request",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
         backgroundColor: bgOrange,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgOrange,
+                    highlightColor: bgWhite,
+                    child: Container(
+                      color: bgWhite,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -101,10 +122,19 @@ class _CflGoodsReturnRequestPageState extends State<CflGoodsReturnRequestPage> {
         title: Text("Choose Return Request"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
