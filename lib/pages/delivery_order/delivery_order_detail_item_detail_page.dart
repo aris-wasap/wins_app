@@ -410,24 +410,7 @@ class _DeliveryOrderDetailItemDetailPageState
                 Padding(padding: EdgeInsets.only(top: 10)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    // if (data.id == 0) {
-                    //   Future<cflWarehouse.Data> whs = Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute<cflWarehouse.Data>(
-                    //           builder: (BuildContext context) =>
-                    //               CflWarehousePage(globalBloc.branchId)));
-
-                    //   whs.then((cflWarehouse.Data whs) {
-                    //     setState(() {
-                    //       if (whs != null) {
-                    //         _getState().data.whsCode = whs.whsCode;
-                    //         _getState().data.whsName = whs.whsName;
-                    //       }
-                    //     });
-                    //   });
-                    // }
-                  },
+                  onPressed: () {},
                   child: Container(
                     padding: EdgeInsets.only(left: 5, top: 5),
                     alignment: Alignment.centerLeft,

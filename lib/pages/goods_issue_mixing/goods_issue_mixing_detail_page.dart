@@ -734,7 +734,7 @@ class _GoodsIssueMixingDetailPageState
             items[itemIndex], itemIndex, newData),
       ),
     );
-
+    int _idItem = items[itemIndex].id;
     item.then((Item item) {
       if (item != null) {
         // bloc.emitEvent(GoodsIssueMixingDetailEventItemUpdate(
@@ -744,7 +744,7 @@ class _GoodsIssueMixingDetailPageState
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           bloc.emitEvent(GoodsIssueMixingDetailEventGetId(
-            id: _id,
+            id: _idItem,
           ));
         });
       }

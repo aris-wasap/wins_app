@@ -428,7 +428,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
     } else {
       return AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Issue For Production"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -852,17 +852,17 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
             items[itemIndex], itemIndex, newData),
       ),
     );
-
+    int _idItem = items[itemIndex].id;
     item.then((Item item) {
       if (item != null) {
         // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
         //   item: item,
         //   itemIndex: itemIndex,
-        // ));
+        // ));,, 
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           bloc.emitEvent(GoodsIssueDetailEventGetId(
-            id: _id,
+            id: _idItem,
           ));
         });
       }

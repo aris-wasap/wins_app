@@ -49,6 +49,9 @@ class Data {
   @JsonKey(name: 'BranchName')
   String branchName;
 
+  @JsonKey(name: 'DatabaseName')
+  String databaseName;
+
   @JsonKey(name: 'TransferRelease_Auth_Detail')
   String transferRelease_Auth_Detail;
 

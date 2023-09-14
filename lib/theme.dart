@@ -23,6 +23,7 @@ const LinearGradient loginBackgroundColor = LinearGradient(
 );
 
 Color dongker = Color(0xFF0D47A1);
+Color greyColor = Color(0xff808BA2);
 
 TextStyle tabTitleTextStyle = TextStyle(
   color: dongker,
@@ -115,4 +116,5 @@ ThemeData defaultTheme() {
       dividerTheme: DividerThemeData(space: 0, color: scaffoldBackgroundColor));
 
   return base.copyWith(textTheme: defaultTextTheme(base.textTheme));
+
 }

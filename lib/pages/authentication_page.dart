@@ -138,31 +138,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         ),
                       ),
                       _showCircularProgress(state),
-                      //           Container(
-                      //             padding: EdgeInsets.all(0),
-                      //             alignment: Alignment.bottomCenter,
-                      //             child: Container(
-                      //               alignment: Alignment.bottomCenter,
-                      //               //height: 500,
-                      //               width: MediaQuery.of(context).size.width,
-                      //               height: MediaQuery.of(context).size.height/65,
-                      //               decoration: BoxDecoration(
-                      //                 gradient: LinearGradient(
-                      //                   begin: Alignment.topCenter,
-                      //                   end: Alignment.bottomCenter,
-                      //                   colors: [
-                      //                  Color(0xFF0033CC),
-                      //                  Color(0xFF0099FF),
-
-                      //                   ],
-                      //                 ),
-                      //                 borderRadius: BorderRadius.only(
-
-                      //                 )
-                      // ),
-
-                      //             ),
-                      //           )
                     ],
                   );
                 }
