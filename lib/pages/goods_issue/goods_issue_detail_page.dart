@@ -858,7 +858,7 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
         // bloc.emitEvent(GoodsIssueDetailEventItemUpdate(
         //   item: item,
         //   itemIndex: itemIndex,
-        // ));,, 
+        // ));,,
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           bloc.emitEvent(GoodsIssueDetailEventGetId(
@@ -968,6 +968,24 @@ class _GoodsIssueDetailPageState extends State<GoodsIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.id > 0)
                     ? TextFormField(
                         controller: _transNoController,

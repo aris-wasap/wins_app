@@ -145,7 +145,6 @@ class _PurchaseReturnsDetailItemDetailPageState
     _whsNameController.text = data.whsName;
     _binAbsController.text = data.binAbs.toString();
     _binCodeController.text = data.binCode;
-    _qtyReqController.text = data.reqQty.toString();
     _batchNumberController.text = data.batchNo;
     _lengthController.text = data.length.toString();
     _widthController.text = data.width.toString();
@@ -281,28 +280,6 @@ class _PurchaseReturnsDetailItemDetailPageState
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _itemCodeController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Item Code",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _itemNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Item Name",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _qtyReqController,
                   enabled: false,
@@ -339,7 +316,7 @@ class _PurchaseReturnsDetailItemDetailPageState
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                          labelText: "Receipt Qty",
+                          labelText: "Return Qty",
                           contentPadding: new EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
                           border: new OutlineInputBorder(

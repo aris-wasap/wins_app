@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/pages/general_setting/general_setting_page.dart';
 import 'package:wins_app/pages/home_menu.dart';
 
@@ -118,38 +119,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-
-          //body: buildPageView(),
-          //backgroundColor: Colors.blue[100],
-          // bottomNavigationBar: CurvedNavigationBar(
-          //   height: 50,
-          //   buttonBackgroundColor: Colors.blue[500],
-          //   backgroundColor: Colors.blue[100],
-          //   animationCurve: Curves.ease,
-          //   // animationDuration: Duration(milliseconds: 150),
-          //   items: <Widget>[
-          //     Icon(
-          //       Icons.home,
-          //       size: 20,
-          //       color: Colors.white,
-          //     ),
-          //     Icon(
-          //       Icons.nfc,
-          //       size: 20,
-          //       color: Colors.white,
-          //     ),
-          //     Icon(
-          //       Icons.menu,
-          //       size: 20,
-          //       color: Colors.white,
-          //     ),
-          //   ],
-          //   onTap: (index) {
-          //     _onItemTapped(index);
-          //   },
-          //   index: _page,
-          //   color: bgBlue,
-          // ),
         ),
       ),
     );

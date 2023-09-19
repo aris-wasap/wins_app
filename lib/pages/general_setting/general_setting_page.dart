@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_helpers/bloc_provider.dart';
 import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
@@ -14,8 +17,35 @@ class GeneralSetting extends StatefulWidget {
   _GeneralSettingState createState() => _GeneralSettingState();
 }
 
+Random random = Random();
+
 class _GeneralSettingState extends State<GeneralSetting> {
   bool isSwitched = false;
+  int lengthInitial = 0;
+
+  String getInitials(userName) {
+    List<String> names = userName.split(" ");
+    String initials = "";
+    int numWords = 2;
+
+    if (numWords == names.length) {
+      numWords = names.length;
+    } else {
+      numWords = names.length;
+    }
+    for (var i = 0; i < numWords; i++) {
+      initials += '${names[i][0]}';
+    }
+    lengthInitial = names.length;
+    return initials;
+  }
+
+  var tempcol = Color.fromRGBO(
+    random.nextInt(255),
+    random.nextInt(255),
+    random.nextInt(255),
+    1,
+  );
   @override
   Widget build(BuildContext context) {
     AuthenticationBloc authenticationBloc =
@@ -49,12 +79,13 @@ class _GeneralSettingState extends State<GeneralSetting> {
                       height: 200,
                       width: double.infinity,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 75.0, left: 20.0),
+                        padding: const EdgeInsets.only(
+                            top: 55.0, left: 20.0, right: 75),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 SizedBox(height: 5),
                                 SizedBox(
@@ -120,21 +151,30 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   ),
                 ),
                 Positioned(
-                  top: .0,
-                  left: .0,
+                  top: 60.0,
+                  left: 25.0,
                   right: .0,
                   child: Align(
-                    alignment: Alignment.topCenter,
+                    alignment: Alignment.topLeft,
                     child: Column(
                       children: <Widget>[
                         CircleAvatar(
-                          backgroundColor: Colors.black.withOpacity(.4),
+                          backgroundColor:
+                              bgWhite, //Colors.orange.withOpacity(.4),
                           radius: 40.0,
                           child: CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/profil.png'),
+                            // backgroundImage:
+                            //     AssetImage('assets/images/profil.png'),
                             radius: 38,
-                            backgroundColor: Colors.white,
+                            backgroundColor: tempcol,
+                            child: Text(
+                              getInitials("${globalBloc.userName}"),
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: bgWhite,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(

@@ -697,7 +697,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     } else {
       return AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Receipt From Production"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -985,6 +985,24 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.id > 0)
                     ? TextFormField(
                         controller: _transNoController,

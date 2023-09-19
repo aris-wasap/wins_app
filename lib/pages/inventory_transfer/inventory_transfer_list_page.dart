@@ -219,7 +219,13 @@ class _InventoryTransferListPageState extends State<InventoryTransferListPage> {
                         : Text(
                             "Request No : ${data[index].sapInventoryTransferReqNo}"),
                     Text(
-                        "IT No. : ${data[index].sapInventoryTransferNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                        "Trans Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    data[index].sapInventoryTransferNo != null
+                        ? Text("IT No. : ${data[index].sapInventoryTransferNo}")
+                        : Container(
+                            height: 0,
+                            width: 0,
+                          ), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
 
                     Text(
                         "Warehouse : ${data[index].fromWhsCode} to ${data[index].toWhsCode}"),

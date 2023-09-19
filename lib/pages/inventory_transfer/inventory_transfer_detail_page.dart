@@ -69,6 +69,8 @@ class _InventoryTransferDetailPageState
 
   DateTime transDate; // = DateTime.now();
 
+  bool isVisible = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -632,7 +634,7 @@ class _InventoryTransferDetailPageState
       );
     } else {
       return AppBar(
-        title: Text("Inventory Transfer"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -905,11 +907,29 @@ class _InventoryTransferDetailPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapInventoryTransferId > 0)
                     ? TextFormField(
                         controller: _sapInventoryTransferNoController,
@@ -939,7 +959,7 @@ class _InventoryTransferDetailPageState
                             border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(10.0))))
                     : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                // Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 7),
                   onPressed: () {
@@ -1051,334 +1071,375 @@ class _InventoryTransferDetailPageState
                         ),
                       )
                     : Container(width: 0, height: 0),
-                //FromWarehouse
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.sapInventoryTransferId == 0) {
-                      Future<cflWarehouse.Data> whs = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflWarehouse.Data>(
-                              builder: (BuildContext context) =>
-                                  CflWarehousePage(globalBloc.branchId)));
+                Visibility(
+                  visible: isVisible,
+                  child: Column(
+                    children: <Widget>[
+                      //FromWarehouse
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.sapInventoryTransferId == 0) {
+                            Future<cflWarehouse.Data> whs = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflWarehouse.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflWarehousePage(globalBloc.branchId)));
 
-                      whs.then((cflWarehouse.Data whs) {
-                        setState(() {
-                          if (whs != null) {
-                            if (data.id == 0) {
-                              _fromWhsCodeController.text = whs.whsCode;
-                              _fromWhsNameController.text = whs.whsName;
-                              _fromAbsEntryController.text =
-                                  whs.absEntry.toString();
-                              _fromBinCodeController.text = whs.binCode;
-                            } else {
-                              _getState().data.fromBranchId = whs.branchId;
-                              _getState().data.fromBranchName = whs.branchName;
-                              _getState().data.fromWhsCode = whs.whsCode;
-                              _getState().data.fromWhsName = whs.whsName;
-                              _getState().data.fromAbsEntry = whs.absEntry;
-                              _getState().data.fromBinCode = whs.binCode;
-                            }
+                            whs.then((cflWarehouse.Data whs) {
+                              setState(() {
+                                if (whs != null) {
+                                  if (data.id == 0) {
+                                    _fromWhsCodeController.text = whs.whsCode;
+                                    _fromWhsNameController.text = whs.whsName;
+                                    _fromAbsEntryController.text =
+                                        whs.absEntry.toString();
+                                    _fromBinCodeController.text = whs.binCode;
+                                  } else {
+                                    _getState().data.fromBranchId =
+                                        whs.branchId;
+                                    _getState().data.fromBranchName =
+                                        whs.branchName;
+                                    _getState().data.fromWhsCode = whs.whsCode;
+                                    _getState().data.fromWhsName = whs.whsName;
+                                    _getState().data.fromAbsEntry =
+                                        whs.absEntry;
+                                    _getState().data.fromBinCode = whs.binCode;
+                                  }
+                                }
+                              });
+                            });
                           }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.sapInventoryTransferId == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (data.sapInventoryTransferId == 0)
+                                      ? Colors.blue
+                                      : Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Row(
                             children: <Widget>[
-                              Text(
-                                "From Warehouse",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_fromWhsCodeController.text),
-                                subtitle: Column(
+                              Expanded(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(_fromWhsNameController.text),
+                                    Text(
+                                      "From Warehouse",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_fromWhsCodeController.text),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(_fromWhsNameController.text),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.sapInventoryTransferId == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
-                //FromBinLocation
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.sapInventoryTransferId == 0) {
-                      Future<cflBinLocation.Data> bin = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflBinLocation.Data>(
-                              builder: (BuildContext context) =>
-                                  CflBinLocationPage(
-                                      _fromWhsCodeController.text)));
-
-                      bin.then((cflBinLocation.Data bin) {
-                        setState(() {
-                          if (bin != null) {
-                            if (data.id == 0) {
-                              _fromAbsEntryController.text =
-                                  bin.absEntry.toString();
-                              _fromBinCodeController.text = bin.binCode;
-                            } else {
-                              _getState().data.fromAbsEntry = bin.absEntry;
-                              _getState().data.fromBinCode = bin.binCode;
-                            }
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.sapInventoryTransferId == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "From Bin Location",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
                               ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_fromBinCodeController.text),
-                              )
+                              (data.sapInventoryTransferId == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
                             ],
                           ),
                         ),
-                        (data.sapInventoryTransferId == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
-                //ToWarehouse
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.sapInventoryTransferId == 0) {
-                      Future<cflWarehouse.Data> whs = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflWarehouse.Data>(
-                              builder: (BuildContext context) =>
-                                  CflWarehousePage(globalBloc.branchId)));
-
-                      whs.then((cflWarehouse.Data whs) {
-                        setState(() {
-                          if (whs != null) {
-                            if (data.id == 0) {
-                              _toBranchIdController.text =
-                                  whs.branchId.toString();
-                              _toBranchNameController.text = whs.branchName;
-                              _toWhsCodeController.text = whs.whsCode;
-                              _toWhsNameController.text = whs.whsName;
-                              _toAbsEntryController.text =
-                                  whs.absEntry.toString();
-                              _toBinCodeController.text = whs.binCode;
-                            } else {
-                              _getState().data.toBranchId = whs.branchId;
-                              _getState().data.toBranchName = whs.branchName;
-                              _getState().data.toWhsCode = whs.whsCode;
-                              _getState().data.toWhsName = whs.whsName;
-                              _getState().data.toAbsEntry = whs.absEntry;
-                              _getState().data.toBinCode = whs.binCode;
-                            }
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.sapInventoryTransferId == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "To Warehouse",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_toWhsCodeController.text),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(_toWhsNameController.text),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.sapInventoryTransferId == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
-                //ToBinLocation
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
-                    if (data.sapInventoryTransferId == 0) {
-                      Future<cflBinLocation.Data> bin = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflBinLocation.Data>(
-                              builder: (BuildContext context) =>
-                                  CflBinLocationPage(
-                                      _toWhsCodeController.text)));
-
-                      bin.then((cflBinLocation.Data bin) {
-                        setState(() {
-                          if (bin != null) {
-                            if (data.id == 0) {
-                              _toAbsEntryController.text =
-                                  bin.absEntry.toString();
-                              _toBinCodeController.text = bin.binCode;
-                            } else {
-                              _getState().data.toAbsEntry = bin.absEntry;
-                              _getState().data.toBinCode = bin.binCode;
-                            }
-                          }
-                        });
-                      });
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: (data.sapInventoryTransferId == 0)
-                                ? Colors.blue
-                                : Colors.grey[400]),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "To Bin Location",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 12.0),
-                              ),
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 5),
-                                title: Text(_toBinCodeController.text),
-                              )
-                            ],
-                          ),
-                        ),
-                        (data.sapInventoryTransferId == 0)
-                            ? Icon(
-                                Icons.keyboard_arrow_right,
-                              )
-                            : Container(width: 0, height: 0),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                (data.sapInventoryTransferId == 0)
-                    ? TextField(
-                        maxLength: 254,
-                        enabled: true,
-                        controller: _commentsController,
-                        textAlign: TextAlign.left,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "",
-                            labelText: "Comments",
-                            alignLabelWithHint: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: (data.id == 0)
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                borderRadius: new BorderRadius.circular(
-                                  10.0,
-                                ))),
-                      )
-                    : TextField(
-                        enabled: false,
-                        controller: _commentsController,
-                        textAlign: TextAlign.left,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "",
-                            labelText: "Comments",
-                            alignLabelWithHint: true,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: (data.id == 0)
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                borderRadius: new BorderRadius.circular(
-                                  10.0,
-                                ))),
                       ),
+                      //FromBinLocation
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.sapInventoryTransferId == 0) {
+                            Future<cflBinLocation.Data> bin = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflBinLocation.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflBinLocationPage(
+                                            _fromWhsCodeController.text)));
+
+                            bin.then((cflBinLocation.Data bin) {
+                              setState(() {
+                                if (bin != null) {
+                                  if (data.id == 0) {
+                                    _fromAbsEntryController.text =
+                                        bin.absEntry.toString();
+                                    _fromBinCodeController.text = bin.binCode;
+                                  } else {
+                                    _getState().data.fromAbsEntry =
+                                        bin.absEntry;
+                                    _getState().data.fromBinCode = bin.binCode;
+                                  }
+                                }
+                              });
+                            });
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (data.sapInventoryTransferId == 0)
+                                      ? Colors.blue
+                                      : Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "From Bin Location",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_fromBinCodeController.text),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              (data.sapInventoryTransferId == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                      //ToWarehouse
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.sapInventoryTransferId == 0) {
+                            Future<cflWarehouse.Data> whs = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflWarehouse.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflWarehousePage(globalBloc.branchId)));
+
+                            whs.then((cflWarehouse.Data whs) {
+                              setState(() {
+                                if (whs != null) {
+                                  if (data.id == 0) {
+                                    _toBranchIdController.text =
+                                        whs.branchId.toString();
+                                    _toBranchNameController.text =
+                                        whs.branchName;
+                                    _toWhsCodeController.text = whs.whsCode;
+                                    _toWhsNameController.text = whs.whsName;
+                                    _toAbsEntryController.text =
+                                        whs.absEntry.toString();
+                                    _toBinCodeController.text = whs.binCode;
+                                  } else {
+                                    _getState().data.toBranchId = whs.branchId;
+                                    _getState().data.toBranchName =
+                                        whs.branchName;
+                                    _getState().data.toWhsCode = whs.whsCode;
+                                    _getState().data.toWhsName = whs.whsName;
+                                    _getState().data.toAbsEntry = whs.absEntry;
+                                    _getState().data.toBinCode = whs.binCode;
+                                  }
+                                }
+                              });
+                            });
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (data.sapInventoryTransferId == 0)
+                                      ? Colors.blue
+                                      : Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "To Warehouse",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_toWhsCodeController.text),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(_toWhsNameController.text),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              (data.sapInventoryTransferId == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                      //ToBinLocation
+                      FlatButton(
+                        padding: EdgeInsets.only(top: 5),
+                        onPressed: () {
+                          if (data.sapInventoryTransferId == 0) {
+                            Future<cflBinLocation.Data> bin = Navigator.push(
+                                context,
+                                MaterialPageRoute<cflBinLocation.Data>(
+                                    builder: (BuildContext context) =>
+                                        CflBinLocationPage(
+                                            _toWhsCodeController.text)));
+
+                            bin.then((cflBinLocation.Data bin) {
+                              setState(() {
+                                if (bin != null) {
+                                  if (data.id == 0) {
+                                    _toAbsEntryController.text =
+                                        bin.absEntry.toString();
+                                    _toBinCodeController.text = bin.binCode;
+                                  } else {
+                                    _getState().data.toAbsEntry = bin.absEntry;
+                                    _getState().data.toBinCode = bin.binCode;
+                                  }
+                                }
+                              });
+                            });
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 5, top: 5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (data.sapInventoryTransferId == 0)
+                                      ? Colors.blue
+                                      : Colors.grey[400]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "To Bin Location",
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 12.0),
+                                    ),
+                                    ListTile(
+                                      contentPadding: EdgeInsets.only(left: 5),
+                                      title: Text(_toBinCodeController.text),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              (data.sapInventoryTransferId == 0)
+                                  ? Icon(
+                                      Icons.keyboard_arrow_right,
+                                    )
+                                  : Container(width: 0, height: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 5)),
+                      (data.sapInventoryTransferId == 0)
+                          ? TextField(
+                              maxLength: 254,
+                              enabled: true,
+                              controller: _commentsController,
+                              textAlign: TextAlign.left,
+                              maxLines: 4,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  hintText: "",
+                                  labelText: "Comments",
+                                  alignLabelWithHint: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: (data.id == 0)
+                                              ? Colors.blue
+                                              : Colors.grey[400]),
+                                      borderRadius: new BorderRadius.circular(
+                                        10.0,
+                                      ))),
+                            )
+                          : TextField(
+                              enabled: false,
+                              controller: _commentsController,
+                              textAlign: TextAlign.left,
+                              maxLines: 4,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  hintText: "",
+                                  labelText: "Comments",
+                                  alignLabelWithHint: true,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: (data.id == 0)
+                                              ? Colors.blue
+                                              : Colors.grey[400]),
+                                      borderRadius: new BorderRadius.circular(
+                                        10.0,
+                                      ))),
+                            ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                IconButton(
+                  color: isVisible ? bgOrange : bgBlue,
+                  onPressed: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  icon: isVisible
+                      ? Icon(Icons.expand_less)
+                      : Icon(Icons.expand_more),
+                ),
+                isVisible
+                    ? Text("Show", style: subTitleTextStyle)
+                    : Text("Hide", style: subTitleTextStyle)
               ],
             ),
           ),

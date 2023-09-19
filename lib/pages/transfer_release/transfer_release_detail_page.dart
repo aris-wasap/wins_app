@@ -259,7 +259,7 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Transfer Release"),
+        title: Text("Please wait"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -524,6 +524,24 @@ class _TransferReleaseDetailPageState extends State<TransferReleaseDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,

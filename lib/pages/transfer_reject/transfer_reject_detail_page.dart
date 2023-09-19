@@ -252,7 +252,7 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Transfer Reject"),
+        title: Text("Please wait"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
             child: Container(
@@ -523,6 +523,24 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,

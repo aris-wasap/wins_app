@@ -477,7 +477,7 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
     } else {
       return AppBar(
         title: Text(
-          "Request Issue",
+          "Please wait",
           style: GoogleFonts.openSans(
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
@@ -746,6 +746,24 @@ class _RequestIssueDetailPageState extends State<RequestIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapRequestIssueId > 0)
                     ? TextFormField(
                         controller: _sapRequestIssueNoController,

@@ -548,7 +548,7 @@ class _TransferProductionDetailPageState
       );
     } else {
       return AppBar(
-        title: Text("Transfer Production"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -844,6 +844,24 @@ class _TransferProductionDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapTransferProductionId > 0)
                     ? TextFormField(
                         controller: _sapTransferProductionNoController,

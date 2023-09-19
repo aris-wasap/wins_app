@@ -541,7 +541,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Delivery Order"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -816,6 +816,24 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapDeliveryId > 0)
                     ? TextFormField(
                         controller: _sapDeliveryNoController,

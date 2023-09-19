@@ -432,7 +432,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Receipt From Issue"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -692,6 +692,24 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapReceiptIssueId > 0)
                     ? TextFormField(
                         controller: _sapReceiptIssueNoController,

@@ -482,7 +482,7 @@ class _ReceivableCreditDetailPageState
       );
     } else {
       return AppBar(
-        title: Text("Return From Sales"),
+        title: Text("Please wait"),
         backgroundColor: Colors.blue[500],
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -744,6 +744,24 @@ class _ReceivableCreditDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 TextFormField(
                     controller: _sapReceivableCreditNoController,
                     enabled: false,
@@ -1021,7 +1039,8 @@ class _ReceivableCreditDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceivableCreditId == 0 && !_getState().isBusy) {
+        if (_getState().data.sapReceivableCreditId == 0 &&
+            !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

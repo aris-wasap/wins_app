@@ -492,7 +492,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       );
     } else {
       return AppBar(
-        title: Text("Payable Credit Memo"),
+        title: Text("Please wait"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Shimmer.fromColors(
@@ -630,23 +630,20 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
-                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                // decoration: BoxDecoration(
-                //   gradient: bgGradientPageWhite,
-                // ),
+                decoration: BoxDecoration(
+                  gradient: bgGradientPageWhite,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 3.0, left: 3.0),
-                  child: Card(
-                    child: Stack(children: <Widget>[
-                      SingleChildScrollView(
-                        padding: EdgeInsets.all(0.0),
-                        child: _buildForm(),
-                      ),
-                      _showCircularProgress(),
-                    ]),
-                  ),
+                  child: Stack(children: <Widget>[
+                    SingleChildScrollView(
+                      padding: EdgeInsets.all(0.0),
+                      child: _buildForm(),
+                    ),
+                    _showCircularProgress(),
+                  ]),
                 ),
               ),
               floatingActionButton: _getState().data.sapReturnId == 0
@@ -763,43 +760,55 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // TextFormField(
-                //   controller: _seriesNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //     hintText: "Series No.",
-                //     labelText: "Series No.",
-                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                //     border: new OutlineInputBorder(
-                //       borderRadius: new BorderRadius.circular(10.0)
-                //     )
-                //   )
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 5)
-                // ),
-                TextFormField(
-                    controller: _sapReturnNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Return No.",
-                        labelText: "Return No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
+                (data.sapReturnId > 0)
+                    ? TextFormField(
+                        controller: _sapReturnNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Return No.",
+                            labelText: "Return No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
