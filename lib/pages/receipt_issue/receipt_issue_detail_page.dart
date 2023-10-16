@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_bloc.dart';
 import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_event.dart';
 import 'package:wins_app/blocs/receipt_issue/detail/receipt_issue_detail_state.dart';
@@ -357,7 +358,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Receipt From Issue"),
         backgroundColor: bgBlue,
@@ -367,22 +368,10 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
       );
     } else if (_getState().data.sapReceiptIssueId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Receipt From Issue",
@@ -420,7 +409,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt From Issue"),
         backgroundColor: bgBlue,
@@ -440,6 +429,21 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -688,6 +692,24 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapReceiptIssueId > 0)
                     ? TextFormField(
                         controller: _sapReceiptIssueNoController,
@@ -950,7 +972,7 @@ class _ReceiptIssueDetailPageState extends State<ReceiptIssueDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceiptIssueId == 0) {
+        if (_getState().data.sapReceiptIssueId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

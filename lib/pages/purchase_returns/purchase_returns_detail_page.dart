@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_goods_return_request_page.dart';
 import 'package:wins_app/pages/purchase_returns/purchase_returns_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -401,7 +402,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -425,7 +426,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 &&
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -463,9 +466,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
-        title: Text("Goods Return "),
+        title: Text("Goods Return"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -483,6 +486,21 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -621,33 +639,34 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapReturnId == 0
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FloatingActionButton.extended(
-                          icon: Icon(Icons.camera_alt),
-                          backgroundColor: btnBgOrange,
-                          label: Text("Scan"),
-                          onPressed: () {
-                            _scanQR();
-                          },
-                        ),
-                        SizedBox(
-                          width: 70,
-                        ),
-                        FloatingActionButton(
-                          heroTag: "btnDelete",
-                          backgroundColor: Colors.red,
-                          tooltip: "Delete",
-                          child: Icon(Icons.delete_outline),
-                          onPressed: () {
-                            showAlertDialogDelete(context);
-                          },
+              floatingActionButton:
+                  _getState().data.sapReturnId == 0 && !_getState().isBusy
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FloatingActionButton.extended(
+                              icon: Icon(Icons.camera_alt),
+                              backgroundColor: btnBgOrange,
+                              label: Text("Scan"),
+                              onPressed: () {
+                                _scanQR();
+                              },
+                            ),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            FloatingActionButton(
+                              heroTag: "btnDelete",
+                              backgroundColor: Colors.red,
+                              tooltip: "Delete",
+                              child: Icon(Icons.delete_outline),
+                              onPressed: () {
+                                showAlertDialogDelete(context);
+                              },
+                            )
+                          ],
                         )
-                      ],
-                    )
-                  : null,
+                      : null,
               // floatingActionButton: _getState().data.sapReturnId == 0
               //     ? FloatingActionButton.extended(
               //         icon: Icon(Icons.camera_alt),
@@ -735,28 +754,55 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _sapReturnNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Goods Return No.",
-                        labelText: "Goods Return No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
+                (data.sapReturnId > 0)
+                    ? TextFormField(
+                        controller: _sapReturnNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Goods Return No.",
+                            labelText: "Goods Return No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -1002,7 +1048,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0) {
+        if (_getState().data.sapReturnId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/transfer_release/list/transfer_release_list_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:wins_app/blocs/transfer_release/list/transfer_release_list_event
 import 'package:wins_app/blocs/transfer_release/list/transfer_release_list_state.dart';
 import 'package:wins_app/pages/transfer_release/transfer_release_detail_page.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 
 class TransferReleaseListPage extends StatefulWidget {
   @override
@@ -103,10 +105,19 @@ class _TransferReleaseListPageState extends State<TransferReleaseListPage> {
         title: Text("List Transfer Release"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
-            child: Container(
-              color: Colors.yellow[900],
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_order_label_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_order_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_reference_page.dart';
@@ -429,7 +430,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
@@ -454,7 +455,8 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
         ],
       );
     } else if (_getState().data.sapReceiptOrderId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Receipt",
@@ -492,7 +494,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt From Purchase Order"),
         backgroundColor: bgBlue,
@@ -512,6 +514,21 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -767,6 +784,24 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapReceiptOrderId > 0)
                     ? TextFormField(
                         controller: _sapReceiptOrderNoController,
@@ -1214,7 +1249,7 @@ class _ReceiptOrderDetailPageState extends State<ReceiptOrderDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceiptOrderId == 0) {
+        if (_getState().data.sapReceiptOrderId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

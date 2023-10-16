@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_db_warehouse_page.dart';
 import 'package:wins_app/pages/transfer_reject/transfer_reject_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:wins_app/blocs/transfer_reject/detail/transfer_reject_detail_eve
 import 'package:wins_app/blocs/transfer_reject/detail/transfer_reject_detail_state.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/models/transfer_reject_detail_response.dart';
+import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
@@ -213,7 +215,7 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Transfer Reject"),
         backgroundColor: Colors.blue[900],
@@ -233,9 +235,24 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
               label: Text("Submit"))
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Transfer Reject"),
+        backgroundColor: Colors.blue[900],
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
         backgroundColor: Colors.blue[900],
         bottom: PreferredSize(
             child: Container(
@@ -506,6 +523,24 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 TextFormField(
                     controller: _transNoController,
                     enabled: false,
@@ -768,7 +803,7 @@ class _TransferRejectDetailPageState extends State<TransferRejectDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.id == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

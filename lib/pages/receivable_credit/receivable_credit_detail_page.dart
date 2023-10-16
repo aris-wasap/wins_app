@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_return_request_page.dart';
 import 'package:wins_app/pages/receivable_credit/receivable_credit_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -394,7 +395,7 @@ class _ReceivableCreditDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -419,7 +420,8 @@ class _ReceivableCreditDetailPageState
         ],
       );
     } else if (_getState().data.sapReceivableCreditId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -457,7 +459,7 @@ class _ReceivableCreditDetailPageState
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Return From Sales"),
         backgroundColor: Colors.blue[500],
@@ -477,6 +479,21 @@ class _ReceivableCreditDetailPageState
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: Colors.blue[500],
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -727,6 +744,24 @@ class _ReceivableCreditDetailPageState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 TextFormField(
                     controller: _sapReceivableCreditNoController,
                     enabled: false,
@@ -1004,7 +1039,8 @@ class _ReceivableCreditDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceivableCreditId == 0) {
+        if (_getState().data.sapReceivableCreditId == 0 &&
+            !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

@@ -133,7 +133,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         json['ReceivableCredit_Auth_Detail'] as String,
     receivableCredit_WhsCode: json['ReceivableCredit_WhsCode'] as String,
     receivableCredit_WhsName: json['ReceivableCredit_WhsName'] as String,
-  );
+  )..databaseName = json['DatabaseName'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -142,6 +142,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'IsAdmin': instance.isAdmin,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
+      'DatabaseName': instance.databaseName,
       'TransferRelease_Auth_Detail': instance.transferRelease_Auth_Detail,
       'TransferRelease_Auth_Add': instance.transferRelease_Auth_Add,
       'TransferRelease_WhsCodeFrom': instance.transferRelease_WhsCodeFrom,

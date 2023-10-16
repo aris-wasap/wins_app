@@ -2,6 +2,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/goods_issue/detail/goods_issue_detail_event.dart';
 import 'package:wins_app/blocs/goods_issue/detail_item_detail/goods_issue_detail_item_detail_bloc.dart';
@@ -141,9 +142,9 @@ class _GoodsIssueDetailItemDetailPageState
       );
 
       _player.play(
-          'sounds/store-scanner-beep-sound-effect.mp3',
-          volume: 10.0,
-        );
+        'sounds/store-scanner-beep-sound-effect.mp3',
+        volume: 10.0,
+      );
 
       //_newData.items[_index] = _data;
 
@@ -232,7 +233,10 @@ class _GoodsIssueDetailItemDetailPageState
   Widget _showCircularProgress() {
     var state = bloc.lastState ?? bloc.initialState;
     if (state.isBusy) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+          child: CircularProgressIndicator(
+        backgroundColor: bgOrange,
+      ));
     }
     return Container(
       height: 0.0,
@@ -308,10 +312,19 @@ class _GoodsIssueDetailItemDetailPageState
                   title: Text("Item Detail"),
                   backgroundColor: bgBlue,
                   bottom: PreferredSize(
-                      child: Container(
-                        color: bgOrange,
-                        height: 5.0,
-                      ),
+                      child: state.isBusy
+                          ? Shimmer.fromColors(
+                              baseColor: bgWhite,
+                              highlightColor: bgOrange,
+                              child: Container(
+                                color: bgOrange,
+                                height: 5.0,
+                              ),
+                            )
+                          : Container(
+                              color: bgOrange,
+                              height: 5.0,
+                            ),
                       preferredSize: Size.fromHeight(5.0)),
                   actions: <Widget>[
                     // _newData.sapGoodsIssueId == 0
@@ -661,7 +674,7 @@ class _GoodsIssueDetailItemDetailPageState
               ],
             ),
           ),
-          _showCircularProgress(),
+          // _showCircularProgress(),
           Container(
             padding: EdgeInsets.all(10.0),
             child: Container(

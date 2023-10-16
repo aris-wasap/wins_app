@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/blocs/receipt_branch/detail/receipt_branch_detail_bloc.dart';
 import 'package:wins_app/blocs/receipt_branch/detail/receipt_branch_detail_event.dart';
 import 'package:wins_app/blocs/receipt_branch/detail/receipt_branch_detail_state.dart';
@@ -330,7 +331,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Transfer"),
         backgroundColor: bgBlue,
@@ -356,7 +357,8 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
       );
     } else if (_getState().data.sapReceiptBranchId == 0 &&
         _getState().data.id > 0 &&
-        _getState().data.status == "Draft") {
+        _getState().data.status == "Draft" &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Receipt",
@@ -394,7 +396,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt From Branch"),
         backgroundColor: bgBlue,
@@ -414,6 +416,21 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -666,6 +683,24 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapReceiptBranchId > 0)
                     ? TextFormField(
                         controller: _sapReceiptBranchNoController,
@@ -940,7 +975,7 @@ class _ReceiptBranchDetailPageState extends State<ReceiptBranchDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReceiptBranchId == 0) {
+        if (_getState().data.sapReceiptBranchId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

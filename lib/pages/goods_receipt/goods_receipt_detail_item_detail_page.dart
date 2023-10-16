@@ -1,6 +1,7 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/goods_receipt/detail_item_detail/goods_receipt_detail_item_detail_bloc.dart';
 import 'package:wins_app/blocs/goods_receipt/detail_item_detail/goods_receipt_detail_item_detail_event.dart';
@@ -218,10 +219,19 @@ class _GoodsReceiptDetailItemDetailPageState
                   title: Text("Item Detail"),
                   backgroundColor: bgBlue,
                   bottom: PreferredSize(
-                      child: Container(
-                        color: bgOrange,
-                        height: 5.0,
-                      ),
+                      child: state.isBusy
+                          ? Shimmer.fromColors(
+                              baseColor: bgWhite,
+                              highlightColor: bgOrange,
+                              child: Container(
+                                color: bgOrange,
+                                height: 5.0,
+                              ),
+                            )
+                          : Container(
+                              color: bgOrange,
+                              height: 5.0,
+                            ),
                       preferredSize: Size.fromHeight(5.0)),
                   actions: <Widget>[
                     _data.id == 0
@@ -271,7 +281,7 @@ class _GoodsReceiptDetailItemDetailPageState
     );
   }
 
-   void _errorMessage() async {
+  void _errorMessage() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
       if ((errorMessage != null) && (errorMessage != "")) {
@@ -305,7 +315,7 @@ class _GoodsReceiptDetailItemDetailPageState
   }
 
   Widget _buildForm() {
-     _errorMessage();
+    _errorMessage();
     var data = _getState().data;
 
     _itemCodeController.text = data.itemCode;

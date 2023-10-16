@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_production_order_page.dart';
 import 'package:wins_app/pages/receipt_production/receipt_production_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -198,7 +199,7 @@ class _ReceiptProductionDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
@@ -219,7 +220,7 @@ class _ReceiptProductionDetailPageState
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt Production"),
         backgroundColor: Colors.blue[500],
@@ -239,6 +240,21 @@ class _ReceiptProductionDetailPageState
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Receipt Production"),
+        backgroundColor: Colors.blue[500],
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -597,7 +613,7 @@ class _ReceiptProductionDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.id == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {
