@@ -170,7 +170,44 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
-    }else if (event is InventoryTransferDetailEventUpdate) {
+    } else if (event is InventoryTransferDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield InventoryTransferDetailState.busy(
+        // data: event.data,
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        InventoryTransferDetailResponse response = await _repository
+            .inventoryTransferDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield InventoryTransferDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield InventoryTransferDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield InventoryTransferDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ??
+                  Data(items: List<inventoryTransferDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield InventoryTransferDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
+    } else if (event is InventoryTransferDetailEventUpdate) {
       yield InventoryTransferDetailState.busy(
         data: event.data,
       );
@@ -236,6 +273,77 @@ class InventoryTransferDetailBloc extends BlocEventStateBase<
         yield InventoryTransferDetailState.failure(
           errorMessage: "fail ${event.toString()}",
           data: event.data,
+        );
+      }
+    } else if (event is InventoryTransferDetailEventCancel) {
+      if (event.id == 0) {
+        yield InventoryTransferDetailState.success(
+          data: Data(items: List<inventoryTransferDetail.Item>()),
+        );
+      } else {
+        yield InventoryTransferDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          InventoryTransferDetailResponse response =
+              await _repository.inventoryTransferDetail_Cancel(event.data);
+          if (response == null) {
+            yield InventoryTransferDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield InventoryTransferDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield InventoryTransferDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield InventoryTransferDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
+    } else if (event is InventoryTransferDetailEventRemoveItem) {
+      yield InventoryTransferDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        InventoryTransferDetailResponse response = await _repository
+            .inventoryTransferDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield InventoryTransferDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield InventoryTransferDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield InventoryTransferDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield InventoryTransferDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
         );
       }
     } else if (event is InventoryTransferDetailEventCancel) {

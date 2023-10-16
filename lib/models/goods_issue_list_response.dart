@@ -39,6 +39,9 @@ class GoodsIssueListResponse {
 
 @JsonSerializable()
 class Data {
+  @JsonKey(name: 'RecordNo')
+  int recordNo;
+
   @JsonKey(name: 'Id')
   int id;
 
@@ -53,6 +56,9 @@ class Data {
 
   @JsonKey(name: 'WoStatus')
   String woStatus;
+
+  @JsonKey(name: 'Status')
+  String status;
 
   @JsonKey(name: 'CreatedUser')
   String createdUser;
@@ -82,11 +88,13 @@ class Data {
   String productionType;
 
   Data({
+    this.recordNo,
     this.id,
     this.userId,
     this.transNo,
     this.transDate,
     this.woStatus,
+    this.status,
     this.createdUser,
     this.seriesName,
     this.woNo,

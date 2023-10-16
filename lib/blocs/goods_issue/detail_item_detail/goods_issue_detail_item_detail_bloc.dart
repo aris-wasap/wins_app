@@ -119,8 +119,9 @@ class GoodsIssueDetailItemDetailBloc extends BlocEventStateBase<
         );
       }
     } else if (event is GoodsIssueDetailItemDetailEventRefreshDetail) {
+      var id = event.id;
       var detId = event.detId;
-      var woLineNo = event.woLineNo;
+      var qty = event.qty;
       var newData = currentState.data;
       //var listData = currentState.data.batchs;
 
@@ -135,7 +136,7 @@ class GoodsIssueDetailItemDetailBloc extends BlocEventStateBase<
         try {
           var _repository = Repository();
           GoodsIssueDetailScanResponse response = await _repository
-              .goodsIssueDetailItemDetail_RefreshDetail(detId, woLineNo);
+              .goodsIssueDetailItemDetail_RefreshDetail(id, detId, qty);
           if (response == null) {
             yield GoodsIssueDetailItemDetailState.failure(
               errorMessage: 'Response null',
@@ -160,6 +161,46 @@ class GoodsIssueDetailItemDetailBloc extends BlocEventStateBase<
             data: event.data,
           );
         }
+      }
+    } else if (event is GoodsIssueDetailItemDetailEventItemUpdate) {
+      var newData = currentState.data;
+      newData.batchs[event.itemIndex] = event.itemBatch;
+      // yield GoodsIssueDetailItemDetailState.success(
+      //   data: newData,
+      // );
+      yield GoodsIssueDetailItemDetailState.busy(
+        data: newData,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueDetailScanResponse response =
+            await _repository.goodsIssueDetail_UpdateDetailBatch(newData);
+        if (response == null) {
+          yield GoodsIssueDetailItemDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueDetailItemDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            // currentState.data.batchs
+            //     .removeWhere((content) => content.detDetId == event.detDetId);
+            yield GoodsIssueDetailItemDetailState.success(
+              errorMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueDetailItemDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
       }
     } else {}
   }

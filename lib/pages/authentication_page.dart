@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wins_app/bloc_helpers/bloc_provider.dart';
@@ -71,6 +73,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       final SharedPreferences prefs = await _prefs;
       var url = prefs.getString(globalBloc.getPrefApiUrl());
       globalBloc.setUrl(url);
+
+      var switchMode = prefs.getString(globalBloc.getSwitchMode());
+      globalBloc.setSwitchMode(switchMode);
+
+      var databaseName = prefs.getString(globalBloc.getDatabase());
+      globalBloc.setDatabaseName(databaseName);
     });
   }
 
@@ -93,122 +101,47 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           //   title: Text("Authentication"),
           //   leading: Icon(Icons.person),
           // ),
-          body: Container(
-            alignment: FractionalOffset.center,
-            child: BlocEventStateBuilder<AuthenticationState>(
-                bloc: bloc,
-                builder: (BuildContext context, AuthenticationState state) {
-                  if (state.isAuthenticated) {
-                    return Container();
-                  } else {
-                    return Stack(
-                      children: <Widget>[
-                        // Positioned(
-                        //   top: 10,
-                        //   left: 300,
-                        //   child: Container(
-                        //       child: IconButton(
-                        //           icon: Icon(Icons.settings),
-                        //           color: Colors.black,
-                        //           onPressed: () {
-                        //             Navigator.push(context, MaterialPageRoute(
-                        //                 builder: (BuildContext context) {
-                        //               return LoginSettingPage();
-                        //             }));
-                        //           })),
-                        // ),
-
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 0),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            //gradient: bgGradient,
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/579.jpg"),
-                                fit: BoxFit.cover,
-                                repeat: ImageRepeat.noRepeat),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              // SizedBox(
-                              //   height: 50,
-                              // ),
-                              // Padding(
-                              //   padding: EdgeInsets.all(20),
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: <Widget>[
-                              //       Text(
-                              //         "Hi,",
-                              //         style: TextStyle(
-                              //             color: Colors.black, fontSize: 40),
-                              //       ),
-                              //       SizedBox(
-                              //         height: 10,
-                              //       ),
-                              //       Text(
-                              //         "Welcome Back",
-                              //         style: TextStyle(
-                              //             color: Colors.black, fontSize: 20),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 20,
-                              // ),
-                              Expanded(
-                                child: Card(
-                                  margin: EdgeInsets.all(15.0),
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height,
-                                    decoration: BoxDecoration(
-                                      //image : DecorationImage(image: AssetImage("assets/images/68.jpg"), fit: BoxFit.cover, repeat: ImageRepeat.repeatY),
-                                      color: Colors.white.withOpacity(0.5),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(40),
-                                          topRight: Radius.circular(40)),
-                                    ),
-                                    alignment: Alignment.bottomCenter,
-                                    child: _buildForm(bloc, state),
-                                  ),
+          body: BlocEventStateBuilder<AuthenticationState>(
+              bloc: bloc,
+              builder: (BuildContext context, AuthenticationState state) {
+                if (state.isAuthenticated) {
+                  return Container();
+                } else {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Container(
+                        // color: Colors.white.withOpacity(0.5),
+                        padding: EdgeInsets.symmetric(vertical: 0),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          //gradient: bgGradient,
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/579.jpg"),
+                              fit: BoxFit.cover,
+                              repeat: ImageRepeat.noRepeat),
+                        ),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                          child: Container(
+                            decoration: new BoxDecoration(
+                                color: Colors.white.withOpacity(0.6)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Expanded(
+                                  child: _buildForm(bloc, state),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        _showCircularProgress(state),
-                        //           Container(
-                        //             padding: EdgeInsets.all(0),
-                        //             alignment: Alignment.bottomCenter,
-                        //             child: Container(
-                        //               alignment: Alignment.bottomCenter,
-                        //               //height: 500,
-                        //               width: MediaQuery.of(context).size.width,
-                        //               height: MediaQuery.of(context).size.height/65,
-                        //               decoration: BoxDecoration(
-                        //                 gradient: LinearGradient(
-                        //                   begin: Alignment.topCenter,
-                        //                   end: Alignment.bottomCenter,
-                        //                   colors: [
-                        //                  Color(0xFF0033CC),
-                        //                  Color(0xFF0099FF),
-
-                        //                   ],
-                        //                 ),
-                        //                 borderRadius: BorderRadius.only(
-
-                        //                 )
-                        // ),
-
-                        //             ),
-                        //           )
-                      ],
-                    );
-                  }
-                }),
-          ),
+                      ),
+                      _showCircularProgress(state),
+                    ],
+                  );
+                }
+              }),
         ),
       ),
     );
@@ -216,7 +149,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   Widget _showCircularProgress(AuthenticationState state) {
     if (state.isAuthenticating) {
-      return Center(child: CircularProgressIndicator());
+      return CircularProgressIndicator(
+        backgroundColor: bgOrange,
+      );
     }
     return Container(
       height: 0.0,
@@ -234,6 +169,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           ),
           _showLogo(),
           SizedBox(
+            height: 10.0,
+          ),
+          _showVersionApp(bloc),
+          SizedBox(
             height: 50,
           ),
           _showEnterText(bloc),
@@ -243,7 +182,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           SizedBox(
             height: 35,
           ),
-          _showButton(bloc),
+          _showLoginButton(bloc),
           _showLoginSetting(bloc),
           Container(
             height: 30,
@@ -254,7 +193,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   Widget _showLogo() {
-    return Image.asset('assets/images/icon.jpeg', width: 100, height: 75);
+    return Image.asset('assets/laucher/logo_ncf.png', width: 100, height: 75);
   }
 
   Widget _showIconSetting(AuthenticationBloc bloc) {
@@ -302,72 +241,92 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
+  Widget _showVersionApp(AuthenticationBloc bloc) {
+    return Column(
+      children: <Widget>[
+        Text(
+          'Version',
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 12,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          '23.09.05',
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 12,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
   Widget _showUserNameInput(AuthenticationBloc bloc) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            color: Colors.white,
-            //boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 2)]
-          ),
-          child: TextFormField(
-            controller: controllerUserName,
-            maxLines: 1,
-            autofocus: false,
-            decoration: InputDecoration(
-              hintText: 'Username',
-              labelText: "Username",
-              border: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(5.0)),
-              //border: InputBorder.none,
-              suffixIcon: Icon(Icons.person_outline, color: Colors.blueGrey),
+        child: TextFormField(
+          controller: controllerUserName,
+          maxLines: 1,
+          autofocus: true,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
             ),
-            validator: (value) =>
-                value.isEmpty ? 'Username can\'t be empty' : null,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 2, color: bgBlue),
+            ),
+            hintText: 'Username',
+            labelText: "Username",
+            border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(5.0)),
+            //border: InputBorder.none,
+            suffixIcon: Icon(Icons.person_outline, color: Colors.blueGrey),
           ),
+          validator: (value) =>
+              value.isEmpty ? 'Username can\'t be empty' : null,
         ));
   }
 
   Widget _showPasswordInput(AuthenticationBloc bloc) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 0.0),
-        child: Container(
-          decoration: BoxDecoration(
-            //shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(5.0),
-            color: Colors.white,
-            //boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 2)]
-          ),
-          child: TextFormField(
-            controller: controllerPwd,
-            maxLines: 1,
-            obscureText: checkPass,
-            autofocus: false,
-            decoration: InputDecoration(
-                hintText: 'Password',
-                labelText: "Password",
-                border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(5.0)),
-                // border: InputBorder.none,
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      checkPass = !checkPass;
-                    });
-                  },
-                  child: Icon(
-                    checkPass == true ? Icons.lock_outline : Icons.lock_open,
-                    color: checkPass == true ? Colors.blueGrey : bgOrange,
-                  ),
-                )),
-            validator: (value) =>
-                value.isEmpty ? 'Password can\'t be empty' : null,
-          ),
+        child: TextFormField(
+          controller: controllerPwd,
+          maxLines: 1,
+          obscureText: checkPass,
+          autofocus: false,
+          decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2, color: bgBlue),
+              ),
+              hintText: 'Password',
+              labelText: "Password",
+              border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(5.0)),
+              // border: InputBorder.none,
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    checkPass = !checkPass;
+                  });
+                },
+                child: Icon(
+                  checkPass == true ? Icons.lock_outline : Icons.lock_open,
+                  color: checkPass == true ? Colors.blueGrey : bgOrange,
+                ),
+              )),
+          validator: (value) =>
+              value.isEmpty ? 'Password can\'t be empty' : null,
         ));
   }
 
-  Widget _showButton(AuthenticationBloc bloc) {
+  Widget _showLoginButton(AuthenticationBloc bloc) {
     return Container(
       height: 50.0,
       margin: EdgeInsets.symmetric(horizontal: 50),
@@ -397,10 +356,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           ),
           onTap: () {
             if (_validateAndSave()) {
-              bloc.emitEvent(AuthenticationEventLogin(
-                userName: controllerUserName.text,
-                pwd: controllerPwd.text,
-              ),);
+              bloc.emitEvent(
+                AuthenticationEventLogin(
+                  userName: controllerUserName.text,
+                  pwd: controllerPwd.text,
+                ),
+              );
             } else {}
           },
         ),

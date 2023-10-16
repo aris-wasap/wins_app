@@ -35,6 +35,7 @@ class _InventoryTransferDetailItemDetailPageState
   final _batchNumberController = TextEditingController();
   final _lengthController = TextEditingController();
   final _widthController = TextEditingController();
+  final _typeController = TextEditingController();
   final _itemTypeController = TextEditingController();
   FocusNode _focusNode;
 
@@ -54,6 +55,7 @@ class _InventoryTransferDetailItemDetailPageState
     _itemNameController?.dispose();
     _uomController?.dispose();
     _availableQtyController?.dispose();
+    _typeController?.dispose();
     _focusNode?.dispose();
     bloc?.dispose();
 
@@ -160,6 +162,7 @@ class _InventoryTransferDetailItemDetailPageState
     _batchNumberController.text = data.batchNo;
     _lengthController.text = data.length.toString();
     _widthController.text = data.width.toString();
+    _typeController.text = data.type;
     _itemTypeController.text = data.itemType;
     _availableQtyController.text = data.availableQty.toString();
     if (_data.qty != 0) {
@@ -272,6 +275,7 @@ class _InventoryTransferDetailItemDetailPageState
                                             " X " +
                                             _lengthController.text)
                                         : Text(""),
+                                      Text(_typeController.text),
                                   ],
                                 ),
                               )
@@ -372,6 +376,17 @@ class _InventoryTransferDetailItemDetailPageState
                       border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0))),
                 ),
+                // Padding(padding: EdgeInsets.only(top: 10)),
+                // TextFormField(
+                //   controller: _typeController,
+                //   enabled: false,
+                //   decoration: InputDecoration(
+                //       labelText: "Type",
+                //       contentPadding: new EdgeInsets.symmetric(
+                //           vertical: 15.0, horizontal: 10.0),
+                //       border: new OutlineInputBorder(
+                //           borderRadius: new BorderRadius.circular(10.0))),
+                // ),
               ],
             ),
           ),

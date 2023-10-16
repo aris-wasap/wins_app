@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_production_order_page.dart';
 import 'package:wins_app/pages/receipt_production/receipt_production_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:wins_app/models/cfl_production_order_response.dart'
     as cflProductionOrder;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class ReceiptProductionDetailPage extends StatefulWidget {
   ReceiptProductionDetailPage(this._id);
@@ -38,6 +40,7 @@ class _ReceiptProductionDetailPageState
 
   final _transNoController = TextEditingController();
   final _transDateController = TextEditingController();
+  final _player = AudioCache();
 
   DateTime transDate; // = DateTime.now();
 
@@ -196,7 +199,7 @@ class _ReceiptProductionDetailPageState
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Create Receipt"),
         backgroundColor: bgBlue,
@@ -217,7 +220,7 @@ class _ReceiptProductionDetailPageState
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Receipt Production"),
         backgroundColor: Colors.blue[500],
@@ -237,6 +240,21 @@ class _ReceiptProductionDetailPageState
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Receipt Production"),
+        backgroundColor: Colors.blue[500],
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -319,6 +337,10 @@ class _ReceiptProductionDetailPageState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(ReceiptProductionDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -544,6 +566,7 @@ class _ReceiptProductionDetailPageState
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -559,6 +582,7 @@ class _ReceiptProductionDetailPageState
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text(data[index].itemCode),
               Text(
                   "Qty : ${NumberFormat("#,###").format(data[index].quantity)}"),
@@ -589,7 +613,7 @@ class _ReceiptProductionDetailPageState
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.id == 0) {
+        if (_getState().data.id == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

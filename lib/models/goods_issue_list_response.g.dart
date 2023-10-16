@@ -28,6 +28,7 @@ Map<String, dynamic> _$GoodsIssueListResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    recordNo: json['RecordNo'] as int,
     id: json['Id'] as int,
     userId: json['UserId'] as int,
     transNo: json['TransNo'] as String,
@@ -35,6 +36,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['TransDate'] as String),
     woStatus: json['WoStatus'] as String,
+    status: json['Status'] as String,
     createdUser: json['CreatedUser'] as String,
     seriesName: json['SeriesName'] as String,
     woNo: json['WoNo'] as String,
@@ -48,11 +50,13 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'RecordNo': instance.recordNo,
       'Id': instance.id,
       'UserId': instance.userId,
       'TransNo': instance.transNo,
       'TransDate': instance.transDate?.toIso8601String(),
       'WoStatus': instance.woStatus,
+      'Status': instance.status,
       'CreatedUser': instance.createdUser,
       'SeriesName': instance.seriesName,
       'WoNo': instance.woNo,

@@ -1,7 +1,7 @@
 import 'package:wins_app/bloc_helpers/bloc_event_state.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_state.dart';
-import 'package:wins_app/models/goods_issue_mixing_detail_refresh_response.dart';
+// import 'package:wins_app/models/goods_issue_mixing_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
 import 'package:wins_app/resources/repository.dart';
@@ -115,6 +115,7 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
       }
     } else if (event is GoodsIssueMixingDetailEventRefresh) {
       var woId = event.woId;
+      var transDate = event.transDate;
       var newData = currentState.data;
       var listData = currentState.data.items;
 
@@ -128,8 +129,8 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
         );
         try {
           var _repository = Repository();
-          GoodsIssueMixingDetailResponse response =
-              await _repository.goodsIssueMixingDetail_ViewDetailItem(woId);
+          GoodsIssueMixingDetailResponse response = await _repository
+              .goodsIssueMixingDetail_ViewDetailItem(woId, transDate);
           if (response == null) {
             yield GoodsIssueMixingDetailState.failure(
               errorMessage: 'Response null',
@@ -291,6 +292,41 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
           data: event.data,
         );
       }
+    } else if (event is GoodsIssueMixingDetailEventUpdateTransDate) {
+      var id = event.id;
+      var transDate = event.transDate;
+      yield GoodsIssueMixingDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueMixingDetailResponse response = await _repository
+            .goodsIssueMixingDetail_UpdateTransDate(id, transDate);
+        if (response == null) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: 'Response null',
+            data: event.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: event.data,
+            );
+          } else {
+            yield GoodsIssueMixingDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data ?? Data(items: List<goodsIssueDetail.Item>()),
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueMixingDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: event.data,
+        );
+      }
     } else if (event is GoodsIssueMixingDetailEventPost) {
       yield GoodsIssueMixingDetailState.busy(
         data: event.data,
@@ -361,6 +397,39 @@ class GoodsIssueMixingDetailBloc extends BlocEventStateBase<
             data: event.data,
           );
         }
+      }
+    } else if (event is GoodsIssueMixingDetailEventRemoveItem) {
+      yield GoodsIssueMixingDetailState.busy(
+        data: currentState.data,
+      );
+      try {
+        var _repository = Repository();
+        GoodsIssueMixingDetailResponse response = await _repository
+            .goodsIssueMixingDetail_RemoveItem(event.id, event.detId);
+        if (response == null) {
+          yield GoodsIssueMixingDetailState.failure(
+            errorMessage: 'Response null',
+            data: currentState.data,
+          );
+        } else {
+          bool error = response.error;
+          if (error) {
+            yield GoodsIssueMixingDetailState.failure(
+              errorMessage: 'Fetch fail ${response.errorMessage}',
+              data: currentState.data,
+            );
+          } else {
+            yield GoodsIssueMixingDetailState.success(
+              succesMessage: response.errorMessage,
+              data: response.data,
+            );
+          }
+        }
+      } catch (e) {
+        yield GoodsIssueMixingDetailState.failure(
+          errorMessage: "fail ${event.toString()}",
+          data: currentState.data,
+        );
       }
     } else {}
   }

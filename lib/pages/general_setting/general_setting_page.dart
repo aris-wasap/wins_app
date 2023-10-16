@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_helpers/bloc_provider.dart';
 import 'package:wins_app/blocs/authentication/authentication_bloc.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
@@ -14,8 +17,35 @@ class GeneralSetting extends StatefulWidget {
   _GeneralSettingState createState() => _GeneralSettingState();
 }
 
+Random random = Random();
+
 class _GeneralSettingState extends State<GeneralSetting> {
   bool isSwitched = false;
+  int lengthInitial = 0;
+
+  String getInitials(userName) {
+    List<String> names = userName.split(" ");
+    String initials = "";
+    int numWords = 2;
+
+    if (numWords == names.length) {
+      numWords = names.length;
+    } else {
+      numWords = names.length;
+    }
+    for (var i = 0; i < numWords; i++) {
+      initials += '${names[i][0]}';
+    }
+    lengthInitial = names.length;
+    return initials;
+  }
+
+  var tempcol = Color.fromRGBO(
+    random.nextInt(255),
+    random.nextInt(255),
+    random.nextInt(255),
+    1,
+  );
   @override
   Widget build(BuildContext context) {
     AuthenticationBloc authenticationBloc =
@@ -46,22 +76,39 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 Card(
                   margin: const EdgeInsets.only(top: 20.0),
                   child: SizedBox(
-                      height: 150.0,
+                      height: 200,
                       width: double.infinity,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 75.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        padding: const EdgeInsets.only(
+                            top: 55.0, left: 20.0, right: 75),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            SizedBox(height: 5),
-                            Text(
-                              "${globalBloc.userName}",
-                              style: Theme.of(context).textTheme.subhead,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 5),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "${globalBloc.roleName}",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  "${globalBloc.branchName}",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  'v.23.09.05',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  "${globalBloc.getDatabaseName()}",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "${globalBloc.roleName}",
-                              style: TextStyle(color: Colors.grey),
-                            )
                           ],
                         ),
                       )),
@@ -104,96 +151,45 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   ),
                 ),
                 Positioned(
-                  top: .0,
-                  left: .0,
+                  top: 60.0,
+                  left: 25.0,
                   right: .0,
-                  child: Center(
-                    child: CircleAvatar(
-                        backgroundColor: Colors.black.withOpacity(.4),
-                        radius: 40.0,
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/profil.png'),
-                          radius: 38,
-                          backgroundColor: Colors.white,
-                        )),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor:
+                              bgWhite, //Colors.orange.withOpacity(.4),
+                          radius: 40.0,
+                          child: CircleAvatar(
+                            // backgroundImage:
+                            //     AssetImage('assets/images/profil.png'),
+                            radius: 38,
+                            backgroundColor: tempcol,
+                            child: Text(
+                              getInitials("${globalBloc.userName}"),
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: bgWhite,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "${globalBloc.userName}",
+                          style: Theme.of(context).textTheme.subhead,
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
               ],
             ),
-            // Center(
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: <Widget>[
-            //       Card(
-            //         child: Column(
-            //           children: <Widget>[
-            //             // Container(
-            //             //   margin: EdgeInsets.only(top: 20, bottom: 10),
-            //             //   width: 100,
-            //             //   height: 100,
-            //             //   decoration: ShapeDecoration(
-            //             //       shape: CircleBorder(),
-            //             //       color: Colors.black.withOpacity(.2)),
-            //             //   child: Padding(
-            //             //     padding: EdgeInsets.all(8),
-            //             //     child: DecoratedBox(
-            //             //       decoration: ShapeDecoration(
-            //             //           shape: CircleBorder(),
-            //             //           image: DecorationImage(
-            //             //               fit: BoxFit.cover,
-            //             //               image: AssetImage(
-            //             //                 'assets/images/profil.png',
-            //             //               ))),
-            //             //     ),
-            //             //   ),
-            //             // ),
-            //             // Text("${globalBloc.userName}", style: TextStyle(fontWeight: FontWeight.w500),),
-            //             // SizedBox(height: 20,),
-            //             ListTile(
-            //               leading: Icon(
-            //                 Icons.person,
-            //                 color: Colors.blue,
-            //               ),
-            //               title: Text('${globalBloc.userName}'),
-            //               subtitle: Text('${globalBloc.roleName}'),
-            //             ),
-            //             Divider(
-            //               height: 2.0,
-            //             ),
-            //             ListTile(
-            //               leading: Icon(
-            //                 Icons.exit_to_app,
-            //                 color: Colors.orange[500],
-            //               ),
-            //               title: Text('Log-Out'),
-            //               onTap: () {
-            //                 authenticationBloc
-            //                     .emitEvent(AuthenticationEventLogout());
-            //               },
-            //             ),
-            //             // Divider(),
-            //             // ListTile(
-            //             //   leading: Switch(
-            //             //   value: isSwitched,
-            //             //   onChanged: (value) {
-            //             //     setState(() {
-            //             //       isSwitched = value;
-
-            //             //     });
-            //             //   },
-            //             //   activeTrackColor: Colors.lightGreenAccent,
-            //             //   activeColor: Colors.green,
-            //             // ),
-            //             // title: isSwitched ? Text("Laser") : Text("Camera"),
-            //             // )
-            //           ],
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
           )
         ],
       ),

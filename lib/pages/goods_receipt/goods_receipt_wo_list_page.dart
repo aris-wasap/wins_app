@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_bloc.dart';
 import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_event.dart';
 import 'package:wins_app/blocs/goods_receipt/list_wo/goods_receipt_wo_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_page.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_list_page.dart';
 import 'package:wins_app/widgets/set_colors.dart';
 
@@ -74,6 +76,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -110,10 +113,19 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
         ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-            child: Container(
-              color: bgBlue,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -130,7 +142,7 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return GoodsReceiptListPage(0);
+                      return GoodsReceiptDetailPage(0);
                     }));
                   },
                 )
@@ -196,14 +208,18 @@ class _GoodsReceiptWOListPageState extends State<GoodsReceiptWOListPage> {
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(
-                    "Production No. ${data[index].seriesName} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                    "Production No. ${data[index].seriesName} - ${data[index].transNo}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
                     Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
+                        "Trans Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
+                    Text(
+                        "Planned Qty : ${data[index].plannedQty} ${data[index].uom}"),
                     Text("Production Type : ${data[index].productionType}"),
                     Text("Status : ${data[index].status}"),
                   ],

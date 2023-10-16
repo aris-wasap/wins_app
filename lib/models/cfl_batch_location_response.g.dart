@@ -28,18 +28,22 @@ Map<String, dynamic> _$CflBatchLocationResponseToJson(
 
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
+    batchNumber: json['BatchNumber'] as String,
     absEntry: json['AbsEntry'] as int,
     binCode: json['BinCode'] as String,
     whsCode: json['WhsCode'] as String,
     availableQty: (json['AvailableQty'] as num)?.toDouble(),
     sysBin: json['SysBin'] as String,
+    uom: json['Uom'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
+      'BatchNumber': instance.batchNumber,
       'AbsEntry': instance.absEntry,
       'BinCode': instance.binCode,
       'WhsCode': instance.whsCode,
       'AvailableQty': instance.availableQty,
       'SysBin': instance.sysBin,
+      'Uom': instance.uom,
     };

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_payable_return_request_page.dart';
 import 'package:wins_app/pages/cfl/cfl_purchase_order_page.dart';
 import 'package:wins_app/pages/payable_credit/payable_credit_detail_item_detail_page.dart';
@@ -20,6 +21,7 @@ import 'package:wins_app/models/cfl_payable_return_request_response.dart'
     as cflPayableReturnRequest;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class PayableCreditDetailPage extends StatefulWidget {
   PayableCreditDetailPage(this._id);
@@ -50,6 +52,8 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -96,6 +100,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     _seriesNameController?.dispose();
     _branchIdController?.dispose();
     _branchNameController?.dispose();
+    _statusController?.dispose();
 
     bloc?.dispose();
 
@@ -249,6 +254,66 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     );
   }
 
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future _deleteData() async {
+    if ((_sapReturnNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        PayableCreditDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => PayableCreditDetailPage(0));
@@ -340,7 +405,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -364,7 +429,9 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 &&
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -402,7 +469,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Payable Credit Memo"),
         backgroundColor: bgBlue,
@@ -422,6 +489,21 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -510,6 +592,11 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
+
         bloc.emitEvent(PayableCreditDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -543,57 +630,61 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
               key: _scaffoldKey,
               appBar: _appBar(),
               body: Container(
-                color: Colors.blue[100],
                 // constraints: BoxConstraints.expand(),
                 height: MediaQuery.of(context).size.height,
-                // decoration: BoxDecoration(
-                //   gradient: bgGradientPageWhite,
-                // ),
+                decoration: BoxDecoration(
+                  gradient: bgGradientPageWhite,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 3.0, left: 3.0),
-                  child: Card(
-                    child: Stack(children: <Widget>[
-                      SingleChildScrollView(
-                        padding: EdgeInsets.all(0.0),
-                        child: _buildForm(),
-                      ),
-                      _showCircularProgress(),
-                    ]),
-                  ),
+                  child: Stack(children: <Widget>[
+                    SingleChildScrollView(
+                      padding: EdgeInsets.all(0.0),
+                      child: _buildForm(),
+                    ),
+                    _showCircularProgress(),
+                  ]),
                 ),
               ),
               floatingActionButton: _getState().data.sapReturnId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: btnBgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                        FloatingActionButton(
+                          heroTag: "btnDelete",
+                          backgroundColor: Colors.red,
+                          tooltip: "Delete",
+                          child: Icon(Icons.delete_outline),
+                          onPressed: () {
+                            showAlertDialogDelete(context);
+                          },
+                        )
+                      ],
                     )
                   : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              // floatingActionButton: _getState().data.sapReturnId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
@@ -669,43 +760,55 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // TextFormField(
-                //   controller: _seriesNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //     hintText: "Series No.",
-                //     labelText: "Series No.",
-                //     contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                //     border: new OutlineInputBorder(
-                //       borderRadius: new BorderRadius.circular(10.0)
-                //     )
-                //   )
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 5)
-                // ),
-                TextFormField(
-                    controller: _sapReturnNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Return No.",
-                        labelText: "Return No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
+                (data.sapReturnId > 0)
+                    ? TextFormField(
+                        controller: _sapReturnNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Return No.",
+                            labelText: "Return No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
@@ -913,6 +1016,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -928,6 +1032,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
@@ -959,7 +1064,7 @@ class _PayableCreditDetailPageState extends State<PayableCreditDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0) {
+        if (_getState().data.sapReturnId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

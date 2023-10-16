@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/goods_issue/list/goods_issue_list_bloc.dart';
@@ -82,6 +83,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -116,10 +118,19 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
         ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-            child: Container(
-              color: bgBlue,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -191,6 +202,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
       itemCount: data.length + 1,
       itemBuilder: (contex, index) {
         if (index < data.length) {
+          int rowIndex = data.length - index;
           return (Container(
             decoration: BoxDecoration(
               gradient: index % 2 == 0 ? bgGradientPage : bgGradientPageBlue,
@@ -201,17 +213,23 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "No. ${data[index].seriesNameWo} - ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
+                title: data[index].recordNo > 0
+                    ? Text("No. ${data[index].recordNo}")
+                    : Text(
+                        ""), //"No. ${data[index].transNo} (${data[index].id.toString()}) ")
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text("Scan No. : ${data[index].transNo}"),
                     Text(
-                        "Production No. : ${data[index].seriesNameWo} - ${data[index].woNo}"),
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
+                        "Issue Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                    Text("Production No. : ${data[index].woNo}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text("User : ${data[index].createdUser}"),
+                    Text("Status : ${data[index].status}"),
                   ],
                 ),
                 // leading: ClipOval(
@@ -260,6 +278,7 @@ class _GoodsIssueListPageState extends State<GoodsIssueListPage> {
             child: Opacity(
               child: CircularProgressIndicator(
                 strokeWidth: 2.0,
+                // backgroundColor: bgOrange,
               ),
               opacity: isBusy ? 1 : 0,
             ),

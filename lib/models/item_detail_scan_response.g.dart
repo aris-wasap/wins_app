@@ -62,6 +62,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
+    itemCode: json['ItemCode'] as String,
+    itemName: json['ItemName'] as String,
     inDate: json['InDate'] as String,
     mnfDate: json['MnfDate'] as String,
     expDate: json['ExpDate'] as String,
@@ -78,6 +80,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'ItemCode': instance.itemCode,
+      'ItemName': instance.itemName,
       'InDate': instance.inDate,
       'MnfDate': instance.mnfDate,
       'ExpDate': instance.expDate,

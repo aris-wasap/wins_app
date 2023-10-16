@@ -58,7 +58,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  );
+  )..comments = json['Comments'] as String;
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
@@ -87,12 +87,14 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SapInventoryTransferNo': instance.sapInventoryTransferNo,
       'CreatedUser': instance.createdUser,
       'Status': instance.status,
+      'Comments': instance.comments,
       'Items': instance.items,
     };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
     id: json['Id'] as int,
+    detId: json['DetId'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
@@ -109,6 +111,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     width: (json['Width'] as num)?.toDouble(),
     weight: (json['Weight'] as num)?.toDouble(),
     micron: (json['Micron'] as num)?.toDouble(),
+    type: json['Type'] as String,
     manufacturingDate: json['ManufacturingDate'] == null
         ? null
         : DateTime.parse(json['ManufacturingDate'] as String),
@@ -130,6 +133,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'RequestId': instance.requestId,
       'RequestLineNo': instance.requestLineNo,
       'Id': instance.id,
+      'DetId': instance.detId,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
@@ -149,6 +153,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'Width': instance.width,
       'Weight': instance.weight,
       'Micron': instance.micron,
+      'Type': instance.type,
       'ManufacturingDate': instance.manufacturingDate?.toIso8601String(),
       'ExpirationDate': instance.expirationDate?.toIso8601String(),
       'ItemType': instance.itemType,

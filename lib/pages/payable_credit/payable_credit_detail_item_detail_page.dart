@@ -286,44 +286,12 @@ class _PayableCreditDetailItemDetailPageState
                     ),
                   ),
                 ),
-                // TextFormField(
-                //   controller: _batchNumberController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Batch Number",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _itemCodeController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Item Code",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
-                // TextFormField(
-                //   controller: _itemNameController,
-                //   enabled: false,
-                //   decoration: InputDecoration(
-                //       labelText: "Item Name",
-                //       contentPadding: new EdgeInsets.symmetric(
-                //           vertical: 15.0, horizontal: 10.0),
-                //       border: new OutlineInputBorder(
-                //           borderRadius: new BorderRadius.circular(10.0))),
-                // ),
                 Padding(padding: EdgeInsets.only(top: 10)),
                 TextField(
                   controller: _qtyReqController,
                   enabled: false,
                   decoration: InputDecoration(
-                      labelText: "Request Qty",
+                      labelText: "Open Qty",
                       contentPadding: new EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 10.0),
                       border: new OutlineInputBorder(

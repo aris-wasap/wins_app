@@ -31,6 +31,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     woNo: json['WoNo'] as String,
     id: json['Id'] as int,
     transNo: json['TransNo'] as String,
+    webId: json['WebId'] as int,
+    webNo: json['WebNo'] as String,
     baseId: json['BaseId'] as int,
     baseNo: json['BaseNo'] as String,
     transDate: json['TransDate'] == null
@@ -44,6 +46,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
     sapGoodsIssueNo: json['SapGoodsIssueNo'] as String,
     branchId: json['BranchId'] as int,
     branchName: json['BranchName'] as String,
+    status: json['Status'] as String,
     items: (json['Items'] as List)
         ?.map(
             (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
@@ -60,6 +63,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'WoId': instance.woId,
       'WoNo': instance.woNo,
       'WoDate': instance.woDate?.toIso8601String(),
+      'WebId': instance.webId,
+      'WebNo': instance.webNo,
       'BaseId': instance.baseId,
       'BaseNo': instance.baseNo,
       'ProductCode': instance.productCode,
@@ -74,6 +79,7 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'SapGoodsIssueNo': instance.sapGoodsIssueNo,
       'BranchId': instance.branchId,
       'BranchName': instance.branchName,
+      'Status': instance.status,
       'Items': instance.items,
     };
 
@@ -84,12 +90,15 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     webId: json['WebId'] as int,
     webDetId: json['WebDetId'] as int,
     id: json['Id'] as int,
+    detId: json['DetId'] as int,
+    detDetId: json['DetDetId'] as int,
     lineNo: json['LineNo'] as int,
     visLineNo: json['VisLineNo'] as int,
     itemCode: json['ItemCode'] as String,
     itemName: json['ItemName'] as String,
     woQty: (json['WoQty'] as num)?.toDouble(),
     qty: (json['Qty'] as num)?.toDouble(),
+    openQty: (json['OpenQty'] as num)?.toDouble(),
     uom: json['Uom'] as String,
     itemCostTc: (json['ItemCostTc'] as num)?.toDouble(),
     whsCode: json['WhsCode'] as String,
@@ -113,6 +122,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     group: json['Group'] as String,
     machine: json['Machine'] as String,
     shift: json['Shift'] as String,
+    productionType: json['ProductionType'] as String,
+    valuationMethod: json['ValuationMethod'] as String,
     batchs: (json['Batchs'] as List)
         ?.map((e) =>
             e == null ? null : ItemBatch.fromJson(e as Map<String, dynamic>))
@@ -126,12 +137,15 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'WebId': instance.webId,
       'WebDetId': instance.webDetId,
       'Id': instance.id,
+      'DetId': instance.detId,
+      'DetDetId': instance.detDetId,
       'LineNo': instance.lineNo,
       'VisLineNo': instance.visLineNo,
       'ItemCode': instance.itemCode,
       'ItemName': instance.itemName,
       'WoQty': instance.woQty,
       'Qty': instance.qty,
+      'OpenQty': instance.openQty,
       'Uom': instance.uom,
       'ItemCostTc': instance.itemCostTc,
       'WhsCode': instance.whsCode,
@@ -151,6 +165,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'Group': instance.group,
       'Machine': instance.machine,
       'Shift': instance.shift,
+      'ProductionType': instance.productionType,
+      'ValuationMethod': instance.valuationMethod,
       'Batchs': instance.batchs,
     };
 

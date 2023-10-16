@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_goods_return_request_page.dart';
 import 'package:wins_app/pages/purchase_returns/purchase_returns_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:wins_app/models/cfl_goods_return_request_response.dart'
     as cflGoodsReturnRequest;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class PurchaseReturnsDetailPage extends StatefulWidget {
   PurchaseReturnsDetailPage(this._id);
@@ -48,6 +50,8 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   final _seriesNameController = TextEditingController();
   final _branchIdController = TextEditingController();
   final _branchNameController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -247,6 +251,66 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     );
   }
 
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future _deleteData() async {
+    if ((_sapReturnNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        PurchaseReturnsDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => PurchaseReturnsDetailPage(0));
@@ -338,7 +402,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Return"),
         backgroundColor: bgBlue,
@@ -362,7 +426,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           )
         ],
       );
-    } else if (_getState().data.sapReturnId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapReturnId == 0 &&
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Return",
@@ -400,9 +466,9 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
-        title: Text("Goods Return "),
+        title: Text("Goods Return"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -420,6 +486,21 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -508,6 +589,10 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(PurchaseReturnsDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -554,38 +639,46 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapReturnId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
-                    )
-                  : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              floatingActionButton:
+                  _getState().data.sapReturnId == 0 && !_getState().isBusy
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FloatingActionButton.extended(
+                              icon: Icon(Icons.camera_alt),
+                              backgroundColor: btnBgOrange,
+                              label: Text("Scan"),
+                              onPressed: () {
+                                _scanQR();
+                              },
+                            ),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            FloatingActionButton(
+                              heroTag: "btnDelete",
+                              backgroundColor: Colors.red,
+                              tooltip: "Delete",
+                              child: Icon(Icons.delete_outline),
+                              onPressed: () {
+                                showAlertDialogDelete(context);
+                              },
+                            )
+                          ],
+                        )
+                      : null,
+              // floatingActionButton: _getState().data.sapReturnId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
@@ -661,28 +754,55 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                    controller: _sapReturnNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Goods Return No.",
-                        labelText: "Goods Return No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
+                (data.sapReturnId > 0)
+                    ? TextFormField(
+                        controller: _sapReturnNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Goods Return No.",
+                            labelText: "Goods Return No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                TextFormField(
-                    controller: _transNoController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        hintText: "Scan No.",
-                        labelText: "Scan No.",
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 10.0),
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0)))),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      ),
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
@@ -880,6 +1000,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -895,6 +1016,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
@@ -926,7 +1048,7 @@ class _PurchaseReturnsDetailPageState extends State<PurchaseReturnsDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapReturnId == 0) {
+        if (_getState().data.sapReturnId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

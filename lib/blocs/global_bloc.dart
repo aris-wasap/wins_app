@@ -4,20 +4,30 @@ import 'package:wins_app/resources/repository.dart';
 
 class GlobalBloc {
   static const isSkipLogin = "N"; //hanya untuk testing ya
-  static const prefApiUrl = "admartApiUrl";
+  static const prefApiUrl = "winsApiUrl";
+  String isSwitched = "winsSwitchMode";
+  String prefDatabase = "winsDatabase";
 
   String _url;
+  String _switchMode = "Live";
+  String _database = "NCF";
 
   String getPrefApiUrl() => prefApiUrl;
+  String getSwitchMode() => isSwitched;
+  String getDatabase() => prefDatabase;
 
-  //String getUrl() => "http://192.168.43.73/wins_app/"; //wifi huawai
-  //String getUrl() => "http://192.168.113.125/admart_APP/"; //wifi bb
-  // String getUrl() => "http://192.168.1.106/admart_APP/"; //wifi kosan
-  //String getUrl() => "http://192.168.17.37/admart_APP/"; //kantor
-  //String getUrl() => "http://192.168.1.12/admart_APP/"; //kantor
+  //String getUrl() => "http://116.254.101.55:8080/WINS_APP/"; //DEV
+  //String getUrl() => "http://116.254.101.55:8080/NCF/"; //LIVE
+  //String getUrl() => "http://116.254.101.55:8080/NCF_UAT/"; //UAT
+  //String getUrl() => "http://116.254.101.55:8080/ADMART/"; //LIVE
+  //String getUrl() => "http://116.254.101.55:8080/ADMART_UAT/"; //UAT
 
   String getUrl() => _url;
+  String getSwitch() => _switchMode;
+  String getDatabaseName() => _database;
   String setUrl(String url) => _url = url;
+  String setSwitchMode(String switchMode) => _switchMode = switchMode;
+  String setDatabaseName(String databaseName) => _database = databaseName;
 
   int userId;
   String userName;

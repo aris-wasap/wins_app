@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
+import 'package:wins_app/pages/cfl/cfl_receipt_production_label_page.dart';
 import 'package:wins_app/pages/cfl/cfl_receipt_production_page.dart';
 import 'package:wins_app/pages/goods_receipt/goods_receipt_detail_item_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:wins_app/models/cfl_receipt_production_response.dart'
-    as cflReceiptProduction;
+import 'package:wins_app/models/cfl_receipt_production_label_response.dart'
+    as cflReceiptProductionLabel;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
@@ -39,6 +41,8 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   final _idTxController = TextEditingController();
   final _woIdController = TextEditingController();
   final _woNoController = TextEditingController();
+  final _webIdController = TextEditingController();
+  final _webNoController = TextEditingController();
   final _sapGoodsReceiptNoController = TextEditingController();
   final _sapGoodsIssueIdController = TextEditingController();
   final _sapGoodsIssueNoController = TextEditingController();
@@ -50,6 +54,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   final _transDateController = TextEditingController();
   final _seriesNamePoController = TextEditingController();
   final _seriesNameController = TextEditingController();
+  final _statusController = TextEditingController();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -86,6 +91,8 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     _idTxController?.dispose();
     _woIdController?.dispose();
     _woNoController?.dispose();
+    _webIdController?.dispose();
+    _webNoController?.dispose();
     _productCodeController?.dispose();
     _productNameController?.dispose();
     _sapGoodsReceiptNoController?.dispose();
@@ -97,7 +104,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     _baseNoController?.dispose();
     _seriesNamePoController?.dispose();
     _seriesNameController?.dispose();
-
+    _statusController?.dispose();
     bloc?.dispose();
 
     super.dispose();
@@ -137,10 +144,82 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     //       context: context, message: "Item detail harus di isi");
     //   return;
     // }
+    data.webId = int.parse(_webIdController.text);
+    data.webNo = _webNoController.text;
 
     bloc.emitEvent(GoodsReceiptDetailEventAdd(
       data: data,
     ));
+  }
+
+  Future _resetData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsReceiptNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message:
+              "Document tidak dapat diproses, sudah terbuat Goods Receipt");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsReceiptDetailEventResetData(id: data.id, woId: data.woId),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Refresh : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _deleteData() async {
+    if (["", null].contains(_woNoController.text)) {
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
+      return;
+    }
+
+    if ((_sapGoodsReceiptNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context,
+          message:
+              "Document tidak dapat diproses, sudah terbuat Goods Receipt");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        GoodsReceiptDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
   }
 
   showAlertDialogCreate(BuildContext context) {
@@ -176,17 +255,149 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     );
   }
 
-  void _update() {
+  showAlertDialogPostSap(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _post();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Apakah anda yakin Submit document ? Jika menyimpan dokumen ini akan otomatis membuat Goods Receipt"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogReset(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _resetData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text(
+          "Data Item akan di reset, Batch Number yang sudah di scan akan dihapus"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Cancel dokumen ini ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogCreateNew(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _newTrans();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Apakah anda ingin membuat Dokumen Baru ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void _post() {
     var state = (bloc.lastState ?? bloc.initialState);
-    var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
-    data.id = int.parse(_idTxController.text);
+    var data = state.data; // (bloc.lastState ?? bloc.initialState).data;
+    data.sapGoodsIssueNo = _sapGoodsIssueNoController.text;
     data.woNo = _woNoController.text;
     data.woId = int.parse(_woIdController.text);
-    data.productCode = _productCodeController.text;
-    data.productName = _productNameController.text;
     data.transDate = transDate;
     data.seriesName = _seriesNameController.text;
-    data.seriesNameWo = _seriesNamePoController.text;
+    // data.seriesNameWo = _seriesNameWoController.text;
     data.items = state.data.items;
 
     if ([null].contains(data.transDate)) {
@@ -197,11 +408,64 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       ValidateDialogWidget(
           context: context, message: "Production Order No harus di isi");
       return;
+    } else if ([null].contains(data.items)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
+    } else if ([0].contains(data.items.length)) {
+      ValidateDialogWidget(
+          context: context, message: "Item detail harus di isi");
+      return;
     }
 
-    bloc.emitEvent(GoodsReceiptDetailEventUpdate(
+    for (var item in _getState().data.items) {
+      if (("${item.qty}" == null) || (double.parse("${item.qty}") <= 0)) {
+        ValidateDialogWidget(
+            context: context,
+            message: 'Line ' +
+                "${item.itemCode}" +
+                ' : Quantity tidak boleh kosong/0');
+        return;
+      }
+    }
+
+    bloc.emitEvent(GoodsReceiptDetailEventPost(
       data: data,
     ));
+  }
+
+  void _updateTransDate() {
+    var state = (bloc.lastState ?? bloc.initialState);
+    var data = Data(); //state.data;
+    if (!state.isBusy) {
+      data.id = int.parse(_idTxController.text);
+      data.woNo = _woNoController.text;
+      data.woId = int.parse(_woIdController.text);
+      data.productCode = _productCodeController.text;
+      data.productName = _productNameController.text;
+      data.transDate = transDate;
+      data.seriesName = _seriesNameController.text;
+      data.seriesNameWo = _seriesNamePoController.text;
+      data.items = state.data.items;
+
+      if ([null].contains(data.transDate)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Date harus di isi");
+        return;
+      } else if (["", null].contains(data.woNo)) {
+        ValidateDialogWidget(
+            context: context, message: "Production Order No harus di isi");
+        return;
+      }
+
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+      bloc.emitEvent(
+        GoodsReceiptDetailEventUpdateTransDate(
+          id: int.parse(_idTxController.text),
+          transDate: setTransDate,
+        ),
+      );
+    }
   }
 
   void _submit() {
@@ -363,12 +627,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
         lastDate: DateTime(2101));
     if (picked != null && picked != transDate) {
       transDate = picked;
+      _updateTransDate();
       _transDateController.text = DateFormat("dd-MM-yyyy").format(transDate);
     }
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Receipt"),
         backgroundColor: bgBlue,
@@ -378,30 +643,12 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
       );
     } else if (_getState().data.sapGoodsReceiptId == 0 &&
-        _getState().data.id > 0) {
+        _getState().data.id > 0 &&
+        !_getState().isBusy) {
       return AppBar(
-        title: Text(
-          "Create Receipt",
-          style: GoogleFonts.openSans(
-            textStyle: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
-          ),
-        ),
+        title: Text("Create Receipt"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -410,30 +657,25 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
             ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(
-              Icons.check_circle_outline,
-              color: Colors.greenAccent,
-            ),
-            onPressed: () {
-              showAlertDialogSubmit(context);
-            },
-            textColor: Colors.white,
-            label: Text(
-              "Submit",
-              style: GoogleFonts.openSans(
-                textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
-          )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _getState().data.status != 'Cancel'
+                ? RaisedButton(
+                    child: const Text('Post'),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.elliptical(15, 15)),
+                    ),
+                    onPressed: () {
+                      showAlertDialogPostSap(context);
+                    },
+                  )
+                : null,
+          ),
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
-        title: Text("Receipt For Production"),
+        title: Text("Receipt From Production"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
             child: Container(
@@ -452,6 +694,22 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               : Container(),
         ],
       );
+    } else {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
+      );
     }
   }
 
@@ -463,7 +721,8 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
 
   Future _refreshDetailItem() async {
     if (["", null].contains(_woNoController.text)) {
-      ValidateDialogWidget(context: context, message: "WO No harus di isi");
+      ValidateDialogWidget(
+          context: context, message: "Production Order No harus di isi");
       return;
     }
     //var data = _getState().data;
@@ -475,23 +734,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     //     }
     //   }
     try {
+      String setTransDate = DateFormat("yyyy-MM-dd").format(transDate);
+
       bloc.emitEvent(GoodsReceiptDetailEventRefresh(
-          woId: int.parse(_getState().data.woId.toString())));
-    } on PlatformException catch (ex) {
-      if (ex.code != "") {
-        ValidateDialogWidget(
-            context: context, message: "Refresh : Permition was denied");
-        return;
-      } else {
-        ValidateDialogWidget(
-            context: context, message: "Refresh : Unknown error $ex");
-        return;
-      }
-    } on FormatException {
-      // ValidateDialogWidget(
-      //     context: context,
-      //     message: "Scan : You press back button before scan");
-      return;
+        webId: int.parse(_webIdController.text),
+        sapGoodsIssueId: int.parse(_sapGoodsIssueIdController.text),
+        transDate: setTransDate,
+      ));
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Refresh : Unknown error $ex");
@@ -550,13 +799,14 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   void _showScanNewItemDetail() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
+      var newData = _getState().data;
       if (newItem != null) {
         bloc.emitEvent(GoodsReceiptDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                GoodsReceiptDetailItemDetailPage(newItem),
+                GoodsReceiptDetailItemDetailPage(newItem, 0, newData),
           ),
         );
 
@@ -565,12 +815,6 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
             bloc.emitEvent(GoodsReceiptDetailEventItemAdd(
               item: item,
             ));
-
-            if (_getState().data.id > 0) {
-              _update();
-            } else {
-              _create();
-            }
           }
         });
       }
@@ -588,12 +832,13 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   }
 
   void _showItemDetail(int itemIndex) {
+    final newData = _getState().data;
     final items = _getState().data.items;
     Future<Item> item = Navigator.push(
       context,
       MaterialPageRoute<Item>(
-        builder: (BuildContext context) =>
-            GoodsReceiptDetailItemDetailPage(items[itemIndex]),
+        builder: (BuildContext context) => GoodsReceiptDetailItemDetailPage(
+            items[itemIndex], itemIndex, newData),
       ),
     );
 
@@ -603,7 +848,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
           item: item,
           itemIndex: itemIndex,
         ));
-        _update();
+        // _update();
       }
     });
   }
@@ -611,7 +856,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    var data = _getState().data;
+    var getData = _getState().data;
 
     return BlocEventStateBuilder<GoodsReceiptDetailState>(
         bloc: bloc,
@@ -631,42 +876,54 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                     padding: EdgeInsets.all(0.0),
                     child: _buildForm(),
                   ),
-                  _showCircularProgress(),
+                  // _showCircularProgress(),
                 ]),
               ),
-              // floatingActionButton: _getState().data.sapGoodsReceiptId != 0
-              //     ? FloatingActionButton.extended(
-              //         icon: Icon(Icons.camera_alt),
-              //         backgroundColor: btnBgOrange,
-              //         label: Text("Scan"),
-              //         onPressed: () {
-              //           _scanQR();
-              //           //_refreshDetailItem();
-              //         },
-              //       )
-              //     : null,
-              // floatingActionButtonLocation:
-              //     FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       )
-              //     : null,
+              floatingActionButton: !_getState().isBusy
+                  ? Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: "btnReset",
+                            backgroundColor: Colors.green,
+                            tooltip: "Reset",
+                            child: Icon(Icons.autorenew),
+                            onPressed: () {
+                              showAlertDialogReset(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnCreateNew",
+                            backgroundColor: Colors.blue,
+                            tooltip: "New Document",
+                            child: Icon(Icons.create),
+                            onPressed: () {
+                              showAlertDialogCreateNew(context);
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          FloatingActionButton(
+                            heroTag: "btnDelete",
+                            backgroundColor: Colors.red,
+                            tooltip: "Delete",
+                            child: Icon(Icons.delete_outline),
+                            onPressed: () {
+                              showAlertDialogDelete(context);
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    ),
             ),
           );
         });
@@ -694,7 +951,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
     //jika nama signature berbah di kasih tanda
 
     if (data.id != 0) {
+      _statusController.text = data.status;
       _idTxController.text = data.id.toString();
+      _transNoController.text =
+          data.status == "Cancel" ? data.transNo + " [Canceled]" : data.transNo;
       _woIdController.text = data.woId.toString();
       _woNoController.text = data.woNo;
       _sapGoodsReceiptNoController.text = data.sapGoodsReceiptNo;
@@ -702,6 +962,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       _sapGoodsIssueNoController.text = data.sapGoodsIssueNo;
       _baseIdController.text = data.baseId.toString();
       _baseNoController.text = data.baseNo;
+      _webNoController.text = data.webNo;
       _productCodeController.text = data.productCode;
       _productNameController.text = data.productName;
       transDate = data.transDate;
@@ -724,6 +985,37 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
+                (data.id > 0)
+                    ? TextFormField(
+                        controller: _transNoController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "Scan No.",
+                            labelText: "Scan No.",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(10.0))))
+                    : Container(width: 0, height: 0),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 (data.sapGoodsReceiptId > 0)
                     ? TextFormField(
                         controller: _sapGoodsReceiptNoController,
@@ -738,19 +1030,41 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                 borderRadius: new BorderRadius.circular(10.0))),
                       )
                     : Container(width: 0, height: 0),
-                Padding(padding: EdgeInsets.only(top: 5)),
-                (data.id > 0)
-                    ? TextFormField(
-                        controller: _transNoController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                            hintText: "Scan No.",
-                            labelText: "Scan No.",
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(10.0))))
-                    : Container(width: 0, height: 0),
+                FlatButton(
+                  padding: EdgeInsets.only(top: 5),
+                  onPressed: () {
+                    if (data.sapGoodsReceiptId == 0 && !_getState().isBusy) {
+                      _selectTransDate(context);
+                    }
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                            controller: _transDateController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                                hintText: "Receipt Date",
+                                labelText: "Receipt Date",
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: (data.id == 0)
+                                            ? Colors.blue
+                                            : Colors.grey[400]),
+                                    borderRadius: new BorderRadius.circular(
+                                      10.0,
+                                    )))),
+                      ),
+                      (data.sapGoodsReceiptId == 0 && !_getState().isBusy)
+                          ? Icon(
+                              Icons.date_range,
+                            )
+                          : Container(width: 0, height: 0),
+                    ],
+                  ),
+                ),
                 Padding(padding: EdgeInsets.only(top: 5)),
                 (data.sapGoodsIssueId > 0)
                     ? TextFormField(
@@ -782,54 +1096,26 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                 FlatButton(
                   padding: EdgeInsets.only(top: 5),
                   onPressed: () {
-                    if (data.sapGoodsReceiptId == 0) {
-                      _selectTransDate(context);
-                    }
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                            controller: _transDateController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                                hintText: "Receipt Date",
-                                labelText: "Receipt Date",
-                                contentPadding: new EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: (data.id == 0)
-                                            ? Colors.blue
-                                            : Colors.grey[400]),
-                                    borderRadius: new BorderRadius.circular(
-                                      10.0,
-                                    )))),
-                      ),
-                      (data.sapGoodsReceiptId == 0)
-                          ? Icon(
-                              Icons.date_range,
-                            )
-                          : Container(width: 0, height: 0),
-                    ],
-                  ),
-                ),
-                FlatButton(
-                  padding: EdgeInsets.only(top: 5),
-                  onPressed: () {
                     if (data.id == 0) {
-                      Future<cflReceiptProduction.Data> wo = Navigator.push(
-                          context,
-                          MaterialPageRoute<cflReceiptProduction.Data>(
-                              builder: (BuildContext context) =>
-                                  CflReceiptProductionPage()));
+                      Future<cflReceiptProductionLabel.Data> wo =
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute<cflReceiptProductionLabel.Data>(
+                                  builder: (BuildContext context) =>
+                                      CflReceiptProductionLabelPage()));
 
-                      wo.then((cflReceiptProduction.Data wo) {
+                      wo.then((cflReceiptProductionLabel.Data wo) {
                         if (wo != null) {
-                          _woIdController.text = wo.id.toString();
-                          _woNoController.text = wo.transNo;
+                          _webIdController.text = wo.id.toString(); //webId
+                          _webNoController.text = wo.transNo; // WebNo
+                          _woIdController.text = wo.woId.toString();
+                          _woNoController.text = wo.woNo;
+                          _sapGoodsIssueIdController.text =
+                              wo.docEntry.toString();
+                          _sapGoodsIssueNoController.text = wo.docNum;
                           _productCodeController.text = wo.productCode;
                           _productNameController.text = wo.productName;
+                          _refreshDetailItem();
                         }
                       });
                     }
@@ -860,6 +1146,8 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                    // Text(_sapGoodsIssueNoController.text),
+                                    Text(_webNoController.text),
                                     Text(_productCodeController.text),
                                     Text(_productNameController.text),
                                   ],
@@ -923,7 +1211,7 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
         ]);
   }
 
-  Widget _rowDetail(List<Item> data, int index) {
+  Widget _rowDetail(Data data, List<Item> items, int index) {
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -934,28 +1222,79 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: ListTile(
-          title: Text("${data[index].itemName}"),
+          title: Text("${items[index].itemName}"),
           subtitle: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Item Code : ${data[index].itemCode}",
+                "Item Code : ${items[index].itemCode}",
               ),
               Text(
-                  "Quantity : ${NumberFormat("#,###.##").format(data[index].qty)}" +
-                      " ${data[index].uom}"),
+                  "Open Qty : ${NumberFormat("#,###.##").format(items[index].openQty)}" +
+                      " ${items[index].uom}"),
+              Text(
+                  "Planned Qty : ${NumberFormat("#,###.##").format(items[index].woQty)}" +
+                      " ${items[index].uom}"),
+              Text(
+                  "Quantity : ${NumberFormat("#,###.##").format(items[index].qty)}" +
+                      " ${items[index].uom}"),
               // Text("Batch No. : ${data[index].batchNo}"),
               // Text(data[index].whsCode ?? ''),
             ],
           ),
-          trailing: IconButton(
-            icon: Icon(Icons.keyboard_arrow_right),
-            iconSize: 30.0,
-            onPressed: () {
-              _showItemDetail(index);
-            },
-          ),
+          trailing: items[index].valuationMethod == 'FIFO' &&
+                  data.sapGoodsIssueId == 0 &&
+                  data.sapGoodsReceiptId == 0 &&
+                  data.status != "Cancel"
+              // ? IconButton(
+              //     icon: Icon(Icons.keyboard_arrow_right),
+              //     iconSize: 30.0,
+              //     onPressed: () {
+              //       _showItemDetail(index);
+              //     },
+
+              //   )
+              ? RaisedButton(
+                  onPressed: () {
+                    if (!_getState().isBusy) {
+                      _showItemDetail(index);
+                    }
+                  },
+                  color: bgBlue,
+                  child: Text(
+                    "ADD",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              : data.sapGoodsReceiptId == 0 && data.status != "Cancel"
+                  ? RaisedButton(
+                      onPressed: () {
+                        if (!_getState().isBusy) {
+                          _showItemDetail(index);
+                        }
+                      },
+                      color: bgOrange,
+                      child: Text(
+                        "SCAN",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : IconButton(
+                      icon: Icon(Icons.keyboard_arrow_right),
+                      iconSize: 30.0,
+                      onPressed: () {
+                        if (!_getState().isBusy) {
+                          _showItemDetail(index);
+                        }
+                      },
+                    ),
         ),
       ),
     );
@@ -963,21 +1302,23 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
 
   Widget _buildList() {
     var state = bloc.lastState ?? bloc.initialState;
-    final data = state.data.items;
+    final data = state.data;
 
     return ListView.builder(
       controller: _scrollController,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: data.items.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapGoodsReceiptId == 0) {
+        if (_getState().data.sapGoodsReceiptId == 0 && !state.isBusy) {
           return Dismissible(
-            key: Key(data[index].hashCode.toString()),
+            key: UniqueKey(), //Key(data.items[index].hashCode.toString()),
             onDismissed: (direction) {
-              bloc.emitEvent(
-                  GoodsReceiptDetailEventItemRemove(itemIndex: index));
-              _update();
+              // bloc.emitEvent(
+              //     GoodsReceiptDetailEventItemRemove(itemIndex: index));
+
+              bloc.emitEvent(GoodsReceiptDetailEventRemoveItem(
+                  id: data.items[index].id, detId: data.items[index].detId));
             },
             background: Container(
                 color: Colors.red,
@@ -988,10 +1329,10 @@ class _GoodsReceiptDetailPageState extends State<GoodsReceiptDetailPage> {
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold)))),
-            child: _rowDetail(data, index),
+            child: _rowDetail(data, data.items, index),
           );
         } else {
-          return _rowDetail(data, index);
+          return _rowDetail(data, data.items, index);
         }
       },
     );

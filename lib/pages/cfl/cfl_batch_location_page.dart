@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/cfl_batch_location/cfl_batch_location_bloc.dart';
 import 'package:wins_app/blocs/cfl_batch_location/cfl_batch_location_event.dart';
@@ -85,18 +86,38 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          cursorColor: bgWhite,
+          autofocus: false,
           controller: _searchQueryController,
           decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
             hintText: "Search Batch Location",
             hintStyle: TextStyle(color: Colors.white),
           ),
         ),
-        backgroundColor: bgBlue,
+        backgroundColor: bgOrange,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgOrange,
+                    highlightColor: bgWhite,
+                    child: Container(
+                      color: bgWhite,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -117,10 +138,19 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
         title: Text("Choose Batch Location"),
         backgroundColor: bgBlue,
         bottom: PreferredSize(
-            child: Container(
-              color: bgOrange,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgOrange,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -189,7 +219,7 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text("Warehouse. ${data[index].whsCode}"),
+                title: Text("Batch Number : ${data[index].batchNumber}"),
                 leading: Icon(Icons.keyboard_arrow_left),
                 onTap: () {
                   Navigator.pop(context, data[index]);
@@ -197,8 +227,10 @@ class _CflBatchLocationPageState extends State<CflBatchLocationPage> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text("Warehouse : ${data[index].whsCode}"),
                     Text("Bin Location : ${data[index].binCode}"),
                     Text("Stock Qty : ${data[index].availableQty}"),
+                    Text("Uom : ${data[index].uom}"),
                   ],
                 ),
               ),

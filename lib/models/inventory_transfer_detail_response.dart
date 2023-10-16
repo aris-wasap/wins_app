@@ -117,6 +117,9 @@ class Data {
   @JsonKey(name: 'Status')
   String status;
 
+  @JsonKey(name: 'Comments')
+  String comments;
+
   @JsonKey(name: 'Items')
   List<Item> items;
 
@@ -156,8 +159,7 @@ class Data {
 
 @JsonSerializable()
 class Item {
-
-   @JsonKey(name: 'RequestId')
+  @JsonKey(name: 'RequestId')
   int requestId;
 
   @JsonKey(name: 'RequestLineNo')
@@ -165,6 +167,9 @@ class Item {
 
   @JsonKey(name: 'Id')
   int id;
+
+  @JsonKey(name: 'DetId')
+  int detId;
 
   @JsonKey(name: 'LineNo')
   int lineNo;
@@ -211,7 +216,7 @@ class Item {
   @JsonKey(name: 'Length')
   double length;
 
-   @JsonKey(name: 'Length2')
+  @JsonKey(name: 'Length2')
   double length2;
 
   @JsonKey(name: 'Width')
@@ -222,6 +227,9 @@ class Item {
 
   @JsonKey(name: 'Micron')
   double micron;
+
+  @JsonKey(name: 'Type')
+  String type;
 
   @JsonKey(name: 'ManufacturingDate')
   DateTime manufacturingDate;
@@ -240,6 +248,7 @@ class Item {
 
   Item({
     this.id: 0,
+    this.detId: 0,
     this.lineNo: 0,
     this.visLineNo: 0,
     this.itemCode,
@@ -256,6 +265,7 @@ class Item {
     this.width,
     this.weight,
     this.micron,
+    this.type,
     this.manufacturingDate,
     this.expirationDate,
     this.itemType,

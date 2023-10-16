@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/pages/cfl/cfl_sales_order_page.dart';
 import 'package:wins_app/pages/cfl/cfl_warehouse_page.dart';
 import 'package:wins_app/pages/delivery_order/delivery_order_detail_item_detail_page.dart';
@@ -21,6 +22,7 @@ import 'package:wins_app/models/cfl_sales_order_response.dart' as cflSalesOrder;
 import 'package:wins_app/models/cfl_warehouse_response.dart' as cflWarehouse;
 import 'package:wins_app/pages/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class DeliveryOrderDetailPage extends StatefulWidget {
   DeliveryOrderDetailPage(this._id);
@@ -51,6 +53,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _branchNameController = TextEditingController();
   final _whsCodeController = TextEditingController();
   final _whsNameController = TextEditingController();
+  final _statusController = TextEditingController();
+  final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
 
   @override
@@ -199,6 +203,33 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     ));
   }
 
+  Future _deleteData() async {
+    if ((_sapDeliveryNoController.text.isNotEmpty)) {
+      ValidateDialogWidget(
+          context: context, message: "Document tidak dapat diproses");
+      return;
+    }
+
+    if ((_statusController.text == 'Cancel')) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Document tidak dapat diproses, document telah dicancel");
+      return;
+    }
+
+    var data = _getState().data;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventCancel(id: data.id, data: data),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
   void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
@@ -305,6 +336,39 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     );
   }
 
+  showAlertDialogDelete(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _deleteData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Dokumen akan di cancel ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void _newTrans() {
     MaterialPageRoute newRoute = MaterialPageRoute(
         builder: (BuildContext context) => DeliveryOrderDetailPage(0));
@@ -315,6 +379,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String errorMessage = (bloc.lastState ?? bloc.initialState).errorMessage;
       if ((errorMessage != null) && (errorMessage != "")) {
+        // _player.play(
+        //   'sounds/error-sound-effect.mp3',
+        //   volume: 10.0,
+        // );
         return showDialog<void>(
           context: context,
           barrierDismissible: false, // user must tap button!
@@ -397,7 +465,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   PreferredSizeWidget _appBar() {
-    if (_getState().data.id == 0) {
+    if (_getState().data.id == 0 && !_getState().isBusy) {
       return AppBar(
         title: Text("Draft Delivery Order"),
         backgroundColor: bgBlue,
@@ -407,21 +475,12 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               height: 5.0,
             ),
             preferredSize: Size.fromHeight(5.0)),
-        actions: <Widget>[
-          // FlatButton.icon(
-          //   icon: Icon(
-          //     Icons.save,
-          //     color: Colors.yellowAccent,
-          //   ),
-          //   onPressed: () {
-          //     showAlertDialogCreate(context);
-          //   },
-          //   textColor: Colors.white,
-          //   label: Text("Save"),
-          // )
-        ],
+        actions: <Widget>[],
       );
-    } else if (_getState().data.sapDeliveryId == 0 && _getState().data.id > 0) {
+    } else if (_getState().data.sapDeliveryId == 0 &&
+        _getState().data.id > 0 &&
+        _getState().data.status != "Cancel" &&
+        !_getState().isBusy) {
       return AppBar(
         title: Text(
           "Create Delivery Order",
@@ -459,7 +518,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
           )
         ],
       );
-    } else {
+    } else if (!_getState().isBusy) {
       return AppBar(
         title: Text("Delivery Order"),
         backgroundColor: bgBlue,
@@ -479,6 +538,21 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                 )
               : Container(),
         ],
+      );
+    } else {
+      return AppBar(
+        title: Text("Please wait"),
+        backgroundColor: bgBlue,
+        bottom: PreferredSize(
+            child: Shimmer.fromColors(
+              baseColor: bgWhite,
+              highlightColor: bgOrange,
+              child: Container(
+                color: bgOrange,
+                height: 5.0,
+              ),
+            ),
+            preferredSize: Size.fromHeight(5.0)),
       );
     }
   }
@@ -567,6 +641,10 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var newItem = _getState().newItem;
       if (newItem != null) {
+        _player.play(
+          'sounds/store-scanner-beep-sound-effect.mp3',
+          volume: 10.0,
+        );
         bloc.emitEvent(DeliveryOrderDetailEventNormal());
         Future<Item> item = Navigator.push(
           context,
@@ -619,38 +697,47 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                   _showCircularProgress(),
                 ]),
               ),
-              floatingActionButton: _getState().data.sapDeliveryId == 0
-                  ? FloatingActionButton.extended(
-                      icon: Icon(Icons.camera_alt),
-                      backgroundColor: btnBgOrange,
-                      label: Text("Scan"),
-                      onPressed: () {
-                        _scanQR();
-                      },
+              floatingActionButton: _getState().data.sapDeliveryId == 0 &&
+                      _getState().data.status != "Cancel" &&
+                      !_getState().isBusy
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FloatingActionButton.extended(
+                          icon: Icon(Icons.camera_alt),
+                          backgroundColor: btnBgOrange,
+                          label: Text("Scan"),
+                          onPressed: () {
+                            _scanQR();
+                          },
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                        FloatingActionButton(
+                          heroTag: "btnDelete",
+                          backgroundColor: Colors.red,
+                          tooltip: "Delete",
+                          child: Icon(Icons.delete_outline),
+                          onPressed: () {
+                            showAlertDialogDelete(context);
+                          },
+                        )
+                      ],
                     )
                   : null,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              // bottomNavigationBar: data.id == 0
-              //     ? BottomAppBar(
-              //         color: Colors.blue,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: <Widget>[
-              //             FlatButton(
-              //               onPressed: () {
-              //                 // _showChooseItems();
-              //               },
-              //               textColor: Colors.white,
-              //               child: Row(
-              //                 children: <Widget>[Text("CHOOSE ITEM")],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
+              // floatingActionButton: _getState().data.sapDeliveryId == 0
+              //     ? FloatingActionButton.extended(
+              //         icon: Icon(Icons.camera_alt),
+              //         backgroundColor: btnBgOrange,
+              //         label: Text("Scan"),
+              //         onPressed: () {
+              //           _scanQR();
+              //         },
               //       )
               //     : null,
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerFloat,
             ),
           );
         });
@@ -695,7 +782,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     _showScanNewItemDetail();
     var state = bloc.lastState ?? bloc.initialState;
     var data = state.data;
-    _transNoController.text = data.transNo;
+    _transNoController.text = data.status == "Cancel"
+        ? data.transNo + " [Canceled]"
+        : data.transNo; //data.transNo;
 
     //jika nama signature berbah di kasih tanda
 
@@ -714,6 +803,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       _customerNameController.text = data.customerName;
       _branchIdController.text = data.branchId.toString();
       _branchNameController.text = data.branchName;
+      // _refNoController.text = data.refNo;
     }
 
     return Column(
@@ -726,6 +816,24 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "${globalBloc.userName}",
+                      style: subTitleTextStyle,
+                    ),
+                    Text(
+                      " | "
+                      "${globalBloc.getDatabaseName()}",
+                      style: subTitleTextStyle,
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: bgGrey,
+                  thickness: 0.0,
+                ),
                 (data.sapDeliveryId > 0)
                     ? TextFormField(
                         controller: _sapDeliveryNoController,
@@ -849,6 +957,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(_branchNameController.text),
+                                    Text(_refNoController.text),
                                   ],
                                 ),
                               )
@@ -1023,6 +1132,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   }
 
   Widget _rowDetail(List<Item> data, int index) {
+    int rowIndex = data.length - index;
+
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
@@ -1038,6 +1149,8 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text('No. ' + "$rowIndex"),
+              // Text("DetId : ${data[index].detId}"),
               Text("Item Code : ${data[index].itemCode}"),
               Text("Batch No. : ${data[index].batchNo}"),
               Text(
@@ -1069,7 +1182,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       physics: ClampingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (contex, index) {
-        if (_getState().data.sapDeliveryId == 0) {
+        if (_getState().data.sapDeliveryId == 0 && !_getState().isBusy) {
           return Dismissible(
             key: UniqueKey(), //Key(data[index].hashCode.toString()),
             onDismissed: (direction) {

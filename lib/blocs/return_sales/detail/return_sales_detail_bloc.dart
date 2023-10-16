@@ -200,13 +200,43 @@ class ReturnSalesDetailBloc
         );
       }
     } else if (event is ReturnSalesDetailEventCancel) {
-      yield ReturnSalesDetailState.busy(
-        data: currentState.data,
-      );
-
-      yield ReturnSalesDetailState.success(
-        data: currentState.data,
-      );
+      if (event.id == 0) {
+        yield ReturnSalesDetailState.success(
+          data: Data(items: List<returnSalesDetail.Item>()),
+        );
+      } else {
+        yield ReturnSalesDetailState.busy(
+          data: currentState.data,
+        );
+        try {
+          var _repository = Repository();
+          ReturnSalesDetailResponse response =
+              await _repository.returnSalesDetail_Cancel(event.data);
+          if (response == null) {
+            yield ReturnSalesDetailState.failure(
+              errorMessage: 'Response null',
+              data: event.data,
+            );
+          } else {
+            bool error = response.error;
+            if (error) {
+              yield ReturnSalesDetailState.failure(
+                errorMessage: 'Fetch fail ${response.errorMessage}',
+                data: event.data,
+              );
+            } else {
+              yield ReturnSalesDetailState.success(
+                data: response.data,
+              );
+            }
+          }
+        } catch (e) {
+          yield ReturnSalesDetailState.failure(
+            errorMessage: "fail ${event.toString()}",
+            data: event.data,
+          );
+        }
+      }
     } else {}
   }
 }

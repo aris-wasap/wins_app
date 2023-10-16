@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/global_bloc.dart';
 import 'package:wins_app/blocs/goods_receipt/list/goods_receipt_list_bloc.dart';
@@ -81,6 +82,7 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
     if (state.isActiveSearch) {
       return AppBar(
         title: TextField(
+          autofocus: true,
           controller: _searchQueryController,
           decoration: InputDecoration(
               hintText: "Search Receipt",
@@ -115,10 +117,19 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
         ),
         //ackgroundColor: Colors.blue[500],
         bottom: PreferredSize(
-            child: Container(
-              color: bgBlue,
-              height: 5.0,
-            ),
+            child: state.isBusy
+                ? Shimmer.fromColors(
+                    baseColor: bgBlue,
+                    highlightColor: bgOrange,
+                    child: Container(
+                      color: bgBlue,
+                      height: 5.0,
+                    ),
+                  )
+                : Container(
+                    color: bgBlue,
+                    height: 5.0,
+                  ),
             preferredSize: Size.fromHeight(5.0)),
         actions: <Widget>[
           IconButton(
@@ -200,20 +211,25 @@ class _GoodsReceiptListPageState extends State<GoodsReceiptListPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                title: Text(
-                    "Scan No. : ${data[index].transNo} - ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
+                title: data[index].recordNo > 0
+                    ? Text("No. ${data[index].recordNo}")
+                    : Text(""),
                 subtitle: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Text("Scan No. : ${data[index].transNo}"),
+                    Text(
+                        "Receipt Date : ${DateFormat('dd/MM/yyyy').format(data[index].transDate)}"),
                     Text(
                         "Goods Receipt No. : ${data[index].sapGoodsReceiptNo}"),
                     Text("Production No. : ${data[index].woNo}"),
-                    Text(
-                        "Product : ${data[index].productCode} - ${data[index].productName}"),
-                    Text("Depo : ${data[index].branchName}"),
+                    Text("Product : ${data[index].productCode}"),
+                    Text("Product Name : ${data[index].productName}"),
                     Text("Status : ${data[index].status}"),
                     Text("User : ${data[index].createdUser}"),
+                    Text("Depo : ${data[index].branchName}"),
                   ],
                 ),
                 // leading: ClipOval(

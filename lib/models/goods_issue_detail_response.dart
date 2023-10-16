@@ -61,6 +61,9 @@ class Data {
   @JsonKey(name: 'ProductName')
   String productName;
 
+  @JsonKey(name: 'Weight')
+  double weight;
+
   @JsonKey(name: 'TransNo')
   String transNo;
 
@@ -104,10 +107,11 @@ class Data {
     this.transDate,
     this.seriesNameWo,
     this.seriesName,
-    this.sapGoodsIssueId = 0,
+    this.sapGoodsIssueId: 0,
     this.sapGoodsIssueNo,
-    this.sapGoodsReceiptId = 0,
+    this.sapGoodsReceiptId: 0,
     this.sapGoodsReceiptNo,
+    this.weight: 0,
     this.status,
     this.items,
   });

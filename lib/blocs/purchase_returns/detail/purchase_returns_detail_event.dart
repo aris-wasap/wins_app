@@ -93,7 +93,9 @@ class PurchaseReturnsDetailEventPost extends PurchaseReturnsDetailEvent {
 class PurchaseReturnsDetailEventCancel extends PurchaseReturnsDetailEvent {
   PurchaseReturnsDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
         );
 }

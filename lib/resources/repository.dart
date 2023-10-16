@@ -13,6 +13,7 @@ import 'package:wins_app/models/cfl_purchase_order_label_response.dart';
 import 'package:wins_app/models/cfl_purchase_order_response.dart';
 import 'package:wins_app/models/cfl_purchase_reference_response.dart';
 import 'package:wins_app/models/cfl_purchase_supplier_response.dart';
+import 'package:wins_app/models/cfl_receipt_production_label_response.dart';
 import 'package:wins_app/models/cfl_receipt_production_response.dart';
 import 'package:wins_app/models/cfl_request_branch_response.dart';
 import 'package:wins_app/models/cfl_return_request_delivery_response.dart';
@@ -35,7 +36,9 @@ import 'package:wins_app/models/goods_issue_mixing_detail_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_batch_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_detail_scan_response.dart';
 import 'package:wins_app/models/goods_issue_mixing_list_response.dart';
+import 'package:wins_app/models/goods_receipt_detail_refresh_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_response.dart';
+import 'package:wins_app/models/goods_receipt_detail_scan_batch_response.dart';
 import 'package:wins_app/models/goods_receipt_detail_scan_response.dart';
 import 'package:wins_app/models/goods_receipt_list_response.dart';
 import 'package:wins_app/models/inventory_transfer_detail_response.dart';
@@ -46,6 +49,7 @@ import 'package:wins_app/models/inventory_transfer_detail_response.dart'
 import 'package:wins_app/models/issue_production_detail_response.dart';
 import 'package:wins_app/models/issue_production_detail_scan_response.dart';
 import 'package:wins_app/models/issue_production_list_response.dart';
+import 'package:wins_app/models/item_detail_scan_serial_batch_number_response.dart';
 import 'package:wins_app/models/login_response.dart';
 import 'package:wins_app/models/payable_credit_detail_response.dart';
 import 'package:wins_app/models/payable_credit_detail_scan_response.dart';
@@ -296,7 +300,11 @@ class Repository {
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Post(
           deliveryOrderDetail.Data data) =>
       apiProvider.deliveryOrderDetail_Post(data);
-  
+
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_Cancel(
+          deliveryOrderDetail.Data data) =>
+      apiProvider.deliveryOrderDetail_Cancel(data);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_RemoveItem(
           id, detId) =>
       apiProvider.deliveryOrderDetail_RemoveItem(id, detId);
@@ -330,6 +338,10 @@ class Repository {
           returnSalesDetail.Data data) =>
       apiProvider.returnSalesDetail_Post(data);
 
+  Future<ReturnSalesDetailResponse> returnSalesDetail_Cancel(
+          returnSalesDetail.Data data) =>
+      apiProvider.returnSalesDetail_Cancel(data);
+
   Future<ReturnSalesDetailScanResponse> returnSalesDetail_Scan(
           int doId, String qrResult) =>
       apiProvider.returnSalesDetail_Scan(doId, qrResult);
@@ -359,6 +371,10 @@ class Repository {
   Future<ReceivableCreditDetailResponse> receivableCreditDetail_Post(
           receivableCreditDetail.Data data) =>
       apiProvider.receivableCreditDetail_Post(data);
+
+  Future<ReceivableCreditDetailResponse> receivableCreditDetail_Cancel(
+          receivableCreditDetail.Data data) =>
+      apiProvider.receivableCreditDetail_Cancel(data);
 
   Future<ReceivableCreditDetailScanResponse> receivableCreditDetail_Scan(
           int returnRequestId, String qrResult) =>
@@ -451,27 +467,70 @@ class Repository {
           goodsIssueDetail.Data data) =>
       apiProvider.goodsIssueDetail_Post(data);
 
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsIssueDetail_UpdateTransDate(id, transDate);
+
   Future<GoodsIssueDetailResponse> goodsIssueDetail_Cancel(
           goodsIssueDetail.Data data) =>
       apiProvider.goodsIssueDetail_Cancel(data);
+
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_UpdateDetailBatch(
+          goodsIssueDetail.Item item) =>
+      apiProvider.goodsIssueDetail_UpdateDetailBatch(item);
 
   Future<GoodsIssueDetailScanResponse> goodsIssueDetail_Scan(
           int woId, String qrResult) =>
       apiProvider.goodsIssueDetail_Scan(woId, qrResult);
 
-  Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(int woId) =>
-      apiProvider.goodsIssueDetail_ViewDetailItem(woId);
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_ScanItemBatch(
+          int id, int detId, int woId, int woLineNo, String qrResult) =>
+      apiProvider.goodsIssueDetail_ScanItemBatch(
+          id, detId, woId, woLineNo, qrResult);
+
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_RemoveContent(
+          id, detId, detDetId) =>
+      apiProvider.goodsIssueDetail_RemoveContent(id, detId, detDetId);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_ViewDetailItem(
+          int woId, String transDate) =>
+      apiProvider.goodsIssueDetail_ViewDetailItem(woId, transDate);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_RefreshAfter(int id) =>
       apiProvider.goodsIssueDetail_RefreshAfter(id);
 
+  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_CreateAdditionalItem(
+          int woId,
+          int id,
+          int detId,
+          String itemCode,
+          double plannedQty,
+          String whsCode,
+          int binAbs,
+          String binCode) =>
+      apiProvider.goodsIssueDetail_CreateAdditionalItem(
+          woId, id, detId, itemCode, plannedQty, whsCode, binAbs, binCode);
+
+  Future<GoodsIssueDetailScanResponse>
+      goodsIssueDetailItemDetail_RefreshDetailAdditional(
+              int id, int detId, double qtyItem) =>
+          apiProvider.goodsIssueDetailItemDetail_RefreshDetailAdditional(
+              id, detId, qtyItem);
+
   Future<GoodsIssueDetailScanResponse> goodsIssueDetailItemDetail_RefreshDetail(
-          int detId, int woLineNo) =>
-      apiProvider.goodsIssueDetailItemDetail_RefreshDetail(detId, woLineNo);
+          int id, int detId, double qtyItem) =>
+      apiProvider.goodsIssueDetailItemDetail_RefreshDetail(id, detId, qtyItem);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_GetWeightProduction(
+          int id, int woId, double weightProd) =>
+      apiProvider.goodsIssueDetail_GetWeightProduction(id, woId, weightProd);
 
   Future<GoodsIssueDetailResponse> goodsIssueDetail_ResetData(
           int id, int woId) =>
       apiProvider.goodsIssueDetail_ResetData(id, woId);
+
+  Future<GoodsIssueDetailResponse> goodsIssueDetail_RemoveItem(id, detId) =>
+      apiProvider.goodsIssueDetail_RemoveItem(id, detId);
 
   //-----------------------------
   //GoodsIssueMixingProductionList
@@ -516,6 +575,10 @@ class Repository {
           goodsIssueMixingDetail.Data data) =>
       apiProvider.goodsIssueMixingDetail_Post(data);
 
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsIssueMixingDetail_UpdateTransDate(id, transDate);
+
   Future<GoodsIssueMixingDetailScanResponse> goodsIssueMixingDetail_Scan(
           int woId, String qrResult) =>
       apiProvider.goodsIssueMixingDetail_Scan(woId, qrResult);
@@ -526,19 +589,19 @@ class Repository {
           apiProvider.goodsIssueMixingDetail_ScanItemBatch(
               id, detId, woId, woLineNo, qrResult);
 
-  Future<GoodsIssueMixingDetailScanBatchResponse>
-      goodsIssueMixingDetail_ScanBatch(
-              int id, int detId, int woId, int woLineNo, String qrResult) =>
-          apiProvider.goodsIssueMixingDetail_ScanBatch(
-              id, detId, woId, woLineNo, qrResult);
+  // Future<GoodsIssueMixingDetailScanBatchResponse>
+  //     goodsIssueMixingDetail_ScanBatch(
+  //             int id, int detId, int woId, int woLineNo, String qrResult) =>
+  //         apiProvider.goodsIssueMixingDetail_ScanBatch(
+  //             id, detId, woId, woLineNo, qrResult);
 
   Future<GoodsIssueMixingDetailScanResponse>
       goodsIssueMixingDetail_RemoveContent(id, detId, detDetId) =>
           apiProvider.goodsIssueMixingDetail_RemoveContent(id, detId, detDetId);
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ViewDetailItem(
-          int woId) =>
-      apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId);
+          int woId, String transDate) =>
+      apiProvider.goodsIssueMixingDetail_ViewDetailItem(woId, transDate);
 
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_RefreshAfter(
           int id) =>
@@ -552,6 +615,10 @@ class Repository {
   Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_ResetData(
           int id, int woId) =>
       apiProvider.goodsIssueMixingDetail_ResetData(id, woId);
+
+  Future<GoodsIssueMixingDetailResponse> goodsIssueMixingDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.goodsIssueMixingDetail_RemoveItem(id, detId);
 
 //-----------------------------
   //GoodsReceiptProductionList
@@ -589,6 +656,14 @@ class Repository {
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Update(data);
 
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_UpdateTransDate(
+          int id, String transDate) =>
+      apiProvider.goodsReceiptDetail_UpdateTransDate(id, transDate);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Cancel(
+          goodsReceiptDetail.Data data) =>
+      apiProvider.goodsReceiptDetail_Cancel(data);
+
   Future<GoodsReceiptDetailResponse> goodsReceiptDetail_Post(
           goodsReceiptDetail.Data data) =>
       apiProvider.goodsReceiptDetail_Post(data);
@@ -597,23 +672,37 @@ class Repository {
           int poId, String qrResult) =>
       apiProvider.goodsReceiptDetail_Scan(poId, qrResult);
 
-  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_ScanItemBatch(
-          int id, int detId, int woId, int woLineNo, String qrResult) =>
-      apiProvider.goodsIssueDetail_ScanItemBatch(
-          id, detId, woId, woLineNo, qrResult);
+  Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_ScanItemBatch(
+          int id,
+          int detId,
+          int webId,
+          int sapGoodsIssueId,
+          int woId,
+          int woLineNo,
+          String qrResult) =>
+      apiProvider.goodsReceiptDetail_ScanItemBatch(
+          id, detId, webId, sapGoodsIssueId, woId, woLineNo, qrResult);
 
-  Future<GoodsIssueDetailScanBatchResponse> goodsIssueDetail_ScanBatch(
-          int id, int detId, int woId, int woLineNo, String qrResult) =>
-      apiProvider.goodsIssueDetail_ScanBatch(
-          id, detId, woId, woLineNo, qrResult);
+  // Future<GoodsReceiptDetailScanBatchResponse> goodsReceiptDetail_ScanBatch(
+  //         int id, int detId, int woId, int woLineNo, String qrResult) =>
+  //     apiProvider.goodsReceiptDetail_ScanBatch(
+  //         id, detId, woId, woLineNo, qrResult);
 
-  Future<GoodsIssueDetailScanResponse> goodsIssueDetail_RemoveContent(
+  Future<GoodsReceiptDetailScanResponse> goodsReceiptDetail_RemoveContent(
           id, detId, detDetId) =>
-      apiProvider.goodsIssueDetail_RemoveContent(id, detId, detDetId);
+      apiProvider.goodsReceiptDetail_RemoveContent(id, detId, detDetId);
 
-  Future<GoodsIssueDetailRefreshResponse> goodsReceiptDetail_ViewDetailItem(
-          int woId) =>
-      apiProvider.goodsReceiptDetail_ViewDetailItem(woId);
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_ViewDetailItem(
+          int webId, int sapGoodsIssueId, String transDate) =>
+      apiProvider.goodsReceiptDetail_ViewDetailItem(
+          webId, sapGoodsIssueId, transDate);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_ResetData(
+          int id, int woId) =>
+      apiProvider.goodsReceiptDetail_ResetData(id, woId);
+
+  Future<GoodsReceiptDetailResponse> goodsReceiptDetail_RemoveItem(id, detId) =>
+      apiProvider.goodsReceiptDetail_RemoveItem(id, detId);
 
   //-----------------------------
   //TransferBranchList
@@ -673,8 +762,7 @@ class Repository {
           requestIssueDetail.Data data) =>
       apiProvider.requestIssueDetail_Post(data);
 
-  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(
-          id, detId) =>
+  Future<RequestIssueDetailResponse> requestIssueDetail_RemoveItem(id, detId) =>
       apiProvider.requestIssueDetail_RemoveItem(id, detId);
 
   Future<RequestIssueDetailScanResponse> requestIssueDetail_Scan(
@@ -739,10 +827,9 @@ class Repository {
           receiptIssueDetail.Data data) =>
       apiProvider.receiptIssueDetail_Post(data);
 
-  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(
-          id, detId) =>
+  Future<ReceiptIssueDetailResponse> receiptIssueDetail_RemoveItem(id, detId) =>
       apiProvider.receiptIssueDetail_RemoveItem(id, detId);
-      
+
   Future<ReceiptIssueDetailScanResponse> receiptIssueDetail_Scan(
           int soId, String qrResult) =>
       apiProvider.receiptIssueDetail_Scan(soId, qrResult);
@@ -771,6 +858,10 @@ class Repository {
   Future<ReceiptOrderDetailResponse> receiptOrderDetail_Post(
           receiptOrderDetail.Data data) =>
       apiProvider.receiptOrderDetail_Post(data);
+
+  Future<ReceiptOrderDetailResponse> receiptOrderDetail_Cancel(
+          receiptOrderDetail.Data data) =>
+      apiProvider.receiptOrderDetail_Cancel(data);
 
   Future<ReceiptOrderDetailScanResponse> receiptOrderDetail_Scan(
           int webId, String qrResult) =>
@@ -801,6 +892,10 @@ class Repository {
           receiptSupplierDetail.Data data) =>
       apiProvider.receiptSupplierDetail_Post(data);
 
+  Future<ReceiptSupplierDetailResponse> receiptSupplierDetail_Cancel(
+          receiptSupplierDetail.Data data) =>
+      apiProvider.receiptSupplierDetail_Cancel(data);
+
   Future<ReceiptSupplierDetailScanResponse> receiptSupplierDetail_Scan(
           int poId, String qrResult) =>
       apiProvider.receiptSupplierDetail_Scan(poId, qrResult);
@@ -830,6 +925,10 @@ class Repository {
           purchaseReturnsDetail.Data data) =>
       apiProvider.purchaseReturnsDetail_Post(data);
 
+  Future<PurchaseReturnsDetailResponse> purchaseReturnsDetail_Cancel(
+          purchaseReturnsDetail.Data data) =>
+      apiProvider.purchaseReturnsDetail_Cancel(data);
+
   Future<PurchaseReturnsDetailScanResponse> purchaseReturnsDetail_Scan(
           int grpoId, String qrResult) =>
       apiProvider.purchaseReturnsDetail_Scan(grpoId, qrResult);
@@ -858,6 +957,10 @@ class Repository {
   Future<PayableCreditDetailResponse> payableCreditDetail_Post(
           payableCreditDetail.Data data) =>
       apiProvider.payableCreditDetail_Post(data);
+
+  Future<PayableCreditDetailResponse> payableCreditDetail_Cancel(
+          payableCreditDetail.Data data) =>
+      apiProvider.payableCreditDetail_Cancel(data);
 
   Future<PayableCreditDetailScanResponse> payableCreditDetail_Scan(
           int grpoId, String qrResult) =>
@@ -892,6 +995,15 @@ class Repository {
   Future<InventoryTransferDetailResponse> inventoryTransferDetail_Post(
           inventoryTransferDetail.Data data) =>
       apiProvider.inventoryTransferDetail_Post(data);
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_Cancel(
+          inventoryTransferDetail.Data data) =>
+      apiProvider.inventoryTransferDetail_Cancel(data);
+  Future<InventoryTransferDetailResponse> inventoryTransferDetail_RemoveItem(
+          id, detId) =>
+      apiProvider.inventoryTransferDetail_RemoveItem(id, detId);
+  Future<InventoryTransferDetailResponse>
+      inventoryTransferDetail_UpdateTransDate(int id, String transDate) =>
+          apiProvider.inventoryTransferDetail_UpdateTransDate(id, transDate);
 
   Future<InventoryTransferDetailScanResponse> inventoryTransferDetail_Scan(
           int requestId,
@@ -905,8 +1017,17 @@ class Repository {
   //-----------------------------
   //ItemDetail
   //-----------------------------
-  Future<ItemDetailScanResponse> itemDetail_Scan(String qrResult) =>
-      apiProvider.itemDetail_Scan(qrResult);
+  Future<ItemDetailScanResponse> itemDetail_Scan(
+          String itemCode, String qrResult) =>
+      apiProvider.itemDetail_Scan(itemCode, qrResult);
+
+  Future<ItemDetailScanSerialBatchNumberResponse> itemDetail_ScanSnB(
+          String whsCode, String itemCode, String qrResult) =>
+      apiProvider.itemDetail_ScanSnB(
+        whsCode,
+        itemCode,
+        qrResult,
+      );
 
   //-----------------------------
   //CflProductionOrder
@@ -971,6 +1092,14 @@ class Repository {
   Future<CflGoodsIssueResponse> cflGoodsIssue_FetchNextPage(
           int rowStart, String searchQuery) =>
       apiProvider.cflGoodsIssue_FetchNextPage(rowStart, searchQuery);
+//-----------------------------
+  //CflReceiptProductionLabel
+  //-----------------------------
+  Future<CflReceiptProductionLabelResponse>
+      cflReceiptProductionLabel_FetchNextPage(
+              int rowStart, String searchQuery) =>
+          apiProvider.cflReceiptProductionLabel_FetchNextPage(
+              rowStart, searchQuery);
 //-----------------------------
   //CflPurchaseOrderLabel
   //-----------------------------

@@ -3,20 +3,22 @@ import 'package:wins_app/models/inventory_transfer_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class InventoryTransferDetailEvent extends BlocEvent {
-  InventoryTransferDetailEvent({
-    this.id,
-    this.data,
-    this.requestId,
-    this.requestNo,
-    this.whsCodeFrom,
-    this.absEntryFrom,
-    this.binCodeFrom,
-    this.item,
-    this.itemIndex,
-    this.qrResult,
-  });
+  InventoryTransferDetailEvent(
+      {this.id,
+      this.detId,
+      this.data,
+      this.requestId,
+      this.requestNo,
+      this.whsCodeFrom,
+      this.absEntryFrom,
+      this.binCodeFrom,
+      this.item,
+      this.itemIndex,
+      this.qrResult,
+      this.transDate});
 
   final int id;
+  final int detId;
   final Data data;
   final int requestId;
   final String requestNo;
@@ -26,6 +28,7 @@ class InventoryTransferDetailEvent extends BlocEvent {
   final Item item;
   final int itemIndex;
   final String qrResult;
+  final String transDate;
 }
 
 class InventoryTransferDetailEventNormal extends InventoryTransferDetailEvent {
@@ -112,10 +115,39 @@ class InventoryTransferDetailEventPost extends InventoryTransferDetailEvent {
         );
 }
 
+// class InventoryTransferDetailEventCancel extends InventoryTransferDetailEvent {
+//   InventoryTransferDetailEventCancel({
+//     @required int id,
+//   }) : super(
+//           id: id,
+//         );
+// }
+
 class InventoryTransferDetailEventCancel extends InventoryTransferDetailEvent {
   InventoryTransferDetailEventCancel({
     @required int id,
+    @required Data data,
   }) : super(
           id: id,
+          data: data,
+        );
+}
+
+class InventoryTransferDetailEventRemoveItem
+    extends InventoryTransferDetailEvent {
+  InventoryTransferDetailEventRemoveItem({
+    @required int id,
+    @required int detId,
+  }) : super(id: id, detId: detId);
+}
+
+class InventoryTransferDetailEventUpdateTransDate
+    extends InventoryTransferDetailEvent {
+  InventoryTransferDetailEventUpdateTransDate({
+    @required int id,
+    @required String transDate,
+  }) : super(
+          id: id,
+          transDate: transDate,
         );
 }

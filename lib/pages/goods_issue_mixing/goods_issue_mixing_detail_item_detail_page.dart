@@ -2,6 +2,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wins_app/bloc_widgets/bloc_state_builder.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail/goods_issue_mixing_detail_event.dart';
 import 'package:wins_app/blocs/goods_issue_mixing/detail_item_detail/goods_issue_mixing_detail_item_detail_bloc.dart';
@@ -16,8 +17,8 @@ import 'package:wins_app/widgets/set_colors.dart';
 import 'package:wins_app/widgets/validate_dialog_widget.dart';
 import 'package:wins_app/models/cfl_binlocation_response.dart'
     as cflBinLocation;
-
 import 'dart:math' as math;
+import 'package:audioplayers/audio_cache.dart';
 
 class GoodsIssueMixingDetailItemDetailPage extends StatefulWidget {
   GoodsIssueMixingDetailItemDetailPage(this._data, this._index, this._newData);
@@ -55,6 +56,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
   final _toBinCodeController = TextEditingController();
   final _qtyWoController = TextEditingController();
   final _qtyController = TextEditingController();
+  final _player = AudioCache();
   ScrollController _scrollController;
 
   @override
@@ -95,11 +97,11 @@ class _GoodsIssueMixingDetailItemDetailPageState
   }
 
   void _done() {
-    // if (_qtyController.text == "0" || _qtyController.text == "") {
-    //   ValidateDialogWidget(
-    //       context: context, message: "Qty harus lebih besar dari 0");
-    //   return;
-    // }
+    if (_qtyController.text == "0" || _qtyController.text == "") {
+      ValidateDialogWidget(
+          context: context, message: "Qty harus lebih besar dari 0");
+      return;
+    }
     bloc.emitEvent(GoodsIssueMixingDetailItemDetailEventQty(
       qty: double.parse(_qtyController.text.replaceAll(new RegExp(','), '')),
       binAbs: int.parse(_binAbsController.text),
@@ -137,7 +139,10 @@ class _GoodsIssueMixingDetailItemDetailPageState
           data: data,
         ),
       );
-
+      _player.play(
+        'sounds/store-scanner-beep-sound-effect.mp3',
+        volume: 10.0,
+      );
       //_newData.items[_index] = _data;
 
     } on PlatformException catch (ex) {
@@ -232,10 +237,19 @@ class _GoodsIssueMixingDetailItemDetailPageState
                   title: Text("Item Detail"),
                   backgroundColor: bgBlue,
                   bottom: PreferredSize(
-                      child: Container(
-                        color: bgOrange,
-                        height: 5.0,
-                      ),
+                      child: state.isBusy
+                          ? Shimmer.fromColors(
+                              baseColor: bgWhite,
+                              highlightColor: bgOrange,
+                              child: Container(
+                                color: bgOrange,
+                                height: 5.0,
+                              ),
+                            )
+                          : Container(
+                              color: bgOrange,
+                              height: 5.0,
+                            ),
                       preferredSize: Size.fromHeight(5.0)),
                   actions: <Widget>[
                     _data.id != 0
@@ -299,10 +313,26 @@ class _GoodsIssueMixingDetailItemDetailPageState
     // _qtyWoController.text = data.woQty.toString();
     // _qtyController.text = data.qty.toString();
 
+    // if (data != null) {
+    //   if (data.batchs == null) {
+    //     _qtyController.text = "0";
+    //   } else {
+    //     _qtyController.text = NumberFormat("###,###.####")
+    //         .format(double.parse(data.qty.toString()));
+    //     //data.qty = double.parse(_qtyController.text);
+    //   }
+    // }
+
     if (data != null) {
       if (data.batchs == null) {
         _qtyController.text = "0";
       } else {
+        double sumIssueQty = 0;
+
+        for (var item in data.batchs) {
+          sumIssueQty += item.quantity;
+        }
+        _data.qty = sumIssueQty;
         _qtyController.text = NumberFormat("###,###.####")
             .format(double.parse(data.qty.toString()));
         //data.qty = double.parse(_qtyController.text);
@@ -556,7 +586,7 @@ class _GoodsIssueMixingDetailItemDetailPageState
           ),
           Container(
               //color: Colors.brown,
-              child: (data != null)
+              child: (data.batchs != null)
                   ? _buildList()
                   : Container(
                       padding: EdgeInsets.all(10.0),

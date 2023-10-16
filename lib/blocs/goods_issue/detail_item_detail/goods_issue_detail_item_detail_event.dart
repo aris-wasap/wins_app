@@ -3,19 +3,23 @@ import 'package:wins_app/models/goods_issue_detail_response.dart';
 import 'package:meta/meta.dart';
 
 class GoodsIssueDetailItemDetailEvent extends BlocEvent {
-  GoodsIssueDetailItemDetailEvent(
-      {this.data,
-      this.id,
-      this.detId,
-      this.detDetId,
-      this.woId,
-      this.woLineNo,
-      this.qty,
-      this.binAbs,
-      this.binCode,
-      this.qrResult});
+  GoodsIssueDetailItemDetailEvent({
+    this.data,
+    this.itemBatch,
+    this.id,
+    this.detId,
+    this.detDetId,
+    this.woId,
+    this.woLineNo,
+    this.qty,
+    this.binAbs,
+    this.binCode,
+    this.qrResult,
+    this.itemIndex,
+  });
 
   final Item data;
+  final ItemBatch itemBatch;
   final int id;
   final int detId;
   final int detDetId;
@@ -25,6 +29,7 @@ class GoodsIssueDetailItemDetailEvent extends BlocEvent {
   final int binAbs;
   final String binCode;
   final String qrResult;
+  final int itemIndex;
 }
 
 class GoodsIssueDetailItemDetailEventQty
@@ -65,12 +70,54 @@ class GoodsIssueDetailItemDetailEventRemoveContent
 class GoodsIssueDetailItemDetailEventRefreshDetail
     extends GoodsIssueDetailItemDetailEvent {
   GoodsIssueDetailItemDetailEventRefreshDetail({
+    @required int id,
     @required int detId,
-    @required int woLineNo,
+    @required double qtyItem,
     @required Item newDataItem,
   }) : super(
+          id: id,
           detId: detId,
-          woLineNo: woLineNo,
+          qty: qtyItem,
           data: newDataItem,
         );
 }
+
+class GoodsIssueDetailItemDetailEventItemAdd
+    extends GoodsIssueDetailItemDetailEvent {
+  GoodsIssueDetailItemDetailEventItemAdd({
+    @required ItemBatch itemBatch,
+  }) : super(
+          itemBatch: itemBatch,
+        );
+}
+
+class GoodsIssueDetailItemDetailEventItemUpdate
+    extends GoodsIssueDetailItemDetailEvent {
+  GoodsIssueDetailItemDetailEventItemUpdate({
+    @required ItemBatch itemBatch,
+    @required int itemIndex,
+  }) : super(
+          itemBatch: itemBatch,
+          itemIndex: itemIndex,
+        );
+}
+
+class GoodsIssueDetailItemDetailEventItemRemove
+    extends GoodsIssueDetailItemDetailEvent {
+  GoodsIssueDetailItemDetailEventItemRemove({
+    @required int itemIndex,
+  }) : super(
+          itemIndex: itemIndex,
+        );
+}
+
+// class GoodsIssueDetailItemDetailEventItemRefresh
+//     extends GoodsIssueDetailItemDetailEvent {
+//   GoodsIssueDetailItemDetailEventItemRefresh({
+//     @required Item data,
+//     @required int itemIndex,
+//   }) : super(
+//           data: data,
+//           itemIndex: itemIndex,
+//         );
+// }
