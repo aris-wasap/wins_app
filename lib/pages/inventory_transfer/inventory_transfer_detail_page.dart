@@ -996,7 +996,7 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                (data.status == null)
+                (data.requestNo != null)
                     ? FlatButton(
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
