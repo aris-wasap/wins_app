@@ -70,6 +70,7 @@ class _InventoryTransferDetailPageState
   DateTime transDate; // = DateTime.now();
 
   bool isVisible = true;
+  bool _showAllRow = false;
 
   @override
   void initState() {
@@ -352,6 +353,38 @@ class _InventoryTransferDetailPageState
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showAllData() async {
+    var data = _getState().data;
+    _showAllRow = true;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showLessData() async {
+    var data = _getState().data;
+    _showAllRow = false;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
       return;
     }
   }
@@ -676,6 +709,7 @@ class _InventoryTransferDetailPageState
       //   return;
     }
 
+    _showAllRow = false;
     var data = _getState().data;
 
     try {
@@ -995,6 +1029,26 @@ class _InventoryTransferDetailPageState
                           : Container(width: 0, height: 0),
                     ],
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      color: isVisible ? bgOrange : bgBlue,
+                      onPressed: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      iconSize: 30,
+                      icon: isVisible
+                          ? Icon(Icons.arrow_drop_up)
+                          : Icon(Icons.arrow_drop_down),
+                    ),
+                    // isVisible
+                    //     ? Text("Show", style: subTitleTextStyle)
+                    //     : Text("Hide", style: subTitleTextStyle)
+                  ],
                 ),
                 (data.requestNo != null)
                     ? FlatButton(
@@ -1421,28 +1475,6 @@ class _InventoryTransferDetailPageState
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  color: isVisible ? bgOrange : bgBlue,
-                  onPressed: () {
-                    setState(() {
-                      isVisible = !isVisible;
-                    });
-                  },
-                  icon: isVisible
-                      ? Icon(Icons.expand_less)
-                      : Icon(Icons.expand_more),
-                ),
-                isVisible
-                    ? Text("Show", style: subTitleTextStyle)
-                    : Text("Hide", style: subTitleTextStyle)
-              ],
-            ),
-          ),
           Container(
             padding: EdgeInsets.all(10.0),
             child: Container(
@@ -1484,6 +1516,41 @@ class _InventoryTransferDetailPageState
             height: 5,
             color: Colors.grey,
           ),
+          _showAllRow == false
+              ? Row(
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 30,
+                      icon: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_drop_down,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showAllRow = true;
+                        _showAllData();
+                      },
+                    ),
+                    Text("Show All", style: subTitleTextStyle)
+                  ],
+                )
+              : Row(
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.arrow_drop_up,
+                      ),
+                      onPressed: () {
+                        _showAllRow = false;
+                        _showLessData();
+                      },
+                    ),
+                    Text("Back", style: subTitleTextStyle)
+                  ],
+                ),
           SizedBox(
             height: 65,
           ),
@@ -1538,7 +1605,7 @@ class _InventoryTransferDetailPageState
       controller: _scrollController,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: _showAllRow == true ? data.length : 1,
       itemBuilder: (contex, index) {
         if (_getState().data.sapInventoryTransferId == 0 &&
             !_getState().isBusy) {

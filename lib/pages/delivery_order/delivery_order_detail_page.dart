@@ -56,6 +56,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _statusController = TextEditingController();
   final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
+  bool _showAllRow = false;
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     super.initState();
 
     if (_id != 0) {
+      // _showAllRow = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         bloc.emitEvent(DeliveryOrderDetailEventGetId(
           id: _id,
@@ -230,6 +232,38 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     }
   }
 
+  Future _showAllData() async {
+    var data = _getState().data;
+    _showAllRow = true;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventGetAllData(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showLessData() async {
+    var data = _getState().data;
+    _showAllRow = false;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
   void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
@@ -322,6 +356,39 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
       content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogShowAllData(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _showAllData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Lihat semua data batch ? ?"),
       actions: [
         cancelButton,
         continueButton,
@@ -564,6 +631,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
+    _showAllRow = false;
     if (["", null].contains(_soNoController.text)) {
       ValidateDialogWidget(context: context, message: "SO No harus di isi");
       return;
@@ -701,8 +769,21 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       _getState().data.status != "Cancel" &&
                       !_getState().isBusy
                   ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        // SizedBox(),
+                        // FloatingActionButton(
+                        //   heroTag: "btnShowAll",
+                        //   backgroundColor: Colors.green,
+                        //   tooltip: "Show All Row",
+                        //   child: Icon(Icons.format_list_numbered),
+                        //   onPressed: () {
+                        //     showAlertDialogShowAllData(context);
+                        //   },
+                        // ),
+                        SizedBox(
+                          width: 70,
+                        ),
                         FloatingActionButton.extended(
                           icon: Icon(Icons.camera_alt),
                           backgroundColor: btnBgOrange,
@@ -711,9 +792,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             _scanQR();
                           },
                         ),
-                        SizedBox(
-                          width: 70,
-                        ),
+                        // SizedBox(
+                        //   width: 70,
+                        // ),
                         FloatingActionButton(
                           heroTag: "btnDelete",
                           backgroundColor: Colors.red,
@@ -1125,6 +1206,41 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
             height: 5,
             color: Colors.grey,
           ),
+          _showAllRow == false
+              ? Row(
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 30,
+                      icon: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_drop_down,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showAllRow = true;
+                        _showAllData();
+                      },
+                    ),
+                    Text("Show All", style: subTitleTextStyle)
+                  ],
+                )
+              : Row(
+                  children: <Widget>[
+                    IconButton(
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.arrow_drop_up,
+                      ),
+                      onPressed: () {
+                        _showAllRow = false;
+                        _showLessData();
+                      },
+                    ),
+                    Text("Back", style: subTitleTextStyle)
+                  ],
+                ),
           SizedBox(
             height: 65,
           ),
@@ -1180,7 +1296,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       controller: _scrollController,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: _showAllRow == true ? data.length : 1,
       itemBuilder: (contex, index) {
         if (_getState().data.sapDeliveryId == 0 && !_getState().isBusy) {
           return Dismissible(
