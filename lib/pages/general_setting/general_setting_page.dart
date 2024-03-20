@@ -100,7 +100,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
-                                  'v.23.10.30',
+                                  'v.23.11.30',
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
