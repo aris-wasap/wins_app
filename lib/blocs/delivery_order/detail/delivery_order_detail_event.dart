@@ -29,6 +29,14 @@ class DeliveryOrderDetailEventNormal extends DeliveryOrderDetailEvent {
   DeliveryOrderDetailEventNormal() : super();
 }
 
+class DeliveryOrderDetailEventGetAllData extends DeliveryOrderDetailEvent {
+  DeliveryOrderDetailEventGetAllData({
+    @required int id,
+  }) : super(
+          id: id,
+        );
+}
+
 class DeliveryOrderDetailEventGetId extends DeliveryOrderDetailEvent {
   DeliveryOrderDetailEventGetId({
     @required int id,

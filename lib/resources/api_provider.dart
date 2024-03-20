@@ -859,6 +859,28 @@ class ApiProvider {
   //-----------------------------
   //DeliveryOrderDetail
   //-----------------------------
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_GetAllData(
+      int id) async {
+    try {
+      var body = json.encode({"UserId": globalBloc.userId, "Id": id});
+
+      final response = await http.post(
+          "${_url}api/DeliveryOrderDetailApi/GetAllData",
+          headers: {'Content-type': 'application/json'},
+          body: body);
+
+      if (response.statusCode == 200) {
+        //print(response.body);
+        return compute(deliveryOrderDetailResponseFromJson, response.body);
+      } else {
+        throw Exception(
+            'deliveryOrderDetail_GetAllData:Failed to load post(2)');
+      }
+    } catch (e) {
+      throw Exception('deliveryOrderDetail_GetAllData:Failed to load post(1)');
+    }
+  }
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_GetById(
       int id) async {
     try {

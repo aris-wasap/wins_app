@@ -102,7 +102,7 @@ class GoodsReceiptDetailItemDetailBloc extends BlocEventStateBase<
           if (error) {
             yield GoodsReceiptDetailItemDetailState.failure(
               errorMessage: 'Fetch fail ${response.errorMessage}',
-              data: event.data,
+              data: response.data,
             );
           } else {
             currentState.data.batchs

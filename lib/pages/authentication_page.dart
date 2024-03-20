@@ -253,7 +253,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           textAlign: TextAlign.center,
         ),
         Text(
-          '23.09.05',
+          '23.11.30',
           style: TextStyle(
             color: Colors.black54,
             fontSize: 12,

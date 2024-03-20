@@ -286,6 +286,9 @@ class Repository {
   //-----------------------------
   //DeliveryOrderDetail
   //-----------------------------
+  Future<DeliveryOrderDetailResponse> deliveryOrderDetail_GetAllData(int id) =>
+      apiProvider.deliveryOrderDetail_GetAllData(id);
+
   Future<DeliveryOrderDetailResponse> deliveryOrderDetail_GetById(int id) =>
       apiProvider.deliveryOrderDetail_GetById(id);
 

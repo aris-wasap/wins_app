@@ -70,6 +70,7 @@ class _InventoryTransferDetailPageState
   DateTime transDate; // = DateTime.now();
 
   bool isVisible = true;
+  bool _showAllRow = false;
 
   @override
   void initState() {
@@ -352,6 +353,38 @@ class _InventoryTransferDetailPageState
     } catch (ex) {
       ValidateDialogWidget(
           context: context, message: "Delete : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showAllData() async {
+    var data = _getState().data;
+    _showAllRow = true;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showLessData() async {
+    var data = _getState().data;
+    _showAllRow = false;
+
+    try {
+      bloc.emitEvent(
+        InventoryTransferDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
       return;
     }
   }
@@ -676,6 +709,7 @@ class _InventoryTransferDetailPageState
       //   return;
     }
 
+    _showAllRow = false;
     var data = _getState().data;
 
     try {
@@ -996,7 +1030,27 @@ class _InventoryTransferDetailPageState
                     ],
                   ),
                 ),
-                (data.requestNo != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      color: isVisible ? bgOrange : bgBlue,
+                      onPressed: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      iconSize: 30,
+                      icon: isVisible
+                          ? Icon(Icons.arrow_drop_up)
+                          : Icon(Icons.arrow_drop_down),
+                    ),
+                    // isVisible
+                    //     ? Text("Show", style: subTitleTextStyle)
+                    //     : Text("Hide", style: subTitleTextStyle)
+                  ],
+                ),
+                (data.status == null || data.requestNo != null)
                     ? FlatButton(
                         padding: EdgeInsets.only(top: 5),
                         onPressed: () {
@@ -1421,28 +1475,6 @@ class _InventoryTransferDetailPageState
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  color: isVisible ? bgOrange : bgBlue,
-                  onPressed: () {
-                    setState(() {
-                      isVisible = !isVisible;
-                    });
-                  },
-                  icon: isVisible
-                      ? Icon(Icons.expand_less)
-                      : Icon(Icons.expand_more),
-                ),
-                isVisible
-                    ? Text("Show", style: subTitleTextStyle)
-                    : Text("Hide", style: subTitleTextStyle)
-              ],
-            ),
-          ),
           Container(
             padding: EdgeInsets.all(10.0),
             child: Container(
@@ -1461,10 +1493,46 @@ class _InventoryTransferDetailPageState
               ),
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("List of Items",
                         style: new TextStyle(fontWeight: FontWeight.bold)),
+                    _showAllRow == false
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 30,
+                                icon: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.arrow_drop_down,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  _showAllRow = true;
+                                  _showAllData();
+                                },
+                              ),
+                              Text("Show All", style: subTitleTextStyle)
+                            ],
+                          )
+                        : Row(
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 30,
+                                icon: Icon(
+                                  Icons.arrow_drop_up,
+                                ),
+                                onPressed: () {
+                                  _showAllRow = false;
+                                  _showLessData();
+                                },
+                              ),
+                              Text("Back", style: subTitleTextStyle)
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -1492,11 +1560,16 @@ class _InventoryTransferDetailPageState
 
   Widget _rowDetail(List<Item> data, int index) {
     int rowIndex = data.length - index;
+    bool isDuplicateBatchNumber = _checkForDuplicateBatchNumber(data, index);
+    // Warna yang akan digunakan untuk menandai duplikasi
+    Color duplicateColor = bgOrange;
 
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-          color: Colors.grey[400].withOpacity(0.5),
+          color: isDuplicateBatchNumber
+              ? duplicateColor
+              : Colors.grey[400].withOpacity(0.5),
           border: Border(
               bottom: BorderSide(width: 1, color: Colors.grey[500]),
               left: BorderSide(width: 5, color: Colors.blue))),
@@ -1538,7 +1611,7 @@ class _InventoryTransferDetailPageState
       controller: _scrollController,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: _showAllRow == true ? data.length : 1,
       itemBuilder: (contex, index) {
         if (_getState().data.sapInventoryTransferId == 0 &&
             !_getState().isBusy) {
@@ -1568,5 +1641,19 @@ class _InventoryTransferDetailPageState
         }
       },
     );
+  }
+
+  bool _checkForDuplicateBatchNumber(List<Item> data, int currentIndex) {
+    // Mendapatkan batch number untuk item saat ini
+    String currentBatchNumber = data[currentIndex].batchNo;
+
+    // Mengecek duplikasi batch number dengan item lain dalam daftar
+    for (int i = 0; i < data.length; i++) {
+      if (i != currentIndex && data[i].batchNo == currentBatchNumber) {
+        return true; // Ada duplikasi batch number
+      }
+    }
+
+    return false; // Tidak ada duplikasi batch number
   }
 }

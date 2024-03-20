@@ -56,6 +56,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   final _statusController = TextEditingController();
   final _player = AudioCache();
   DateTime transDate; // = DateTime.now();
+  bool _showAllRow = false;
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     super.initState();
 
     if (_id != 0) {
+      // _showAllRow = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         bloc.emitEvent(DeliveryOrderDetailEventGetId(
           id: _id,
@@ -230,6 +232,38 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     }
   }
 
+  Future _showAllData() async {
+    var data = _getState().data;
+    _showAllRow = true;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
+  Future _showLessData() async {
+    var data = _getState().data;
+    _showAllRow = false;
+
+    try {
+      bloc.emitEvent(
+        DeliveryOrderDetailEventGetId(id: data.id),
+      );
+    } catch (ex) {
+      ValidateDialogWidget(
+          context: context,
+          message: "Show All Batch Number : Unknown error $ex");
+      return;
+    }
+  }
+
   void _submit() {
     var state = (bloc.lastState ?? bloc.initialState);
     var data = Data(); // (bloc.lastState ?? bloc.initialState).data;
@@ -322,6 +356,39 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Perhatian !!!"),
       content: Text("Apakah anda yakin Submit document?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogShowAllData(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        _showAllData();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Perhatian !!!"),
+      content: Text("Lihat semua data batch ? ?"),
       actions: [
         cancelButton,
         continueButton,
@@ -564,6 +631,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
   BuildContext _context;
 
   Future _scanQR() async {
+    _showAllRow = false;
     if (["", null].contains(_soNoController.text)) {
       ValidateDialogWidget(context: context, message: "SO No harus di isi");
       return;
@@ -701,8 +769,11 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                       _getState().data.status != "Cancel" &&
                       !_getState().isBusy
                   ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        SizedBox(
+                          width: 70,
+                        ),
                         FloatingActionButton.extended(
                           icon: Icon(Icons.camera_alt),
                           backgroundColor: btnBgOrange,
@@ -711,9 +782,9 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                             _scanQR();
                           },
                         ),
-                        SizedBox(
-                          width: 70,
-                        ),
+                        // SizedBox(
+                        //   width: 70,
+                        // ),
                         FloatingActionButton(
                           heroTag: "btnDelete",
                           backgroundColor: Colors.red,
@@ -1019,69 +1090,6 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
                     ),
                   ),
                 ),
-                //Padding(padding: EdgeInsets.only(top: 10)),
-                // FlatButton(
-                //   padding: EdgeInsets.only(top: 5),
-                //   onPressed: () {
-                //     if (data.id == 0) {
-                //       Future<cflWarehouse.Data> whs = Navigator.push(
-                //           context,
-                //           MaterialPageRoute<cflWarehouse.Data>(
-                //               builder: (BuildContext context) =>
-                //                   CflWarehousePage(globalBloc.branchId)));
-
-                //       whs.then((cflWarehouse.Data whs) {
-                //         setState(() {
-                //           if (whs != null) {
-                //             _getState().data.whsCode = whs.whsCode;
-                //             _getState().data.whsName = whs.whsName;
-                //           }
-                //         });
-                //       });
-                //     }
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.only(left: 5, top: 5),
-                //     alignment: Alignment.centerLeft,
-                //     decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: (data.id == 0)
-                //                 ? Colors.blue
-                //                 : Colors.grey[400]),
-                //         borderRadius: BorderRadius.all(Radius.circular(10))),
-                //     child: Row(
-                //       children: <Widget>[
-                //         Expanded(
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               Text(
-                //                 "From Warehouse",
-                //                 style: TextStyle(
-                //                     color: Colors.blue, fontSize: 12.0),
-                //               ),
-                //               ListTile(
-                //                 contentPadding: EdgeInsets.only(left: 5),
-                //                 title: Text(_whsCodeController.text),
-                //                 subtitle: Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   children: <Widget>[
-                //                     Text(_whsNameController.text),
-                //                   ],
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         (data.id == 0)
-                //             ? Icon(
-                //                 Icons.keyboard_arrow_right,
-                //               )
-                //             : Container(width: 0, height: 0),
-                //       ],
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -1103,9 +1111,47 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
               ),
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("List of Items"),
+                    Text("List of Items",
+                        style: new TextStyle(fontWeight: FontWeight.bold)),
+                    _showAllRow == false
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 30,
+                                icon: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.arrow_drop_down,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  _showAllRow = true;
+                                  _showAllData();
+                                },
+                              ),
+                              Text("Show All", style: subTitleTextStyle)
+                            ],
+                          )
+                        : Row(
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 30,
+                                icon: Icon(
+                                  Icons.arrow_drop_up,
+                                ),
+                                onPressed: () {
+                                  _showAllRow = false;
+                                  _showLessData();
+                                },
+                              ),
+                              Text("Back", style: subTitleTextStyle)
+                            ],
+                          ),
+                    // SizedBox(),
                   ],
                 ),
               ),
@@ -1133,11 +1179,16 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
 
   Widget _rowDetail(List<Item> data, int index) {
     int rowIndex = data.length - index;
+    bool isDuplicateBatchNumber = _checkForDuplicateBatchNumber(data, index);
+    // Warna yang akan digunakan untuk menandai duplikasi
+    Color duplicateColor = bgOrange;
 
     return Container(
       margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 1.0),
       decoration: BoxDecoration(
-          color: Colors.grey[400].withOpacity(0.5),
+          color: isDuplicateBatchNumber
+              ? duplicateColor
+              : Colors.grey[400].withOpacity(0.5),
           border: Border(
               bottom: BorderSide(width: 1, color: Colors.grey[500]),
               left: BorderSide(width: 5, color: Colors.blue))),
@@ -1180,7 +1231,7 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
       controller: _scrollController,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: _showAllRow == true ? data.length : 1,
       itemBuilder: (contex, index) {
         if (_getState().data.sapDeliveryId == 0 && !_getState().isBusy) {
           return Dismissible(
@@ -1207,5 +1258,19 @@ class _DeliveryOrderDetailPageState extends State<DeliveryOrderDetailPage> {
         }
       },
     );
+  }
+
+  bool _checkForDuplicateBatchNumber(List<Item> data, int currentIndex) {
+    // Mendapatkan batch number untuk item saat ini
+    String currentBatchNumber = data[currentIndex].batchNo;
+
+    // Mengecek duplikasi batch number dengan item lain dalam daftar
+    for (int i = 0; i < data.length; i++) {
+      if (i != currentIndex && data[i].batchNo == currentBatchNumber) {
+        return true; // Ada duplikasi batch number
+      }
+    }
+
+    return false; // Tidak ada duplikasi batch number
   }
 }
