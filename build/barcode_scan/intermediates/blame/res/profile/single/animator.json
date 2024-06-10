@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\design_fab_hide_motion_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\design_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\design_fab_show_motion_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\design_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_fab_transformation_sheet_collapse_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_fab_transformation_sheet_collapse_spec.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_fab_transformation_sheet_expand_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_fab_transformation_sheet_expand_spec.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_fab_show_motion_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_chip_state_list_anim.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_chip_state_list_anim.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_btn_state_list_anim.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_btn_state_list_anim.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_btn_unelevated_state_list_anim.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_btn_unelevated_state_list_anim.xml"
+    },
+    {
+        "merged": "D:\\Mobile\\Project\\NCF\\wins_app_v1.12.13+hotfix.8\\wins_app\\build\\barcode_scan\\intermediates\\res\\merged\\profile\\animator\\mtrl_fab_hide_motion_spec.xml",
+        "source": "C:\\Users\\Arista Wahyu\\.gradle\\caches\\transforms-2\\files-2.1\\ad56c63253ecfa86a8fb92b51d62defe\\material-1.0.0\\res\\animator\\mtrl_fab_hide_motion_spec.xml"
+    }
+]

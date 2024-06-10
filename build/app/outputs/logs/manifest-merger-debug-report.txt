@@ -1,0 +1,233 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+MERGED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+MERGED from [:audioplayers] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\audioplayers\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:device_info] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:sqflite] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:flutter_money_formatter] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\flutter_money_formatter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:path_provider] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\path_provider\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\ad56c63253ecfa86a8fb92b51d62defe\material-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b857714e543a2c7145c48ec4fa8c9e9c\appcompat-1.0.2\AndroidManifest.xml:17:1-22:12
+MERGED from [me.dm7.barcodescanner:zxing:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\067b39977fe2aa9052cbc1085552dfc8\zxing-1.9.13\AndroidManifest.xml:2:1-13:12
+MERGED from [me.dm7.barcodescanner:core:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\cfe04544198fce18f9acf09aa58ef067\jetified-core-1.9.13\AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e1cefde87375dffee5af182e14d891f1\legacy-support-v4-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ccde6556d402dc28dc812877548e64f\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fdc5f51d51a902db360b793cd49734e1\recyclerview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\4abf3ed0583d22e7b31171b3567f7a85\vectordrawable-animated-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e3ab28e0369334799897213232a1e943\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\007d9037902652f7529b46b9f31973c9\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\626759b2636e58dd7f19ed3dea31b626\transition-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fb8700a8cddbda5c7c3c1a68da6d1e73\vectordrawable-1.0.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\7ecfa71311b9c795373cf4afb61ba2dc\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a349b8178f610399753dfab2808efb37\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\6971534f2ec04fadc98bd8dabb768a94\activity-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\9359b4775d52ba2397bc75e4d58f9c56\coordinatorlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\73400dc753bb418abce07e646b61e006\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\54f01e1e155126f5a19b2145546f1585\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\027103c1c80f4ade813a63ae3b5e4c72\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fac2c4b7430dfa8e1736284e9160c712\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f963d23921bf42119188a09439b1ee79\asynclayoutinflater-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media:media:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f6365ba3c19a8de5b92e5260d87793d7\media-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0a0569fc7a2a75485b925ae1876511b1\lifecycle-runtime-2.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\c10feda0876ce14d6943e9591215efed\savedstate-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\452de8e41565bfc57fff78c0d402b874\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\900730b14fc76c7111ab53cc9077c3d4\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\813f27f875f2f173f4bf1d7ad24cca37\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a8294a52f5f8d94a741d978da97a1795\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e6c2943b3af87455829a7879e4c11567\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ab88c5acc6f13dbc548aa67e4729b53\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\366e7ff6093519cdaa2015347796c3c4\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\1667c71afe502048946e47303e7520bd\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\dcf183f8220d09dce0655ae3e7436f26\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\646d1a3b715b332405b14feda7a60955\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b8de139fb7bc80982ae05a2e8d8b4e55\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+	package
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:2:5-30
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:1-32:12
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:8:5-31:19
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:13:5-15:19
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:13:5-15:19
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\ad56c63253ecfa86a8fb92b51d62defe\material-1.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\ad56c63253ecfa86a8fb92b51d62defe\material-1.0.0\AndroidManifest.xml:22:5-20
+MERGED from [me.dm7.barcodescanner:zxing:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\067b39977fe2aa9052cbc1085552dfc8\zxing-1.9.13\AndroidManifest.xml:11:5-20
+MERGED from [me.dm7.barcodescanner:zxing:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\067b39977fe2aa9052cbc1085552dfc8\zxing-1.9.13\AndroidManifest.xml:11:5-20
+MERGED from [me.dm7.barcodescanner:core:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\cfe04544198fce18f9acf09aa58ef067\jetified-core-1.9.13\AndroidManifest.xml:11:5-20
+MERGED from [me.dm7.barcodescanner:core:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\cfe04544198fce18f9acf09aa58ef067\jetified-core-1.9.13\AndroidManifest.xml:11:5-20
+MERGED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ab88c5acc6f13dbc548aa67e4729b53\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ab88c5acc6f13dbc548aa67e4729b53\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:24:18-86
+	android:label
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:10:9-35
+	android:icon
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:11:9-43
+	android:usesCleartextTraffic
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:12:9-44
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:9:9-57
+activity#com.wins.scanqr.MainActivity
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:13:9-24:20
+	android:launchMode
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:15:13-43
+	android:hardwareAccelerated
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:18:13-47
+	android:windowSoftInputMode
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:19:13-55
+	android:configChanges
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:17:13-163
+	android:theme
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:16:13-47
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:14:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:20:13-23:29
+action#android.intent.action.MAIN
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:21:17-68
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:21:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:22:17-76
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:22:27-74
+activity#com.apptreesoftware.barcodescan.BarcodeScannerActivity
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:25:10-101
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:14:9-91
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:14:9-91
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:25:20-89
+meta-data#flutterEmbedding
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:28:9-30:33
+	android:value
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:30:13-30
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml:29:13-44
+uses-sdk
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+MERGED from [:audioplayers] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\audioplayers\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-44
+MERGED from [:audioplayers] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\audioplayers\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-44
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:device_info] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:device_info] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_money_formatter] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\flutter_money_formatter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_money_formatter] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\flutter_money_formatter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\path_provider\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:path_provider] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\path_provider\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\ad56c63253ecfa86a8fb92b51d62defe\material-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\ad56c63253ecfa86a8fb92b51d62defe\material-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b857714e543a2c7145c48ec4fa8c9e9c\appcompat-1.0.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b857714e543a2c7145c48ec4fa8c9e9c\appcompat-1.0.2\AndroidManifest.xml:20:5-44
+MERGED from [me.dm7.barcodescanner:zxing:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\067b39977fe2aa9052cbc1085552dfc8\zxing-1.9.13\AndroidManifest.xml:7:5-9:41
+MERGED from [me.dm7.barcodescanner:zxing:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\067b39977fe2aa9052cbc1085552dfc8\zxing-1.9.13\AndroidManifest.xml:7:5-9:41
+MERGED from [me.dm7.barcodescanner:core:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\cfe04544198fce18f9acf09aa58ef067\jetified-core-1.9.13\AndroidManifest.xml:7:5-9:41
+MERGED from [me.dm7.barcodescanner:core:1.9.13] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\cfe04544198fce18f9acf09aa58ef067\jetified-core-1.9.13\AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e1cefde87375dffee5af182e14d891f1\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e1cefde87375dffee5af182e14d891f1\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ccde6556d402dc28dc812877548e64f\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ccde6556d402dc28dc812877548e64f\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fdc5f51d51a902db360b793cd49734e1\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fdc5f51d51a902db360b793cd49734e1\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\4abf3ed0583d22e7b31171b3567f7a85\vectordrawable-animated-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\4abf3ed0583d22e7b31171b3567f7a85\vectordrawable-animated-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e3ab28e0369334799897213232a1e943\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e3ab28e0369334799897213232a1e943\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\007d9037902652f7529b46b9f31973c9\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\007d9037902652f7529b46b9f31973c9\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\626759b2636e58dd7f19ed3dea31b626\transition-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\626759b2636e58dd7f19ed3dea31b626\transition-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fb8700a8cddbda5c7c3c1a68da6d1e73\vectordrawable-1.0.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fb8700a8cddbda5c7c3c1a68da6d1e73\vectordrawable-1.0.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\7ecfa71311b9c795373cf4afb61ba2dc\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\7ecfa71311b9c795373cf4afb61ba2dc\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a349b8178f610399753dfab2808efb37\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a349b8178f610399753dfab2808efb37\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\6971534f2ec04fadc98bd8dabb768a94\activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\6971534f2ec04fadc98bd8dabb768a94\activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\9359b4775d52ba2397bc75e4d58f9c56\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\9359b4775d52ba2397bc75e4d58f9c56\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\73400dc753bb418abce07e646b61e006\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\73400dc753bb418abce07e646b61e006\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\54f01e1e155126f5a19b2145546f1585\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\54f01e1e155126f5a19b2145546f1585\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\027103c1c80f4ade813a63ae3b5e4c72\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\027103c1c80f4ade813a63ae3b5e4c72\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fac2c4b7430dfa8e1736284e9160c712\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\fac2c4b7430dfa8e1736284e9160c712\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f963d23921bf42119188a09439b1ee79\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f963d23921bf42119188a09439b1ee79\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f6365ba3c19a8de5b92e5260d87793d7\media-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\f6365ba3c19a8de5b92e5260d87793d7\media-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\bcd2ab89d26230dea536c88e023b7268\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0a0569fc7a2a75485b925ae1876511b1\lifecycle-runtime-2.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0a0569fc7a2a75485b925ae1876511b1\lifecycle-runtime-2.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\c10feda0876ce14d6943e9591215efed\savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\c10feda0876ce14d6943e9591215efed\savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\452de8e41565bfc57fff78c0d402b874\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\452de8e41565bfc57fff78c0d402b874\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\900730b14fc76c7111ab53cc9077c3d4\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\900730b14fc76c7111ab53cc9077c3d4\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\813f27f875f2f173f4bf1d7ad24cca37\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\813f27f875f2f173f4bf1d7ad24cca37\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a8294a52f5f8d94a741d978da97a1795\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\a8294a52f5f8d94a741d978da97a1795\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e6c2943b3af87455829a7879e4c11567\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\e6c2943b3af87455829a7879e4c11567\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ab88c5acc6f13dbc548aa67e4729b53\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\0ab88c5acc6f13dbc548aa67e4729b53\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\366e7ff6093519cdaa2015347796c3c4\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\366e7ff6093519cdaa2015347796c3c4\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\1667c71afe502048946e47303e7520bd\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\1667c71afe502048946e47303e7520bd\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\dcf183f8220d09dce0655ae3e7436f26\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\dcf183f8220d09dce0655ae3e7436f26\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\646d1a3b715b332405b14feda7a60955\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\646d1a3b715b332405b14feda7a60955\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b8de139fb7bc80982ae05a2e8d8b4e55\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\Arista Wahyu\.gradle\caches\transforms-2\files-2.1\b8de139fb7bc80982ae05a2e8d8b4e55\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml:6:5-66
+	android:name
+		ADDED from D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\android\app\src\debug\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.CAMERA
+ADDED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-65
+	android:name
+		ADDED from [:barcode_scan] D:\Mobile\Project\NCF\wins-app_2-0-0\wins_app\build\barcode_scan\intermediates\library_manifest\debug\AndroidManifest.xml:11:22-62
